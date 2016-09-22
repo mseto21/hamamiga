@@ -66,7 +66,7 @@ void Game_RunLoop(Game* game) {
 			}
 		}
 
-		float timestep = Timer_GetTicks(&frameTime) / 1000.f;
+	//	float timestep = Timer_GetTicks(&frameTime) / 1000.f;
 		Timer_Start(&frameTime);
 		float avgFPS = frames / (Timer_GetTicks(&game->timer) / 1000.f);
 		if (avgFPS > 2000000) {
@@ -78,5 +78,7 @@ void Game_RunLoop(Game* game) {
 }
 
 void Game_Close(Game* game) {
+	SDL_DestroyRenderer(game->renderer);
+	SDL_DestroyWindow(game->window);
 	SDL_Quit();
 }
