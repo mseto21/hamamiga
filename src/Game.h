@@ -1,4 +1,4 @@
-#include "Timer.hpp"
+#include "Timer.h"
 #include <SDL.h>
 
 struct Game {

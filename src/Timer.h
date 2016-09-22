@@ -1,5 +1,5 @@
 // Timer header file
-#include "types.hpp"
+#include "types.h"
 
 struct Timer {
   uint32  start_ticks;   // clock time
