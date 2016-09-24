@@ -1,6 +1,5 @@
 // Timer class
-
-#include "Timer.hpp"
+#include "Timer.h"
 #include <SDL.h>
 
 void Timer_Initialize(Timer* timer) {

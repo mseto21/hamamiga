@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include "types.h"
 
 namespace Constants {
 	const uint16 	ScreenHeight_ = 	480;

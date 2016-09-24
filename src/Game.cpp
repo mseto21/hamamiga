@@ -1,14 +1,14 @@
-#include "Game.hpp"
-#include "constants.hpp"
+#include "Game.h"
+#include "constants.h"
 #include <iostream>
 #include <SDL_image.h>
-//#include <SDL_ttf.h>
-//#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 bool InitializeWindow(Game* game) {
-	window = SDL_CreateWindow("Fat Hactory", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+	game->window = SDL_CreateWindow("Fat Hactory", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
 		Constants::ScreenWidth_, Constants::ScreenHeight_, SDL_WINDOW_SHOWN);
-	if (!window) {
+	if (!game->window ) {
 		return false;
 	}
 	return true;
@@ -30,7 +30,7 @@ bool Game_Initialize(Game* game) {
 		return false;
 	}
 
-	if (!InitializeWindow(game) {
+	if (!InitializeWindow(game)) {
 		return false;
 	}
 
@@ -73,7 +73,7 @@ void Game_RunLoop(Game* game) {
 			}
 		}
 
-		float timestep = Timer_GetTicks(&frameTime) / 1000.f;
+	//	float timestep = Timer_GetTicks(&frameTime) / 1000.f;
 		Timer_Start(&frameTime);
 		float avgFPS = frames / (Timer_GetTicks(&game->timer) / 1000.f);
 		if (avgFPS > 2000000) {
@@ -85,5 +85,7 @@ void Game_RunLoop(Game* game) {
 }
 
 void Game_Close(Game* game) {
+	SDL_DestroyRenderer(game->renderer);
+	SDL_DestroyWindow(game->window);
 	SDL_Quit();
 }
