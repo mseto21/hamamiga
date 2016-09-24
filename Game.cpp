@@ -54,14 +54,21 @@ void Game_RunLoop(Game* game) {
 	Timer_Start(&game->timer);
 
 	Timer frameTime;	// Create frame timer
-	Timer_Initialize(&frameTime);
+	Timer_Initialize(&frameT7ime);
 	int frames = 0;
 
 	while (game->running) {
 
 		// Poll input
 		while (SDL_PollEvent(&event) != 0) {
+			if (event.type == SDL_KEYUP){
+				Player_Move(player,event.key.keysym.sym);
+			}
 			if (event.type == SDL_QUIT) {
+				game->running = false;
+			}
+			if (event.type == SDL_KEYUP &&  event.key.keysym.sym == 
+				SDLK_ESCAPE){
 				game->running = false;
 			}
 		}
