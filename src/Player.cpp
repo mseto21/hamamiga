@@ -2,25 +2,25 @@
 #include "constants.h"
 
 //Moves the player
-void move(SDL_Keycode key){
+void Player::move(SDL_Keycode key) {
 	switch(key) {
 		case SDLK_w: //up
-			if ((player.position.y - STEPSIZE) >= 0){//checks in bounds
-				player.position.y -= STEPSIZE;
+			if ((this->position.y - Constants::STEPSIZE) >= 0){//checks in bounds
+				this->position.y -= Constants::STEPSIZE;
 			}
 		case SDLK_a: //left
-			if ((player.position.x - STEPSIZE) >= 0){
-				player.position.x -= STEPSIZE;
+			if ((this->position.x - Constants::STEPSIZE) >= 0){
+				this->position.x -= Constants::STEPSIZE;
 			}
 		case SDLK_s: //down
-			if ((player.position.y + STEPSIZE) <=
-			    (ScreenHeight_ - player.height)){
-				player.position.y += STEPSIZE;
+			if ((this->position.y + Constants::STEPSIZE) <=
+			    (Constants::ScreenHeight_ - this->height)){
+				this->position.y += Constants::STEPSIZE;
 			}
 		case SDLK_d: //right
-			if ((player.position.x + STEPSIZE) <=
-			    (ScreenWidth_ - player.width)){
-				player.position.x += STEPSIZE;
+			if ((this->position.x + Constants::STEPSIZE) <=
+			    (Constants::ScreenWidth_ - this->width)){
+				this->position.x += Constants::STEPSIZE;
 			}
 	}
 }

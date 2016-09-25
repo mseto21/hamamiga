@@ -65,7 +65,7 @@ void Game_RunLoop(Game* game) {
 		// Poll input
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_KEYUP){
-				player.Player_Move(event.key.keysym.sym);
+				player.move(event.key.keysym.sym);
 			}
 			if (event.type == SDL_QUIT) {
 				game->running = false;

@@ -1,11 +1,12 @@
 #include "Enemy.h"
+#include "constants.h"
 #include <cstdlib>    
 #include <ctime>      
 
 Enemy::Enemy() : destination(),  maxPosition() {
     srand(time(NULL));
-    maxPosition.x = 100;
-    maxPosition.y = 100;//temporary
+    maxPosition.x = Constants::ScreenWidth_;
+    maxPosition.y = Constants::ScreenHeight_;//temporary
     newDestination();
     position.x = 0;
     position.y = 0;//temporary
