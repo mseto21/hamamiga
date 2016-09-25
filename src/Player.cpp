@@ -1,6 +1,10 @@
 #include "Player.h"
 #include "constants.h"
 
+Player::Player() {
+	
+}
+
 //Moves the player
 void Player::move(SDL_Keycode key) {
 	switch(key) {

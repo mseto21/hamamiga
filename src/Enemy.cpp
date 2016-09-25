@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include "constants.h"
 #include <cstdlib>    
-#include <ctime>      
+#include <ctime>     
 
 Enemy::Enemy() : destination(),  maxPosition() {
     srand(time(NULL));

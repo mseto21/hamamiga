@@ -1,21 +1,30 @@
+# Create the obj directory
 CXX = g++
 CXXFLAGS += `pkg-config --cflags sdl2 SDL2_image`
 CXXFLAGS += -Wall -Werror -Wextra -pedantic -std=c++11
 LDFLAGS += `pkg-config --libs sdl2 SDL2_image`
-EXEC := fathactory
-OBJS := $(patsubst src/%.cpp,obj/%.o, $(wildcard src/*.cpp))
+EXECUTABLE := fathactory
+OBJDIR=obj
+OBJECTS := $(patsubst src/%.cpp,$(OBJDIR)/%.o, $(wildcard src/*.cpp))
+
+-include $(OBJECTS:.o=.d)
 
 .PHONY: all clean
 
 all: build
 
-build: $(EXEC)
+build: $(EXECUTABLE)
 
-$(EXEC): $(OBJS)
+$(EXECUTABLE): $(OBJECTS)
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) -o $@
 
-obj/%.o : src/%.cpp
+$(OBJDIR)/%.o : src/%.cpp
 	$(CXX) $< $(CXXFLAGS) -c -MD -o $@
 
+$(OBJS): | $(OBJDIR)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
 clean:
-	rm -rf $(EXEC) $(OBJS)
+	rm -rf $(EXECUTABLE) $(OBJECTS) $(OBJDIR)/*.d
