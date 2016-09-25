@@ -1,28 +1,13 @@
 #include "Game.h"
 #include "constants.h"
 #include "Player.h"
+#include "TextureCache.h"
 #include <iostream>
+#include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-bool InitializeWindow(Game* game) {
-	game->window = SDL_CreateWindow("Fat Hactory", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-		Constants::ScreenWidth_, Constants::ScreenHeight_, SDL_WINDOW_SHOWN);
-	if (!game->window ) {
-		return false;
-	}
-	return true;
-}
-
-bool InitializeRenderer(Game* game) {
-	game->renderer = SDL_CreateRenderer(game->window, -1, SDL_RENDERER_ACCELERATED);
-	if (!game->renderer) {
-		printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
-		return false;
-	}
-	return true;
-}
 
 bool Game_Initialize(Game* game) {
 	game->running = true;
@@ -31,17 +16,24 @@ bool Game_Initialize(Game* game) {
 		return false;
 	}
 
-	if (!InitializeWindow(game)) {
+	game->window = SDL_CreateWindow("Fat Hactory", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+		Constants::ScreenWidth_, Constants::ScreenHeight_, SDL_WINDOW_SHOWN);
+	if (!game->window ) {
 		return false;
 	}
 
-	if (!InitializeRenderer(game)) {
+	if (!Renderer_Initialize(game->renderer, game->window)) {
 		return false;
 	}
 
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init(imgFlags) && imgFlags)) {
 		// handle error
+		return false;
+	}
+
+	if (TextureCache_GetCache() == NULL) {
+		std::cerr << "Error: The texture cache failed to initialize!" << std::endl;
 		return false;
 	}
 
@@ -58,15 +50,24 @@ void Game_RunLoop(Game* game) {
 	Timer_Initialize(&frameTime);
 	int frames = 0;
 
+	// TO-DO: Make this less hacky
+	TextureCache_CreateTexture("/assets/player.png", game->renderer->renderer);
 	Player player;
+	player.texture = TextureCache_GetTexture("/assets/player.png");
 
 	while (game->running) {
+		// Calculate frame time
+		float timestep = Timer_GetTicks(&frameTime) / 1000.f;
+		Timer_Start(&frameTime);
+		float avgFPS = frames / (Timer_GetTicks(&game->timer) / 1000.f);
+		if (avgFPS > 2000000) {
+			avgFPS = 0;
+		}
+		Timer_Start(&game->timer);
 
 		// Poll input
 		while (SDL_PollEvent(&event) != 0) {
-			if (event.type == SDL_KEYUP){
-				player.move(event.key.keysym.sym);
-			}
+			player.GetInput(&event);
 			if (event.type == SDL_QUIT) {
 				game->running = false;
 			}
@@ -76,19 +77,19 @@ void Game_RunLoop(Game* game) {
 			}
 		}
 
-	//	float timestep = Timer_GetTicks(&frameTime) / 1000.f;
-		Timer_Start(&frameTime);
-		float avgFPS = frames / (Timer_GetTicks(&game->timer) / 1000.f);
-		if (avgFPS > 2000000) {
-			avgFPS = 0;
-		}
-		Timer_Start(&game->timer);
+		// Update
+		player.Update(timestep);
+
+		// Render
+		Renderer_RenderCoord(game->renderer, &player.position, player.texture);
+		Renderer_CompleteRender(game->renderer);
 		++frames;
 	}
 }
 
 void Game_Close(Game* game) {
-	SDL_DestroyRenderer(game->renderer);
+	TextureCache_Free();
+	Renderer_Free(game->renderer);
 	SDL_DestroyWindow(game->window);
 	SDL_Quit();
 }

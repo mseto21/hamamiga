@@ -1,9 +1,15 @@
 #include "Character.h"
-#include <SDL.h>
+#include "types.h"
+
+struct Texture;
 
 class Player : public Character
 {
 	public:
 		Player();
-		void move(SDL_Keycode key);
+		void GetInput(SDL_Event* event);
+		void Update(float timestep);
+		Texture* texture;
+	private:
+		uint8 dir;
 };
