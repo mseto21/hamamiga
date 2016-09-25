@@ -9,6 +9,55 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
+const char* PLAYER_IMG = "assets/player.png";
+const char* ENEMY_IMG = "assets/enemy.png";
+
+//global textures
+SDL_Texture* playerTexture = NULL;
+int playerW;
+int playerH;
+
+SDL_Texture* enemyTextures[3];
+int enemyW;
+int enemyH;
+
+
+/**
+ *  Load a texture from an image. converts imagePath -> surface -> texture.
+ *
+ *  @param path     The path for the image.
+ *  @param width    The final width of the surface created
+ *  @param height   The final height of the surface created
+ *  @param renderer The renderer
+ *
+ *  @return The texture, with dimensions stored in width and height variables.
+ */
+SDL_Texture* loadTexture(const char* path, int *width, int *height, SDL_Renderer* renderer) {
+    SDL_Texture* newTexture = NULL;
+    
+    //Load image at specified path
+    SDL_Surface* loadedSurface = IMG_Load(path);
+    if(loadedSurface == NULL) {
+        std::cout << "Unable to load image: " << path << std::endl;
+        return NULL;
+    }
+    
+    //store the dimensions for the surface
+    *width = loadedSurface->w;
+    *height = loadedSurface->h;
+    
+    //Create texture from surface pixels
+    newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    if(newTexture == NULL) {
+        std::cout << "Unable to create texture from: " << path << std::endl;
+        return NULL;
+    }
+    
+    //Get rid of old loaded surface
+    SDL_FreeSurface( loadedSurface );
+    return newTexture;
+}
+
 
 bool Game_Initialize(Game* game) {
 	game->running = true;
@@ -42,6 +91,25 @@ bool Game_Initialize(Game* game) {
 }
 
 void Game_RunLoop(Game* game) {
+
+	/***** CREATE TEXTURE HERE *****/
+
+	//create textures
+    playerTexture = loadTexture(PLAYER_IMG, &playerW, &playerH, game->renderer.renderer);
+    enemyTextures[0] = loadTexture(ENEMY_IMG, &enemyW, &enemyH, game->renderer.renderer);
+    enemyTextures[1] = loadTexture(ENEMY_IMG, &enemyW, &enemyH, game->renderer.renderer);
+    enemyTextures[2] = loadTexture(ENEMY_IMG, &enemyW, &enemyH, game->renderer.renderer);
+
+    //create rects
+    SDL_Rect playerRect = { 0, 0, playerW, playerH };
+
+    SDL_Rect enemyRects[3];
+    enemyRects[0] = { 0, Constants::ScreenHeight_-enemyH, enemyW, enemyH };
+    enemyRects[1] = { Constants::ScreenWidth_-enemyW, 0, enemyW, enemyH };
+    enemyRects[2] = { Constants::ScreenWidth_-enemyW, Constants::ScreenHeight_-enemyH, enemyW, enemyH };
+
+	/***************************/
+
 	SDL_Event event;
 
 	Timer_Initialize(&game->timer); // Initialize game time
@@ -52,9 +120,11 @@ void Game_RunLoop(Game* game) {
 	int frames = 0;
 
 	// TO-DO: Make this less hacky
-	TextureCache_CreateTexture("/assets/player.png", game->renderer.renderer);
+	TextureCache_CreateTexture("assets/player.png", game->renderer.renderer);
 	Player player;
-	player.texture = TextureCache_GetTexture("/assets/player.png");
+	player.texture = TextureCache_GetTexture("assets/player.png");
+
+	std::cout << player.texture << std::endl;
 
 	while (game->running) {
 		// Calculate frame time
@@ -82,8 +152,21 @@ void Game_RunLoop(Game* game) {
 		player.Update(timestep);
 
 		// Render
-		Renderer_RenderCoord(&game->renderer, &player.position, player.texture);
-		Renderer_CompleteRender(&game->renderer);
+		// Renderer_RenderCoord(&game->renderer, &player.position, player.texture);
+		// Renderer_CompleteRender(&game->renderer);
+
+		/***** RENDER HERE *****/
+
+		//render images
+        SDL_RenderClear(game->renderer.renderer);
+        SDL_RenderCopy(game->renderer.renderer, playerTexture, NULL, &playerRect);
+        for (int i = 0; i < 3; i++) {
+        	SDL_RenderCopy(game->renderer.renderer, enemyTextures[i], NULL, &enemyRects[i]);
+        }
+        SDL_RenderPresent(game->renderer.renderer);
+
+        /************************/
+
 		++frames;
 	}
 }
