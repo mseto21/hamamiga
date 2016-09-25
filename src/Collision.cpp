@@ -5,7 +5,7 @@ class Collision {
   /**
    * Collision assuming player and enemy are rectangles
    */
-  bool collison(Character p, Character e) {
+  bool collison(Character *p, Character *e) {
     //checks if players x coordinate is between enemy's x coordinates
     //or if x + width is between enemy's y coordinates
     if ((p.position.x >= e.position.x &&
@@ -28,8 +28,8 @@ class Collision {
    * Detects collision between player and one of an 
    * array of enemies
    */
-  bool collision(Character p, Character e[]) {
-    for (int i = 0; i < (sizeof(e)/sizeof(*e)); i++) {
+  bool collision(Character *p, Character *e[]) {
+    for (unsigned int i = 0; i < (sizeof(e)/sizeof(*e)); i++) {
       if (collision(p, e[i])) {
 	return true;
       }

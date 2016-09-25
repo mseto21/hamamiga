@@ -4,9 +4,6 @@ class Character {
   
  public:
   void move();
-
-
- protected:
   
   Coord2D position; //x-y coordinates of player
   int width; //width of sprite

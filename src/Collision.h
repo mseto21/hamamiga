@@ -1,9 +1,9 @@
 #include "Character.h"
 
-class Collison {
+class Collision {
 
  public:
-  bool collision(Character p, Character e);
-  bool collision(Character p, Character e[]);
+  bool collision(Character *p, Character *e);
+  bool collision(Character *p, Character *e[]);
 
 };
