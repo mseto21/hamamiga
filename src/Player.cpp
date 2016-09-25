@@ -1,11 +1,11 @@
-#include "Player.hpp"
+#include "Player.h"
 #include "constants.h"
 
 //Moves the player
-void Player_Move(Player * player, SDL_Keycode key){
+void move(SDL_Keycode key){
 	switch(key) {
 		case SDLK_w: //up
-			if ((player.position.y - STEPSIZE) >= 0){
+			if ((player.position.y - STEPSIZE) >= 0){//checks in bounds
 				player.position.y -= STEPSIZE;
 			}
 		case SDLK_a: //left
