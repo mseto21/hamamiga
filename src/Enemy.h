@@ -1,6 +1,7 @@
 #include "Coord2D.h"
+#include "Character.h"
 
-class Enemy {
+class Enemy : public Character {
 
 private:
 
@@ -10,12 +11,9 @@ private:
 public:
     
     Coord2D destination;    // The coordinate that the character moves towards
-    Coord2D position;       // Current position of the character
     Coord2D maxPosition;    // The maximum coordinate on the screen (inclusive)
 
     /** Constructor. */
     Enemy();
 
-    /** Move the character towards it's destination. */
-    void move();
 };
