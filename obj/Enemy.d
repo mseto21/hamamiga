@@ -1,5 +1,5 @@
 obj/Enemy.o: src/Enemy.cpp /usr/include/stdc-predef.h src/Enemy.h \
- src/Coord2D.h src/Character.h /usr/include/stdlib.h \
+ src/Character.h src/Coord2D.h /usr/include/stdlib.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
  /usr/include/gnu/stubs-64.h \
