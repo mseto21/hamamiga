@@ -1,5 +1,3 @@
-#include "Enemy.h"
-#include "Player.h"
 #include "Collision.h"
 
 class Collision {
@@ -7,7 +5,7 @@ class Collision {
   /**
    * Collision assuming player and enemy are rectangles
    */
-  bool collison(Player p, Enemy e) {
+  bool collison(Character p, Character e) {
     //checks if players x coordinate is between enemy's x coordinates
     //or if x + width is between enemy's y coordinates
     if ((p.position.x >= e.position.x &&
@@ -30,7 +28,7 @@ class Collision {
    * Detects collision between player and one of an 
    * array of enemies
    */
-  bool collision(Player p, Enemy e[]) {
+  bool collision(Character p, Character e[]) {
     for (int i = 0; i < (sizeof(e)/sizeof(*e)); i++) {
       if (collision(p, e[i])) {
 	return true;
