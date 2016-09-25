@@ -13,7 +13,7 @@ bool Texture_LoadTexture(Texture* texture, const char* path, SDL_Renderer* rende
 	SDL_Surface* surface;
 
 	if ((surface = IMG_Load(path)) == NULL) {
-		std::cerr << "Error loading " << path << "! Error:" << IMG_GetError() << std::endl;
+		std::cerr << "Could not load " << path << "! Error: " << IMG_GetError() << std::endl;
 		return false;
 	}
 

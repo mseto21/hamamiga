@@ -2,6 +2,7 @@
 #include "constants.h"
 #include "Player.h"
 #include "TextureCache.h"
+
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
@@ -22,7 +23,7 @@ bool Game_Initialize(Game* game) {
 		return false;
 	}
 
-	if (!Renderer_Initialize(game->renderer, game->window)) {
+	if (!Renderer_Initialize(&game->renderer, game->window)) {
 		return false;
 	}
 
@@ -51,7 +52,7 @@ void Game_RunLoop(Game* game) {
 	int frames = 0;
 
 	// TO-DO: Make this less hacky
-	TextureCache_CreateTexture("/assets/player.png", game->renderer->renderer);
+	TextureCache_CreateTexture("/assets/player.png", game->renderer.renderer);
 	Player player;
 	player.texture = TextureCache_GetTexture("/assets/player.png");
 
@@ -81,15 +82,15 @@ void Game_RunLoop(Game* game) {
 		player.Update(timestep);
 
 		// Render
-		Renderer_RenderCoord(game->renderer, &player.position, player.texture);
-		Renderer_CompleteRender(game->renderer);
+		Renderer_RenderCoord(&game->renderer, &player.position, player.texture);
+		Renderer_CompleteRender(&game->renderer);
 		++frames;
 	}
 }
 
 void Game_Close(Game* game) {
 	TextureCache_Free();
-	Renderer_Free(game->renderer);
+	Renderer_Free(&game->renderer);
 	SDL_DestroyWindow(game->window);
 	SDL_Quit();
 }

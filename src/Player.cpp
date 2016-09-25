@@ -5,7 +5,14 @@
 //const char* path = "/assets/player.png";
 
 Player::Player() {
-	//this->texture = TextureCache_GetTexture(path);
+	position.x = 0;
+	position.y = 0;
+  	width = 32; //width of sprite
+  	height = 32;
+  	vx = 5;
+  	vy = 5;
+  	ax = 5;
+  	ay = 5;
 }
 
 //Moves the player
