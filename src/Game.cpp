@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "constants.h"
+#include "Player.h"
 #include <iostream>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -54,15 +55,17 @@ void Game_RunLoop(Game* game) {
 	Timer_Start(&game->timer);
 
 	Timer frameTime;	// Create frame timer
-	Timer_Initialize(&frameT7ime);
+	Timer_Initialize(&frameTime);
 	int frames = 0;
+
+	Player player;
 
 	while (game->running) {
 
 		// Poll input
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_KEYUP){
-				Player_Move(player,event.key.keysym.sym);
+				player.Player_Move(event.key.keysym.sym);
 			}
 			if (event.type == SDL_QUIT) {
 				game->running = false;

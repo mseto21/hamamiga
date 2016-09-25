@@ -2,11 +2,13 @@
 #include <cstdlib>    
 #include <ctime>      
 
-Enemy::Enemy() : destination(), position(), maxPosition() {
+Enemy::Enemy() : destination(),  maxPosition() {
     srand(time(NULL));
-    maxPosition = { 100, 100 }; //temporary
+    maxPosition.x = 100;
+    maxPosition.y = 100;//temporary
     newDestination();
-    position = { 0, 0 };        //temporary
+    position.x = 0;
+    position.y = 0;//temporary
 }
 
 void Enemy::newDestination() {

@@ -3,6 +3,9 @@
 class Character {
   
  public:
+
+  Character();
+  
   void move();
 
   Coord2D position; //x-y coordinates of player
