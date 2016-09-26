@@ -13,6 +13,7 @@ Player::Player() {
   	vy = 5;
   	ax = 5;
   	ay = 5;
+  	dir = 0;
 }
 
 //Moves the player
@@ -33,6 +34,8 @@ void Player::GetInput(SDL_Event* event) {
 				dir = 4;
 				break;
 		}
+	} else {
+		dir = 0;
 	}
 }
 

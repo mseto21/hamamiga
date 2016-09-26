@@ -27,7 +27,8 @@ bool Collision::collision(const Character p, const Character e) {
    * array of enemies
    */
 bool Collision::collision(const Character p, const Character *e) {
-    for (unsigned int i = 0; i < (sizeof(e)/sizeof(*e)); i++) {
+    int bound = (int)(sizeof(e)/sizeof(*e));
+    for (int i = 0; i < bound; i++) {
       if (collision(p, e[i])) {
 	return true;
       }
