@@ -8,10 +8,14 @@ Enemy::Enemy(SDL_Texture* t, SDL_Rect r, Coord2D pos) : destination(),  maxPosit
     srand(time(NULL));
     rect = r;
     texture = t;
+    
     maxPosition.x = Constants::ScreenWidth_-rect.w;
     maxPosition.y = Constants::ScreenHeight_-rect.h;
+
     newDestination();
     position = pos;
+    lastPosition.x = position.x;
+    lastPosition.y = position.y;
 }
 
 Enemy::Enemy() {
@@ -20,8 +24,8 @@ Enemy::Enemy() {
     maxPosition.x = Constants::ScreenWidth_;
     maxPosition.y = Constants::ScreenHeight_;
     newDestination();
-    position.x = 0;
-    position.y = 0;
+    position = { 0, 0 };
+    lastPosition = { 0, 0 };
 }
 
 void Enemy::newDestination() {
@@ -38,8 +42,18 @@ void Enemy::move() {
 
     // move character closer to destination
     if (position.x != destination.x) {
+        lastPosition.x = position.x;
         position.x = position.x < destination.x ? position.x+1 : position.x-1;
     } else if (position.y != destination.y) {
+        lastPosition.y = position.y;
         position.y = position.y < destination.y ? position.y+1 : position.y-1;
     }
+}
+
+void Enemy::undoMove() {
+    position = { lastPosition.x, lastPosition.y };
+}
+
+void Enemy::reverseDirection() {
+    newDestination();
 }
