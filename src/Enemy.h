@@ -19,6 +19,7 @@ public:
     Enemy(SDL_Texture* t, SDL_Rect r, Coord2D pos);
     Enemy();
 
-    void move();       // Move the enemy
-    void undoMove();   // Return to the previous position
+    void move();             // Move the enemy
+    void undoMove();         // Return to the previous position
+    void reverseDirection(); // Revere direction after a collision
 };

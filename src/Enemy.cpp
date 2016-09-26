@@ -53,3 +53,7 @@ void Enemy::move() {
 void Enemy::undoMove() {
     position = { lastPosition.x, lastPosition.y };
 }
+
+void Enemy::reverseDirection() {
+    newDestination();
+}
