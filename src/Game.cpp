@@ -131,9 +131,9 @@ void Game_RunLoop(Game* game) {
 	int frames = 0;
 
 	// TO-DO: Make this less hacky
-	//TextureCache_CreateTexture("assets/player.png", game->renderer.renderer);
-	//Player player;
-	//player.texture = TextureCache_GetTexture("assets/player.png");
+	TextureCache_CreateTexture("assets/player.png", game->renderer.renderer);
+	Player player;
+	player.texture = TextureCache_GetTexture("assets/player.png");
 	//std::cout << player.texture << std::endl;
 
 	while (game->running) {
@@ -161,8 +161,8 @@ void Game_RunLoop(Game* game) {
 		player.Update(timestep);
 
 		// Render
-		// Renderer_RenderCoord(&game->renderer, &player.position, player.texture);
-		// Renderer_CompleteRender(&game->renderer);
+		 Renderer_RenderCoord(&game->renderer, &player.position, player.texture);
+	 Renderer_CompleteRender(&game->renderer);
 
 		/***** RENDER HERE *****/
 

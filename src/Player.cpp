@@ -34,9 +34,9 @@ void Player::GetInput(SDL_Event* event) {
 				this->dir = 4;
 				break;
 		}
-	} else {
-		dir = 0;
-	}
+	} //else {
+		//dir = 0;
+	//}
 }
 
 
