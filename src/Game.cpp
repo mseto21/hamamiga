@@ -23,7 +23,7 @@ SDL_Texture* enemyTextures[3];
 int enemyW;
 int enemyH;
 
-
+Player player;
 /**
  *  Load a texture from an image. converts imagePath -> surface -> texture.
  *
@@ -180,12 +180,29 @@ void Game_RunLoop(Game* game) {
 
 		playerRect.x = player.position.x;
 		playerRect.y = player.position.y;
-
+		bool undone;
 		for (int i = 0; i < 3; i++) {
-			enemies[i].move();
+		  enemies[i].move();
+		  if (collision(enemies[i], player) {
+	       	    enemies[i].undoMove();
+		    enemies[i].changeDirection();
+		    undone = true;
+		  } else {
+		    for (int j = 0; j < 3; j++) {
+		      if (i != j) {
+			if (collision(enemies[i], enemies[j]) {
+			    enemies[i].undoMove();
+			    enemies[i].changeDirection();
+			    undone = true;
+			  }
+		      }
+		    }
+		      if (!undone) {
 			enemyRects[i].x = enemies[i].position.x;
 			enemyRects[i].y = enemies[i].position.y;
+		     }
 		}
+		
 	}
 }
 
