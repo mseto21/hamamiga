@@ -161,8 +161,8 @@ void Game_RunLoop(Game* game) {
 		player.Update(timestep);
 
 		// Render
-		 Renderer_RenderCoord(&game->renderer, &player.position, player.texture);
-	 Renderer_CompleteRender(&game->renderer);
+	//	 Renderer_RenderCoord(&game->renderer, &player.position, player.texture);
+	// Renderer_CompleteRender(&game->renderer);
 
 		/***** RENDER HERE *****/
 
