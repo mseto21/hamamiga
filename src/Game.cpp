@@ -103,12 +103,12 @@ void Game_RunLoop(Game* game) {
     enemyTextures[2] = loadTexture(ENEMY_IMG, &enemyW, &enemyH, game->renderer.renderer);
 
     //create rects
-    SDL_Rect playerRect = { 0, 0, playerW, playerH };
-
+    Coord2D topLeft = {0,0};
     Coord2D topRight = { 0, Constants::ScreenHeight_-enemyH };
     Coord2D bottomLeft = { Constants::ScreenWidth_-enemyW, 0 };
     Coord2D bottomRight = { Constants::ScreenWidth_-enemyW, Constants::ScreenHeight_-enemyH };
 
+    SDL_Rect playerRect = {topLeft.x, topLeft.y, playerW, playerH };
     SDL_Rect enemyRects[3];
     enemyRects[0] = { topRight.x, topRight.y, enemyW, enemyH };
     enemyRects[1] = { bottomLeft.x, bottomLeft.y, enemyW, enemyH };
@@ -146,7 +146,6 @@ void Game_RunLoop(Game* game) {
 			avgFPS = 0;
 		}
 		Timer_Start(&game->timer);
-
 		// Poll input
 		while (SDL_PollEvent(&event) != 0) {
 			player.GetInput(&event);
@@ -180,6 +179,8 @@ void Game_RunLoop(Game* game) {
 
 		++frames;
 
+		playerRect.x = player.position.x;
+		playerRect.y = player.position.y;
 
 		for (int i = 0; i < 3; i++) {
 			enemies[i].move();
