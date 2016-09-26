@@ -132,9 +132,9 @@ void Game_RunLoop(Game* game) {
 
 	// TO-DO: Make this less hacky
 	TextureCache_CreateTexture("assets/player.png", game->renderer.renderer);
-	Player player;
+	Player player = Player(playerRect);
 	player.texture = TextureCache_GetTexture("assets/player.png");
-	//std::cout << player.texture << std::endl;
+	std::cout << playerW << std::endl;
 
 	while (game->running) {
 		// Calculate frame time

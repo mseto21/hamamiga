@@ -4,11 +4,11 @@
 
 //const char* path = "/assets/player.png";
 
-Player::Player() {
-	position.x = 0;
-	position.y = 0;
-  	width = 32; //width of sprite
-  	height = 32;
+Player::Player(SDL_Rect playerRect){
+		position.x = playerRect.x;
+		position.y = playerRect.y;
+  	width =  playerRect.w; //width of sprite
+  	height = playerRect.h;
   	vx = 5;
   	vy = 5;
   	ax = 5;
