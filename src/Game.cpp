@@ -123,28 +123,16 @@ void Game_RunLoop(Game* game) {
 
 	SDL_Event event;
 
-	Timer_Initialize(&game->timer); // Initialize game time
-	Timer_Start(&game->timer);
-
-	Timer frameTime;	// Create frame timer
-	Timer_Initialize(&frameTime);
-	int frames = 0;
-
 	// TO-DO: Make this less hacky
 	TextureCache_CreateTexture("assets/player.png", game->renderer.renderer);
 	Player player;
 	player.texture = TextureCache_GetTexture("assets/player.png");
 	//std::cout << player.texture << std::endl;
+    
+    float dt = 0;
+    float time = SDL_GetTicks();
 
 	while (game->running) {
-		// Calculate frame time
-		float timestep = Timer_GetTicks(&frameTime) / 1000.f;
-		Timer_Start(&frameTime);
-		float avgFPS = frames / (Timer_GetTicks(&game->timer) / 1000.f);
-		if (avgFPS > 2000000) {
-			avgFPS = 0;
-		}
-		Timer_Start(&game->timer);
 		// Poll input
 		while (SDL_PollEvent(&event) != 0) {
 			player.GetInput(&event);
@@ -157,12 +145,17 @@ void Game_RunLoop(Game* game) {
 			}
 		}
 
+        dt = SDL_GetTicks() - time;
+        float timestep = dt / 1000.f;
+        time = SDL_GetTicks();
+        printf("%f\n", timestep);
+
 		// Update
 		player.Update(timestep);
 
 		// Render
-		 Renderer_RenderCoord(&game->renderer, &player.position, player.texture);
-	 Renderer_CompleteRender(&game->renderer);
+		//  Renderer_RenderCoord(&game->renderer, &player.position, player.texture);
+	 // Renderer_CompleteRender(&game->renderer);
 
 		/***** RENDER HERE *****/
 
@@ -175,8 +168,6 @@ void Game_RunLoop(Game* game) {
         SDL_RenderPresent(game->renderer.renderer);
 
         /************************/
-
-		++frames;
 
 		playerRect.x = player.position.x;
 		playerRect.y = player.position.y;

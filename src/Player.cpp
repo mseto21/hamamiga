@@ -43,25 +43,25 @@ void Player::GetInput(SDL_Event* event) {
 void Player::Update(float timestep) {
 	switch (this->dir) {
 		case 1:
-			if ((this->position.y - Constants::STEPSIZE) >= 0){//checks in bounds
-				this->position.y -= Constants::STEPSIZE;// * timestep;
+			if ((this->position.y - Constants::STEPSIZE * timestep) >= 0){//checks in bounds
+				this->position.y -= Constants::STEPSIZE * timestep;
 			}
 			break;
 		case 2:
-			if ((this->position.x - Constants::STEPSIZE) >= 0){
-				this->position.x -= Constants::STEPSIZE;// * timestep;
+			if ((this->position.x - Constants::STEPSIZE * timestep) >= 0){
+				this->position.x -= Constants::STEPSIZE * timestep;
 			}
 			break;
 		case 3:
-			if ((this->position.y + Constants::STEPSIZE) <=
+			if ((this->position.y + Constants::STEPSIZE * timestep) <=
 			    (Constants::ScreenHeight_ - this->height)){
-				this->position.y += Constants::STEPSIZE;// * timestep;
+				this->position.y += Constants::STEPSIZE * timestep;
 			}
 			break;
 		case 4:
-			if ((this->position.x + Constants::STEPSIZE) <=
+			if ((this->position.x + Constants::STEPSIZE * timestep) <=
 			    (Constants::ScreenWidth_ - this->width)){
-				this->position.x += Constants::STEPSIZE;// * timestep;
+				this->position.x += Constants::STEPSIZE * timestep;
 			}
 			break;
 		default:

@@ -5,7 +5,6 @@ struct SDL_Window;
 
 struct Game {
 	bool running;
-	Timer timer;
 	SDL_Window* window;
 	Renderer renderer;
 };
