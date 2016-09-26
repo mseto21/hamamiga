@@ -13,10 +13,12 @@ public:
     SDL_Rect rect;
     Coord2D destination;    // The coordinate that the character moves towards
     Coord2D maxPosition;    // The maximum coordinate on the screen (inclusive)
+    Coord2D lastPosition;   // The last position of the enemy
 
-    void move();
     /** Constructor. */
     Enemy(SDL_Texture* t, SDL_Rect r, Coord2D pos);
     Enemy();
 
+    void move();       // Move the enemy
+    void undoMove();   // Return to the previous position
 };
