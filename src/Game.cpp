@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "TextureCache.h"
 #include "Enemy.h"
+#include "Collision.h"
 
 #include <iostream>
 #include <SDL.h>
@@ -183,24 +184,25 @@ void Game_RunLoop(Game* game) {
 		bool undone;
 		for (int i = 0; i < 3; i++) {
 		  enemies[i].move();
-		  if (collision(enemies[i], player) {
+		  if (Collision::collision(enemies[i], player)) {
 	       	    enemies[i].undoMove();
-		    enemies[i].changeDirection();
+		    enemies[i].reverseDirection();
 		    undone = true;
 		  } else {
 		    for (int j = 0; j < 3; j++) {
 		      if (i != j) {
-			if (collision(enemies[i], enemies[j]) {
+			if (Collision::collision(enemies[i], enemies[j])) {
 			    enemies[i].undoMove();
-			    enemies[i].changeDirection();
+			    enemies[i].reverseDirection();
 			    undone = true;
 			  }
 		      }
 		    }
-		      if (!undone) {
-			enemyRects[i].x = enemies[i].position.x;
-			enemyRects[i].y = enemies[i].position.y;
-		     }
+		   if (!undone) {
+		     enemyRects[i].x = enemies[i].position.x;
+		     enemyRects[i].y = enemies[i].position.y;
+		   }
+		  }
 		}
 		
 	}
