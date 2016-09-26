@@ -1,7 +1,7 @@
 # Create the obj directory
 CXX = g++
 CXXFLAGS += `pkg-config --cflags sdl2 SDL2_image`
-CXXFLAGS += -Wall -Werror -Wextra -pedantic -std=c++11
+CXXFLAGS += -Wall -Wextra -pedantic -std=c++11
 LDFLAGS += `pkg-config --libs sdl2 SDL2_image`
 EXECUTABLE := fathactory
 OBJDIR=obj
