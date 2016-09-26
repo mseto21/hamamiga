@@ -115,9 +115,9 @@ void Game_RunLoop(Game* game) {
     enemyRects[2] = { bottomRight.x, bottomRight.y, enemyW, enemyH };
 
     Enemy enemies[3];
-    enemies[0] = Enemy(enemyTextures[0], topRight);
-    enemies[1] = Enemy(enemyTextures[1], topRight);
-    enemies[2] = Enemy(enemyTextures[2], bottomRight);
+    enemies[0] = Enemy(enemyTextures[0], enemyRects[0], topRight);
+    enemies[1] = Enemy(enemyTextures[1], enemyRects[1], topRight);
+    enemies[2] = Enemy(enemyTextures[2], enemyRects[2], bottomRight);
 
 	/***************************/
 

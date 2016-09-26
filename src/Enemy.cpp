@@ -4,11 +4,12 @@
 #include <ctime>     
 #include <SDL.h>
 
-Enemy::Enemy(SDL_Texture* t, Coord2D pos) : destination(),  maxPosition() {
+Enemy::Enemy(SDL_Texture* t, SDL_Rect r, Coord2D pos) : destination(),  maxPosition() {
     srand(time(NULL));
+    rect = r;
     texture = t;
-    maxPosition.x = Constants::ScreenWidth_;
-    maxPosition.y = Constants::ScreenHeight_;
+    maxPosition.x = Constants::ScreenWidth_-rect.w;
+    maxPosition.y = Constants::ScreenHeight_-rect.h;
     newDestination();
     position = pos;
 }
