@@ -22,16 +22,16 @@ void Player::GetInput(SDL_Event* event) {
 		SDL_Keycode key = event->key.keysym.sym;
 		switch(key) {
 			case SDLK_w: //up
-				dir = 1;
+				this->dir = 1;
 				break;
 			case SDLK_a: //left
-				dir = 2;
+				this->dir = 2;
 				break;
 			case SDLK_s: //down
-				dir = 3;
+				this->dir = 3;
 				break;
 			case SDLK_d: //right
-				dir = 4;
+				this->dir = 4;
 				break;
 		}
 	} else {
@@ -43,28 +43,29 @@ void Player::GetInput(SDL_Event* event) {
 void Player::Update(float timestep) {
 	switch (this->dir) {
 		case 1:
-			if ((this->position.y - Constants::STEPSIZE * timestep) >= 0){//checks in bounds
-				this->position.y -= Constants::STEPSIZE * timestep;
+			if ((this->position.y - Constants::STEPSIZE) >= 0){//checks in bounds
+				this->position.y -= Constants::STEPSIZE;// * timestep;
 			}
 			break;
 		case 2:
-			if ((this->position.x - Constants::STEPSIZE * timestep) >= 0){
-				this->position.x -= Constants::STEPSIZE * timestep;
+			if ((this->position.x - Constants::STEPSIZE) >= 0){
+				this->position.x -= Constants::STEPSIZE;// * timestep;
 			}
 			break;
 		case 3:
-			if ((this->position.y + Constants::STEPSIZE * timestep) <=
+			if ((this->position.y + Constants::STEPSIZE) <=
 			    (Constants::ScreenHeight_ - this->height)){
-				this->position.y += Constants::STEPSIZE * timestep;
+				this->position.y += Constants::STEPSIZE;// * timestep;
 			}
 			break;
 		case 4:
-			if ((this->position.x + Constants::STEPSIZE * timestep) <=
+			if ((this->position.x + Constants::STEPSIZE) <=
 			    (Constants::ScreenWidth_ - this->width)){
-				this->position.x += Constants::STEPSIZE * timestep;
+				this->position.x += Constants::STEPSIZE;// * timestep;
 			}
 			break;
 		default:
 			break;
 	}
+	this->dir = 0;
 }
