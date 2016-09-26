@@ -1,3 +1,7 @@
+#ifndef Character_H_
+#define Character_H_
+
+
 #include "Coord2D.h"
 union SDL_Event;
 
@@ -17,3 +21,5 @@ class Character {
   double ax; //acceleration x
   double ay; //acceleration y
 };
+
+#endif

@@ -2,14 +2,25 @@
 #include "constants.h"
 #include <cstdlib>    
 #include <ctime>     
+#include <SDL.h>
 
-Enemy::Enemy() : destination(),  maxPosition() {
+Enemy::Enemy(SDL_Texture* t, Coord2D pos) : destination(),  maxPosition() {
     srand(time(NULL));
+    texture = t;
     maxPosition.x = Constants::ScreenWidth_;
-    maxPosition.y = Constants::ScreenHeight_;//temporary
+    maxPosition.y = Constants::ScreenHeight_;
+    newDestination();
+    position = pos;
+}
+
+Enemy::Enemy() {
+    srand(time(NULL));
+    texture = NULL;
+    maxPosition.x = Constants::ScreenWidth_;
+    maxPosition.y = Constants::ScreenHeight_;
     newDestination();
     position.x = 0;
-    position.y = 0;//temporary
+    position.y = 0;
 }
 
 void Enemy::newDestination() {

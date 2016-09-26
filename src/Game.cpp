@@ -1,7 +1,9 @@
+
 #include "Game.h"
 #include "constants.h"
 #include "Player.h"
 #include "TextureCache.h"
+#include "Enemy.h"
 
 #include <iostream>
 #include <SDL.h>
@@ -103,10 +105,19 @@ void Game_RunLoop(Game* game) {
     //create rects
     SDL_Rect playerRect = { 0, 0, playerW, playerH };
 
+    Coord2D topRight = { 0, Constants::ScreenHeight_-enemyH };
+    Coord2D bottomLeft = { Constants::ScreenWidth_-enemyW, 0 };
+    Coord2D bottomRight = { Constants::ScreenWidth_-enemyW, Constants::ScreenHeight_-enemyH };
+
     SDL_Rect enemyRects[3];
-    enemyRects[0] = { 0, Constants::ScreenHeight_-enemyH, enemyW, enemyH };
-    enemyRects[1] = { Constants::ScreenWidth_-enemyW, 0, enemyW, enemyH };
-    enemyRects[2] = { Constants::ScreenWidth_-enemyW, Constants::ScreenHeight_-enemyH, enemyW, enemyH };
+    enemyRects[0] = { topRight.x, topRight.y, enemyW, enemyH };
+    enemyRects[1] = { bottomLeft.x, bottomLeft.y, enemyW, enemyH };
+    enemyRects[2] = { bottomRight.x, bottomRight.y, enemyW, enemyH };
+
+    Enemy enemies[3];
+    enemies[0] = Enemy(enemyTextures[0], topRight);
+    enemies[1] = Enemy(enemyTextures[1], topRight);
+    enemies[2] = Enemy(enemyTextures[2], bottomRight);
 
 	/***************************/
 
@@ -168,6 +179,14 @@ void Game_RunLoop(Game* game) {
         /************************/
 
 		++frames;
+
+
+		for (int i = 0; i < 3; i++) {
+			enemies[i].move();
+			enemyRects[i].x = enemies[i].position.x;
+			enemyRects[i].y = enemies[i].position.y;
+			std::cout << enemyRects[i].x;
+		}
 	}
 }
 
