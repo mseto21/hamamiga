@@ -116,7 +116,7 @@ void Game_RunLoop(Game* game) {
 
     Enemy enemies[3];
     enemies[0] = Enemy(enemyTextures[0], enemyRects[0], topRight);
-    enemies[1] = Enemy(enemyTextures[1], enemyRects[1], topRight);
+    enemies[1] = Enemy(enemyTextures[1], enemyRects[1], bottomLeft);
     enemies[2] = Enemy(enemyTextures[2], enemyRects[2], bottomRight);
 
 	/***************************/
@@ -185,7 +185,6 @@ void Game_RunLoop(Game* game) {
 			enemies[i].move();
 			enemyRects[i].x = enemies[i].position.x;
 			enemyRects[i].y = enemies[i].position.y;
-			std::cout << enemyRects[i].x;
 		}
 	}
 }
