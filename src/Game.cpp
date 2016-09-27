@@ -7,17 +7,19 @@
 #include "Timer.h"
 #include "Renderer.h"
 
+#include <SDL_mixer.h>
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <SDL_mixer.h>
 
 using std::cout;
 using std::endl;
 
+Mix_Music* collideSound;
 const char* PLAYER_IMG = "assets/player.png";
 const char* ENEMY_IMG = "assets/enemy.png";
+const char* COLLIDE_SND = "ow.mp3";
 
 bool Game_Initialize(Game* game) {
 	game->running = true;
@@ -48,6 +50,11 @@ bool Game_Initialize(Game* game) {
 		std::cerr << "Error: The texture cache failed to initialize!" << std::endl;
 		return false;
 	}
+
+		if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) {
+    	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
+    			  << Mix_GetError() << "\n";
+    }
 
 	return true;
 }
@@ -102,6 +109,9 @@ void Game_RunLoop(Game* game) {
 
 	bool keysdown[Constants::NumKeys_];
 
+	//load sound file
+	collideSound = Mix_LoadMUS(COLLIDE_SND);
+
 	while (game->running) {
 		// Calculate timestep
 		lastTime = currentTime;
@@ -138,6 +148,7 @@ void Game_RunLoop(Game* game) {
         for (int i = 0; i < MaxEnemies_; i++) {
             enemies[i].update(delta);
             if (Collision::collision(enemies[i], player)) {
+            		Mix_PlayMusic(collideSound, 1);
                 cout << "colliDED WITH PLAYER" << endl;
                 enemies[i].undoMove();
                 enemies[i].reverseDirection();
@@ -168,8 +179,10 @@ void Game_RunLoop(Game* game) {
 }
 
 void Game_Close(Game* game) {
+	Mix_FreeMusic(collideSound);
 	TextureCache_Free();
 	Renderer_Free(game->renderer);
 	SDL_DestroyWindow(game->window);
+	Mix_Quit();
 	SDL_Quit();
 }
