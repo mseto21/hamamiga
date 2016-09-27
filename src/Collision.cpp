@@ -4,7 +4,6 @@
    * Collision assuming player and enemy are rectangles
    */
 bool Collision::collision(const Character p, const Character e) {
-    std::cout << p.texture->w << std::endl;
     //checks if players x coordinate is between enemy's x coordinates
     //or if x + width is between enemy's y coordinates
     if ((p.position.x >= e.position.x &&
@@ -17,6 +16,25 @@ bool Collision::collision(const Character p, const Character e) {
     	   p.position.y <= (e.position.y + e.texture->h)) ||
     	  ((p.position.y + p.texture->h) >= e.position.y &&
     	   (p.position.y + p.texture->h) <= (e.position.y + e.texture->h))) {
+	return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Collision assuming player and enemy are rectangles
+   */
+bool Collision::collision(Coord2D pPos, int pw, int ph, Coord2D ePos,
+			  int ew, int eh) {
+    //checks if players x coordinate is between enemy's x coordinates
+    //or if x + width is between enemy's y coordinates
+    if ((pPos.x >= ePos.x && pPos.x <= (ePos.x + ew)) ||
+    	((pPos.x + pw) >= ePos.x && (pPos.x + pw) <= (ePos.x + ew))) {
+      //checks if players y coordinate is between enemy's y coordinates
+      //or if y + height is between eneym's y coordinates
+      if ((pPos.y >= ePos.y && pPos.y <= (ePos.y + eh)) ||
+    	  ((pPos.y + ph) >= ePos.y && (pPos.y + ph) <= (ePos.y + eh))) {
 	return true;
       }
     }
