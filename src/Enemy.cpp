@@ -4,10 +4,9 @@
 #include <ctime>     
 #include <SDL.h>
 
-Enemy::Enemy(SDL_Texture* t, SDL_Rect r, Coord2D pos) : destination(),  maxPosition() {
+Enemy::Enemy(SDL_Rect r, Coord2D pos) : destination(),  maxPosition() {
     srand(time(NULL));
     rect = r;
-    texture = t;
     maxPosition.x = Constants::ScreenWidth_-rect.w;
     maxPosition.y = Constants::ScreenHeight_-rect.h;
     newDestination();
@@ -25,11 +24,11 @@ Enemy::Enemy() {
 }
 
 void Enemy::newDestination() {
-    destination.x = rand() % maxPosition.x+1;
-    destination.y = rand() % maxPosition.y+1;
+    destination.x = rand() % (int)maxPosition.x+1;
+    destination.y = rand() % (int)maxPosition.y+1;
 }
 
-void Enemy::move() {
+void Enemy::Update(float timestep) {
 
     //check if destination has been reached
     if (position.x == destination.x && position.y == destination.y) {
@@ -38,8 +37,8 @@ void Enemy::move() {
 
     // move character closer to destination
     if (position.x != destination.x) {
-        position.x = position.x < destination.x ? position.x+1 : position.x-1;
+        position.x = position.x < destination.x ? position.x+(int)(Constants::StepSize_*timestep) : position.x-(int)(Constants::StepSize_*timestep);
     } else if (position.y != destination.y) {
-        position.y = position.y < destination.y ? position.y+1 : position.y-1;
+        position.y = position.y < destination.y ? position.y+(int)(Constants::StepSize_*timestep) : position.y-(int)(Constants::StepSize_*timestep);
     }
 }

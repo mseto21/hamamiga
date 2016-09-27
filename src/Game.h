@@ -1,13 +1,10 @@
-#include "Timer.h"
-#include "Renderer.h"
-
 struct SDL_Window;
+struct SDL_Renderer;
 
 struct Game {
 	bool running;
-	Timer timer;
 	SDL_Window* window;
-	Renderer renderer;
+	SDL_Renderer* renderer;
 };
 
 bool Game_Initialize(Game* game);

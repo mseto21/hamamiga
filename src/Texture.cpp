@@ -9,7 +9,6 @@ bool Texture_LoadTexture(Texture* texture, const char* path, SDL_Renderer* rende
 		return false;
 	}
 
-	SDL_Texture* nTexture = texture->sdltexture;
 	SDL_Surface* surface;
 
 	if ((surface = IMG_Load(path)) == NULL) {
@@ -17,9 +16,9 @@ bool Texture_LoadTexture(Texture* texture, const char* path, SDL_Renderer* rende
 		return false;
 	}
 
-	nTexture = SDL_CreateTextureFromSurface(renderer, surface);
+	texture->sdltexture = SDL_CreateTextureFromSurface(renderer, surface);
 
-	if (nTexture == NULL) {
+	if (texture->sdltexture == NULL) {
 		std::cerr << "Unable to create texture from " << path << "! Error:" << IMG_GetError() << std::endl;
 		return false;
 	}

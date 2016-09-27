@@ -5,11 +5,7 @@ struct SDL_Window;
 struct Texture;
 struct Coord2D;
 
-struct Renderer {
-	SDL_Renderer* renderer;
-};
-
-bool Renderer_Initialize(Renderer* renderer, SDL_Window* window);
-void Renderer_RenderCoord(Renderer* renderer, Coord2D* point, Texture* texture);
-void Renderer_CompleteRender(Renderer* renderer);
-void Renderer_Free(Renderer* renderer);
+bool Renderer_Initialize(SDL_Renderer* renderer, SDL_Window* window);
+void Renderer_RenderCoord(SDL_Renderer* renderer, Coord2D* point, Texture* texture);
+void Renderer_CompleteRender(SDL_Renderer* renderer);
+void Renderer_Free(SDL_Renderer* renderer);

@@ -7,9 +7,10 @@ class Player : public Character
 {
 	public:
 		Player();
-		void GetInput(SDL_Event* event);
+		void GetInput(bool* KeysDown);
 		void Update(float timestep);
 		Texture* texture;
 	private:
-		uint8 dir;
+		float xvel;
+		float yvel;
 };

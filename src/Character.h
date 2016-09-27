@@ -3,14 +3,12 @@
 
 
 #include "Coord2D.h"
-union SDL_Event;
-
 class Character {
   
  public:
 
   Character() {};
-  virtual void GetInput(SDL_Event* event) {(void)event; return;};
+  virtual void GetInput(bool* KeysDown) {(void)KeysDown; return;};
   virtual void Update(float timestep) {(void)timestep; return;};
 
   Coord2D position; //x-y coordinates of player

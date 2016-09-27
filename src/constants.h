@@ -3,7 +3,8 @@
 namespace Constants {
 	const uint16 	ScreenHeight_ 	= 	480;
 	const uint16 	ScreenWidth_ 	= 	640;
-	const uint16 	PlayerWSize_ 	=	0; //player image size
-	const uint16 	PlayerHSize_ 	=	0; //player image size
-	const uint16	STEPSIZE 		= 	20;
+	const uint16 	PlayerWSize_ 	=	67; //player image size
+	const uint16 	PlayerHSize_ 	=	41; //player image size
+	const float   	StepSize_ 		= 	550;
+	const uint32    NumKeys_		=	323;
 }
