@@ -1,5 +1,5 @@
-
 #include "Game.h"
+#include "Collision.h"
 #include "constants.h"
 #include "Player.h"
 #include "TextureCache.h"
@@ -12,6 +12,9 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+
+using std::cout;
+using std::endl;
 
 const char* PLAYER_IMG = "assets/player.png";
 const char* ENEMY_IMG = "assets/enemy.png";
@@ -72,9 +75,17 @@ void Game_RunLoop(Game* game) {
 
 	const int MaxEnemies_ = 3;
 	Enemy enemies[MaxEnemies_];
-	for (int i = 0; i < MaxEnemies_; i++) {
-		enemies[i].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer);
-	}
+    
+    Coord2D coords[MaxEnemies_] = {
+        { Constants::ScreenHeight_, 0 },
+        { 0, Constants::ScreenWidth_},
+        { Constants::ScreenHeight_, Constants::ScreenWidth_}
+    };
+
+    for (int i = 0; i < MaxEnemies_; i++) {
+        enemies[i] = Enemy(coords[i]);
+        enemies[i].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer);
+    }
 
 	// TO-DO: Make this less hacky
 	Player player;
@@ -124,6 +135,24 @@ void Game_RunLoop(Game* game) {
 		for (int i = 0; i < MaxEnemies_; i++) {
 			enemies[i].Update(delta);
 		}
+        for (int i = 0; i < MaxEnemies_; i++) {
+            enemies[i].update(delta);
+            if (Collision::collision(enemies[i], player)) {
+                cout << "colliDED WITH PLAYER" << endl;
+                enemies[i].undoMove();
+                enemies[i].reverseDirection();
+            } else {
+                for (int j = 0; j < MaxEnemies_; j++) {
+                    if (i != j) {
+                        if (Collision::collision(enemies[i], enemies[j])) {
+                            cout << "colliDED WITH ENEMY" << endl;
+                            enemies[i].undoMove();
+                            enemies[i].reverseDirection();
+                        }
+                    }
+                }
+            }
+        }
 
 
 		// Render

@@ -1,21 +1,22 @@
 #include "Collision.h"
-
+#include <iostream>
   /**
    * Collision assuming player and enemy are rectangles
    */
 bool Collision::collision(const Character p, const Character e) {
+    std::cout << p.texture->w << std::endl;
     //checks if players x coordinate is between enemy's x coordinates
     //or if x + width is between enemy's y coordinates
     if ((p.position.x >= e.position.x &&
-	 p.position.x <= (e.position.x + e.width)) ||
-	((p.position.x + p.width) >= e.position.x &&
-	 (p.position.x + p.width) <= (e.position.x + e.width))) {
+    	 p.position.x <= (e.position.x + e.texture->w)) ||
+    	((p.position.x + p.texture->w) >= e.position.x &&
+    	 (p.position.x + p.texture->w) <= (e.position.x + e.texture->w))) {
       //checks if players y coordinate is between enemy's y coordinates
       //or if y + height is between eneym's y coordinates
       if ((p.position.y >= e.position.y &&
-	   p.position.y <= (e.position.y + e.height)) ||
-	  ((p.position.y + p.height) >= e.position.y &&
-	   (p.position.y + p.height) <= (e.position.y + e.height))) {
+    	   p.position.y <= (e.position.y + e.texture->h)) ||
+    	  ((p.position.y + p.texture->h) >= e.position.y &&
+    	   (p.position.y + p.texture->h) <= (e.position.y + e.texture->h))) {
 	return true;
       }
     }
