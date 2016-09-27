@@ -4,13 +4,13 @@
 #include <ctime>     
 #include <SDL.h>
 
-Enemy::Enemy(SDL_Rect r, Coord2D pos) : destination(),  maxPosition() {
+Enemy::Enemy(Coord2D pos) : destination(),  maxPosition() {
     srand(time(NULL));
-    rect = r;
-    maxPosition.x = Constants::ScreenWidth_-rect.w;
-    maxPosition.y = Constants::ScreenHeight_-rect.h;
+    maxPosition.x = Constants::ScreenWidth_;
+    maxPosition.y = Constants::ScreenHeight_;
     newDestination();
-    position = pos;
+    position.x = pos.x;
+    position.y = pos.y;
 }
 
 Enemy::Enemy() {
@@ -28,7 +28,7 @@ void Enemy::newDestination() {
     destination.y = rand() % (int)maxPosition.y+1;
 }
 
-void Enemy::Update(float timestep) {
+void Enemy::update(float timestep) {
     //check if destination has been reached
     if (position.x == destination.x && position.y == destination.y) {
         newDestination();
@@ -36,8 +36,19 @@ void Enemy::Update(float timestep) {
 
     // move character closer to destination
     if (position.x != destination.x) {
+        lastPosition.x = position.x;
         position.x = position.x < destination.x ? position.x+(int)(Constants::StepSize_*timestep) : position.x-(int)(Constants::StepSize_*timestep);
     } else if (position.y != destination.y) {
+        lastPosition.y = position.y;
         position.y = position.y < destination.y ? position.y+(int)(Constants::StepSize_*timestep) : position.y-(int)(Constants::StepSize_*timestep);
     }
 }
+
+void Enemy::undoMove() {
+    position = { lastPosition.x, lastPosition.y };
+}
+
+void Enemy::reverseDirection() {
+    newDestination();
+}
+

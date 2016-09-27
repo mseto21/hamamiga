@@ -8,7 +8,7 @@ class Player : public Character
 {
 	public:
 		Player();
-		void GetInput(bool* KeysDown);
+		void GetInput(bool KeysDown[]);
 		void Update(float timestep);
 		Texture* texture;
 		SDL_Rect rect;

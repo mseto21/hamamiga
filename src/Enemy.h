@@ -12,13 +12,15 @@ private:
 
 public:
     Texture* texture;       
-    SDL_Rect rect;
     Coord2D destination;    // The coordinate that the character moves towards
     Coord2D maxPosition;    // The maximum coordinate on the screen (inclusive)
 
-    void Update(float imestep);
+    void update(float timestep);
+    void undoMove();         // Return to the previous position
+    void reverseDirection(); // Revere direction after a collision
+
     /** Constructor. */
-    Enemy(SDL_Rect r, Coord2D pos);
+    Enemy(Coord2D pos);
     Enemy();
 
 };

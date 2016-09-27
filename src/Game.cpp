@@ -1,5 +1,5 @@
-
 #include "Game.h"
+#include "Collision.h"
 #include "constants.h"
 #include "Player.h"
 #include "TextureCache.h"
@@ -7,14 +7,19 @@
 #include "Timer.h"
 #include "Renderer.h"
 
+#include <SDL_mixer.h>
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <SDL_mixer.h>
 
+using std::cout;
+using std::endl;
+
+Mix_Music* collideSound;
 const char* PLAYER_IMG = "assets/player.png";
 const char* ENEMY_IMG = "assets/enemy.png";
+const char* COLLIDE_SND = "asssets/ow.mp3";
 
 bool Game_Initialize(Game* game) {
 	game->running = true;
@@ -46,6 +51,11 @@ bool Game_Initialize(Game* game) {
 		return false;
 	}
 
+		if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) {
+    	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
+    			  << Mix_GetError() << "\n";
+    }
+
 	return true;
 }
 
@@ -72,9 +82,25 @@ void Game_RunLoop(Game* game) {
 
 	const int MaxEnemies_ = 3;
 	Enemy enemies[MaxEnemies_];
-	for (int i = 0; i < MaxEnemies_; i++) {
-		enemies[i].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer);
-	}
+    
+    Coord2D topRight = {Constants::ScreenWidth_, 0};
+    Coord2D bottomLeft = {0, Constants::ScreenHeight_};
+    Coord2D bottomRight = {Constants::ScreenWidth_, Constants::ScreenHeight_};
+    /*
+    Coord2D coords[MaxEnemies_] = {
+        { Constants::ScreenHeight_, 0 },
+        { .x = 0, .y = Constants::ScreenWidth_},
+        { .x = Constants::ScreenHeight_, .y = Constants::ScreenWidth_}
+    };*/
+    Coord2D coords[MaxEnemies_];
+    coords[0] = topRight;
+    coords[1] = bottomRight;
+    coords[2] = bottomLeft;
+
+    for (int i = 0; i < MaxEnemies_; i++) {
+        enemies[i] = Enemy(coords[i]);
+        enemies[i].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer);
+    }
 
 	// TO-DO: Make this less hacky
 	Player player;
@@ -89,6 +115,9 @@ void Game_RunLoop(Game* game) {
 	const float OptimalTime_ = 1000 / TargetFps_;
 
 	bool keysdown[Constants::NumKeys_];
+
+	//load sound file
+	collideSound = Mix_LoadMUS(COLLIDE_SND);
 
 	while (game->running) {
 		// Calculate timestep
@@ -123,6 +152,30 @@ void Game_RunLoop(Game* game) {
 		for (int i = 0; i < MaxEnemies_; i++) {
 			enemies[i].Update(delta);
 		}
+        for (int i = 0; i < MaxEnemies_; i++) {
+            enemies[i].update(delta);
+            if (Collision::collision(enemies[i].position, enemies[i].texture->w,
+				     enemies[i].texture->h, player.position,
+				     player.texture->w, player.texture->h)) {
+            		Mix_PlayMusic(collideSound, 1);
+                cout << "colliDED WITH PLAYER" << endl;
+                enemies[i].undoMove();
+                enemies[i].reverseDirection();
+            } else {
+                for (int j = 0; j < MaxEnemies_; j++) {
+                    if (i != j) {
+		      if (Collision::collision(enemies[i].position, enemies[i].texture->w,
+					       enemies[i].texture->h, enemies[j].position,
+					       enemies[j].texture->w,
+					       enemies[j].texture->h)) {
+                            cout << "colliDED WITH ENEMY" << endl;
+                            enemies[i].undoMove();
+                            enemies[i].reverseDirection();
+                        }
+                    }
+                }
+            }
+        }
 
 
 		// Render
@@ -136,8 +189,10 @@ void Game_RunLoop(Game* game) {
 }
 
 void Game_Close(Game* game) {
+	Mix_FreeMusic(collideSound);
 	TextureCache_Free();
 	Renderer_Free(game->renderer);
 	SDL_DestroyWindow(game->window);
+	Mix_Quit();
 	SDL_Quit();
 }
