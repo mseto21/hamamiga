@@ -53,3 +53,11 @@ void Enemy::reverseDirection() {
     newDestination();
 }
 
+void Enemy::resetMaxPosition() {
+    if (texture != NULL) {
+        maxPosition.x = Constants::ScreenWidth_ - texture->w;
+        maxPosition.y = Constants::ScreenHeight_ - texture->h;
+    }
+}
+
+

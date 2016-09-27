@@ -100,6 +100,7 @@ void Game_RunLoop(Game* game) {
     for (int i = 0; i < MaxEnemies_; i++) {
         enemies[i] = Enemy(coords[i]);
         enemies[i].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer);
+        enemies[i].resetMaxPosition();
     }
 
 	// TO-DO: Make this less hacky

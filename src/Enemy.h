@@ -18,6 +18,7 @@ public:
     void update(float timestep);
     void undoMove();         // Return to the previous position
     void reverseDirection(); // Revere direction after a collision
+    void resetMaxPosition(); // Reset the max position (called after the texture has been set) 
 
     /** Constructor. */
     Enemy(Coord2D pos);
