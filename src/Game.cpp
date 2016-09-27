@@ -81,8 +81,11 @@ void Game_RunLoop(Game* game) {
 	player.texture = TextureCache_CreateTexture(PLAYER_IMG, game->renderer);
 
 
-	Uint32 lastTime;
 	Uint32 currentTime = SDL_GetTicks();
+	Uint32 frameTime;
+	Uint32 lastTime;
+	float delta;
+
 	const float TargetFps_ = 60.f;
 	const float OptimalTime_ = 1000 / TargetFps_;
 
@@ -90,11 +93,13 @@ void Game_RunLoop(Game* game) {
 
 	while (game->running) {
 		// Calculate timestep
-		// Calculate delta
 		lastTime = currentTime;
 		currentTime = SDL_GetTicks();
-		Uint32 frameTime = currentTime - lastTime;
-		float delta = frameTime / ((float)OptimalTime_);
+		frameTime = currentTime - lastTime;
+		delta = frameTime / ((float)OptimalTime_);
+		if (frameTime < OptimalTime_) {
+			SDL_Delay((OptimalTime_) - frameTime);
+		}
 
 
 		// Get input
@@ -128,6 +133,8 @@ void Game_RunLoop(Game* game) {
 			Renderer_RenderCoord(game->renderer, &enemies[i].position, enemies[i].texture);
 		}
 		SDL_RenderPresent(game->renderer);
+		SDL_Delay(1);
+
 	}
 }
 
