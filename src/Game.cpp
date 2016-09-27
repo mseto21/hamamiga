@@ -80,7 +80,6 @@ void Game_RunLoop(Game* game) {
 	Player player;
 	player.texture = TextureCache_CreateTexture(PLAYER_IMG, game->renderer);
 
-
 	Uint32 currentTime = SDL_GetTicks();
 	Uint32 frameTime;
 	Uint32 lastTime;
@@ -133,8 +132,6 @@ void Game_RunLoop(Game* game) {
 			Renderer_RenderCoord(game->renderer, &enemies[i].position, enemies[i].texture);
 		}
 		SDL_RenderPresent(game->renderer);
-		SDL_Delay(1);
-
 	}
 }
 
