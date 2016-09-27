@@ -99,14 +99,15 @@ void Game_RunLoop(Game* game) {
 				keysdown[event.key.keysym.sym] = false;
 			}
 		}
-
 		player.GetInput(keysdown);
+
 
 		// Calculate timestep
 		Uint32 newTime = SDL_GetTicks();
 		Uint32 frameTime = newTime - currentTime;
 	  currentTime = newTime;
 	  float timestep = frameTime / 1000.0;
+
 
 	  // Update entities
 		player.Update(timestep);

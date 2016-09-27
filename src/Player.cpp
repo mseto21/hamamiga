@@ -33,7 +33,6 @@ void Player::GetInput(bool* KeysDown) {
 	}
 }
 
-
 void Player::Update(float timestep) {
 	this->position.y += (int)(this->yvel * timestep);
 	if (this->position.y < 0) {
