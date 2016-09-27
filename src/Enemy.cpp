@@ -11,6 +11,8 @@ Enemy::Enemy(Coord2D pos) : destination(),  maxPosition() {
     newDestination();
     position.x = pos.x;
     position.y = pos.y;
+    lastPosition.x = pos.x;
+    lastPosition.y = pos.y;
 }
 
 Enemy::Enemy() {
