@@ -19,7 +19,7 @@ using std::endl;
 Mix_Music* collideSound;
 const char* PLAYER_IMG = "assets/player.png";
 const char* ENEMY_IMG = "assets/enemy.png";
-const char* COLLIDE_SND = "asssets/ow.mp3";
+const char* COLLIDE_SND = "assets/ow.mp3";
 
 bool Game_Initialize(Game* game) {
 	game->running = true;
@@ -118,7 +118,7 @@ void Game_RunLoop(Game* game) {
 
 	//load sound file
 	collideSound = Mix_LoadMUS(COLLIDE_SND);
-
+	
 	while (game->running) {
 		// Calculate timestep
 		lastTime = currentTime;
@@ -145,7 +145,6 @@ void Game_RunLoop(Game* game) {
 			}
 		}
 		player.GetInput(keysdown);
-
 
 	  	// Update entities
 		player.Update(delta);
