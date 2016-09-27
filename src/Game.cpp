@@ -83,11 +83,19 @@ void Game_RunLoop(Game* game) {
 	const int MaxEnemies_ = 3;
 	Enemy enemies[MaxEnemies_];
     
+    Coord2D topRight = {Constants::ScreenWidth_, 0};
+    Coord2D bottomLeft = {0, Constants::ScreenHeight};
+    Coord2D bottomRight = {Constants::ScreenWidth_, Constants::ScreenHeight_};
+    /*
     Coord2D coords[MaxEnemies_] = {
         { Constants::ScreenHeight_, 0 },
-        { 0, Constants::ScreenWidth_},
-        { Constants::ScreenHeight_, Constants::ScreenWidth_}
-    };
+        { .x = 0, .y = Constants::ScreenWidth_},
+        { .x = Constants::ScreenHeight_, .y = Constants::ScreenWidth_}
+    };*/
+    Coord2D coords[MaxEnemies_];
+    coords[0] = topRight;
+    coords[1] = bottomRight;
+    coords[2] = bottomLeft;
 
     for (int i = 0; i < MaxEnemies_; i++) {
         enemies[i] = Enemy(coords[i]);
