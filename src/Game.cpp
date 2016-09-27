@@ -19,7 +19,7 @@ using std::endl;
 Mix_Music* collideSound;
 const char* PLAYER_IMG = "assets/player.png";
 const char* ENEMY_IMG = "assets/enemy.png";
-const char* COLLIDE_SND = "ow.mp3";
+const char* COLLIDE_SND = "asssets/ow.mp3";
 
 bool Game_Initialize(Game* game) {
 	game->running = true;
