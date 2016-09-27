@@ -1,10 +1,11 @@
 #include "Texture.h"
 #include "Renderer.h"
 #include "Coord2D.h"
+#include "Rectangle.h"
 #include <SDL.h>
 #include <iostream>
 
-void Renderer_RenderCoord(SDL_Renderer* renderer, Coord2D* point, Texture* texture) {
+void Renderer_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, Texture* texture) {
 	if (!renderer) {
 		return;
 	}
@@ -13,10 +14,10 @@ void Renderer_RenderCoord(SDL_Renderer* renderer, Coord2D* point, Texture* textu
 	}
 
 	SDL_Rect rquad;
-	rquad.x = point->x;
-	rquad.y = point->y;
-	rquad.w = texture->w;
-	rquad.h = texture->h;
+	rquad.x = rect->x;
+	rquad.y = rect->y;
+	rquad.w = rect->w;
+	rquad.h = rect->h;
 
 	SDL_RenderCopy(renderer, texture->sdltexture, NULL, &rquad);
 }

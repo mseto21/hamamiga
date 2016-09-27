@@ -1,8 +1,4 @@
 #include "Character.h"
-#include "types.h"
-#include <SDL.h>
-
-struct Texture;
 
 class Player : public Character
 {
@@ -10,10 +6,6 @@ class Player : public Character
 		Player();
 		void GetInput(bool* KeysDown);
 		void Update(float timestep);
-		Texture* texture;
-		SDL_Rect rect;
-		Player(SDL_Rect r);
-    	//Player();
 	private:
 		float xvel;
 		float yvel;

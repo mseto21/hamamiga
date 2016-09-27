@@ -1,12 +1,8 @@
 #include "Player.h"
 #include "constants.h"
-#include <SDL.h>
 
 Player::Player() {
-	position.x = 0;
-	position.y = 0;
-	width = 67; //width of sprite
-	height = 41;
+	rect = {0, 0, 68, 42};
 	vx = 5;
 	vy = 5;
 	ax = 5;
@@ -34,23 +30,26 @@ void Player::GetInput(bool* KeysDown) {
 }
 
 void Player::Update(float timestep) {
-	this->position.y += (int)(this->yvel * timestep);
-	if (this->position.y < 0) {
-		this->position.y = 0;
+	this->rect.y += (int)(this->yvel * timestep);
+	if (this->rect.y < 0) {
+		this->rect.y = 0;
 	}
-	if (this->position.y + this->height > Constants::ScreenHeight_) {
-		this->position.y = Constants::ScreenHeight_ - this->height;
+	if (this->rect.y + this->texture->h > Constants::ScreenHeight_) {
+		this->rect.y = Constants::ScreenHeight_ - this->texture->h;
 	}
 
-	this->position.x += (int)(this->xvel * timestep);
-	if (this->position.x < 0) {
-		this->position.x = 0;
+	this->rect.x += (int)(this->xvel * timestep);
+	if (this->rect.x < 0) {
+		this->rect.x = 0;
 	}
-	if (this->position.x + this->width > Constants::ScreenWidth_) {
-		this->position.x = Constants::ScreenWidth_ - this->width;
+	if (this->rect.x + this->texture->w > Constants::ScreenWidth_) {
+		this->rect.x = Constants::ScreenWidth_ - this->texture->w;
 	}
 }
 
+void Player::Collide(Character characters[]) {
+	return;
+}
 
 
 

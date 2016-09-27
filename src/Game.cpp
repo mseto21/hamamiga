@@ -1,17 +1,21 @@
-
 #include "Game.h"
+#include "Collision.h"
 #include "constants.h"
 #include "Player.h"
 #include "TextureCache.h"
 #include "Enemy.h"
 #include "Timer.h"
 #include "Renderer.h"
+#include "Rectangle.h"
 
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+
+using std::cout;
+using std::endl;
 
 const char* PLAYER_IMG = "assets/player.png";
 const char* ENEMY_IMG = "assets/enemy.png";
@@ -67,18 +71,37 @@ void RenderCoord(SDL_Renderer* renderer, Coord2D* point, Texture* texture) {
 }
 
 
+void InitializeCharacters(int players, int enemies, Character* characters) {
+	for (int p = 0; p < players; p++) {
+		Player player;
+		memcpy(&characters[p], player, sizeof(Player));
+		characters[p].texture = TextureCache_CreateTexture(PLAYER_IMG, game->renderer);
+	}
+
+	Coord2D coords[enemies] = {
+    { Constants::ScreenHeight_, 0 },
+    { 0, Constants::ScreenWidth_},
+    { Constants::ScreenHeight_, Constants::ScreenWidth_}
+  };
+	for (int e = 0; e < enemies; e++) {
+		Enemy enemy(coords[e]);
+		memcpy(&characters[e], enemy, sizeof(Enemy));
+		characters[e].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer);
+	}
+}
+
+
 void Game_RunLoop(Game* game) {
 	SDL_Event event;
-
-	const int MaxEnemies_ = 3;
-	Enemy enemies[MaxEnemies_];
-	for (int i = 0; i < MaxEnemies_; i++) {
-		enemies[i].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer);
-	}
+	const int players = 1;
+	const int enemies = 3;
+	Character characters[Constants::MaxCharacters_];
+	InitializeCharacters(players, enemies, &characters);
 
 	// TO-DO: Make this less hacky
 	Player player;
 	player.texture = TextureCache_CreateTexture(PLAYER_IMG, game->renderer);
+	characters[4] = player;
 
 	Uint32 currentTime = SDL_GetTicks();
 	Uint32 frameTime;
@@ -120,16 +143,17 @@ void Game_RunLoop(Game* game) {
 
 	  	// Update entities
 		player.Update(delta);
-		for (int i = 0; i < MaxEnemies_; i++) {
-			enemies[i].Update(delta);
+		for (int i = 0; i < 3; i++) {
+			characters[i].Update(delta);
+			characters[i].Collide(&characters);
 		}
 
 
 		// Render
 		SDL_RenderClear(game->renderer);
-		Renderer_RenderCoord(game->renderer, &player.position, player.texture);
-		for (int i = 0; i < MaxEnemies_; i++) {
-			Renderer_RenderCoord(game->renderer, &enemies[i].position, enemies[i].texture);
+		Renderer_RenderCoord(game->renderer, &player.rect, player.texture);
+		for (int i = 0; i < 3; i++) {
+			Renderer_RenderCoord(game->renderer, &characters[i].rect, characters[i].texture);
 		}
 		SDL_RenderPresent(game->renderer);
 	}
