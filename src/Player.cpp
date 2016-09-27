@@ -7,8 +7,6 @@
 Player::Player() {
 	position.x = 0;
 	position.y = 0;
-  	width = 32; //width of sprite
-  	height = 32;
   	vx = 5;
   	vy = 5;
   	ax = 5;
@@ -54,13 +52,13 @@ void Player::Update(float timestep) {
 			break;
 		case 3:
 			if ((this->position.y + Constants::STEPSIZE) <=
-			    (Constants::ScreenHeight_ - this->height)){
+			    (Constants::ScreenHeight_ - this->texture->h)){
 				this->position.y += Constants::STEPSIZE;// * timestep;
 			}
 			break;
 		case 4:
 			if ((this->position.x + Constants::STEPSIZE) <=
-			    (Constants::ScreenWidth_ - this->width)){
+			    (Constants::ScreenWidth_ - this->texture->w)){
 				this->position.x += Constants::STEPSIZE;// * timestep;
 			}
 			break;

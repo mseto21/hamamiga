@@ -1,3 +1,6 @@
+#ifndef Texture_H_
+#define Texture_H_
+
 // Texture.h handles asset loading
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -12,3 +15,5 @@ struct Texture {
 bool Texture_LoadTexture(Texture* texture, const char* path, SDL_Renderer* renderer);
 bool Texture_CreateBlank(Texture* texture, SDL_Renderer* renderer);
 void Texture_Free(Texture* texture);
+
+#endif

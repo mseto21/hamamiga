@@ -9,7 +9,6 @@ class Player : public Character
 		Player();
 		void GetInput(SDL_Event* event);
 		void Update(float timestep);
-		Texture* texture;
 	private:
 		uint8 dir;
 };

@@ -3,12 +3,15 @@
 #include <cstdlib>    
 #include <ctime>     
 #include <SDL.h>
+#include "Texture.h"
+#include <iostream>
 
-Enemy::Enemy(SDL_Texture* t, SDL_Rect r, Coord2D pos) : destination(),  maxPosition() {
+using std::endl;
+using std::cout;
+
+Enemy::Enemy(Coord2D pos) {
     srand(time(NULL));
-    rect = r;
-    texture = t;
-    
+    texture = NULL;
     maxPosition.x = Constants::ScreenWidth_-rect.w;
     maxPosition.y = Constants::ScreenHeight_-rect.h;
 

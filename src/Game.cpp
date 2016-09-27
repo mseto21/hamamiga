@@ -12,6 +12,10 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
+using std::cout;
+using std::endl;
+
+
 const char* PLAYER_IMG = "assets/player.png";
 const char* ENEMY_IMG = "assets/enemy.png";
 
@@ -109,16 +113,13 @@ void Game_RunLoop(Game* game) {
     Coord2D bottomLeft = { Constants::ScreenWidth_-enemyW, 0 };
     Coord2D bottomRight = { Constants::ScreenWidth_-enemyW, Constants::ScreenHeight_-enemyH };
 
-    SDL_Rect playerRect = {topLeft.x, topLeft.y, playerW, playerH };
-    SDL_Rect enemyRects[3];
-    enemyRects[0] = { topRight.x, topRight.y, enemyW, enemyH };
-    enemyRects[1] = { bottomLeft.x, bottomLeft.y, enemyW, enemyH };
-    enemyRects[2] = { bottomRight.x, bottomRight.y, enemyW, enemyH };
-
     Enemy enemies[3];
-    enemies[0] = Enemy(enemyTextures[0], enemyRects[0], topRight);
-    enemies[1] = Enemy(enemyTextures[1], enemyRects[1], bottomLeft);
-    enemies[2] = Enemy(enemyTextures[2], enemyRects[2], bottomRight);
+    enemies[0] = Enemy(topRight);
+    enemies[0].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer.renderer);
+    enemies[1] = Enemy(bottomLeft);
+    enemies[1].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer.renderer);
+    enemies[2] = Enemy(bottomRight);
+    enemies[2].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer.renderer);
 
 	/***************************/
 
@@ -169,9 +170,9 @@ void Game_RunLoop(Game* game) {
 
 		//render images
         SDL_RenderClear(game->renderer.renderer);
-        SDL_RenderCopy(game->renderer.renderer, playerTexture, NULL, &playerRect);
+        // SDL_RenderCopy(game->renderer.renderer, playerTexture, NULL, &playerRect);
         for (int i = 0; i < 3; i++) {
-        	SDL_RenderCopy(game->renderer.renderer, enemyTextures[i], NULL, &enemyRects[i]);
+            Renderer_RenderCoord(game->renderer, &(enemies[i].position), enemies[i].texture);
         }
         SDL_RenderPresent(game->renderer.renderer);
 
@@ -179,29 +180,24 @@ void Game_RunLoop(Game* game) {
 
 		++frames;
 
-		playerRect.x = player.position.x;
-		playerRect.y = player.position.y;
-		bool undone;
+		// playerRect.x = player.position.x;
+		// playerRect.y = player.position.y;
 		for (int i = 0; i < 3; i++) {
 		  enemies[i].move();
 		  if (Collision::collision(enemies[i], player)) {
-	       	    enemies[i].undoMove();
-		    enemies[i].reverseDirection();
-		    undone = true;
+            cout << "colliDED WITH PLAYER" << endl;
+           	  enemies[i].undoMove();
+    	      enemies[i].reverseDirection();
 		  } else {
 		    for (int j = 0; j < 3; j++) {
 		      if (i != j) {
 			if (Collision::collision(enemies[i], enemies[j])) {
+                cout << "colliDED WITH ENEMY" << endl;
 			    enemies[i].undoMove();
 			    enemies[i].reverseDirection();
-			    undone = true;
 			  }
 		      }
 		    }
-		   if (!undone) {
-		     enemyRects[i].x = enemies[i].position.x;
-		     enemyRects[i].y = enemies[i].position.y;
-		   }
 		  }
 		}
 		
