@@ -81,14 +81,22 @@ void Game_RunLoop(Game* game) {
 	player.texture = TextureCache_CreateTexture(PLAYER_IMG, game->renderer);
 
 
-	Uint32 lastTime = SDL_GetTicks();
-	const int TargetFps_ = 60;
-	const long OptimalTime_ = 1000 / TargetFps_;
-	int lastFpsTime = 0;
+	Uint32 lastTime;
+	Uint32 currentTime = SDL_GetTicks();
+	const float TargetFps_ = 60.f;
+	const float OptimalTime_ = 1000 / TargetFps_;
 
 	bool keysdown[Constants::NumKeys_];
 
 	while (game->running) {
+		// Calculate timestep
+		// Calculate delta
+		lastTime = currentTime;
+		currentTime = SDL_GetTicks();
+		Uint32 frameTime = currentTime - lastTime;
+		float delta = frameTime / ((float)OptimalTime_);
+
+
 		// Get input
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT) {
@@ -106,22 +114,12 @@ void Game_RunLoop(Game* game) {
 		player.GetInput(keysdown);
 
 
-		// Calculate delta
-		Uint32 currentTime = SDL_GetTicks();
-		Uint32 frameTime = currentTime - lastTime;
-		lastTime = currentTime;
-		float delta = frameTime / ((float)OptimalTime_);
-		lastFpsTime += frameTime;
-		if (lastFpsTime >= 1000) {
-			lastFpsTime = 0;
-		}
-
-
 	  	// Update entities
 		player.Update(delta);
 		for (int i = 0; i < MaxEnemies_; i++) {
 			enemies[i].Update(delta);
 		}
+
 
 		// Render
 		SDL_RenderClear(game->renderer);

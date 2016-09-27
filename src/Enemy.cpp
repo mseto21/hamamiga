@@ -29,7 +29,6 @@ void Enemy::newDestination() {
 }
 
 void Enemy::Update(float timestep) {
-
     //check if destination has been reached
     if (position.x == destination.x && position.y == destination.y) {
         newDestination();
