@@ -35,10 +35,10 @@ void Enemy::update(float timestep) {
     }
 
     // move character closer to destination
-    if (position.x != destination.x) {
+    if (position.x >= destination.x + 1 || position.x <= desination.x -1) {
         lastPosition.x = position.x;
         position.x = position.x < destination.x ? position.x+(int)(Constants::StepSize_*timestep) : position.x-(int)(Constants::StepSize_*timestep);
-    } else if (position.y != destination.y) {
+    } else if (position.y >= destination.y + 1 || position.y <= destination.y - 1) {
         lastPosition.y = position.y;
         position.y = position.y < destination.y ? position.y+(int)(Constants::StepSize_*timestep) : position.y-(int)(Constants::StepSize_*timestep);
     }
