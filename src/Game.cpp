@@ -153,7 +153,9 @@ void Game_RunLoop(Game* game) {
 		  if (Collision::collision(player.position, player.texture->w,
 					   player.texture->h, enemies[i].position,
 					   enemies[i].texture->w, enemies[i].texture->h)) {
+            Mix_PlayMusic(collideSound, 1);
 		    player.UndoMove();
+            break;
 		  }
 		}
 		for (int i = 0; i < MaxEnemies_; i++) {
