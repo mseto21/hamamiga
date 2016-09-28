@@ -10,6 +10,7 @@ class Player : public Character
 		Player();
 		void GetInput(bool KeysDown[]);
 		void Update(float timestep);
+		void UndoMove();
 		Texture* texture;
 		SDL_Rect rect;
 		Player(SDL_Rect r);

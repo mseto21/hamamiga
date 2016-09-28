@@ -5,6 +5,7 @@
 Player::Player() {
 	position.x = 0;
 	position.y = 0;
+	lastPosition = { 0, 0 };
 	// width = 67; //width of sprite
 	// height = 41;
 	vx = 5;
@@ -34,6 +35,7 @@ void Player::GetInput(bool KeysDown[]) {
 }
 
 void Player::Update(float timestep) {
+	lastPosition = { position.x, lastPosition.y };
 	this->position.y += (int)(this->yvel * timestep);
 	if (this->position.y < 0) {
 		this->position.y = 0;
@@ -50,6 +52,11 @@ void Player::Update(float timestep) {
 		this->position.x = Constants::ScreenWidth_ - this->texture->w;
 	}
 }
+
+void Player::UndoMove() {
+	position = { lastPosition.x, lastPosition.y };
+}
+
 
 
 

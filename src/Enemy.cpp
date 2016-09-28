@@ -32,16 +32,16 @@ void Enemy::newDestination() {
 
 void Enemy::update(float timestep) {
     //check if destination has been reached
-  if (position.x <= destination.x + (int)(Constants::StepSize_*timestep) && position.x >= destination.x - (int)(Constants::StepSize_*timestep)
-      && position.y <= destination.y + (int)(Constants::StepSize_*timestep) && position.y >= destination.y - (int)(Constants::StepSize_*timestep)) {
+  if (position.x <= destination.x + 5 && position.x >= destination.x - 5
+      && position.y <= destination.y + 5 && position.y >= destination.y - 5) {
         newDestination();
     }
 
     // move character closer to destination
-    if (position.x >= destination.x + 1 || position.x <= destination.x - (int)(Constants::StepSize_*timestep)) {
+    if (position.x >= destination.x + 5 || position.x <= destination.x -5) {
         lastPosition.x = position.x;
         position.x = position.x < destination.x ? position.x+(int)(Constants::StepSize_*timestep) : position.x-(int)(Constants::StepSize_*timestep);
-    } else if (position.y >= destination.y + (int)(Constants::StepSize_*timestep) || position.y <= destination.y - (int)(Constants::StepSize_*timestep)) {
+    } else if (position.y >= destination.y + 5 || position.y <= destination.y - 5) {
         lastPosition.y = position.y;
         position.y = position.y < destination.y ? position.y+(int)(Constants::StepSize_*timestep) : position.y-(int)(Constants::StepSize_*timestep);
     }
