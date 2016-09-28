@@ -150,6 +150,13 @@ void Game_RunLoop(Game* game) {
 	  	// Update entities
 		player.Update(delta);
 		for (int i = 0; i < MaxEnemies_; i++) {
+		  if (Collision::collision(player.position, player.texture->w,
+					   player.texture->h, enemies[i].position,
+					   enemies[i].texture->w, enemies[i].texture->h)) {
+		    player.UndoMove();
+		  }
+		}
+		for (int i = 0; i < MaxEnemies_; i++) {
 			enemies[i].Update(delta);
 		}
         for (int i = 0; i < MaxEnemies_; i++) {
