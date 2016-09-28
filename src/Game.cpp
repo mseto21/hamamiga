@@ -139,10 +139,28 @@ void Game_RunLoop(Game* game) {
 				game->running = false;
 			}
 			if (event.type == SDL_KEYDOWN) {
-				keysdown[event.key.keysym.sym] = true;
+				switch (event.key.keysym.sym) {
+					case SDLK_w:
+					case SDLK_a:
+					case SDLK_s:
+					case SDLK_d:
+						keysdown[event.key.keysym.sym] = true;
+						break;
+					default:
+						break;
+				}
 			}
 			if (event.type == SDL_KEYUP) {
-				keysdown[event.key.keysym.sym] = false;
+				switch (event.key.keysym.sym) {
+					case SDLK_w:
+					case SDLK_a:
+					case SDLK_s:
+					case SDLK_d:
+						keysdown[event.key.keysym.sym] = false;
+						break;
+					default:
+						break;
+				}
 			}
 		}
 		player.GetInput(keysdown);
