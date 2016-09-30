@@ -31,3 +31,4 @@ $(OBJDIR):
 
 clean:
 	rm -rf $(EXECUTABLE) $(OBJECTS) $(OBJDIR)/*.d
+	rm -r $(OBJDIR)
