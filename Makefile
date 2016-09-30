@@ -7,6 +7,9 @@ EXECUTABLE := fathactory
 OBJDIR=obj
 OBJECTS := $(patsubst src/%.cpp,$(OBJDIR)/%.o, $(wildcard src/*.cpp))
 
+test := $(shell test -d $(OBJDIR) || mkdir -p $(OBJDIR))
+
+
 -include $(OBJECTS:.o=.d)
 
 .PHONY: all $(OBJDIR) clean
