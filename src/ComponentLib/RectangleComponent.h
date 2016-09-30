@@ -1,4 +1,8 @@
-// The RectangleComponent defines the given entity as a rectangle.
+/*
+Relies on:
+Usage: Gives the entity bounds that they will use to collide.
+How these collisions are handled will vary from entity to entity.
+*/
 
 #include "Component.h"
 
@@ -17,6 +21,5 @@ class RectangleComponent : public Component {
 public:
 	void Update(float timestep);
 	void SetOn(uint32 id, int x, int y, int w, int h);
-	// Make them all public,
-	Rectangle entityRectangles[Constants::MaxEntities_];
+	Rectangle entityRectangles[Constants::MaxEntities_]; // Saved by ID rather than index
 }

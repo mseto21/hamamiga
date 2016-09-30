@@ -22,6 +22,10 @@ void Renderer_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, Texture* text
 	SDL_RenderCopy(renderer, texture->sdltexture, NULL, &rquad);
 }
 
+void Renderer_Update(RendereComponent* renderComponent) {
+	
+}
+
 void Renderer_Free(SDL_Renderer* renderer) {
 	if (renderer) {
 		SDL_DestroyRenderer(renderer);

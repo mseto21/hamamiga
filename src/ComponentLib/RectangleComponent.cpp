@@ -8,7 +8,7 @@ void RectangleComponent::Update(float timestep) {
 			if (entityIndex == otherEntityIndex) {
 				continue;
 			}
-			if (Rectangle_Intersects(entityRectangles[entityIndex], entityRectangles[otherEntityIndex])) {
+			if (Rectangle_Intersects(entityRectangles[entityArray[entityIndex]], entityRectangles[entityArray[otherEntityIndex]])) {
 				// Handle some sort of collision
 			}
 		}

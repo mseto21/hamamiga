@@ -1,12 +1,15 @@
 #include "Game.h"
-#include "Collision.h"
 #include "constants.h"
 #include "Player.h"
 #include "TextureCache.h"
 #include "Enemy.h"
 #include "Timer.h"
 #include "Renderer.h"
-#include "Rectangle.h"
+
+#include "ComponentLib/InputComponent.h"
+#include "ComponentLib/MovementComponent.h"
+#include "ComponentLib/RectangleComponent.h"
+#include "ComponentLib/RenderComponent.h"
 
 #include <iostream>
 #include <SDL.h>
@@ -16,9 +19,6 @@
 
 using std::cout;
 using std::endl;
-
-const char* PLAYER_IMG = "assets/player.png";
-const char* ENEMY_IMG = "assets/enemy.png";
 
 bool Game_Initialize(Game* game) {
 	game->running = true;
@@ -138,7 +138,7 @@ void Game_RunLoop(Game* game) {
 				keysdown[event.key.keysym.sym] = false;
 			}
 		}
-		player.GetInput(keysdown);
+		
 
 
 	  	// Update entities

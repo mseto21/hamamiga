@@ -3,7 +3,7 @@
 #include <SDL_image.h>
 #include <iostream>
 
-bool Texture_LoadTexture(Texture* texture, const char* path, SDL_Renderer* renderer, Character* owner) {
+bool Texture_LoadTexture(Texture* texture, const char* path, SDL_Renderer* renderer, const char* name) {
 	if (!texture) {
 		std::cerr << "Error: Uninitialized texture!" << std::endl;
 		return false;
@@ -25,8 +25,7 @@ bool Texture_LoadTexture(Texture* texture, const char* path, SDL_Renderer* rende
 
 	texture->w = surface->w;
 	texture->h = surface->h;
-	texture->path = path;
-	texture->owner = owner;
+	stringcopy(texture->path, name);
 
 	SDL_FreeSurface(surface);
 
