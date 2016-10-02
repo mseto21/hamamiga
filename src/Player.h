@@ -11,8 +11,10 @@ class Player : public Character
 		void GetInput(bool KeysDown[]);
 		void Update(float timestep);
 		void UndoMove();
-		Texture* texture;
-		SDL_Rect rect;
+		Texture* texture; //spritesheet
+		//SDL_Rect rect; //player dimenisions for collision
+		//int width;
+		//int height;
 		Player(SDL_Rect r);
     	//Player();
 	private:

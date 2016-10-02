@@ -18,12 +18,18 @@ using std::endl;
 
 Mix_Music* collideSound;
 const char* PLAYER_IMG = "assets/player.png";
-const char* ANIM_IMG = "assets/playeranim.png";
-const char* ENEMY_IMG = "assets/enemy.png";
+const char* ANIM_IMG = "assets/tinykev.png";
+const char* ENEMY_IMG = "assets/tinydemon.png";
 const char* COLLIDE_SND = "assets/ow.mp3";
 
 const int WALKING_ANIMATION_FRAMES = 4;
 SDL_Rect playerClips[ WALKING_ANIMATION_FRAMES ];
+SDL_Rect enemyClips[ WALKING_ANIMATION_FRAMES ];
+const int playerW = 65;
+const int playerH = 95;
+const int enemyW = 95;
+const int enemyH = 95;
+
 
 bool Game_Initialize(Game* game) {
 	game->running = true;
@@ -56,34 +62,48 @@ bool Game_Initialize(Game* game) {
 	}
 
 	//Load media
-	//if( !gSpriteSheetTexture.loadFromFile( ANIM_IMG ) )
-	//
-	//	printf( "Failed to load walking animation texture!\n" );
-		//success = false;
-	//}
-	//else
-	//{
 		//Set sprite clips
-		playerClips[ 0 ].x =   0;
+		/*playerClips[ 0 ].x =   0;
 		playerClips[ 0 ].y =   0;
-		playerClips[ 0 ].w =  68;
-		playerClips[ 0 ].h = 42;
+		playerClips[ 0 ].w =  65;
+		playerClips[ 0 ].h = 95;
 
-		playerClips[ 1 ].x =  68;
+		playerClips[ 1 ].x =  65;
 		playerClips[ 1 ].y =   0;
-		playerClips[ 1 ].w =  68;
-		playerClips[ 1 ].h = 42;
+		playerClips[ 1 ].w =  65;
+		playerClips[ 1 ].h = 95;
 		
-		playerClips[ 2 ].x = 136;
+		playerClips[ 2 ].x = 130;
 		playerClips[ 2 ].y =   0;
-		playerClips[ 2 ].w =  68;
-		playerClips[ 2 ].h = 42;
+		playerClips[ 2 ].w =  65;
+		playerClips[ 2 ].h = 95;
 
-		playerClips[ 3 ].x = 204;
+		playerClips[ 3 ].x = 195;
 		playerClips[ 3 ].y =   0;
-		playerClips[ 3 ].w =  68;
-		playerClips[ 3 ].h = 42;
-	//}
+		playerClips[ 3 ].w =  65;
+		playerClips[ 3 ].h = 95;*/
+		for (int i = 0; i < 4; i++){//change to better var names
+			if (i != 0){
+				playerClips[i].x = playerClips[i-1].x + playerW;
+			} else {
+				playerClips[i].x = 0;
+			}
+			playerClips[i].y = 0;
+			playerClips[i].w = playerW;
+			playerClips[i].h = playerH;
+		}
+	//Set enemy sprite
+		for (int i = 0; i < 4; i++){//change to better var names
+			if (i != 0){
+				enemyClips[i].x = enemyClips[i-1].x + enemyW;
+			} else {
+				enemyClips[i].x = 0;
+			}
+			enemyClips[i].y = 0;
+			enemyClips[i].w = enemyW;
+			enemyClips[i].h = enemyH;
+		}
+
 
 		if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) {
     	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
@@ -135,12 +155,15 @@ void Game_RunLoop(Game* game) {
         enemies[i] = Enemy(coords[i]);
         enemies[i].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer);
         enemies[i].resetMaxPosition();
+        enemies[i].width = enemyW;
+        enemies[i].height = enemyH;
     }
 
 	// TO-DO: Make this less hacky
 	Player player;
 	player.texture = TextureCache_CreateTexture(ANIM_IMG, game->renderer);
-
+	player.width = playerW;
+	player.height = playerH;
 	Uint32 currentTime = SDL_GetTicks();
 	Uint32 frameTime;
 	Uint32 lastTime;
@@ -219,7 +242,7 @@ void Game_RunLoop(Game* game) {
 				     enemies[i].texture->h, player.position,
 				     player.texture->w, player.texture->h)) {
             		Mix_PlayMusic(collideSound, 1);
-                cout << "colliDED WITH PLAYER" << endl;
+               // cout << "colliDED WITH PLAYER" << endl;
                 enemies[i].undoMove();
                 enemies[i].reverseDirection();
             } else {
@@ -229,7 +252,7 @@ void Game_RunLoop(Game* game) {
 					       enemies[i].texture->h, enemies[j].position,
 					       enemies[j].texture->w,
 					       enemies[j].texture->h)) {
-                            cout << "colliDED WITH ENEMY" << endl;
+                            //cout << "colliDED WITH ENEMY" << endl;
                             enemies[i].undoMove();
                             enemies[i].reverseDirection();
                         }
@@ -240,12 +263,13 @@ void Game_RunLoop(Game* game) {
 
     uint32 sprite = (currentTime / 100) % 4;
     SDL_Rect * currentClip = &playerClips[sprite];
+    SDL_Rect * oppClip = &enemyClips[sprite];
 
 		// Render
 		SDL_RenderClear(game->renderer);
 		Renderer_RenderCoord(game->renderer, &player.position, player.texture, currentClip);
 		for (int i = 0; i < MaxEnemies_; i++) {
-			Renderer_RenderCoord(game->renderer, &enemies[i].position, enemies[i].texture, NULL);
+			Renderer_RenderCoord(game->renderer, &enemies[i].position, enemies[i].texture, oppClip);
 		}
 		SDL_RenderPresent(game->renderer);
 	}
