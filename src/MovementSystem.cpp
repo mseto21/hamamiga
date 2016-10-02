@@ -1,7 +1,6 @@
 #include "MovementComponent.h"
 #include "RectangleComponent.h"
 
-// --------------------------------------------------------------------
 void MovementSystem_Update(float timestep, MovementComponent* movementComponent, RectangleComponent * rectangleComponent) {
 	for (uint32 entityIndex = 0; entityIndex < movementComponent->count; entityIndex++) {
 		if (!Component_HasIndex(rectangleComponent, entityIndex)) {

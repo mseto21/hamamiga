@@ -10,6 +10,7 @@ struct Texture {
 	int h;
 	SDL_Texture* sdltexture;
 	String128 path;
+	bool isAnimation;
 };
 
 bool Texture_LoadTexture(Texture* texture, SDL_Renderer* renderer, const char* path, const char* name);
