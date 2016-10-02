@@ -63,25 +63,6 @@ bool Game_Initialize(Game* game) {
 
 	//Load media
 		//Set sprite clips
-		/*playerClips[ 0 ].x =   0;
-		playerClips[ 0 ].y =   0;
-		playerClips[ 0 ].w =  65;
-		playerClips[ 0 ].h = 95;
-
-		playerClips[ 1 ].x =  65;
-		playerClips[ 1 ].y =   0;
-		playerClips[ 1 ].w =  65;
-		playerClips[ 1 ].h = 95;
-		
-		playerClips[ 2 ].x = 130;
-		playerClips[ 2 ].y =   0;
-		playerClips[ 2 ].w =  65;
-		playerClips[ 2 ].h = 95;
-
-		playerClips[ 3 ].x = 195;
-		playerClips[ 3 ].y =   0;
-		playerClips[ 3 ].w =  65;
-		playerClips[ 3 ].h = 95;*/
 		for (int i = 0; i < 4; i++){//change to better var names
 			if (i != 0){
 				playerClips[i].x = playerClips[i-1].x + playerW;
