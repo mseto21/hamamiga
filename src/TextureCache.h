@@ -14,7 +14,7 @@ struct TextureCache {
 struct TextureCache* tcache; // Global texture cache that works as a singleton
 
 
-/* Returns the game cache. */
+/* Returns the texture cache. */
 TextureCache* TextureCache_GetCache() {
 	if (tcache == nullptr) {
 		tcache = (TextureCache*)malloc(sizeof(TextureCache));
@@ -45,17 +45,17 @@ Texture* TextureCache_GetTexture(int index) {
 
 
 /* Creates and returns a new texture from the given path. */
-Texture* TextureCache_CreateTexture(const char* path, SDL_Renderer* renderer) {
-	Texture_LoadTexture(&tcache->textures[tcache->index], path, renderer);
+Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, const char* name) {
+	Texture_LoadTexture(&tcache->textures[tcache->index], renderer, path, name);
 	return &tcache->textures[tcache->index++];
 }
 
 
 /* Gets or Creates a texture depending on availability. */
-Texture* TextureCache_GetOrCreateTexture(const char* path, SDL_Renderer* renderer) {
+Texture* TextureCache_GetOrCreateTexture(SDL_Renderer* renderer, const char* path, const char* name) {
 	Texture* texture;
-	if ((texture = TextureCache_GetTexture(path)) == NULL) {
-		texture = TextureCache_CreateTexture(path, renderer);
+	if ((texture = TextureCache_GetTexture(name)) == NULL) {
+		texture = TextureCache_CreateTexture(renderer, path, name);
 	}
 	return texture;
 }

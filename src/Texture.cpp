@@ -1,9 +1,10 @@
 #include "Texture.h"
+#include "StringOperations.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
 
-bool Texture_LoadTexture(Texture* texture, const char* path, SDL_Renderer* renderer, const char* name) {
+bool Texture_LoadTexture(Texture* texture, SDL_Renderer* renderer, const char* path, const char* name) {
 	if (!texture) {
 		std::cerr << "Error: Uninitialized texture!" << std::endl;
 		return false;
@@ -25,7 +26,7 @@ bool Texture_LoadTexture(Texture* texture, const char* path, SDL_Renderer* rende
 
 	texture->w = surface->w;
 	texture->h = surface->h;
-	stringcopy(texture->path, name);
+	StringOperations::str128copy(&texture->path, name);
 
 	SDL_FreeSurface(surface);
 

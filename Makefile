@@ -10,6 +10,7 @@ OBJECTS := $(patsubst src/%.cpp,$(OBJDIR)/%.o, $(wildcard src/*.cpp))
 -include $(OBJECTS:.o=.d)
 
 .PHONY: all $(OBJDIR) clean
+	
 
 all: build
 

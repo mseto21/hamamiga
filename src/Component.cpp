@@ -1,0 +1,27 @@
+#include "Component.h"
+void Component_Initialize(Component* component) {
+	component->count = 0;
+}
+
+bool Component_HasIndex(Component* component, uint32 eid) {
+	return component->usedEntities[eid];
+}
+
+void Component_Add(Component* component, uint32 eid) {
+	component->entityArray[component->count] = eid;
+	component->usedEntities[eid] = true;
+	component->count++;
+}
+
+void Component_Remove(Component* component, uint32 eid) {
+	for (uint32 entityIndex = 0; entityIndex < component->count; entityIndex++) {
+		if (component->entityArray[entityIndex] == eid) {
+			for (uint32 endEntityIndex = entityIndex; endEntityIndex < component->count - 1; endEntityIndex++) {
+				component->entityArray[endEntityIndex] = component->entityArray[endEntityIndex+1];
+			}
+			component->usedEntities[eid] = false;
+			component->count--;
+			return;
+		}
+	}
+}

@@ -1,3 +1,4 @@
+
 struct Entity {
-	int entityid;
-}
+	uint32 eid;
+};
