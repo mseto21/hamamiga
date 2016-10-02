@@ -155,6 +155,9 @@ void Game_RunLoop(Game* game) {
 	collideSound = Mix_LoadMUS(COLLIDE_SND);
 
 	while (game->running) {
+	  handleEvents();
+	  update();
+	  draw();
 		// Calculate timestep
 		lastTime = currentTime;
 		currentTime = SDL_GetTicks();
@@ -252,10 +255,55 @@ void Game_RunLoop(Game* game) {
 }
 
 void Game_Close(Game* game) {
-	Mix_FreeMusic(collideSound);
-	TextureCache_Free();
-	Renderer_Free(game->renderer);
-	SDL_DestroyWindow(game->window);
-	Mix_Quit();
-	SDL_Quit();
+    while (!states.empty()) {
+        states.back()->Close();
+        states.pop_back();
+    }
+    Mix_FreeMusic(collideSound);
+    TextureCache_Free();
+    Renderer_Free(game->renderer);
+    SDL_DestroyWindow(game->window);
+    Mix_Quit();
+    SDL_Quit();
+}
+
+void changeState(GameState* state) {
+    //close current state
+    if (!states.empty()) {
+      states.back()->close();
+      states.pop_back();
+    }
+    //store and initialize new state
+    states.push_back(state);
+    states.back()->initialize();
+}
+
+void pushState(GameState* state) {
+    if (!states.empty()) {
+      states.back()->pause();
+    }
+    states.push_back(state);
+    states.back()->initialize();
+}
+
+void popState(GameState* state) {
+    if (!states.empty()) {
+        states.back()->close();
+        states.pop_back();
+    }
+    if (!states.empty()) {
+        states.back()->resume();
+    }
+}
+
+void handleEvents() {
+    states.back()->handleEvents(this);
+}
+
+void update() {
+    states.back()->update(this);
+}
+
+void draw() {
+    states.back()->draw(this);
 }
