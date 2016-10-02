@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "SDL.h"
+#include "SDL_image.h"
 #include "Game.h"
 #include "gamestate.h"
 #include "titlestate.h"
@@ -8,23 +9,12 @@
 
 TitleState TitleState::titleState;
 
-void TitleState::initialize() {
-    SDL_Surface* temp;
-    if ((temp = IMG_Load("assets/title.png") == NULL) {
-        std::cerr << "Could not load title.png! Error: " << IMG_GetError() << std::endl;
-    }
-    bGround = SDL_DisplayFormat(temp);
-
-    SDL_FreeSurface(temp);
-    fader = SDL_CreateRGBSurface(SDL_SRCALPHA, bGround->w, bGround->h,
-			   bGround->format->BitsPerPixel,
-			   bGround->format->Rmask, bGround->format->Gmask,
- 			   bGround->format->Bmask, bGround->format->Amask);
-    SDL_FilRect(fader, NULL, SDL_MapRGB(bGround->format, 0, 0, 0));
-      
+void TitleState::initialize(Game* game) {
+    char* path = "assets/title.png";
+    bGround = TextureCache_CreateTexture(path, game->renderer);
+    char* path2 = "assets/blackScreen.png";
+    fader = TextureCache_CreateTexture(path2, game->renderer);
     alpha = 255;
-  
-    SDL_SetAlpha(fader, SDL_SRCALPHA, alpha);
 }
 
 void TitleState::close() {
@@ -65,13 +55,17 @@ void TitleState::Update(Game* game) {
    if (count == 20) {
      game->changeState(MenuState::Instance());
    }
-   SDL_SetAlpha(fader, SDL_SRCALPHA, alpha);
+   SDL_SetTextureAlphaMod(fader->sdltexture, alpha);
 }
 
 void TitleState::Draw(Game* game) {
-  SDL_BlitSurface(bGround, NULL, game->screen, NULL);
-  if (alpha != 0) {
-    SDL_BlitSurface(fader, NULL, game->screen, NULL);
-  }
-  SDL_UpadateRect(game->screen, 0, 0, 0, 0);
+  SDL_Rect rquad;
+  rquad.x = 0;
+  rquad.y = 0;
+  rquad.w = bGround->w;
+  rquad.h = bGround->h;
+  SDL_RenderClear(game->renderer);
+  SDL_RenderCopy(game->renderer, bGround->sdltexture, NULL, rquad);
+  SDL_RenderCopy(game->renderer, fader->sdltexture, NULL, rquad);
+  SDL_RenderPresent(game->renderer);
 }

@@ -2,12 +2,14 @@
 #define TITLESTATE_H
 
 #include "SDL.h"
-#include "gamestate.h"
+#include "GameState.h"
+
+struct Texture;
 
 class TitleState : public GameState {
     public:
         TitleState() { }
-        void initialize();
+        void initialize(Game* game);
         void close();
         void pause();
         void resume();
@@ -20,8 +22,8 @@ class TitleState : public GameState {
     private:
 	static TitleState titleState;
 
-	SDL_Surface* bGround;
-	SDL_Surface* fader;
+	Texture* bg;
+	Texture* fader;
 	int alpha;
 };
 
