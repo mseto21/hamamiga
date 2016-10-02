@@ -15,7 +15,7 @@ class PlayState : public GameState {
   void resume();
   void handleEvents(Game* game);
   void update(Game* game);
-  void Draw(Game* game);
+  void draw(Game* game);
 
   static PlayState* Instance() {
     return &playState;
@@ -23,7 +23,6 @@ class PlayState : public GameState {
 
  private:
   static PlayState playState;
-
   Texture* bGround;
   bool paused;
 

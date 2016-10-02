@@ -2,9 +2,10 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
-#include "game.h"
-#include "gamestate.h"
-#include "menustate.h"
+#include "Game.h"
+#include "GameState.h"
+#include "MenuState.h"
+#include "TextureCache.h"
 
 MenuState MenuState::menuState;
 
@@ -14,7 +15,7 @@ void MenuState::initialize(Game* game) {
 }
 
 void MenuState::close() {
-  SDL_FreeSurface(bGround);
+
 }
 
 void MenuState::handleEvents(Game* game) {
@@ -32,11 +33,7 @@ void MenuState::handleEvents(Game* game) {
 	break;
       case SDLK_w:
 	break;
-      case SDLK_W:
-	break;
       case SDLK_s:
-	break;
-      case SDLK_S:
 	break;
       }
       break;
@@ -49,12 +46,12 @@ void MenuState::update(Game* game) {
 }
 
 void MenuState::draw(Game* game) {
-  SDL_Rect rquad;
-  rquad.x = 0;
+  SDL_Rect rquad = { 0, 0, bGround->w, bGround->h };
+  /*rquad.x = 0;
   rquad.y = 0;
   rquad.w = bGround->w;
-  rquad.h = bGround->h;
+  rquad.h = bGround->h;*/
   SDL_RenderClear(game->renderer);
-  SDL_RenderCopy(game->renderer, bGround->sdltexture, NULL, rquad);
+  SDL_RenderCopy(game->renderer, bGround->sdltexture, NULL, &rquad);
   SDL_RenderPresent(game->renderer);
 }

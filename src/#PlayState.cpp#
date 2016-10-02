@@ -112,7 +112,7 @@ void RenderCoord(SDL_Renderer* renderer, Coord2D* point, Texture* texture) {
 }
 
 void PlayState::close() {
-      Mix_FreeMusic(collideSound);
+
 }
 
 void PlayState::pause() {

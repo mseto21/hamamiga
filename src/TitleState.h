@@ -22,9 +22,10 @@ class TitleState : public GameState {
     private:
 	static TitleState titleState;
 
-	Texture* bg;
+	Texture* bGround;
 	Texture* fader;
 	int alpha;
+	int count;
 };
 
 #endif

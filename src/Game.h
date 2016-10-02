@@ -14,10 +14,10 @@ struct Game {
 bool Game_Initialize(Game* game);
 void Game_RunLoop(Game* game);
 void Game_Close(Game* game);
-void changeState(GameState* state);
-void pushState(GameState* state);
-void popState(GameState* state);
+void Game_ChangeState(Game* game, GameState* state);
+void Game_PushState(Game* game, GameState* state);
+void Game_PopState(Game* game);
 
-void handleEvents();
-void update();
-void draw();
+void handleEvents(Game* game);
+void update(Game* game);
+void draw(Game* game);

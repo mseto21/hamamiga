@@ -1,7 +1,7 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-#include "Game.h"
+struct Game;
 
 class GameState {
 
@@ -15,9 +15,6 @@ public:
   virtual void update(Game* game) = 0;
   virtual void draw(Game* game) = 0;
 
-  void changeState(Game* game, GameState* state) {
-    game->ChangeState(state);
-  }
 };
 
 #endif
