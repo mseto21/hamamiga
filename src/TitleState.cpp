@@ -13,7 +13,7 @@ TitleState TitleState::titleState;
 void TitleState::initialize(Game* game) {
     char* path = "assets/title.png";
     bGround = TextureCache_CreateTexture(path, game->renderer);
-    char* path2 = "assets/blackScreen.png";
+    char* path2 = "assets/blackBackground.png";
     fader = TextureCache_CreateTexture(path2, game->renderer);
     alpha = 255;
 }
