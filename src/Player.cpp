@@ -6,8 +6,8 @@ Player::Player() {
 	position.x = 0;
 	position.y = 0;
 	lastPosition = { 0, 0 };
-	// width = 67; //width of sprite
-	// height = 41;
+	// width = 68; //width of sprite
+	// height = 42;
 	vx = 5;
 	vy = 5;
 	ax = 5;

@@ -18,8 +18,12 @@ using std::endl;
 
 Mix_Music* collideSound;
 const char* PLAYER_IMG = "assets/player.png";
+const char* ANIM_IMG = "assets/playeranim.png";
 const char* ENEMY_IMG = "assets/enemy.png";
 const char* COLLIDE_SND = "assets/ow.mp3";
+
+const int WALKING_ANIMATION_FRAMES = 4;
+SDL_Rect playerClips[ WALKING_ANIMATION_FRAMES ];
 
 bool Game_Initialize(Game* game) {
 	game->running = true;
@@ -50,6 +54,36 @@ bool Game_Initialize(Game* game) {
 		std::cerr << "Error: The texture cache failed to initialize!" << std::endl;
 		return false;
 	}
+
+	//Load media
+	//if( !gSpriteSheetTexture.loadFromFile( ANIM_IMG ) )
+	//
+	//	printf( "Failed to load walking animation texture!\n" );
+		//success = false;
+	//}
+	//else
+	//{
+		//Set sprite clips
+		playerClips[ 0 ].x =   0;
+		playerClips[ 0 ].y =   0;
+		playerClips[ 0 ].w =  68;
+		playerClips[ 0 ].h = 42;
+
+		playerClips[ 1 ].x =  68;
+		playerClips[ 1 ].y =   0;
+		playerClips[ 1 ].w =  68;
+		playerClips[ 1 ].h = 42;
+		
+		playerClips[ 2 ].x = 136;
+		playerClips[ 2 ].y =   0;
+		playerClips[ 2 ].w =  68;
+		playerClips[ 2 ].h = 42;
+
+		playerClips[ 3 ].x = 204;
+		playerClips[ 3 ].y =   0;
+		playerClips[ 3 ].w =  68;
+		playerClips[ 3 ].h = 42;
+	//}
 
 		if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) {
     	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
@@ -105,7 +139,7 @@ void Game_RunLoop(Game* game) {
 
 	// TO-DO: Make this less hacky
 	Player player;
-	player.texture = TextureCache_CreateTexture(PLAYER_IMG, game->renderer);
+	player.texture = TextureCache_CreateTexture(ANIM_IMG, game->renderer);
 
 	Uint32 currentTime = SDL_GetTicks();
 	Uint32 frameTime;
@@ -119,7 +153,9 @@ void Game_RunLoop(Game* game) {
 
 	//load sound file
 	collideSound = Mix_LoadMUS(COLLIDE_SND);
+
 	
+	int frame = 0; //Change this to time ticks?
 	while (game->running) {
 		// Calculate timestep
 		lastTime = currentTime;
@@ -204,12 +240,14 @@ void Game_RunLoop(Game* game) {
             }
         }
 
+    uint32 sprite = (currentTime / 100) % 4;
+    SDL_Rect * currentClip = &playerClips[sprite];
 
 		// Render
 		SDL_RenderClear(game->renderer);
-		Renderer_RenderCoord(game->renderer, &player.position, player.texture);
+		Renderer_RenderCoord(game->renderer, &player.position, player.texture, currentClip);
 		for (int i = 0; i < MaxEnemies_; i++) {
-			Renderer_RenderCoord(game->renderer, &enemies[i].position, enemies[i].texture);
+			Renderer_RenderCoord(game->renderer, &enemies[i].position, enemies[i].texture, NULL);
 		}
 		SDL_RenderPresent(game->renderer);
 	}

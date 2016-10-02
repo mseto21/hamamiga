@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include <iostream>
 
-void Renderer_RenderCoord(SDL_Renderer* renderer, Coord2D* point, Texture* texture) {
+void Renderer_RenderCoord(SDL_Renderer* renderer, Coord2D* point, Texture* texture, SDL_Rect* clip) {
 	if (!renderer) {
 		return;
 	}
@@ -18,7 +18,14 @@ void Renderer_RenderCoord(SDL_Renderer* renderer, Coord2D* point, Texture* textu
 	rquad.w = texture->w;
 	rquad.h = texture->h;
 
-	SDL_RenderCopy(renderer, texture->sdltexture, NULL, &rquad);
+	if( clip != NULL )
+	{
+		rquad.w = clip->w;
+		rquad.h = clip->h;
+	}
+
+
+	SDL_RenderCopy(renderer, texture->sdltexture, clip, &rquad);
 }
 
 void Renderer_Free(SDL_Renderer* renderer) {
