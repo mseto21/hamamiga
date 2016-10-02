@@ -154,8 +154,6 @@ void Game_RunLoop(Game* game) {
 	//load sound file
 	collideSound = Mix_LoadMUS(COLLIDE_SND);
 
-	
-	int frame = 0; //Change this to time ticks?
 	while (game->running) {
 		// Calculate timestep
 		lastTime = currentTime;
