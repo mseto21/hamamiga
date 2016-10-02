@@ -60,10 +60,10 @@ bool Game_Initialize(Game* game) {
 	}
 
 	// Initialize Components
-	game->rectangleComponent = new RectangleComponent();
-	game->movementComponent = new MovementComponent();
-	game->textureComponent = new TextureComponent();
-	game->inputComponent = new InputComponent();
+	game->rectangleComponent = (RectangleComponent*)malloc(sizeof(*game->rectangleComponent));
+	game->movementComponent = (MovementComponent*)malloc(sizeof(*game->movementComponent));
+	game->textureComponent = (TextureComponent*)malloc(sizeof(*game->textureComponent));
+	game->inputComponent = (InputComponent*)malloc(sizeof(*game->inputComponent));
 	Component_Initialize(game->rectangleComponent);
 	Component_Initialize(game->movementComponent);
 	Component_Initialize(game->textureComponent);
@@ -81,10 +81,21 @@ void Game_RunLoop(Game* game) {
 	float delta;
 
 	bool keysdown[Constants::NumKeys_];
+
 	Entity* player = EntityCache_GetNewEntity();
-	//game->inputComponent->SetOn(player->eid);
+	if (player == nullptr) {
+		std::cerr << "Error: The player could not be initialized." << std::endl;
+		return;
+	}
+
+	InputComponent_Add(game->inputComponent, player->eid);
 	RectangleComponent_Add(game->rectangleComponent, player->eid, 50, 0, 32, 32);
+	MovementComponent_Add(game->movementComponent, player->eid, 10, 10, 0, 0);
 	Texture* playerTexture = TextureCache_CreateTexture(game->renderer, "/assets/player.png", "player");
+	if (playerTexture == nullptr) {
+		std::cerr << "Error: The player's texture could not be initialized." << std::endl;
+		return;
+	}
 	TextureComponent_Add(game->textureComponent, player->eid, playerTexture);
 
 	while (game->running) {
@@ -113,7 +124,7 @@ void Game_RunLoop(Game* game) {
 		}
 
 		// Update systems
-		//InputSystem_Update(keysdown, game->inputComponent, game->movementComponent);
+		InputSystem_Update(keysdown, game->inputComponent, game->movementComponent);
 		MovementSystem_Update(delta, game->movementComponent, game->rectangleComponent);
 		RenderSystem_Update(game->renderer, game->textureComponent, game->rectangleComponent);
 	}
@@ -121,10 +132,10 @@ void Game_RunLoop(Game* game) {
 
 //--------------------------------------------------------------------
 void Game_Close(Game* game) {
-	delete game->rectangleComponent;
-	delete game->movementComponent;
-	delete game->textureComponent;
-	delete game->inputComponent;
+	free(game->rectangleComponent);
+	free(game->movementComponent);
+	free(game->textureComponent);
+	free(game->inputComponent);
 	TextureCache_Free();
 	EntityCache_Free();
 	RenderSystem_Free(game->renderer);

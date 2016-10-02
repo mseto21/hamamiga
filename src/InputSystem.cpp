@@ -5,22 +5,22 @@
 #include "InputComponent.h"
 
 #include <SDL.h>
+#include <iostream>
 
 void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, MovementComponent* movementComponent) {
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
 		if (!Component_HasIndex(movementComponent, entityIndex)) {
 			continue;
 		}
-
 		// Get the movement value
 		MovementValues* moveValues = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
 		moveValues->xVelocity = 0;
 		moveValues->yVelocity = 0;
 		if (keysPressed[SDLK_w]) {
-			moveValues->xVelocity = -Constants::StepSize_;
+			moveValues->yVelocity = -Constants::StepSize_;
 		}
 		if (keysPressed[SDLK_a]) {
-			moveValues->yVelocity = -Constants::StepSize_;
+			moveValues->xVelocity = -Constants::StepSize_;
 		}
 		if (keysPressed[SDLK_s]) {
 			moveValues->yVelocity = Constants::StepSize_;

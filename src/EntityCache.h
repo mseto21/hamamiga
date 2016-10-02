@@ -14,7 +14,7 @@ struct EntityCache* eCache;
 EntityCache* EntityCache_GetCache() {
 	if (eCache == nullptr) {
 		eCache = (EntityCache*)malloc(sizeof(EntityCache));
-		tcache->index = 0;
+		eCache->index = 0;
 	}
 	return eCache;
 }
