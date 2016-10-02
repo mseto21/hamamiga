@@ -225,9 +225,9 @@ void Game_RunLoop(Game* game) {
 	  	// Update entities
 		player.Update(delta);
 		for (int i = 0; i < MaxEnemies_; i++) {
-		  if (Collision::collision(player.position, player.texture->w,
-					   player.texture->h, enemies[i].position,
-					   enemies[i].texture->w, enemies[i].texture->h)) {
+		  if (Collision::collision(player.position, player.width,
+					   player.height, enemies[i].position,
+					   enemies[i].width, enemies[i].height)) {
             Mix_PlayMusic(collideSound, 1);
 		    player.UndoMove();
             break;
@@ -238,9 +238,9 @@ void Game_RunLoop(Game* game) {
 		}
         for (int i = 0; i < MaxEnemies_; i++) {
             enemies[i].update(delta);
-            if (Collision::collision(enemies[i].position, enemies[i].texture->w,
-				     enemies[i].texture->h, player.position,
-				     player.texture->w, player.texture->h)) {
+            if (Collision::collision(enemies[i].position, enemies[i].width,
+				     enemies[i].height, player.position,
+				     player.width, player.height)) {
             		Mix_PlayMusic(collideSound, 1);
                // cout << "colliDED WITH PLAYER" << endl;
                 enemies[i].undoMove();
@@ -248,10 +248,10 @@ void Game_RunLoop(Game* game) {
             } else {
                 for (int j = 0; j < MaxEnemies_; j++) {
                     if (i != j) {
-		      if (Collision::collision(enemies[i].position, enemies[i].texture->w,
-					       enemies[i].texture->h, enemies[j].position,
-					       enemies[j].texture->w,
-					       enemies[j].texture->h)) {
+		      if (Collision::collision(enemies[i].position, enemies[i].width,
+					       enemies[i].height, enemies[j].position,
+					       enemies[j].width,
+					       enemies[j].height)) {
                             //cout << "colliDED WITH ENEMY" << endl;
                             enemies[i].undoMove();
                             enemies[i].reverseDirection();
