@@ -164,6 +164,13 @@ void PlayState::handleEvents(Game* game) {
 
 void PlayState::update(Game* game) {
  	if (!paused) {
+	        lastTime = currentTime;
+	        currentTime = SDL_GetTicks();
+	        frameTime = currentTime - lastTime;
+	        delta = frameTime / ((float)OptimalTime_);
+	        if (frameTime < OptimalTime_) {
+	            SDL_Delay((OptimalTime_) - frameTime);
+	        }
 		player.GetInput(keysdown);
 
 	  	// Update entities

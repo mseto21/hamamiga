@@ -68,6 +68,6 @@ void TitleState::draw(Game* game) {
   rquad.h = bGround->h;
   SDL_RenderClear(game->renderer);
   SDL_RenderCopy(game->renderer, bGround->sdltexture, NULL, &rquad);
-  SDL_RenderCopy(game->renderer, fader->sdltexture, NULL, &rquad);
+  //SDL_RenderCopy(game->renderer, fader->sdltexture, NULL, &rquad);
   SDL_RenderPresent(game->renderer);
 }
