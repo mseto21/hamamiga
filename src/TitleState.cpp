@@ -3,8 +3,8 @@
 #include <SDL_image.h>
 #include "Game.h"
 #include "TitleState.h"
-#include "MenuState.h"
 #include "TextureCache.h"
+#include "MenuState.h"
 
 const char* TITLE_SCREEN = "assets/title.png";
 const char* FADE_IN = "assets/blackScreen.png";

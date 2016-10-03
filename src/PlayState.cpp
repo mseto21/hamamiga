@@ -7,11 +7,11 @@
 #include "Renderer.h"
 #include "Game.h"
 #include "PlayState.h"
+#include "TextureCache.h"
 #include "MenuState.h"
 #include <SDL_mixer.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include "TextureCache.h"
 
 using std::cout;
 using std::endl;
