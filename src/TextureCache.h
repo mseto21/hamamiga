@@ -1,3 +1,6 @@
+#ifndef TEXTURECACHE_H
+#define TEXTURECACHE_H
+
 #include "Texture.h"
 #include <cstdlib>
 #include <cstring>
@@ -68,3 +71,5 @@ void TextureCache_Free() {
 	}
 	free(tcache);
 }
+
+#endif
