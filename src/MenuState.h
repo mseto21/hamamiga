@@ -2,6 +2,7 @@
 #define MENUSTATE_H
 
 #include "SDL.h"
+#include "SDL_ttf.h"
 #include "GameState.h"
 
 struct Texture;
@@ -24,6 +25,9 @@ class MenuState : public GameState {
   static MenuState menuState;
 
   Texture* bGround;
+  TTF_Font* font;
+
+  int center(int large, int small);
 };
 
 #endif
