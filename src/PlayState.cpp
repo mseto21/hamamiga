@@ -3,17 +3,15 @@
 #include "Collision.h"
 #include "constants.h"
 #include "Player.h"
-#include "TextureCache.h"
 #include "Enemy.h"
 #include "Renderer.h"
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_mixer.h"
-#include "SDL_ttf.h"
-#include "GameState.h"
 #include "Game.h"
 #include "PlayState.h"
 #include "MenuState.h"
+#include <SDL_mixer.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include "TextureCache.h"
 
 using std::cout;
 using std::endl;
@@ -133,6 +131,7 @@ void PlayState::handleEvents(Game* game) {
     case SDL_KEYDOWN:
       switch(e.key.keysym.sym) {
       case SDLK_m:
+      case SDLK_q:
 	Game_ChangeState(game, MenuState::Instance());
 	break;
       case SDLK_p:

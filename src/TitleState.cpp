@@ -1,20 +1,19 @@
 #include <stdio.h>
 
-#include "SDL.h"
-#include "SDL_image.h"
+#include <SDL_image.h>
 #include "Game.h"
-#include "GameState.h"
 #include "TitleState.h"
 #include "MenuState.h"
 #include "TextureCache.h"
 
+const char* TITLE_SCREEN = "assets/title.png";
+const char* FADE_IN = "assets/blackScreen.png";
+
 TitleState TitleState::titleState;
 
 void TitleState::initialize(Game* game) {
-    char* path = "assets/title.png";
-    bGround = TextureCache_CreateTexture(path, game->renderer);
-    char* path2 = "assets/blackBackground.png";
-    fader = TextureCache_CreateTexture(path2, game->renderer);
+    bGround = TextureCache_CreateTexture(TITLE_SCREEN, game->renderer);
+    fader = TextureCache_CreateTexture(FADE_IN, game->renderer);
     alpha = 255;
 }
 

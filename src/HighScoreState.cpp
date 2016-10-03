@@ -2,15 +2,16 @@
 
 #include "SDL_image.h"
 #include "Game.h"
+#include "HighScoreState.h"
 #include "MenuState.h"
 #include "TextureCache.h"
 
-const char* MENU_PAGE = "assets/menu.png";
+const char* HS_PAGE = "assets/hs.png";
 
 MenuState MenuState::menuState;
 
 void MenuState::initialize(Game* game) {
-  bGround = TextureCache_CreateTexture(MENU_PAGE, game->renderer);
+  bGround = TextureCache_CreateTexture(HS_PAGE, game->renderer);
 }
 
 void MenuState::close() {
@@ -30,21 +31,21 @@ void MenuState::handleEvents(Game* game) {
       case SDLK_ESCAPE:
 	Game_Close(game);
 	break;
-      case SDLK_w:
-	break;
-      case SDLK_s:
-	break;
+      case SDLK_q:
+      case SDLK_m:
+      Game_ChangeState(game, MenuState::Instance());
+      break;
       }
       break;
     }
   }
 }
 
-void MenuState::update(Game* game) {
+void HighScoreState::update(Game* game) {
   //change highlighted text
 }
 
-void MenuState::draw(Game* game) {
+void HighScoreState::draw(Game* game) {
   SDL_Rect rquad = { 0, 0, bGround->w, bGround->h };
   /*rquad.x = 0;
   rquad.y = 0;
