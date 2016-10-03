@@ -22,7 +22,7 @@ MenuState MenuState::menuState;
 
 void MenuState::initialize(Game* game) {
   bGround = TextureCache_CreateTexture(MENU_PAGE, game->renderer);
-  font = TTF_OpenFont(FONT, 50);
+  font = TTF_OpenFont(FONT, 30);
 }
 
 void MenuState::close() {
@@ -75,7 +75,7 @@ void MenuState::update(Game* game) {
 
 void MenuState::draw(Game* game) {
   SDL_Rect rquad = { 0, 0, bGround->w, bGround->h };
-  SDL_Color gray = {50, 50, 50, 255};
+  SDL_Color gray = {120, 120, 120, 255};
   SDL_Color white = {255, 255, 255, 255};
   SDL_Color pColor = gray;
   SDL_Color hsColor = gray;
@@ -90,7 +90,7 @@ void MenuState::draw(Game* game) {
   SDL_Texture* oHST = SDL_CreateTextureFromSurface(game->renderer, oHS);
   SDL_Rect playRect;
   playRect.x =  center(Constants::ScreenWidth_, oPlay->w);
-  playRect.y = center(Constants::ScreenHeight_ / 2, oPlay->h);
+  playRect.y = center(3*Constants::ScreenHeight_ / 4, oPlay->h);
   playRect.w = oPlay->w;
   playRect.h = oPlay->h;
   SDL_Rect hsRect;
