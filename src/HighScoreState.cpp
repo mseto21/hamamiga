@@ -8,17 +8,23 @@
 
 const char* HS_PAGE = "assets/hs.png";
 
-MenuState MenuState::menuState;
+HighScoreState HighScoreState::highScoreState;
 
-void MenuState::initialize(Game* game) {
+void HighScoreState::initialize(Game* game) {
   bGround = TextureCache_CreateTexture(HS_PAGE, game->renderer);
 }
 
-void MenuState::close() {
+void HighScoreState::close() {
 
 }
 
-void MenuState::handleEvents(Game* game) {
+void HighScoreState::pause() {
+}
+
+void HighScoreState::resume() {
+}
+
+void HighScoreState::handleEvents(Game* game) {
   SDL_Event e;
 
   if (SDL_PollEvent(&e)) {

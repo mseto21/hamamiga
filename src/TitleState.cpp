@@ -7,7 +7,7 @@
 #include "MenuState.h"
 
 const char* TITLE_SCREEN = "assets/title.png";
-const char* FADE_IN = "assets/blackScreen.png";
+const char* FADE_IN = "assets/blackBackground.png";
 
 TitleState TitleState::titleState;
 
@@ -19,6 +19,12 @@ void TitleState::initialize(Game* game) {
 
 void TitleState::close() {
 
+}
+
+void TitleState::pause() {
+}
+
+void TitleState::resume() {
 }
 
 void TitleState::handleEvents(Game* game) {

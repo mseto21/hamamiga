@@ -3,6 +3,8 @@
 #include "SDL_image.h"
 #include "Game.h"
 #include "MenuState.h"
+#include "PlayState.h"
+#include "HighScoreState.h"
 #include "TextureCache.h"
 
 const char* MENU_PAGE = "assets/menu.png";
@@ -15,6 +17,12 @@ void MenuState::initialize(Game* game) {
 
 void MenuState::close() {
 
+}
+
+void MenuState::pause() {
+}
+
+void MenuState::resume() {
 }
 
 void MenuState::handleEvents(Game* game) {
@@ -33,6 +41,9 @@ void MenuState::handleEvents(Game* game) {
       case SDLK_w:
 	break;
       case SDLK_s:
+	break;
+      case SDLK_RETURN:
+	Game_ChangeState(game, PlayState::Instance());
 	break;
       }
       break;
