@@ -2,8 +2,6 @@
 
 // --------------------------------------------------------------------
 void TextureComponent_Add(TextureComponent* textureComponent, uint32 eid, Texture* texture) {
-	textureComponent->entityArray[textureComponent->count] = eid;
-	textureComponent->usedEntities[eid] = true;
-	textureComponent->count++;
+	Component_Add(textureComponent, eid);
 	textureComponent->textures[eid] = texture;
 }

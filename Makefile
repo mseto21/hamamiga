@@ -2,15 +2,14 @@
 CXX = g++
 CXXFLAGS += `pkg-config --cflags sdl2 SDL2_image`
 CXXFLAGS += -Wall -Wextra -pedantic -std=c++11
-LDFLAGS += `pkg-config --libs sdl2 SDL2_image`
+LDFLAGS += `pkg-config --libs sdl2 SDL2_mixer SDL2_image`
 EXECUTABLE := fathactory
 OBJDIR=obj
 OBJECTS := $(patsubst src/%.cpp,$(OBJDIR)/%.o, $(wildcard src/*.cpp))
 
--include $(OBJECTS:.o=.d)
+test := $(shell test -d $(OBJDIR) || mkdir -p $(OBJDIR))
 
-.PHONY: all $(OBJDIR) clean
-	
+-include $(OBJECTS:.o=.d)
 
 all: build
 
@@ -20,12 +19,10 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) -o $@
 
 $(OBJDIR)/%.o : src/%.cpp
-	$(CXX) $< $(CXXFLAGS) -c -MD -o $@
+	$(CXX) -c $< $(CXXFLAGS) -o $@
 
-$(OBJS): | $(OBJDIR)
+-include $(OBJECTS:.o=.d)
 
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-
+.PHONY: clean
 clean:
-	rm -rf $(EXECUTABLE) $(OBJECTS) $(OBJDIR)/*.d
+	rm -rf $(EXECUTABLE) $(OBJDIR)/*.o $(OBJDIR)/*.d
