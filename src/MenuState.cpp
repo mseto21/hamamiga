@@ -9,7 +9,7 @@
 #include "constants.h"
 
 const char* MENU_PAGE = "assets/menu.png";
-const char* FONT = "assets/stocky.ttf";
+const char* FONT = "assets/bamboo.ttf";
 TTF_Font* font;
 
 bool play = true;
@@ -21,12 +21,9 @@ const char* hsM = "High Scores";
 MenuState MenuState::menuState;
 
 void MenuState::initialize(Game* game) {
-  std::cout << "bfore initialize";
   bGround = TextureCache_CreateTexture(MENU_PAGE, game->renderer);
-  std::cout << "bfore font";
-  font = TTF_OpenFont(FONT, 72);
-  std::cout << "after font";
-  printf("TTF_INIT: %s\n", TTF_GetError());
+  font = TTF_OpenFont(FONT, 50);
+  //printf("TTF_INIT: %s\n", TTF_GetError());
 }
 
 void MenuState::close() {
@@ -81,35 +78,31 @@ void MenuState::draw(Game* game) {
   SDL_Rect rquad = { 0, 0, bGround->w, bGround->h };
   SDL_Color gray = {50, 50, 50, 255};
   SDL_Color white = {255, 255, 255, 255};
-  SDL_Color pColor = white;
+  SDL_Color pColor = gray;
   SDL_Color hsColor = gray;
-  //if (play)
-   // pColor = gray;
-  //if (hs)
-   // hsColor = white;
+  if (play)
+    pColor = white;
+  if (hs)
+    hsColor = white;
 
   SDL_Surface* oPlay = TTF_RenderUTF8_Blended(font, playM, pColor);
   SDL_Surface* oHS = TTF_RenderUTF8_Blended(font, hsM, hsColor);
   SDL_Texture* oPlayT = SDL_CreateTextureFromSurface(game->renderer, oPlay);
   SDL_Texture* oHST = SDL_CreateTextureFromSurface(game->renderer, oHS);
-  SDL_Rect playRect;//
+  SDL_Rect playRect;
   playRect.x =  center(Constants::ScreenWidth_, oPlay->w);
-  playRect.y = center(Constants::ScreenHeight_, oPlay->h);
+  playRect.y = center(Constants::ScreenHeight_ / 2, oPlay->h);
   playRect.w = oPlay->w;
   playRect.h = oPlay->h;
-  /*if (font){
-    std::cout <<"not null";
-  } else {
-    std::cout << "null";
-  }*/
-  // = { 20, 20,oPlay->w, oPlay->h};
-  //SDL_Rect hsRect = { center(Constants::ScreenWidth_, oHS->w),
-		//	center(Constants::ScreenHeight_, oHS->h),
-			//oHS->w, oHS->h};
+  SDL_Rect hsRect;
+  hsRect.x =  center(Constants::ScreenWidth_, oHS->w);
+  hsRect.y = center(Constants::ScreenHeight_, oHS->h);
+  hsRect.w = oHS->w;
+  hsRect.h = oHS->h;
   SDL_RenderClear(game->renderer);
   SDL_RenderCopy(game->renderer, bGround->sdltexture, NULL, &rquad);
   SDL_RenderCopy(game->renderer, oPlayT, NULL, &playRect);
-  //SDL_RenderCopy(game->renderer, oHST, NULL, &hsRect);
+  SDL_RenderCopy(game->renderer, oHST, NULL, &hsRect);
   SDL_RenderPresent(game->renderer);
 }
 

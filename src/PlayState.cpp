@@ -163,6 +163,9 @@ void PlayState::handleEvents(Game* game) {
 }
 
 void PlayState::update(Game* game) {
+  if (paused) {
+    currentTime = SDL_GetTicks();
+  }
  	if (!paused) {
 	        lastTime = currentTime;
 	        currentTime = SDL_GetTicks();
@@ -193,7 +196,6 @@ void PlayState::update(Game* game) {
 				     enemies[i].texture->h, player.position,
 				     player.texture->w, player.texture->h)) {
             		Mix_PlayMusic(collideSound, 1);
-                cout << "colliDED WITH PLAYER" << endl;
                 enemies[i].undoMove();
                 enemies[i].reverseDirection();
             } else {
@@ -203,7 +205,6 @@ void PlayState::update(Game* game) {
 					       enemies[i].texture->h, enemies[j].position,
 					       enemies[j].texture->w,
 					       enemies[j].texture->h)) {
-                            cout << "colliDED WITH ENEMY" << endl;
                             enemies[i].undoMove();
                             enemies[i].reverseDirection();
                         }
