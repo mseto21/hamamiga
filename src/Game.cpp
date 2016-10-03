@@ -20,6 +20,8 @@ using std::endl;
 bool Game_Initialize(Game* game) {
 	game->running = true;
 
+    TTF_Init();
+
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		return false;
 	}
