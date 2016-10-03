@@ -25,7 +25,7 @@ class MenuState : public GameState {
   static MenuState menuState;
 
   Texture* bGround;
-  TTF_Font* font;
+  //TTF_Font* font;
 
   int center(int large, int small);
 };
