@@ -19,6 +19,8 @@ class Character {
   double vy; //velocity y
   double ax; //acceleration x
   double ay; //acceleration y
+  int width; //width
+  int height; //height make uint?
 };
 
 #endif

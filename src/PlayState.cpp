@@ -18,12 +18,17 @@ using std::endl;
 
 Mix_Music* collideSound;
 const char* PLAYER_IMG = "assets/player.png";
-const char* ANIM_IMG = "assets/playeranim.png";
-const char* ENEMY_IMG = "assets/enemy.png";
+const char* ANIM_IMG = "assets/tinykev.png";
+const char* ENEMY_IMG = "assets/tinydemon.png";
 const char* COLLIDE_SND = "assets/ow.mp3";
 
 const int WALKING_ANIMATION_FRAMES = 4;
 SDL_Rect playerClips[ WALKING_ANIMATION_FRAMES ];
+SDL_Rect enemyClips[ WALKING_ANIMATION_FRAMES ];
+const int playerW = 65;
+const int playerH = 95;
+const int enemyW = 95;
+const int enemyH = 95;
 
 const int MaxEnemies_ = 3;
 Enemy enemies[MaxEnemies_];
@@ -43,26 +48,31 @@ bool keysdown[Constants::NumKeys_];
 PlayState PlayState::playState;
 
 void PlayState::initialize(Game* game) {
-  //char* path = "assets/background.png"
-  //bGround = TextureCache_CreateTexture(paht, game->renderer);
-  playerClips[ 0 ].x =   0;
-  playerClips[ 0 ].y =   0;
-  playerClips[ 0 ].w =  68;
-  playerClips[ 0 ].h = 42;
-
-  playerClips[ 1 ].x =  68;
-  playerClips[ 1 ].y =   0;
-  playerClips[ 1 ].w =  68;
-  playerClips[ 1 ].h = 42;
-
-  playerClips[ 2 ].x = 136;
-  playerClips[ 2 ].y =   0;
-  playerClips[ 2 ].w =  68;
-  playerClips[ 2 ].h = 42;
-  playerClips[ 3 ].x = 204;
-  playerClips[ 3 ].y =   0;
-  playerClips[ 3 ].w =  68;
-  playerClips[ 3 ].h = 42;
+  player.width = playerW;
+  player.height = playerH;
+  //Load media
+    //Set sprite clips
+    for (int i = 0; i < 4; i++){//change to better var names
+      if (i != 0){
+        playerClips[i].x = playerClips[i-1].x + playerW;
+      } else {
+        playerClips[i].x = 0;
+      }
+      playerClips[i].y = 0;
+      playerClips[i].w = playerW;
+      playerClips[i].h = playerH;
+    }
+  //Set enemy sprite
+    for (int i = 0; i < 4; i++){//change to better var names
+      if (i != 0){
+        enemyClips[i].x = enemyClips[i-1].x + enemyW;
+      } else {
+        enemyClips[i].x = 0;
+      }
+      enemyClips[i].y = 0;
+      enemyClips[i].w = enemyW;
+      enemyClips[i].h = enemyH;
+    }
 
     Coord2D topRight = {Constants::ScreenWidth_-80, 0};
     Coord2D bottomLeft = {0, Constants::ScreenHeight_-41};
@@ -82,6 +92,8 @@ void PlayState::initialize(Game* game) {
         enemies[i] = Enemy(coords[i]);
         enemies[i].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer);
         enemies[i].resetMaxPosition();
+                enemies[i].width = enemyW;
+        enemies[i].height = enemyH;
     }
 
 	// TO-DO: Make this less hacky
@@ -179,9 +191,9 @@ void PlayState::update(Game* game) {
 	  	// Update entities
 		player.Update(delta);
 		for (int i = 0; i < MaxEnemies_; i++) {
-		  if (Collision::collision(player.position, player.texture->w,
-					   player.texture->h, enemies[i].position,
-					   enemies[i].texture->w, enemies[i].texture->h)) {
+		  if (Collision::collision(player.position, player.width,
+					   player.height, enemies[i].position,
+					   enemies[i].width, enemies[i].height)) {
             Mix_PlayMusic(collideSound, 1);
 		    player.UndoMove();
             break;
@@ -192,19 +204,19 @@ void PlayState::update(Game* game) {
 		}
         for (int i = 0; i < MaxEnemies_; i++) {
             enemies[i].update(delta);
-            if (Collision::collision(enemies[i].position, enemies[i].texture->w,
-				     enemies[i].texture->h, player.position,
-				     player.texture->w, player.texture->h)) {
+            if (Collision::collision(enemies[i].position, enemies[i].width,
+				     enemies[i].height, player.position,
+				     player.width, player.height)) {
             		Mix_PlayMusic(collideSound, 1);
                 enemies[i].undoMove();
                 enemies[i].reverseDirection();
             } else {
                 for (int j = 0; j < MaxEnemies_; j++) {
                     if (i != j) {
-		      if (Collision::collision(enemies[i].position, enemies[i].texture->w,
-					       enemies[i].texture->h, enemies[j].position,
-					       enemies[j].texture->w,
-					       enemies[j].texture->h)) {
+		      if (Collision::collision(enemies[i].position, enemies[i].width,
+					       enemies[i].height, enemies[j].position,
+					       enemies[j].width,
+					       enemies[j].height)) {
                             enemies[i].undoMove();
                             enemies[i].reverseDirection();
                         }
@@ -219,12 +231,13 @@ void PlayState::update(Game* game) {
 void PlayState::draw(Game* game) {
     uint32 sprite = (currentTime / 100) % 4;
     SDL_Rect * currentClip = &playerClips[sprite];
+        SDL_Rect * oppClip = &enemyClips[sprite];
 
 	// Render
 	SDL_RenderClear(game->renderer);
 	Renderer_RenderCoord(game->renderer, &player.position, player.texture, currentClip);
 	for (int i = 0; i < MaxEnemies_; i++) {
-		Renderer_RenderCoord(game->renderer, &enemies[i].position, enemies[i].texture, NULL);
+		Renderer_RenderCoord(game->renderer, &enemies[i].position, enemies[i].texture, oppClip);
 	}
 	SDL_RenderPresent(game->renderer);
 }
