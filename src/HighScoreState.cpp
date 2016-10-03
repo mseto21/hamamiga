@@ -2,30 +2,29 @@
 
 #include "SDL_image.h"
 #include "Game.h"
-#include "MenuState.h"
-#include "PlayState.h"
 #include "HighScoreState.h"
+#include "MenuState.h"
 #include "TextureCache.h"
 
-const char* MENU_PAGE = "assets/menu.png";
+const char* HS_PAGE = "assets/hs.png";
 
-MenuState MenuState::menuState;
+HighScoreState HighScoreState::highScoreState;
 
-void MenuState::initialize(Game* game) {
-  bGround = TextureCache_CreateTexture(MENU_PAGE, game->renderer);
+void HighScoreState::initialize(Game* game) {
+  bGround = TextureCache_CreateTexture(HS_PAGE, game->renderer);
 }
 
-void MenuState::close() {
+void HighScoreState::close() {
 
 }
 
-void MenuState::pause() {
+void HighScoreState::pause() {
 }
 
-void MenuState::resume() {
+void HighScoreState::resume() {
 }
 
-void MenuState::handleEvents(Game* game) {
+void HighScoreState::handleEvents(Game* game) {
   SDL_Event e;
 
   if (SDL_PollEvent(&e)) {
@@ -38,24 +37,21 @@ void MenuState::handleEvents(Game* game) {
       case SDLK_ESCAPE:
 	Game_Close(game);
 	break;
-      case SDLK_w:
-	break;
-      case SDLK_s:
-	break;
-      case SDLK_RETURN:
-	Game_ChangeState(game, PlayState::Instance());
-	break;
+      case SDLK_q:
+      case SDLK_m:
+      Game_ChangeState(game, MenuState::Instance());
+      break;
       }
       break;
     }
   }
 }
 
-void MenuState::update(Game* game) {
+void HighScoreState::update(Game* game) {
   //change highlighted text
 }
 
-void MenuState::draw(Game* game) {
+void HighScoreState::draw(Game* game) {
   SDL_Rect rquad = { 0, 0, bGround->w, bGround->h };
   /*rquad.x = 0;
   rquad.y = 0;
