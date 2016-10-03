@@ -88,7 +88,7 @@ void MenuState::draw(Game* game) {
   SDL_Texture* oPlayT = SDL_CreateTextureFromSurface(game->renderer, oPlay);
   SDL_Texture* oHST = SDL_CreateTextureFromSurface(game->renderer, oHS);
   SDL_Rect playRect = { center(Constants::ScreenWidth_, oPlay->w),
-			center((int)(Constants::ScreenHeight_)/2, oPlay->h),
+			center((int)(Constants::ScreenHeight_)/2, 50),
   			oPlay->w, oPlay->h};
   SDL_Rect hsRect = { center(Constants::ScreenWidth_, oHS->w),
   			center(Constants::ScreenHeight_, oHS->h),
