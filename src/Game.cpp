@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "GameState.h"
 #include "Collision.h"
 #include "constants.h"
 #include "Player.h"
@@ -16,23 +17,10 @@
 using std::cout;
 using std::endl;
 
-Mix_Music* collideSound;
-const char* PLAYER_IMG = "assets/player.png";
-const char* ANIM_IMG = "assets/tinykev.png";
-const char* ENEMY_IMG = "assets/tinydemon.png";
-const char* COLLIDE_SND = "assets/ow.mp3";
-
-const int WALKING_ANIMATION_FRAMES = 4;
-SDL_Rect playerClips[ WALKING_ANIMATION_FRAMES ];
-SDL_Rect enemyClips[ WALKING_ANIMATION_FRAMES ];
-const int playerW = 65;
-const int playerH = 95;
-const int enemyW = 95;
-const int enemyH = 95;
-
-
 bool Game_Initialize(Game* game) {
 	game->running = true;
+
+    TTF_Init();
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		return false;
@@ -61,31 +49,6 @@ bool Game_Initialize(Game* game) {
 		return false;
 	}
 
-	//Load media
-		//Set sprite clips
-		for (int i = 0; i < 4; i++){//change to better var names
-			if (i != 0){
-				playerClips[i].x = playerClips[i-1].x + playerW;
-			} else {
-				playerClips[i].x = 0;
-			}
-			playerClips[i].y = 0;
-			playerClips[i].w = playerW;
-			playerClips[i].h = playerH;
-		}
-	//Set enemy sprite
-		for (int i = 0; i < 4; i++){//change to better var names
-			if (i != 0){
-				enemyClips[i].x = enemyClips[i-1].x + enemyW;
-			} else {
-				enemyClips[i].x = 0;
-			}
-			enemyClips[i].y = 0;
-			enemyClips[i].w = enemyW;
-			enemyClips[i].h = enemyH;
-		}
-
-
 		if( Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096 ) < 0 ) {
     	std::cerr <<"SDL_mixer could not initialize! SDL_mixer Error:"
     			  << Mix_GetError() << "\n";
@@ -95,172 +58,63 @@ bool Game_Initialize(Game* game) {
 }
 
 
-void RenderCoord(SDL_Renderer* renderer, Coord2D* point, Texture* texture) {
-	if (!renderer) {
-		return;
-	}
-	if (!texture) {
-		return;
-	}
-
-	SDL_Rect rquad;
-	rquad.x = point->x;
-	rquad.y = point->y;
-	rquad.w = texture->w;
-	rquad.h = texture->h;
-	SDL_RenderCopy(renderer, texture->sdltexture, NULL, &rquad);
-}
-
-
 void Game_RunLoop(Game* game) {
-	SDL_Event event;
-
-	const int MaxEnemies_ = 3;
-	Enemy enemies[MaxEnemies_];
-    
-    Coord2D topRight = {Constants::ScreenWidth_-80, 0};
-    Coord2D bottomLeft = {0, Constants::ScreenHeight_-41};
-    Coord2D bottomRight = {Constants::ScreenWidth_-80, Constants::ScreenHeight_-41};
-    /*
-    Coord2D coords[MaxEnemies_] = {
-        { Constants::ScreenHeight_, 0 },
-        { .x = 0, .y = Constants::ScreenWidth_},
-        { .x = Constants::ScreenHeight_, .y = Constants::ScreenWidth_}
-    };*/
-    Coord2D coords[MaxEnemies_];
-    coords[0] = topRight;
-    coords[1] = bottomRight;
-    coords[2] = bottomLeft;
-
-    for (int i = 0; i < MaxEnemies_; i++) {
-        enemies[i] = Enemy(coords[i]);
-        enemies[i].texture = TextureCache_CreateTexture(ENEMY_IMG, game->renderer);
-        enemies[i].resetMaxPosition();
-        enemies[i].width = enemyW;
-        enemies[i].height = enemyH;
-    }
-
-	// TO-DO: Make this less hacky
-	Player player;
-	player.texture = TextureCache_CreateTexture(ANIM_IMG, game->renderer);
-	player.width = playerW;
-	player.height = playerH;
-	Uint32 currentTime = SDL_GetTicks();
-	Uint32 frameTime;
-	Uint32 lastTime;
-	float delta;
-
-	const float TargetFps_ = 60.f;
-	const float OptimalTime_ = 1000 / TargetFps_;
-
-	bool keysdown[Constants::NumKeys_];
-
-	//load sound file
-	collideSound = Mix_LoadMUS(COLLIDE_SND);
-
 	while (game->running) {
-		// Calculate timestep
-		lastTime = currentTime;
-		currentTime = SDL_GetTicks();
-		frameTime = currentTime - lastTime;
-		delta = frameTime / ((float)OptimalTime_);
-		if (frameTime < OptimalTime_) {
-			SDL_Delay((OptimalTime_) - frameTime);
-		}
-
-
-		// Get input
-		while (SDL_PollEvent(&event) != 0) {
-			if (event.type == SDL_QUIT) {
-				game->running = false;
-			} if (event.type == SDL_KEYDOWN &&  event.key.keysym.sym == SDLK_ESCAPE){
-				game->running = false;
-			}
-			if (event.type == SDL_KEYDOWN) {
-				switch (event.key.keysym.sym) {
-					case SDLK_w:
-					case SDLK_a:
-					case SDLK_s:
-					case SDLK_d:
-						keysdown[event.key.keysym.sym] = true;
-						break;
-					default:
-						break;
-				}
-			}
-			if (event.type == SDL_KEYUP) {
-				switch (event.key.keysym.sym) {
-					case SDLK_w:
-					case SDLK_a:
-					case SDLK_s:
-					case SDLK_d:
-						keysdown[event.key.keysym.sym] = false;
-						break;
-					default:
-						break;
-				}
-			}
-		}
-		player.GetInput(keysdown);
-
-	  	// Update entities
-		player.Update(delta);
-		for (int i = 0; i < MaxEnemies_; i++) {
-		  if (Collision::collision(player.position, player.width,
-					   player.height, enemies[i].position,
-					   enemies[i].width, enemies[i].height)) {
-            Mix_PlayMusic(collideSound, 1);
-		    player.UndoMove();
-            break;
-		  }
-		}
-		for (int i = 0; i < MaxEnemies_; i++) {
-			enemies[i].Update(delta);
-		}
-        for (int i = 0; i < MaxEnemies_; i++) {
-            enemies[i].update(delta);
-            if (Collision::collision(enemies[i].position, enemies[i].width,
-				     enemies[i].height, player.position,
-				     player.width, player.height)) {
-            		Mix_PlayMusic(collideSound, 1);
-               // cout << "colliDED WITH PLAYER" << endl;
-                enemies[i].undoMove();
-                enemies[i].reverseDirection();
-            } else {
-                for (int j = 0; j < MaxEnemies_; j++) {
-                    if (i != j) {
-		      if (Collision::collision(enemies[i].position, enemies[i].width,
-					       enemies[i].height, enemies[j].position,
-					       enemies[j].width,
-					       enemies[j].height)) {
-                            //cout << "colliDED WITH ENEMY" << endl;
-                            enemies[i].undoMove();
-                            enemies[i].reverseDirection();
-                        }
-                    }
-                }
-            }
+	  handleEvents(game);
+	  update(game);
+	  draw(game);
         }
-
-    uint32 sprite = (currentTime / 100) % 4;
-    SDL_Rect * currentClip = &playerClips[sprite];
-    SDL_Rect * oppClip = &enemyClips[sprite];
-
-		// Render
-		SDL_RenderClear(game->renderer);
-		Renderer_RenderCoord(game->renderer, &player.position, player.texture, currentClip);
-		for (int i = 0; i < MaxEnemies_; i++) {
-			Renderer_RenderCoord(game->renderer, &enemies[i].position, enemies[i].texture, oppClip);
-		}
-		SDL_RenderPresent(game->renderer);
-	}
 }
 
 void Game_Close(Game* game) {
-	Mix_FreeMusic(collideSound);
-	TextureCache_Free();
-	Renderer_Free(game->renderer);
-	SDL_DestroyWindow(game->window);
-	Mix_Quit();
-	SDL_Quit();
+    while (!game->states.empty()) {
+        game->states.back()->close();
+        game->states.pop_back();
+    }
+    TextureCache_Free();
+    Renderer_Free(game->renderer);
+    SDL_DestroyWindow(game->window);
+    Mix_Quit();
+    SDL_Quit();
+}
+
+void Game_ChangeState(Game* game, GameState* state) {
+    //close current state
+    if (!game->states.empty()) {
+      game->states.back()->close();
+      game->states.pop_back();
+    }
+    //store and initialize new state
+    game->states.push_back(state);
+    game->states.back()->initialize(game);
+}
+
+void Game_PushState(Game* game, GameState* state) {
+    if (!game->states.empty()) {
+      game->states.back()->pause();
+    }
+    game->states.push_back(state);
+    game->states.back()->initialize(game);
+}
+
+void Games_PopState(Game* game) {
+    if (!game->states.empty()) {
+        game->states.back()->close();
+        game->states.pop_back();
+    }
+    if (!game->states.empty()) {
+        game->states.back()->resume();
+    }
+}
+
+void handleEvents(Game* game) {
+    game->states.back()->handleEvents(game);
+}
+
+void update(Game* game) {
+    game->states.back()->update(game);
+}
+
+void draw(Game* game) {
+    game->states.back()->draw(game);
 }
