@@ -9,7 +9,7 @@
 #include "constants.h"
 
 const char* MENU_PAGE = "assets/menu.png";
-const char* FONT = "assets/bamboo.ttf";
+const char* FONT = "assets/stocky.ttf";
 TTF_Font* font;
 
 bool play = true;
