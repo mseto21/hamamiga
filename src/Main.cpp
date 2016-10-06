@@ -5,6 +5,5 @@ int main(void) {
 		return 1;
 	}
 	Game_RunLoop(&game);
-	Game_Close(&game);
 	return 0;
 }

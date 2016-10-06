@@ -3,6 +3,8 @@
 #include "Types.h"
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
+#include "AnimationComponent.h"
+#include "Animation.h"
 #include <SDL.h>
 #include <iostream>
 
@@ -24,7 +26,7 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 }
 
 // --------------------------------------------------------------------
-void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, Texture* texture) {
+void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect* clip, Texture* texture) {
 	if (!renderer) {
 		return;
 	}
@@ -38,22 +40,36 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, Texture* 
 	rquad.w = rect->w;
 	rquad.h = rect->h;
 
-	SDL_RenderCopy(renderer, texture->sdltexture, NULL, &rquad);
+	if (clip) {
+		rquad.w = clip->w;
+		rquad.h = clip->h;
+	}
+
+	SDL_RenderCopy(renderer, texture->sdltexture, clip, &rquad);
 }
 
 // --------------------------------------------------------------------
-void RenderSystem_Update(SDL_Renderer* renderer, TextureComponent* textureComponent, RectangleComponent* rectangleComponent) {
+void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* textureComponent, RectangleComponent* rectangleComponent, AnimationComponent* animationComponent) {
 	SDL_RenderClear(renderer);
 	for (uint32 texIndex = 0; texIndex < textureComponent->count; texIndex++) {
 		uint32 eid = textureComponent->entityArray[texIndex];
 		Texture* texture = textureComponent->textures[eid];
 		if (Component_HasIndex(rectangleComponent, eid)) {
 			Rectangle* rect = &rectangleComponent->entityRectangles[eid];
-			RenderSystem_RenderCoord(renderer, rect, texture);
+			RenderSystem_RenderCoord(renderer, rect, NULL, texture);
 			continue;
 		}
+		if (Component_HasIndex(animationComponent, eid)) {
+			Animation* animation = animationComponent->animations[eid];
+			animation->frameTime += delta;
+			if (animation->frameTime > animation->delta) {
+				animation->currentFrame++;
+				animation->currentFrame %= animation->frames;
+			}
+
+		}
 		Rectangle rect = {0, 0, texture->w, texture->h};
-		RenderSystem_RenderCoord(renderer, &rect, texture);
+		RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 	}
 	SDL_RenderPresent(renderer);
 }

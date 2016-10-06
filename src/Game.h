@@ -5,10 +5,12 @@
 struct SDL_Window;
 struct SDL_Renderer;
 struct _TTF_Font;
+
 struct RectangleComponent;
 struct MovementComponent;
 struct TextureComponent;
 struct InputComponent;
+struct AnimationComponent;
 
 enum GameState {
 	GameState_Intro = 0,
@@ -18,12 +20,12 @@ enum GameState {
 	GameState_Pause,
 };
 
-struct IntroScreen {
+struct IntroState {
 	float alpha;
 	float time;
 };
 
-struct TitleScreen {
+struct TitleState {
 	const char* selectionStrings[Constants::TitleScreenSelections_];
 	uint8 selection;
 	_TTF_Font* titleFont;
@@ -31,12 +33,17 @@ struct TitleScreen {
 	bool s;
 };
 
-struct HighScoreScreen {
+struct HighScoreState {
 
 };
 
-struct PlayingScreen {
-
+struct PlayState {
+	// Components
+	RectangleComponent* rectangleComponent;
+	MovementComponent* 	movementComponent;
+	TextureComponent*   textureComponent;
+	InputComponent* inputComponent;
+	AnimationComponent* animationComponent;
 };
 
 struct Game {
@@ -47,16 +54,10 @@ struct Game {
 	GameState gameState;
 
 	// State structs to keep things coupled correctly
-	IntroScreen introScreen;
-	TitleScreen titleScreen;
-	HighScoreScreen highScoreScreen;
-	PlayingScreen playingScreen;
-
-	// Components
-	RectangleComponent* rectangleComponent;
-	MovementComponent* 	movementComponent;
-	TextureComponent*   textureComponent;
-	InputComponent* inputComponent;
+	IntroState introState;
+	TitleState titleState;
+	HighScoreState highScoreState;
+	PlayState playState;
 };
 
 bool Game_Initialize(Game* game);
