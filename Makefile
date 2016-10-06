@@ -21,6 +21,8 @@ $(EXECUTABLE): $(OBJECTS)
 $(OBJDIR)/%.o : src/%.cpp
 	$(CXX) -c $< $(CXXFLAGS) -o $@
 
+$(OBJDIR)/%.o : src/%.h
+
 -include $(OBJECTS:.o=.d)
 
 .PHONY: clean
