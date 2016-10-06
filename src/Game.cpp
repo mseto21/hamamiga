@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <cstdio>
+#include <cstring>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -33,13 +34,12 @@ void LoadIntroScreenAssets(Game* game) {
 //--------------------------------------------------------------------
 void LoadTitleScreenAssets(Game* game) {
 	game->titleScreen.selection = 0;
-	game->titleScreen.titleFont = TTF_OpenFont("assets/minnie\'shat.ttf", 50);
-
+	game->titleScreen.titleFont = TTF_OpenFont("assets/minnie\'shat.ttf", 75);
 	if (!game->titleScreen.titleFont) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
-
+	TTF_SetFontHinting(game->titleScreen.titleFont, TTF_HINTING_MONO);
 	game->titleScreen.selectionStrings[0] = "Play";
 	game->titleScreen.selectionStrings[1] = "High Scores";
 	game->titleScreen.selectionStrings[2] = "Options";
@@ -48,9 +48,14 @@ void LoadTitleScreenAssets(Game* game) {
 	SDL_Color baseColor = {255, 255, 255, 255};
 	SDL_Color selectedColor = {100, 100, 100, 100};
 	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
-		//TextureCache_CreateFont(game->renderer, game->titleScreen.titleFont, baseColor, game->titleScreen.selectionStrings[selectionIndex], game->titleScreen.selectionStrings[selectionIndex]);
-		//TextureCache_CreateFont(game->renderer, game->titleScreen.titleFont, selectedColor, game->titleScreen.selectionStrings[selectionIndex], game->titleScreen.selectionStrings[selectionIndex]);
+		std::string base = game->titleScreen.selectionStrings[selectionIndex];
+		base.append("_base");
+		TextureCache_CreateFont(game->renderer, game->titleScreen.titleFont, baseColor, game->titleScreen.selectionStrings[selectionIndex], base.c_str());
+		std::string select = game->titleScreen.selectionStrings[selectionIndex];
+		select.append("_select");
+		TextureCache_CreateFont(game->renderer, game->titleScreen.titleFont, selectedColor, game->titleScreen.selectionStrings[selectionIndex], select.c_str());
 	}
+	TTF_CloseFont(game->titleScreen.titleFont);
 }
 
 //--------------------------------------------------------------------
@@ -142,46 +147,64 @@ void UpdateIntro(Game* game, float delta) {
 }
 
 //--------------------------------------------------------------------
-static int center(int large, int small) {
-	
-}
-
-void UpdateTitle(Game* game, bool* keysdown, float delta) {
+void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 	// Update their options
-	if (keysdown[SDLK_w]) {
-		game->titleScreen.selection--;
-		game->titleScreen.selection %= Constants::TitleScreenSelections_;
-	} else if (keysdown[SDLK_s]) {
+	if (keysdown[SDLK_w] && !game->titleScreen.w) {
+		if (!game->titleScreen.w) {
+			game->titleScreen.w = true;
+			game->titleScreen.s = false;
+			game->titleScreen.selection--;
+			game->titleScreen.selection %= Constants::TitleScreenSelections_;
+		}
+	}
+	if (keysup[SDLK_w]) {
+		game->titleScreen.w = false;
+	}
+
+	if (keysdown[SDLK_s] && !game->titleScreen.s) {
+		game->titleScreen.w = false;
+		game->titleScreen.s = true;
 		game->titleScreen.selection++;
 		game->titleScreen.selection %= Constants::TitleScreenSelections_;
-	} else if (keysdown[SDLK_RETURN]) {
+	}
+	if (keysup[SDLK_s]) {
+		game->titleScreen.s = false;
+	}
+
+	if (keysdown[SDLK_RETURN]) {
 		switch (game->titleScreen.selection) {
-		case 0:
-		  game->gameState = GameState_Play;
-		  break;
-		case 1:
-		  game->gameState = GameState_HighScore;
-		  break;
-		case 2:
-		  break;
-		case 3:
-			// TO-DO: Free font!!!
-		  Game_Close(game);
-		  break;
+			case 0:
+			  game->gameState = GameState_Play;
+			  break;
+			case 1:
+			  game->gameState = GameState_HighScore;
+			  break;
+			case 2:
+			  break;
+			case 3:
+			  Game_Close(game);
+			  break;
 		}
 	}
 
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
-
 	SDL_RenderClear(game->renderer);
-	// Render background
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
-
-	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex) {
-		
+	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
+		Texture* selection;
+		if (selectionIndex == game->titleScreen.selection) {
+			std::string base = game->titleScreen.selectionStrings[selectionIndex];
+			base.append("_base");
+			selection = TextureCache_GetTexture(base.c_str());
+		} else {
+			std::string select = game->titleScreen.selectionStrings[selectionIndex];
+			select.append("_select");
+			selection = TextureCache_GetTexture(select.c_str());
+		}
+		int renderX = Constants::ScreenWidth_ / 2 - selection->w / 2;
+		int renderY = selectionIndex * (Constants::ScreenHeight_ / Constants::TitleScreenSelections_);
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, selection);
 	}
-
-	// Render fonts
 	SDL_RenderPresent(game->renderer);
 }
 
@@ -211,8 +234,10 @@ void Game_RunLoop(Game* game) {
 	Uint32 lastTime;
 	float delta;
 
-	bool keysPressed[Constants::NumKeys_];
-	memset(&keysPressed, 0, sizeof(keysPressed));
+	bool keysdown[Constants::NumKeys_];
+	memset(&keysdown, 0, sizeof(keysdown));
+	bool keysup[Constants::NumKeys_];
+	memset(&keysup, 0, sizeof(keysup));
 
 	Entity* player = EntityCache_GetNewEntity();
 	if (player == nullptr) {
@@ -246,14 +271,16 @@ void Game_RunLoop(Game* game) {
 			if (event.type == SDL_QUIT) {
 				game->running = false;
 			}
-			if (event.type == SDL_KEYDOWN &&  event.key.keysym.sym == SDLK_ESCAPE) {
+			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
 				game->running = false;
 			}
 			if (event.type == SDL_KEYDOWN) {
-				keysPressed[event.key.keysym.sym] = true;
+				keysdown[event.key.keysym.sym] = true;
+				keysup[event.key.keysym.sym] = false;
 			}
 			if (event.type == SDL_KEYUP) {
-				keysPressed[event.key.keysym.sym] = false;
+				keysdown[event.key.keysym.sym] = false;
+				keysup[event.key.keysym.sym] = true;
 			}
 		}
 
@@ -262,16 +289,18 @@ void Game_RunLoop(Game* game) {
 				UpdateIntro(game, delta);
 				break;
 			case GameState_Title:
-				UpdateTitle(game, keysPressed, delta);
+				UpdateTitle(game, keysdown, keysup, delta);
 				break;
 			case GameState_Play:
-				UpdatePlay(game, keysPressed, delta);
+				UpdatePlay(game, keysdown, delta);
 				break;
 			case GameState_HighScore:
 				UpdateHighScore(game, delta);
 				break;
 			case GameState_Pause:
 				UpdatePause(game, delta);
+				break;
+			default:
 				break;
 		}
 	}

@@ -12,7 +12,7 @@ namespace Constants {
 	const float 	OptimalTime_ 	= 	1000 / TargetFps_;
 
 	// Intro State
-	const float		IntroTime_		= 	250.f;
+	const float		IntroTime_		= 	50.f;
 
 	// Title State
 	const uint8	 	TitleScreenSelections_	=	4;

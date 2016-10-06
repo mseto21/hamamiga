@@ -27,6 +27,8 @@ struct TitleScreen {
 	const char* selectionStrings[Constants::TitleScreenSelections_];
 	uint8 selection;
 	_TTF_Font* titleFont;
+	bool w;
+	bool s;
 };
 
 struct HighScoreScreen {
