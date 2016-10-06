@@ -3,16 +3,19 @@
 // Texture.h handles asset loading
 struct SDL_Texture;
 struct SDL_Renderer;
+struct SDL_Color;
+struct _TTF_Font;
 class Character;
 
 struct Texture {
 	int w;
 	int h;
 	SDL_Texture* sdltexture;
-	String128 path;
+	String128 name;
 	bool isAnimation;
 };
 
 bool Texture_LoadTexture(Texture* texture, SDL_Renderer* renderer, const char* path, const char* name);
+bool Texture_CreateTextureFromFont(Texture* texture, SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name);
 bool Texture_CreateBlank(Texture* texture, SDL_Renderer* renderer);
 void Texture_Free(Texture* texture);

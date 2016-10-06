@@ -6,12 +6,21 @@
 #include <SDL.h>
 #include <iostream>
 
-// --------------------------------------------------------------------
-bool RenderSystem_Initialize(SDL_Renderer* renderer, SDL_Window* window) {
-	// TO-DO: Idk if we want this yet
-	(void) renderer;
-	(void) window;
-	return true;
+void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, Texture* texture) {
+	if (!renderer) {
+		return;
+	}
+	if (!texture) {
+		return;
+	}
+
+	SDL_Rect rquad;
+	rquad.x = x;
+	rquad.y = y;
+	rquad.w = w;
+	rquad.h = h;
+
+	SDL_RenderCopy(renderer, texture->sdltexture, NULL, &rquad);
 }
 
 // --------------------------------------------------------------------

@@ -1,7 +1,9 @@
 #include "Texture.h"
+#include "Types.h"
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <SDL.h>
 
 const int MaxTextures_ = 100;
 
@@ -25,12 +27,10 @@ TextureCache* TextureCache_GetCache() {
 
 
 /* Returns the texture with the specified path. */
-Texture* TextureCache_GetTexture(const char* path) {
-	// TO-DO: Make this a map, for now we'll do a linear search
+Texture* TextureCache_GetTexture(const String128 path) {
 	for (int i = 0; i < tcache->index; i++) {
-		Texture* texture = &tcache->textures[tcache->index];
-		// Since we're comparing const char*, we can compare the pointers.
-		if (strcmp(path, texture->path) == 0) {
+		Texture* texture = &tcache->textures[i];
+		if (strcmp(path, texture->name) == 0) {
 			return texture;
 		}
 	}
@@ -47,6 +47,14 @@ Texture* TextureCache_GetTexture(int index) {
 /* Creates and returns a new texture from the given path. */
 Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, const char* name) {
 	Texture_LoadTexture(&tcache->textures[tcache->index], renderer, path, name);
+	SDL_SetTextureBlendMode(tcache->textures[tcache->index].sdltexture , SDL_BLENDMODE_BLEND );
+	return &tcache->textures[tcache->index++];
+}
+
+
+/* Creates and returns a new texture with the given message, color, and font*/
+Texture* TextureCache_CreateFont(SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name) {
+	Texture_CreateTextureFromFont(&tcache->textures[tcache->index], renderer, font, color, message, name);
 	return &tcache->textures[tcache->index++];
 }
 
