@@ -22,7 +22,7 @@ namespace Constants {
 	const uint16 	PlayerHSize_ 	=	41; //player image size
 
 	// High Score State
-	const uint32      MaxHighScores_	=	5;
+	const int       MaxHighScores_	=	5;
 
 	// String names (TO-DO: Don't have them in here!)
 	const String128	TitleBackground_= 	"title_background";

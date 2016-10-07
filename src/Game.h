@@ -38,11 +38,12 @@ struct TitleState {
 };
 
 struct HighScoreState {
-	float score;
-	int highScores[Constants::MaxHighScores_];
+	int scores[Constants::MaxHighScores_];
+	_TTF_Font* font;
 };
 
 struct PlayState {
+	float score;
 	// Components
 	RectangleComponent* rectangleComponent;
 	MovementComponent* 	movementComponent;

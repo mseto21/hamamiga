@@ -72,6 +72,21 @@ void LoadTitleStateAssets(Game* game) {
 
 //--------------------------------------------------------------------
 void LoadPlayStateAssets(Game* game) {
+	// Initialize Components
+	game->playState.rectangleComponent = (RectangleComponent*)malloc(sizeof(*game->playState.rectangleComponent));
+	game->playState.movementComponent = (MovementComponent*)malloc(sizeof(*game->playState.movementComponent));
+	game->playState.textureComponent = (TextureComponent*)malloc(sizeof(*game->playState.textureComponent));
+	game->playState.inputComponent = (InputComponent*)malloc(sizeof(*game->playState.inputComponent));
+	game->playState.animationComponent = (AnimationComponent*)malloc(sizeof(*game->playState.animationComponent));
+	game->playState.physicsComponent = (PhysicsComponent*)malloc(sizeof(*game->playState.physicsComponent));
+	game->playState.healthComponent = (HealthComponent*)malloc(sizeof(*game->playState.healthComponent));
+	Component_Initialize(game->playState.rectangleComponent);
+	Component_Initialize(game->playState.movementComponent);
+	Component_Initialize(game->playState.textureComponent);
+	Component_Initialize(game->playState.inputComponent);
+	Component_Initialize(game->playState.animationComponent);
+	Component_Initialize(game->playState.healthComponent);
+
 	// Initialzie variables
 	game->playState.score = 0;
 
@@ -90,27 +105,27 @@ void LoadPlayStateAssets(Game* game) {
 	}
 	TextureComponent_Add(game->playState.textureComponent, player->eid, TextureCache_GetTexture("player"));
 	HealthComponent_Add(game->playState.healthComponent, player->eid, 100);
-
-	// Initialize Components
-	game->playState.rectangleComponent = (RectangleComponent*)malloc(sizeof(*game->playState.rectangleComponent));
-	game->playState.movementComponent = (MovementComponent*)malloc(sizeof(*game->playState.movementComponent));
-	game->playState.textureComponent = (TextureComponent*)malloc(sizeof(*game->playState.textureComponent));
-	game->playState.inputComponent = (InputComponent*)malloc(sizeof(*game->playState.inputComponent));
-	game->playState.animationComponent = (AnimationComponent*)malloc(sizeof(*game->playState.animationComponent));
-	game->playState.physicsComponent = (PhysicsComponent*)malloc(sizeof(*game->playState.physicsComponent));
-	game->playState.healthComponent = (HealthComponent*)malloc(sizeof(*game->playState.healthComponent));
-	Component_Initialize(game->playState.rectangleComponent);
-	Component_Initialize(game->playState.movementComponent);
-	Component_Initialize(game->playState.textureComponent);
-	Component_Initialize(game->playState.inputComponent);
-	Component_Initialize(game->playState.animationComponent);
-	Component_Initialize(game->playState.healthComponent);
 }
 
 
 //--------------------------------------------------------------------
 void LoadHighScoreStateAssets(Game* game) {
-	(void)game;
+	// Load font
+	game->highScoreState.font = TTF_OpenFont("assets/minnie\'shat.ttf", 75);
+	if (!game->highScoreState.font) {
+		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+		return;
+	}
+	// TO-DO: Read this in from a file.
+	// Create textures for the current high scores
+	SDL_Color scoreColor = {255, 255, 255, 255};
+	for (int highScoreIndex = 0; highScoreIndex < Constants::MaxHighScores_; highScoreIndex++) {
+		std::string msg = std::to_string(game->highScoreState.scores[highScoreIndex]);
+		std::string name = "high_score_";
+		name.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
+		TextureCache_CreateFont(game->renderer, game->highScoreState.font, scoreColor, msg.c_str(), name.c_str());
+	}
+	TTF_CloseFont(game->highScoreState.font);
 }
 
 
@@ -167,11 +182,9 @@ bool Game_Initialize(Game* game) {
 		return false;
 	}
 
-	// Initialize States
+	// Initialize current states
 	LoadIntroStateAssets(game);
 	LoadTitleStateAssets(game);
-	LoadPlayStateAssets(game);
-	LoadHighScoreStateAssets(game);
 
 	// Enter title state
 	game->gameState = GameState_Intro;
@@ -196,7 +209,6 @@ void UpdateIntro(Game* game, float delta) {
 	if (background) {
 		RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
 	}
-
 	if (fader) { 
 		SDL_SetTextureAlphaMod(fader->sdltexture, (game->introState.alpha * 255));
 		RenderSystem_Render_xywh(game->renderer, 0, 0, fader->w, fader->h, fader);
@@ -207,6 +219,7 @@ void UpdateIntro(Game* game, float delta) {
 
 //--------------------------------------------------------------------
 void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
+	(void) delta;
 	// Update their options
 	if (keysdown[SDLK_w] && !game->titleState.w) {
 		if (!game->titleState.w) {
@@ -235,10 +248,12 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 			case 0:
 				Mix_HaltMusic(); // Stop Playing any music.
 			  game->gameState = GameState_Play;
+			  LoadPlayStateAssets(game);
 			  break;
 			case 1:
-				Mix_HaltMusic();
+			  //Mix_HaltMusic();
 			  game->gameState = GameState_HighScore;
+			  LoadHighScoreStateAssets(game);
 			  break;
 			case 2:
 			  break;
@@ -283,8 +298,11 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	// Process Input
 	if (keysdown[SDLK_m] == true) {
 		game->gameState = GameState_Title;
-		game->playState.score = 0;
+		game->playState.score = 0; // Don't save their high score if they quit early
 	}
+
+	// If game ends regularly...
+		// update game->highScoreState.scores
 
 	// Update systems
 	InputSystem_Update(keysdown, game->playState.inputComponent, game->playState.movementComponent);
@@ -295,18 +313,43 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 
 //--------------------------------------------------------------------
 void UpdateHighScore(Game* game, float delta) {
-	
+	(void) delta;
+
+	// Render
+	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
+	SDL_RenderClear(game->renderer);
+	if (background) RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
+	for (int highScoreIndex = 0; highScoreIndex < Constants::MaxHighScores_; highScoreIndex++) {
+		std::string name = "high_score_";
+		name.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
+		Texture* score = TextureCache_GetTexture(name.c_str());
+		if (!score) {
+			std::cerr << "Could not find texture for score " << game->highScoreState.scores[highScoreIndex] << std::endl;
+			continue;
+		}
+		int renderX = Constants::ScreenWidth_ / 2 - score->w / 2;
+		int renderY = highScoreIndex * (Constants::ScreenHeight_ / Constants::MaxHighScores_);
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, score->w, score->h, score);
+	}
+	SDL_RenderPresent(game->renderer);
 }
 
 
 //--------------------------------------------------------------------
 void UpdatePause(Game* game, float delta) {
-	
+	// TO-DO: Implement some sort of pause
+	(void) delta;
+	(void) game;
 }
 
 
 //--------------------------------------------------------------------
 void Game_RunLoop(Game* game) {
+	if (!game) {
+		std::cerr << "The game instance was not initialized!" << std::endl;
+		return;
+	}
+
 	// Time Management variables
 	SDL_Event event;
 	Uint32 currentTime = SDL_GetTicks();
