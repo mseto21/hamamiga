@@ -312,8 +312,12 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 
 
 //--------------------------------------------------------------------
-void UpdateHighScore(Game* game, float delta) {
+void UpdateHighScore(Game* game, bool* keysdown, float delta) {
 	(void) delta;
+
+	if (keysdown[SDLK_m] == true) {
+		game->gameState = GameState_Title;
+	}
 
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
@@ -405,7 +409,7 @@ void Game_RunLoop(Game* game) {
 				UpdatePlay(game, keysdown, delta);
 				break;
 			case GameState_HighScore:
-				UpdateHighScore(game, delta);
+				UpdateHighScore(game, keysdown, delta);
 				break;
 			case GameState_Pause:
 				UpdatePause(game, delta);
