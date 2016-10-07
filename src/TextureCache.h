@@ -26,6 +26,21 @@ TextureCache* TextureCache_GetCache() {
 }
 
 
+/* Creates and returns a new texture from the given path. */
+Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, const char* name) {
+	Texture_LoadTexture(&tcache->textures[tcache->index], renderer, path, name);
+	SDL_SetTextureBlendMode(tcache->textures[tcache->index].sdltexture , SDL_BLENDMODE_BLEND );
+	return &tcache->textures[tcache->index++];
+}
+
+
+/* Creates and returns a new texture with the given message, color, and font*/
+Texture* TextureCache_CreateFont(SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name) {
+	Texture_CreateTextureFromFont(&tcache->textures[tcache->index], renderer, font, color, message, name);
+	return &tcache->textures[tcache->index++];
+}
+
+
 /* Returns the texture with the specified path. */
 Texture* TextureCache_GetTexture(const String128 path) {
 	for (int i = 0; i < tcache->index; i++) {
@@ -41,21 +56,6 @@ Texture* TextureCache_GetTexture(const String128 path) {
 /* Returns a texture at a particular index. */
 Texture* TextureCache_GetTexture(int index) {
 	return &tcache->textures[index];
-}
-
-
-/* Creates and returns a new texture from the given path. */
-Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, const char* name) {
-	Texture_LoadTexture(&tcache->textures[tcache->index], renderer, path, name);
-	SDL_SetTextureBlendMode(tcache->textures[tcache->index].sdltexture , SDL_BLENDMODE_BLEND );
-	return &tcache->textures[tcache->index++];
-}
-
-
-/* Creates and returns a new texture with the given message, color, and font*/
-Texture* TextureCache_CreateFont(SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name) {
-	Texture_CreateTextureFromFont(&tcache->textures[tcache->index], renderer, font, color, message, name);
-	return &tcache->textures[tcache->index++];
 }
 
 

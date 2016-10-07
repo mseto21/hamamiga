@@ -13,6 +13,7 @@ struct InputComponent;
 struct AnimationComponent;
 struct PhysicsComponent;
 struct HealthComponent;
+struct _Mix_Music;
 
 enum GameState {
 	GameState_Intro = 0,
@@ -33,6 +34,7 @@ struct TitleState {
 	_TTF_Font* titleFont;
 	bool w;
 	bool s;
+	_Mix_Music* titleMusic;
 };
 
 struct HighScoreState {

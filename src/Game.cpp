@@ -37,6 +37,7 @@ void LoadIntroStateAssets(Game* game) {
 
 //--------------------------------------------------------------------
 void LoadTitleStateAssets(Game* game) {
+	// Load font textures
 	game->titleState.selection = 0;
 	game->titleState.titleFont = TTF_OpenFont("assets/minnie\'shat.ttf", 75);
 	if (!game->titleState.titleFont) {
@@ -60,6 +61,12 @@ void LoadTitleStateAssets(Game* game) {
 		TextureCache_CreateFont(game->renderer, game->titleState.titleFont, selectedColor, game->titleState.selectionStrings[selectionIndex], select.c_str());
 	}
 	TTF_CloseFont(game->titleState.titleFont);
+
+	// Load title music
+	game->titleState.titleMusic = Mix_LoadMUS("assets/themesong.mp3");
+	if (game->titleState.titleMusic == NULL) {
+		std::cerr << "Unable to initialize titlescreen music! SDL_Error: " << Mix_GetError() << std::endl;
+	}
 }
 
 
@@ -90,10 +97,12 @@ void LoadHighScoreStateAssets(Game* game) {
 
 //--------------------------------------------------------------------
 bool Game_Initialize(Game* game) {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	// Initialize sdl
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		return false;
 	}
 
+	// Initialize game window
 	game->window = SDL_CreateWindow("Fat Hactory", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
 		Constants::ScreenWidth_, Constants::ScreenHeight_, SDL_WINDOW_SHOWN);
 	if (!game->window ) {
@@ -108,22 +117,32 @@ bool Game_Initialize(Game* game) {
 		return false;
 	}
 
+	// Initialize image lib
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init(imgFlags) && imgFlags)) {
 		std::cerr << "Image library could not initialize! SDL Error: " << IMG_GetError() << std::endl;
 		return false;
 	}
 
+	// Initialize font lib
 	if (TTF_Init() == -1) {
 		std::cerr << "TTF library could not initialize! SDL Error: " << TTF_GetError() << std::endl;
 		return false;
 	}
 
+	// Initialize mixer
+	if(Mix_OpenAudio( 22050, MIX_INIT_MP3, 2, 4096 ) == -1) {
+    	std::cerr << "Mixer library could not initialize! SDL Error: " << Mix_GetError() << std::endl;
+        return false;    
+    }
+
+	// Initialize texture cache
 	if (TextureCache_GetCache() == NULL) {
 		std::cerr << "Error: The texture cache failed to initialize!" << std::endl;
 		return false;
 	}
 
+	// Initialize entity cache
 	if (EntityCache_GetCache() == NULL) {
 		std::cerr << "Error: The entity cache failed to initialize!" << std::endl;
 		return false;
@@ -144,15 +163,16 @@ bool Game_Initialize(Game* game) {
 
 //--------------------------------------------------------------------
 void UpdateIntro(Game* game, float delta) {
+	// Check if the intro is done
 	game->introState.time += delta;
 	game->introState.alpha = 1 - (game->introState.time / Constants::IntroTime_);
 	if ( game->introState.time  >= Constants::IntroTime_) {
 		game->gameState = GameState_Title;
 	}
 
+	// Render intro
 	Texture* fader = TextureCache_GetTexture(Constants::TitleFader_);
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
-
 	SDL_RenderClear(game->renderer);
 	if (background) {
 		RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
@@ -194,6 +214,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 	if (keysdown[SDLK_RETURN]) {
 		switch (game->titleState.selection) {
 			case 0:
+				Mix_HaltMusic(); // Stop Playing any music.
 			  game->gameState = GameState_Play;
 			  break;
 			case 1:
@@ -205,6 +226,11 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 			  Game_Close(game);
 			  break;
 		}
+	}
+
+	// Check for music playing
+	if (Mix_PlayingMusic() == 0) {
+		Mix_PlayMusic(game->titleState.titleMusic, -1);
 	}
 
 	// Render
@@ -232,9 +258,11 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 
 //--------------------------------------------------------------------
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
+	// Process Input
 	if (keysdown[SDLK_m] == true) {
 		game->gameState = GameState_Title;
 	}
+
 	// Update systems
 	InputSystem_Update(keysdown, game->playState.inputComponent, game->playState.movementComponent);
 	MovementSystem_Update(delta, game->playState.movementComponent, game->playState.rectangleComponent);
@@ -354,6 +382,8 @@ void Game_Close(Game* game) {
 	free(game->playState.healthComponent);
 	TextureCache_Free();
 	EntityCache_Free();
+	Mix_CloseAudio();
+	TTF_Quit();
 	RenderSystem_Free(game->renderer);
 	SDL_DestroyWindow(game->window);
 	SDL_Quit();
