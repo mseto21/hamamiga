@@ -63,7 +63,7 @@ void LoadTitleStateAssets(Game* game) {
 	TTF_CloseFont(game->titleState.titleFont);
 
 	// Load title music
-	game->titleState.titleMusic = Mix_LoadMUS("assets/themesong.mp3");
+	game->titleState.titleMusic = Mix_LoadMUS("assets/themesong.ogg");
 	if (game->titleState.titleMusic == NULL) {
 		std::cerr << "Unable to initialize titlescreen music! SDL_Error: " << Mix_GetError() << std::endl;
 	}
@@ -72,6 +72,25 @@ void LoadTitleStateAssets(Game* game) {
 
 //--------------------------------------------------------------------
 void LoadPlayStateAssets(Game* game) {
+	// Initialzie variables
+	game->playState.score = 0;
+
+	// Initialize all entities
+	Entity* player = EntityCache_GetNewEntity();
+	if (player == nullptr) {
+		std::cerr << "Error: The player could not be initialized." << std::endl;
+		return;
+	}
+	InputComponent_Add(game->playState.inputComponent, player->eid);
+	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, 32, 32);
+	MovementComponent_Add(game->playState.movementComponent, player->eid, 10, 10, 0, 0);
+	TextureCache_CreateTexture(game->renderer, "assets/player.png", "player");
+	if (TextureCache_GetTexture("player") == nullptr) {
+		std::cerr << "Error: The player's texture could not be initialized." << std::endl;
+	}
+	TextureComponent_Add(game->playState.textureComponent, player->eid, TextureCache_GetTexture("player"));
+	HealthComponent_Add(game->playState.healthComponent, player->eid, 100);
+
 	// Initialize Components
 	game->playState.rectangleComponent = (RectangleComponent*)malloc(sizeof(*game->playState.rectangleComponent));
 	game->playState.movementComponent = (MovementComponent*)malloc(sizeof(*game->playState.movementComponent));
@@ -131,7 +150,7 @@ bool Game_Initialize(Game* game) {
 	}
 
 	// Initialize mixer
-	if(Mix_OpenAudio( 22050, MIX_INIT_MP3, 2, 4096 ) == -1) {
+	if(Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1) {
     	std::cerr << "Mixer library could not initialize! SDL Error: " << Mix_GetError() << std::endl;
         return false;    
     }
@@ -218,11 +237,13 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 			  game->gameState = GameState_Play;
 			  break;
 			case 1:
+				Mix_HaltMusic();
 			  game->gameState = GameState_HighScore;
 			  break;
 			case 2:
 			  break;
 			case 3:
+				Mix_HaltMusic();
 			  Game_Close(game);
 			  break;
 		}
@@ -230,7 +251,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 
 	// Check for music playing
 	if (Mix_PlayingMusic() == 0) {
-		Mix_PlayMusic(game->titleState.titleMusic, -1);
+		Mix_PlayMusic(game->titleState.titleMusic, 0);
 	}
 
 	// Render
@@ -258,9 +279,11 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 
 //--------------------------------------------------------------------
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
+	game->playState.score += delta;
 	// Process Input
 	if (keysdown[SDLK_m] == true) {
 		game->gameState = GameState_Title;
+		game->playState.score = 0;
 	}
 
 	// Update systems
@@ -296,26 +319,6 @@ void Game_RunLoop(Game* game) {
 	memset(&keysdown, 0, sizeof(keysdown));
 	bool keysup[Constants::NumKeys_];
 	memset(&keysup, 0, sizeof(keysup));
-
-
-	// This will be moved elsewhere eventually
-	Entity* player = EntityCache_GetNewEntity();
-	if (player == nullptr) {
-		std::cerr << "Error: The player could not be initialized." << std::endl;
-		return;
-	}
-	InputComponent_Add(game->playState.inputComponent, player->eid);
-	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, 32, 32);
-	MovementComponent_Add(game->playState.movementComponent, player->eid, 10, 10, 0, 0);
-	TextureCache_CreateTexture(game->renderer, "assets/player.png", "player");
-	Texture* playerTexture = TextureCache_GetTexture("player");
-	if (playerTexture == nullptr) {
-		std::cerr << "Error: The player's texture could not be initialized." << std::endl;
-		return;
-	}
-	TextureComponent_Add(game->playState.textureComponent, player->eid, playerTexture);
-	HealthComponent_Add(game->playState.healthComponent, player->eid, 100);
-
 
 
 	// Begin game loop
@@ -380,6 +383,8 @@ void Game_Close(Game* game) {
 	free(game->playState.animationComponent);
 	free(game->playState.physicsComponent);
 	free(game->playState.healthComponent);
+
+	Mix_FreeMusic(game->titleState.titleMusic);
 	TextureCache_Free();
 	EntityCache_Free();
 	Mix_CloseAudio();

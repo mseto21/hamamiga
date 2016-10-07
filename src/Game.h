@@ -38,6 +38,7 @@ struct TitleState {
 };
 
 struct HighScoreState {
+	float score;
 	int highScores[Constants::MaxHighScores_];
 };
 
