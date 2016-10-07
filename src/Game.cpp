@@ -10,6 +10,8 @@
 #include "TextureComponent.h"
 #include "InputComponent.h"
 #include "AnimationComponent.h"
+#include "PhysicsComponent.h"
+#include "HealthComponent.h"
 
 #include <iostream>
 #include <cstdio>
@@ -69,13 +71,14 @@ void LoadPlayStateAssets(Game* game) {
 	game->playState.textureComponent = (TextureComponent*)malloc(sizeof(*game->playState.textureComponent));
 	game->playState.inputComponent = (InputComponent*)malloc(sizeof(*game->playState.inputComponent));
 	game->playState.animationComponent = (AnimationComponent*)malloc(sizeof(*game->playState.animationComponent));
-	game->playState.physicsComponent = (AnimationComponent*)malloc(sizeof(*game->playState.physicsComponent));
+	game->playState.physicsComponent = (PhysicsComponent*)malloc(sizeof(*game->playState.physicsComponent));
+	game->playState.healthComponent = (HealthComponent*)malloc(sizeof(*game->playState.healthComponent));
 	Component_Initialize(game->playState.rectangleComponent);
 	Component_Initialize(game->playState.movementComponent);
 	Component_Initialize(game->playState.textureComponent);
 	Component_Initialize(game->playState.inputComponent);
 	Component_Initialize(game->playState.animationComponent);
-	Component_Initialize(game->playState.physicsComponent);
+	Component_Initialize(game->playState.healthComponent);
 }
 
 
@@ -283,6 +286,7 @@ void Game_RunLoop(Game* game) {
 		return;
 	}
 	TextureComponent_Add(game->playState.textureComponent, player->eid, playerTexture);
+	HealthComponent_Add(game->playState.healthComponent, player->eid, 100);
 
 
 
@@ -346,6 +350,8 @@ void Game_Close(Game* game) {
 	free(game->playState.textureComponent);
 	free(game->playState.inputComponent);
 	free(game->playState.animationComponent);
+	free(game->playState.physicsComponent);
+	free(game->playState.healthComponent);
 	TextureCache_Free();
 	EntityCache_Free();
 	RenderSystem_Free(game->renderer);

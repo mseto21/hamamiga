@@ -12,6 +12,7 @@ struct TextureComponent;
 struct InputComponent;
 struct AnimationComponent;
 struct PhysicsComponent;
+struct HealthComponent;
 
 enum GameState {
 	GameState_Intro = 0,
@@ -35,7 +36,7 @@ struct TitleState {
 };
 
 struct HighScoreState {
-
+	int highScores[Constants::MaxHighScores_];
 };
 
 struct PlayState {
@@ -46,6 +47,7 @@ struct PlayState {
 	InputComponent* inputComponent;
 	AnimationComponent* animationComponent;
 	PhysicsComponent* physicsComponent;
+	HealthComponent* healthComponent;
 };
 
 struct Game {
@@ -65,3 +67,5 @@ struct Game {
 bool Game_Initialize(Game* game);
 void Game_RunLoop(Game* game);
 void Game_Close(Game* game);
+
+
