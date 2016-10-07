@@ -11,6 +11,7 @@ struct MovementComponent;
 struct TextureComponent;
 struct InputComponent;
 struct AnimationComponent;
+struct PhysicsComponent;
 
 enum GameState {
 	GameState_Intro = 0,
@@ -44,6 +45,7 @@ struct PlayState {
 	TextureComponent*   textureComponent;
 	InputComponent* inputComponent;
 	AnimationComponent* animationComponent;
+	PhysicsComponent* physicsComponent;
 };
 
 struct Game {

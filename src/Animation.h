@@ -3,7 +3,7 @@
 
 struct Animation {
 	uint16 frames;			/* Number of frames in animation */
-	uint16 currentFrame;		/* Frame currently being rendered */
+	uint16 currentFrame;	/* Frame currently being rendered */
 	float delta;			/* Time between frames */
 	float frameTime;		/* Current time for frame */
 	int spriteW;			/* Width of each frame */

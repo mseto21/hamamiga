@@ -69,11 +69,13 @@ void LoadPlayStateAssets(Game* game) {
 	game->playState.textureComponent = (TextureComponent*)malloc(sizeof(*game->playState.textureComponent));
 	game->playState.inputComponent = (InputComponent*)malloc(sizeof(*game->playState.inputComponent));
 	game->playState.animationComponent = (AnimationComponent*)malloc(sizeof(*game->playState.animationComponent));
+	game->playState.physicsComponent = (AnimationComponent*)malloc(sizeof(*game->playState.physicsComponent));
 	Component_Initialize(game->playState.rectangleComponent);
 	Component_Initialize(game->playState.movementComponent);
 	Component_Initialize(game->playState.textureComponent);
 	Component_Initialize(game->playState.inputComponent);
 	Component_Initialize(game->playState.animationComponent);
+	Component_Initialize(game->playState.physicsComponent);
 }
 
 
@@ -227,6 +229,9 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 
 //--------------------------------------------------------------------
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
+	if (keysdown[SDLK_m] == true) {
+		game->gameState = GameState_Title;
+	}
 	// Update systems
 	InputSystem_Update(keysdown, game->playState.inputComponent, game->playState.movementComponent);
 	MovementSystem_Update(delta, game->playState.movementComponent, game->playState.rectangleComponent);
@@ -271,7 +276,7 @@ void Game_RunLoop(Game* game) {
 	InputComponent_Add(game->playState.inputComponent, player->eid);
 	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, 32, 32);
 	MovementComponent_Add(game->playState.movementComponent, player->eid, 10, 10, 0, 0);
-	TextureCache_CreateTexture(game->renderer, "/assets/player.png", "player");
+	TextureCache_CreateTexture(game->renderer, "assets/player.png", "player");
 	Texture* playerTexture = TextureCache_GetTexture("player");
 	if (playerTexture == nullptr) {
 		std::cerr << "Error: The player's texture could not be initialized." << std::endl;
@@ -279,21 +284,6 @@ void Game_RunLoop(Game* game) {
 	}
 	TextureComponent_Add(game->playState.textureComponent, player->eid, playerTexture);
 
-	Entity* player2 = EntityCache_GetNewEntity();
-	if (player2 == nullptr) {
-		std::cerr << "Error: The player could not be initialized." << std::endl;
-		return;
-	}
-	InputComponent_Add(game->playState.inputComponent, player2->eid);
-	RectangleComponent_Add(game->playState.rectangleComponent, player2->eid, 0, 0, 32, 32);
-	MovementComponent_Add(game->playState.movementComponent, player2->eid, 10, 10, 0, 0);
-	TextureCache_CreateTexture(game->renderer, "/assets/player.png", "player2");
-	Texture* playerTexture2 = TextureCache_GetTexture("player");
-	if (playerTexture2 == nullptr) {
-		std::cerr << "Error: The player's texture could not be initialized." << std::endl;
-		return;
-	}
-	TextureComponent_Add(game->playState.textureComponent, player2->eid, playerTexture2);
 
 
 	// Begin game loop
