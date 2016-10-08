@@ -1,3 +1,4 @@
+#include "Animation.h"
 #include "Component.h"
 
 struct Animation;

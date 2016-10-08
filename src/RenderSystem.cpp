@@ -4,7 +4,6 @@
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
 #include "AnimationComponent.h"
-#include "Animation.h"
 #include <SDL.h>
 #include <iostream>
 
@@ -64,7 +63,8 @@ void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* 
 			animation->frameTime += delta;
 			if (animation->frameTime > animation->delta) {
 				animation->currentFrame++;
-				animation->currentFrame %= animation->frames;
+				std::cout << animation->frames << "\n";
+				//animation->currentFrame %= animation->frames;
 			}
 
 		}

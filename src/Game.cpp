@@ -96,15 +96,31 @@ void LoadPlayStateAssets(Game* game) {
 		std::cerr << "Error: The player could not be initialized." << std::endl;
 		return;
 	}
+//Creating animation
+	Animation playerAnimation;
+	const uint16 f = 4;
+	Animation_Initialize(&playerAnimation, f, 0.f, Constants::PlayerWSize_, Constants::PlayerHSize_);
+	std::cout << playerAnimation.frames;
+//Component Adding
 	InputComponent_Add(game->playState.inputComponent, player->eid);
 	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, 32, 32);
 	MovementComponent_Add(game->playState.movementComponent, player->eid, 10, 10, 0, 0);
-	TextureCache_CreateTexture(game->renderer, "assets/player.png", "player");
+	TextureCache_CreateTexture(game->renderer, "assets/panim.jpg", "player");
 	if (TextureCache_GetTexture("player") == nullptr) {
 		std::cerr << "Error: The player's texture could not be initialized." << std::endl;
 	}
 	TextureComponent_Add(game->playState.textureComponent, player->eid, TextureCache_GetTexture("player"));
 	HealthComponent_Add(game->playState.healthComponent, player->eid, 100);
+	AnimationComponent_Add(game->playState.animationComponent, player->eid, &playerAnimation);
+	//Win state for now
+	Entity* trophy = EntityCache_GetNewEntity();
+	RectangleComponent_Add(game->playState.rectangleComponent, trophy->eid, 500, 350, 32, 32);
+	TextureCache_CreateTexture(game->renderer, "assets/trophy.png", "trophy");
+	if (TextureCache_GetTexture("trophy") == nullptr) {
+		std::cerr << "Error: The trophy's texture could not be initialized." << std::endl;
+	}
+	TextureComponent_Add(game->playState.textureComponent, trophy->eid, TextureCache_GetTexture("trophy"));
+
 }
 
 
@@ -301,6 +317,16 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 		game->playState.score = 0; // Don't save their high score if they quit early
 	}
 
+	//Checking if the player has reached the trophy
+	Rectangle* rect = &game->playState.rectangleComponent->entityRectangles[0];//hax with 0
+	//std::cout << rect->x << "\n";
+	if (rect->x > 500 && rect->x < 500+32){
+		if (rect->y > 350 && rect->y < 350+32){
+			std::cout << "WIN!";
+			game->gameState = GameState_Title;
+		}
+	}//hard code 500x, 350y
+
 	// If game ends regularly...
 		// update game->highScoreState.scores
 
@@ -367,7 +393,10 @@ void Game_RunLoop(Game* game) {
 	bool keysup[Constants::NumKeys_];
 	memset(&keysup, 0, sizeof(keysup));
 
-
+	//Creating animation
+	//Animation playerAnimation;
+//	delta = 0.f;
+	//Animation_Initialize(&playerAnimation, 4, delta, Constants::PlayerWSize_, Constants::PlayerHSize_);
 	// Begin game loop
 	while (game->running) {
 		// Calculate timestep
