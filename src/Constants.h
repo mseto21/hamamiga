@@ -27,4 +27,5 @@ namespace Constants {
 	// String names (TO-DO: Don't have them in here!)
 	const String128	TitleBackground_= 	"title_background";
 	const String128		TitleFader_	=	"title_fader";
+	const String128	WinBackground_= 	"win_background";
 }
