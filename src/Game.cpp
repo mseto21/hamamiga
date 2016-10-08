@@ -100,7 +100,7 @@ void LoadPlayStateAssets(Game* game) {
 	Animation playerAnimation;
 	const uint16 f = 4;
 	Animation_Initialize(&playerAnimation, f, 0.f, Constants::PlayerWSize_, Constants::PlayerHSize_);
-	std::cout << playerAnimation.frames;
+
 //Component Adding
 	InputComponent_Add(game->playState.inputComponent, player->eid);
 	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, 32, 32);
@@ -393,10 +393,6 @@ void Game_RunLoop(Game* game) {
 	bool keysup[Constants::NumKeys_];
 	memset(&keysup, 0, sizeof(keysup));
 
-	//Creating animation
-	//Animation playerAnimation;
-//	delta = 0.f;
-	//Animation_Initialize(&playerAnimation, 4, delta, Constants::PlayerWSize_, Constants::PlayerHSize_);
 	// Begin game loop
 	while (game->running) {
 		// Calculate timestep

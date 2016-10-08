@@ -54,19 +54,31 @@ void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* 
 		uint32 eid = textureComponent->entityArray[texIndex];
 		Texture* texture = textureComponent->textures[eid];
 		if (Component_HasIndex(rectangleComponent, eid)) {
-			Rectangle* rect = &rectangleComponent->entityRectangles[eid];
-			RenderSystem_RenderCoord(renderer, rect, NULL, texture);
-			continue;
-		}
-		if (Component_HasIndex(animationComponent, eid)) {
-			Animation* animation = animationComponent->animations[eid];
-			animation->frameTime += delta;
-			if (animation->frameTime > animation->delta) {
-				animation->currentFrame++;
-				std::cout << animation->frames << "\n";
-				//animation->currentFrame %= animation->frames;
+			if (Component_HasIndex(animationComponent, eid)) {
+				Animation* animation = &animationComponent->animations[eid];
+				if (animation->frames == 4){
+					animation->currentFrameTime += delta;
+					if (animation->currentFrameTime > animation->frameTime) {
+						Rectangle* rect = &rectangleComponent->entityRectangles[eid];
+						int p = animation->currentFrame;
+						SDL_Rect currentClip = animation->animationClips[p];
+						animation->currentFrame %= animation->frames;
+						animation->currentFrameTime = 0;
+						RenderSystem_RenderCoord(renderer, rect, &currentClip, texture);
+						animation->currentFrame++;
+					}
+					else {
+						int p = animation->currentFrame;
+						SDL_Rect currentClip = animation->animationClips[p];
+						Rectangle* rect = &rectangleComponent->entityRectangles[eid];
+						RenderSystem_RenderCoord(renderer, rect, &currentClip, texture);
+					}
+				}	
+			}	else {
+				Rectangle* rect = &rectangleComponent->entityRectangles[eid];
+				RenderSystem_RenderCoord(renderer, rect, NULL, texture);
 			}
-
+			continue;
 		}
 		Rectangle rect = {0, 0, texture->w, texture->h};
 		RenderSystem_RenderCoord(renderer, &rect, NULL, texture);

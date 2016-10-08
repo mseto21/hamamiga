@@ -1,10 +1,10 @@
 #include "Animation.h"
 #include "Component.h"
 
-struct Animation;
+//struct Animation;
 
 struct AnimationComponent : public Component {
-	Animation* animations[Constants::MaxEntities_];
+	Animation animations[Constants::MaxEntities_];
 };
 
 void AnimationComponent_Add(AnimationComponent* animationComponent, uint32 eid, Animation* animation);
