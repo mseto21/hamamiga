@@ -324,7 +324,7 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	Rectangle* rect = &game->playState.rectangleComponent->entityRectangles[0];//hax with 0
 	//std::cout << rect->x << "\n";
 	if (rect->x > 500 && rect->x < 500+32){
-		if (rect->y > 350 && rect->y < 350+32){www
+		if (rect->y > 350 && rect->y < 350+32){
 			std::cout << "WIN!";
 			game->gameState = GameState_Win;
 		}
@@ -376,26 +376,11 @@ void UpdatePause(Game* game, float delta) {
 }
 
 //--------------------------------------------------------------------
-void UpdateWin(Game* game, float delta) {
-		// Render
+void UpdateWin(Game* game) {
+	// Render
 	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
-	/*for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
-		Texture* selection;
-		if (selectionIndex == game->titleState.selection) {
-			std::string base = game->titleState.selectionStrings[selectionIndex];
-			base.append("_base");
-			selection = TextureCache_GetTexture(base.c_str());
-		} else {
-			std::string select = game->titleState.selectionStrings[selectionIndex];
-			select.append("_select");
-			selection = TextureCache_GetTexture(select.c_str());
-		}
-		int renderX = Constants::ScreenWidth_ / 2 - selection->w / 2;
-		int renderY = selectionIndex * (Constants::ScreenHeight_ / Constants::TitleScreenSelections_);
-		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, selection);
-	}*/
 	SDL_RenderPresent(game->renderer);
 }
 
@@ -467,7 +452,7 @@ void Game_RunLoop(Game* game) {
 				UpdatePause(game, delta);
 				break;
 			case GameState_Win:
-				UpdateWin(game, delta);
+				UpdateWin(game);
 			default:
 				break;
 		}
