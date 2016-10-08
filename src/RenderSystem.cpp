@@ -70,7 +70,6 @@ void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* 
 			} else {
 				RenderSystem_RenderCoord(renderer, rect, NULL, texture);
 			}
-			
 			continue;
 		}
 
