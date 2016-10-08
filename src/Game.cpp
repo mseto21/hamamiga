@@ -96,12 +96,12 @@ void LoadPlayStateAssets(Game* game) {
 		std::cerr << "Error: The player could not be initialized." << std::endl;
 		return;
 	}
-//Creating animation
-	Animation playerAnimation;
-	const uint16 f = 4;
-	Animation_Initialize(&playerAnimation, f, 0.f, Constants::PlayerWSize_, Constants::PlayerHSize_);
 
-//Component Adding
+	//Creating animation
+	Animation playerAnimation;
+	Animation_Initialize(&playerAnimation, 4, 10.f, Constants::PlayerWSize_, Constants::PlayerHSize_);
+
+	//Component Adding
 	InputComponent_Add(game->playState.inputComponent, player->eid);
 	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, 32, 32);
 	MovementComponent_Add(game->playState.movementComponent, player->eid, 10, 10, 0, 0);

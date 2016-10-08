@@ -18,8 +18,8 @@ namespace Constants {
 	const uint8	 	TitleScreenSelections_	=	4;
 
 	// Play State
-	const uint16 	PlayerWSize_ 	=	67; //player image size
-	const uint16 	PlayerHSize_ 	=	41; //player image size
+	const uint16 	PlayerWSize_ 	=	68; //player image size
+	const uint16 	PlayerHSize_ 	=	42; //player image size
 
 	// High Score State
 	const int       MaxHighScores_	=	5;
