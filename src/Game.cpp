@@ -137,7 +137,9 @@ void SetEntities(Game* game) {
 	Animation playerAnimation;
 	Animation_Initialize(&playerAnimation, 4, 10.f, Constants::PlayerWSize_, Constants::PlayerHSize_);
 	InputComponent_Add(game->playState.inputComponent, player->eid);
-	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, Constants::PlayerWSize_, Constants::PlayerHSize_);
+	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50,
+			       Constants::ScreenHeight_ - Constants::PlayerHSize_,
+			       Constants::PlayerWSize_, Constants::PlayerHSize_);
 	MovementComponent_Add(game->playState.movementComponent, player->eid, 0, 0, 0, 0);
 	PhysicsComponent_Add(game->playState.physicsComponent, player->eid, 10);
 	TextureCache_CreateTexture(game->renderer, "assets/tinykev.png", "player");
@@ -146,16 +148,18 @@ void SetEntities(Game* game) {
 	AnimationComponent_Add(game->playState.animationComponent, player->eid, &playerAnimation);
 
 	// Initialize enemies
+	int neg1 = 1;
 	for (int enemyIndex = 0; enemyIndex < 3; enemyIndex++) {
 		Entity* enemy = EntityCache_GetNewEntity();
 		Animation enemyAnimation;
 		Animation_Initialize(&enemyAnimation, 4, 10.f, Constants::DemonWSize_, Constants::DemonHSize_);
-		RectangleComponent_Add(game->playState.rectangleComponent, enemy->eid, enemyIndex*65+300, (Constants::ScreenHeight_ - Constants::DemonHSize_), Constants::DemonWSize_, Constants::DemonHSize_);
-		MovementComponent_Add(game->playState.movementComponent, enemy->eid, 7, 0, 0, 0);
+		RectangleComponent_Add(game->playState.rectangleComponent, enemy->eid, enemyIndex*70+300, (Constants::ScreenHeight_ - Constants::DemonHSize_), Constants::DemonWSize_, Constants::DemonHSize_);
+		MovementComponent_Add(game->playState.movementComponent, enemy->eid, 0, 0,5*neg1, 0);
 		PhysicsComponent_Add(game->playState.physicsComponent, enemy->eid, 10);
 		TextureCache_CreateTexture(game->renderer, "assets/demon.png", "enemy");
 		TextureComponent_Add(game->playState.textureComponent, enemy->eid, TextureCache_GetTexture("enemy"));
 		AnimationComponent_Add(game->playState.animationComponent, enemy->eid, &enemyAnimation);
+		neg1 *= -1;
 	}
 
 	// Initialize win state
