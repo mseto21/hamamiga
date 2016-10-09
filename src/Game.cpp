@@ -86,6 +86,12 @@ void ResetComponents(Game* game) {
 
 //--------------------------------------------------------------------
 void LoadPlayStateAssets(Game* game) {
+	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
+	if (!game->playState.scoreFont) {
+		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+		return;
+	}
+	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	// Initialize Components
 	game->playState.rectangleComponent 	= (RectangleComponent*)malloc(sizeof(*game->playState.rectangleComponent));
 	game->playState.movementComponent 	= (MovementComponent*)malloc(sizeof(*game->playState.movementComponent));
@@ -220,6 +226,7 @@ bool Game_Initialize(Game* game) {
 	LoadIntroStateAssets(game);
 	LoadTitleStateAssets(game);
 	LoadPlayStateAssets(game);
+	memset(&game->highScoreState.scores, 0, sizeof(game->highScoreState.scores));
 
 	// Enter title state
 	game->gameState = GameState_Intro;
@@ -331,7 +338,6 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 
 //--------------------------------------------------------------------
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
-	game->playState.score += delta;
 	if (keysdown[SDLK_m] == true) {
 		ResetComponents(game);
 		EntityCache_RemoveAll();
@@ -343,9 +349,16 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	if ((rect->x+rect->w) > 500 && rect->x < 530){
 		if ((rect->y+rect->h) > 350 && rect->y < 367){
 			game->gameState = GameState_Win;
+			for (int scoreIndex = 0; scoreIndex < Constants::MaxHighScores_; scoreIndex++) {
+				if (game->playState.score < game->highScoreState.scores[scoreIndex] || game->highScoreState.scores[scoreIndex] == 0) {
+					game->highScoreState.scores[scoreIndex] = game->playState.score;
+					break;
+				}
+			}
 		}
 	}
 
+	game->playState.score += delta;
 	// If game ends regularly...
 		// update game->highScoreState.scores
 
@@ -357,6 +370,9 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
 	RenderSystem_Update(game->renderer, delta, game->playState.textureComponent, game->playState.rectangleComponent, game->playState.animationComponent);
+	Texture* scoreTexture = nullptr;
+	Texture_CreateTextureFromFont(scoreTexture, game->renderer, game->playState.scoreFont, {255, 255, 255, 255}, std::to_string(game->playState.score).c_str(), "score");
+	RenderSystem_Render_xywh(game->renderer, 0, 0, scoreTexture->w, scoreTexture->h, scoreTexture);
 	SDL_RenderPresent(game->renderer);
 }
 
@@ -377,10 +393,6 @@ void UpdateHighScore(Game* game, bool* keysdown, float delta) {
 		std::string name = "high_score_";
 		name.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
 		Texture* score = TextureCache_GetTexture(name.c_str());
-		if (!score) {
-			std::cerr << "Could not find texture for score " << game->highScoreState.scores[highScoreIndex] << std::endl;
-			continue;
-		}
 		int renderX = Constants::ScreenWidth_ / 2 - score->w / 2;
 		int renderY = highScoreIndex * (Constants::ScreenHeight_ / Constants::MaxHighScores_);
 		RenderSystem_Render_xywh(game->renderer, renderX, renderY, score->w, score->h, score);
@@ -496,6 +508,7 @@ void Game_Close(Game* game) {
 	free(game->playState.physicsComponent);
 	free(game->playState.healthComponent);
 
+	TTF_CloseFont(game->playState.scoreFont);
 	Mix_FreeMusic(game->titleState.titleMusic);
 	TextureCache_Free();
 	EntityCache_Free();

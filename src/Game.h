@@ -45,6 +45,7 @@ struct HighScoreState {
 
 struct PlayState {
 	float score;
+	_TTF_Font* scoreFont;
 	// Components
 	RectangleComponent* rectangleComponent;
 	MovementComponent* 	movementComponent;
