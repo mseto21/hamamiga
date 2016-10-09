@@ -370,9 +370,9 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
 	RenderSystem_Update(game->renderer, delta, game->playState.textureComponent, game->playState.rectangleComponent, game->playState.animationComponent);
-	Texture* scoreTexture = nullptr;
-	Texture_CreateTextureFromFont(scoreTexture, game->renderer, game->playState.scoreFont, {255, 255, 255, 255}, std::to_string(game->playState.score).c_str(), "score");
-	RenderSystem_Render_xywh(game->renderer, 0, 0, scoreTexture->w, scoreTexture->h, scoreTexture);
+	Texture scoreTexture;
+	Texture_CreateTextureFromFont(&scoreTexture, game->renderer, game->playState.scoreFont, {255, 255, 255, 255}, std::to_string(game->playState.score).c_str(), "score");
+	RenderSystem_Render_xywh(game->renderer, 0, 0, scoreTexture.w, scoreTexture.h, &scoreTexture);
 	SDL_RenderPresent(game->renderer);
 }
 
