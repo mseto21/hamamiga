@@ -346,7 +346,7 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	}
 
 	RenderSystem_Update(game->renderer, delta, game->playState.textureComponent, game->playState.rectangleComponent, game->playState.animationComponent);
-
+	SDL_RenderPresent(game->renderer);
 }
 
 

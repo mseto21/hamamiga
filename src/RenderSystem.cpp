@@ -75,7 +75,6 @@ void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* 
 		Rectangle rect = {0, 0, texture->w, texture->h};
 		RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 	}
-	SDL_RenderPresent(renderer);
 }
 
 // --------------------------------------------------------------------
