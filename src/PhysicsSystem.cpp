@@ -27,15 +27,15 @@ void PhysicsSystem_Update(PhysicsComponent* physicsComponent, MovementComponent*
 		    if ((r1->y >= r2->y && (r1->y <= (r2->y + r2->h)))
 			|| ((r1->y = r2->h) >= r2->y && (r2->y + r2->h) <= (r2->y +r2->h))) {
 		      if (Component_HasIndex(healthComponent, entityIndex)) {
-			  &healthComponent->health[entityIndex] -= Constants::Damage_;
+			  healthComponent->health[entityIndex] -= Constants::Damage_;
 		      } else {
-			moveValues->x -= moveValues->xVelocity;
+			r1->x -= moveValues->xVelocity;
 			moveValues->xVelocity *= -1;
 		      }
 		      if (Component_HasIndex(healthComponent, j)) {
-			  &healthComponent->health[j] -= Constants::Damage_;
+			  healthComponent->health[j] -= Constants::Damage_;
 		      } else {
-			moveValues->x -= moveValues->xVelocity;
+			r2->x -= moveValues->xVelocity;
 			moveValues->xVelocity *= -1;
 		      }
 		    }
