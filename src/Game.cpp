@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "InputSystem.h"
+#include "PhysicsSystem.h"
 #include "MovementSystem.h"
 #include "RenderSystem.h"
 #include "TextureCache.h"
@@ -86,6 +87,7 @@ void LoadPlayStateAssets(Game* game) {
 	game->playState.healthComponent = (HealthComponent*)malloc(sizeof(*game->playState.healthComponent));
 	Component_Initialize(game->playState.rectangleComponent);
 	Component_Initialize(game->playState.movementComponent);
+	Component_Initialize(game->playState.physicsComponent);
 	Component_Initialize(game->playState.textureComponent);
 	Component_Initialize(game->playState.inputComponent);
 	Component_Initialize(game->playState.animationComponent);
@@ -109,7 +111,8 @@ void LoadPlayStateAssets(Game* game) {
 	//Component Adding
 	InputComponent_Add(game->playState.inputComponent, player->eid);
 	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, Constants::PlayerWSize_, Constants::PlayerHSize_);
-	MovementComponent_Add(game->playState.movementComponent, player->eid, 10, 10, 0, 0);
+	MovementComponent_Add(game->playState.movementComponent, player->eid, 0, 0, 0, 0);
+	PhysicsComponent_Add(game->playState.physicsComponent, player->eid, 10);
 	TextureCache_CreateTexture(game->renderer, "assets/tinykev.png", "player");
 	if (TextureCache_GetTexture("player") == nullptr) {
 		std::cerr << "Error: The player's texture could not be initialized." << std::endl;
@@ -336,7 +339,8 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 		// update game->highScoreState.scores
 
 	// Update systems
-	InputSystem_Update(keysdown, game->playState.inputComponent, game->playState.movementComponent);
+	InputSystem_Update(keysdown, game->playState.inputComponent, game->playState.movementComponent, game->playState.rectangleComponent);
+	PhysicsSystem_Update(game->playState.physicsComponent, game->playState.movementComponent);
 	MovementSystem_Update(delta, game->playState.movementComponent, game->playState.rectangleComponent);
 	Texture* background = TextureCache_GetTexture("game_background"); 
 	SDL_RenderClear(game->renderer);

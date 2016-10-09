@@ -20,6 +20,10 @@ namespace Constants {
 	// Play State
 	const uint16 	PlayerWSize_ 	=	33; //player image size
 	const uint16 	PlayerHSize_ 	=	60; //player image size
+	const float    Gravity_                =      0.5; //gravity
+	const uint16    MaxV_                =      10; //max velocity
+	const uint16    Jump_                =       10; //jump velocity
+        const float        Accel_                 =       7; //acceleration
 
 	// High Score State
 	const int       MaxHighScores_	=	5;

@@ -8,5 +8,6 @@ accept basic input controls from the user.
 // Forward Declarations
 struct MovementComponent;
 struct InputComponent;
+struct RectangleComponent;
 
-void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, MovementComponent* movementComponent);
+void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent);
