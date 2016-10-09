@@ -46,4 +46,5 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 		        rectangle->y = Constants::ScreenHeight_ - rectangle->h;
 		}
 	}
+	
 }

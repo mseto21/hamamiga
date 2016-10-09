@@ -351,8 +351,8 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 
 	// Update systems
 	InputSystem_Update(keysdown, game->playState.inputComponent, game->playState.movementComponent, game->playState.rectangleComponent);
-	PhysicsSystem_Update(game->playState.physicsComponent, game->playState.movementComponent);
 	MovementSystem_Update(delta, game->playState.movementComponent, game->playState.rectangleComponent);
+	PhysicsSystem_Update(game->playState.physicsComponent, game->playState.movementComponent, game->playState.rectangleComponent, game->playState.healthComponent);
 	Texture* background = TextureCache_GetTexture("game_background"); 
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
