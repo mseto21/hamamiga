@@ -27,9 +27,11 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 // --------------------------------------------------------------------
 void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect* clip, Texture* texture) {
 	if (!renderer) {
+		std::cerr << "Error: The renderer was null!" << std::endl;
 		return;
 	}
 	if (!texture) {
+		std::cerr << "Error: The given texture was null!" << std::endl;
 		return;
 	}
 

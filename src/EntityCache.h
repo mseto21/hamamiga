@@ -41,6 +41,10 @@ Entity* EntityCache_GetNewEntityAtIndex(uint32 eid) {
 	return &eCache->entities[eid];
 }
 
+void EntityCache_RemoveAll() {
+	eCache->index = 0;
+}
+
 void EntityCache_Free() {
 	free(eCache);
 }
