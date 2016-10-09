@@ -29,7 +29,7 @@ void LoadIntroStateAssets(Game* game) {
 	game->introState.time = 0.f;
 	game->introState.alpha = 0.f;
 
-	TextureCache_CreateTexture(game->renderer, "assets/title.png", Constants::TitleBackground_);
+	TextureCache_CreateTexture(game->renderer, "assets/menu-screen.png", Constants::TitleBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
 	TextureCache_CreateTexture(game->renderer, "assets/background.png", Constants::GameBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
