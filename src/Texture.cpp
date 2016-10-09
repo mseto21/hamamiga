@@ -48,7 +48,7 @@ bool Texture_CreateTextureFromFont(Texture* texture, SDL_Renderer* renderer, TTF
 		return false;
 	}
 
-	SDL_Surface* surface = TTF_RenderText_Solid(font, message, color);
+	SDL_Surface* surface = TTF_RenderText_Blended(font, message, color);
 	if (surface == NULL) {
 		std::cerr << "Could not load sruface for message: " << message << "! Error: " << IMG_GetError() << std::endl;
 		return false;
