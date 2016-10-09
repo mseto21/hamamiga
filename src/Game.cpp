@@ -34,7 +34,7 @@ void LoadIntroStateAssets(Game* game) {
 
 	TextureCache_CreateTexture(game->renderer, "assets/background.png", Constants::GameBackground_);
 	//Later make own fcn for win screen
-	TextureCache_CreateTexture(game->renderer, "assets/win.png", Constants::WinBackground_);
+	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
 }
 
 
