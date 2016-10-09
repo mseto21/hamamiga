@@ -25,18 +25,17 @@
 using std::cout;
 using std::endl;
 
-
 //--------------------------------------------------------------------
 void LoadIntroStateAssets(Game* game) {
 	game->introState.time = 0.f;
 	game->introState.alpha = 0.f;
 
-	TextureCache_CreateTexture(game->renderer, "assets/title.png", Constants::TitleBackground_);
+	TextureCache_CreateTexture(game->renderer, "assets/menu-screen.png", Constants::TitleBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
 
 	TextureCache_CreateTexture(game->renderer, "assets/background.png", Constants::GameBackground_);
 	//Later make own fcn for win screen
-	TextureCache_CreateTexture(game->renderer, "assets/win.png", Constants::WinBackground_);
+	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
 }
 
 
@@ -93,7 +92,7 @@ void LoadPlayStateAssets(Game* game) {
 	Component_Initialize(game->playState.animationComponent);
 	Component_Initialize(game->playState.healthComponent);
 
-	// Initialzie variables
+	// Initialize variables
 	game->playState.score = 0;
 
 	// Initialize all entities
@@ -390,7 +389,10 @@ void UpdatePause(Game* game, float delta) {
 }
 
 //--------------------------------------------------------------------
-void UpdateWin(Game* game) {
+void UpdateWin(Game* game, bool* keysdown) {
+	if (keysdown[SDLK_m] == true) {
+		game->gameState = GameState_Title;
+	}
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
 	SDL_RenderClear(game->renderer);
@@ -466,13 +468,12 @@ void Game_RunLoop(Game* game) {
 				UpdatePause(game, delta);
 				break;
 			case GameState_Win:
-				UpdateWin(game);
+				UpdateWin(game, keysdown);
 			default:
 				break;
 		}
 	}
 }
-
 
 //--------------------------------------------------------------------
 void Game_Close(Game* game) {
