@@ -31,9 +31,7 @@ void LoadIntroStateAssets(Game* game) {
 
 	TextureCache_CreateTexture(game->renderer, "assets/title.png", Constants::TitleBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
-
 	TextureCache_CreateTexture(game->renderer, "assets/background.png", Constants::GameBackground_);
-	//Later make own fcn for win screen
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
 }
 
@@ -74,57 +72,27 @@ void LoadTitleStateAssets(Game* game) {
 
 
 //--------------------------------------------------------------------
-void LoadPlayStateAssets(Game* game) {
-	// Initialize Components
-	game->playState.rectangleComponent = (RectangleComponent*)malloc(sizeof(*game->playState.rectangleComponent));
-	game->playState.movementComponent = (MovementComponent*)malloc(sizeof(*game->playState.movementComponent));
-	game->playState.textureComponent = (TextureComponent*)malloc(sizeof(*game->playState.textureComponent));
-	game->playState.inputComponent = (InputComponent*)malloc(sizeof(*game->playState.inputComponent));
-	game->playState.animationComponent = (AnimationComponent*)malloc(sizeof(*game->playState.animationComponent));
-	game->playState.physicsComponent = (PhysicsComponent*)malloc(sizeof(*game->playState.physicsComponent));
-	game->playState.healthComponent = (HealthComponent*)malloc(sizeof(*game->playState.healthComponent));
+void ResetComponents(Game* game) {
 	Component_Initialize(game->playState.rectangleComponent);
 	Component_Initialize(game->playState.movementComponent);
 	Component_Initialize(game->playState.textureComponent);
 	Component_Initialize(game->playState.inputComponent);
 	Component_Initialize(game->playState.animationComponent);
 	Component_Initialize(game->playState.healthComponent);
+}
 
-	// Initialize variables
-	game->playState.score = 0;
 
-	// Initialize all entities
-	Entity* player = EntityCache_GetNewEntity();
-	if (player == nullptr) {
-		std::cerr << "Error: The player could not be initialized." << std::endl;
-		return;
-	}
-	TextureCache_CreateTexture(game->renderer, "assets/background.png", "game_background");
-
-	//Creating animation
-	Animation playerAnimation;
-	Animation_Initialize(&playerAnimation, 4, 10.f, Constants::PlayerWSize_, Constants::PlayerHSize_);
-
-	//Component Adding
-	InputComponent_Add(game->playState.inputComponent, player->eid);
-	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, Constants::PlayerWSize_, Constants::PlayerHSize_);
-	MovementComponent_Add(game->playState.movementComponent, player->eid, 10, 10, 0, 0);
-	TextureCache_CreateTexture(game->renderer, "assets/tinykev.png", "player");
-	if (TextureCache_GetTexture("player") == nullptr) {
-		std::cerr << "Error: The player's texture could not be initialized." << std::endl;
-	}
-	TextureComponent_Add(game->playState.textureComponent, player->eid, TextureCache_GetTexture("player"));
-	HealthComponent_Add(game->playState.healthComponent, player->eid, 100);
-	AnimationComponent_Add(game->playState.animationComponent, player->eid, &playerAnimation);
-	//Win state for now
-	Entity* trophy = EntityCache_GetNewEntity();
-	RectangleComponent_Add(game->playState.rectangleComponent, trophy->eid, 500, 350, 30, 17);
-	TextureCache_CreateTexture(game->renderer, "assets/crown.png", "trophy");
-	if (TextureCache_GetTexture("trophy") == nullptr) {
-		std::cerr << "Error: The trophy's texture could not be initialized." << std::endl;
-	}
-	TextureComponent_Add(game->playState.textureComponent, trophy->eid, TextureCache_GetTexture("trophy"));
-
+//--------------------------------------------------------------------
+void LoadPlayStateAssets(Game* game) {
+	// Initialize Components
+	game->playState.rectangleComponent 	= (RectangleComponent*)malloc(sizeof(*game->playState.rectangleComponent));
+	game->playState.movementComponent 	= (MovementComponent*)malloc(sizeof(*game->playState.movementComponent));
+	game->playState.textureComponent 		= (TextureComponent*)malloc(sizeof(*game->playState.textureComponent));
+	game->playState.inputComponent 			= (InputComponent*)malloc(sizeof(*game->playState.inputComponent));
+	game->playState.animationComponent 	= (AnimationComponent*)malloc(sizeof(*game->playState.animationComponent));
+	game->playState.physicsComponent 		= (PhysicsComponent*)malloc(sizeof(*game->playState.physicsComponent));
+	game->playState.healthComponent 		= (HealthComponent*)malloc(sizeof(*game->playState.healthComponent));
+	ResetComponents(game);
 }
 
 
@@ -146,6 +114,43 @@ void LoadHighScoreStateAssets(Game* game) {
 		TextureCache_CreateFont(game->renderer, game->highScoreState.font, scoreColor, msg.c_str(), name.c_str());
 	}
 	TTF_CloseFont(game->highScoreState.font);
+}
+
+
+//--------------------------------------------------------------------
+// Super duper tempoorary for now
+void SetEntities(Game* game) {
+	// Initialize variables
+	game->playState.score = 0;
+
+	// Initialize all entities
+	Entity* player = EntityCache_GetNewEntity();
+	if (player == nullptr) {
+		std::cerr << "Error: The player could not be initialized." << std::endl;
+		return;
+	}
+	TextureCache_CreateTexture(game->renderer, "assets/background.png", "game_background");
+
+	//Creating animation
+	Animation playerAnimation;
+	Animation_Initialize(&playerAnimation, 4, 10.f, Constants::PlayerWSize_, Constants::PlayerHSize_);
+	InputComponent_Add(game->playState.inputComponent, player->eid);
+	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, Constants::PlayerWSize_, Constants::PlayerHSize_);
+	MovementComponent_Add(game->playState.movementComponent, player->eid, 10, 10, 0, 0);
+	TextureCache_CreateTexture(game->renderer, "assets/tinykev.png", "player");
+	TextureComponent_Add(game->playState.textureComponent, player->eid, TextureCache_GetTexture("player"));
+	HealthComponent_Add(game->playState.healthComponent, player->eid, 100);
+	AnimationComponent_Add(game->playState.animationComponent, player->eid, &playerAnimation);
+
+	//Win state for now
+	Entity* trophy = EntityCache_GetNewEntity();
+	RectangleComponent_Add(game->playState.rectangleComponent, trophy->eid, 500, 350, 30, 17);
+	TextureCache_CreateTexture(game->renderer, "assets/crown.png", "trophy");
+	if (TextureCache_GetTexture("trophy") == nullptr) {
+		std::cerr << "Error: The trophy's texture could not be initialized." << std::endl;
+	}
+	TextureComponent_Add(game->playState.textureComponent, trophy->eid, TextureCache_GetTexture("trophy"));
+
 }
 
 
@@ -205,6 +210,7 @@ bool Game_Initialize(Game* game) {
 	// Initialize current states
 	LoadIntroStateAssets(game);
 	LoadTitleStateAssets(game);
+	LoadPlayStateAssets(game);
 
 	// Enter title state
 	game->gameState = GameState_Intro;
@@ -240,6 +246,7 @@ void UpdateIntro(Game* game, float delta) {
 //--------------------------------------------------------------------
 void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 	(void) delta;
+
 	// Update their options
 	if (keysdown[SDLK_w] && !game->titleState.w) {
 		if (!game->titleState.w) {
@@ -263,12 +270,18 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 		game->titleState.s = false;
 	}
 
+	// Check for music playing
+	if (Mix_PlayingMusic() == 0) {
+		Mix_PlayMusic(game->titleState.titleMusic, 0);
+	}
+
+	// Set the next state
 	if (keysdown[SDLK_RETURN]) {
 		switch (game->titleState.selection) {
 			case 0:
-				Mix_HaltMusic(); // Stop Playing any music.
+				SetEntities(game);
+			  Mix_HaltMusic(); // Stop Playing any music.
 			  game->gameState = GameState_Play;
-			  LoadPlayStateAssets(game);
 			  break;
 			case 1:
 			  //Mix_HaltMusic();
@@ -278,15 +291,10 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 			case 2:
 			  break;
 			case 3:
-				Mix_HaltMusic();
+			  Mix_HaltMusic();
 			  Game_Close(game);
 			  break;
 		}
-	}
-
-	// Check for music playing
-	if (Mix_PlayingMusic() == 0) {
-		Mix_PlayMusic(game->titleState.titleMusic, 0);
 	}
 
 	// Render
@@ -315,21 +323,19 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 //--------------------------------------------------------------------
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	game->playState.score += delta;
-	// Process Input
 	if (keysdown[SDLK_m] == true) {
+		ResetComponents(game);
+		EntityCache_RemoveAll();
 		game->gameState = GameState_Title;
-		game->playState.score = 0; // Don't save their high score if they quit early
 	}
 
 	//Checking if the player has reached the trophy
 	Rectangle* rect = &game->playState.rectangleComponent->entityRectangles[0];//hax with 0
-	//std::cout << rect->x << "\n";
 	if ((rect->x+rect->w) > 500 && rect->x < 530){
 		if ((rect->y+rect->h) > 350 && rect->y < 367){
-			std::cout << "WIN!";
 			game->gameState = GameState_Win;
 		}
-	}//hard code 500x, 350y
+	}
 
 	// If game ends regularly...
 		// update game->highScoreState.scores
@@ -339,11 +345,7 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	MovementSystem_Update(delta, game->playState.movementComponent, game->playState.rectangleComponent);
 	Texture* background = TextureCache_GetTexture("game_background"); 
 	SDL_RenderClear(game->renderer);
-	if (background) {
-		Rectangle backgroundRect = {0, 0, background->w, background->h};
-		RenderSystem_RenderCoord(game->renderer, &backgroundRect, NULL, background);
-	}
-
+	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
 	RenderSystem_Update(game->renderer, delta, game->playState.textureComponent, game->playState.rectangleComponent, game->playState.animationComponent);
 	SDL_RenderPresent(game->renderer);
 }
@@ -387,8 +389,11 @@ void UpdatePause(Game* game, float delta) {
 //--------------------------------------------------------------------
 void UpdateWin(Game* game, bool* keysdown) {
 	if (keysdown[SDLK_m] == true) {
+		ResetComponents(game);
+		EntityCache_RemoveAll();
 		game->gameState = GameState_Title;
 	}
+
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
 	SDL_RenderClear(game->renderer);
