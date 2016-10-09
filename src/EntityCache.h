@@ -27,6 +27,9 @@ Entity* EntityCache_GetNewEntity() {
 		result = &eCache->entities[eCache->index];
 		eCache->index++;
 	}
+	if (!result) {
+		std::cerr << "Error: The player could not be initialized." << std::endl;
+	}
 	return result;
 }
 

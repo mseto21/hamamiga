@@ -125,15 +125,8 @@ void SetEntities(Game* game) {
 	// Initialize variables
 	game->playState.score = 0;
 
-	// Initialize all entities
+	// Initialize player
 	Entity* player = EntityCache_GetNewEntity();
-	if (player == nullptr) {
-		std::cerr << "Error: The player could not be initialized." << std::endl;
-		return;
-	}
-	TextureCache_CreateTexture(game->renderer, "assets/background.png", "game_background");
-
-	//Creating animation
 	Animation playerAnimation;
 	Animation_Initialize(&playerAnimation, 4, 10.f, Constants::PlayerWSize_, Constants::PlayerHSize_);
 	InputComponent_Add(game->playState.inputComponent, player->eid);
@@ -145,7 +138,20 @@ void SetEntities(Game* game) {
 	HealthComponent_Add(game->playState.healthComponent, player->eid, 100);
 	AnimationComponent_Add(game->playState.animationComponent, player->eid, &playerAnimation);
 
-	//Win state for now
+	// Initialize enemies
+	for (int enemyIndex = 0; enemyIndex < 3; enemyIndex++) {
+		Entity* enemy = EntityCache_GetNewEntity();
+		Animation enemyAnimation;
+		Animation_Initialize(&enemyAnimation, 4, 10.f, Constants::DemonWSize_, Constants::DemonHSize_);
+		RectangleComponent_Add(game->playState.rectangleComponent, enemy->eid, enemyIndex*60+300, 0, Constants::DemonWSize_, Constants::DemonHSize_);
+		MovementComponent_Add(game->playState.movementComponent, enemy->eid, 0, 0, 0, 0);
+		PhysicsComponent_Add(game->playState.physicsComponent, enemy->eid, 10);
+		TextureCache_CreateTexture(game->renderer, "assets/demon.png", "enemy");
+		TextureComponent_Add(game->playState.textureComponent, enemy->eid, TextureCache_GetTexture("enemy"));
+		AnimationComponent_Add(game->playState.animationComponent, enemy->eid, &enemyAnimation);
+	}
+
+	// Initialize win state
 	Entity* trophy = EntityCache_GetNewEntity();
 	RectangleComponent_Add(game->playState.rectangleComponent, trophy->eid, 500, 350, 30, 17);
 	TextureCache_CreateTexture(game->renderer, "assets/crown.png", "trophy");
