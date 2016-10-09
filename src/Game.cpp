@@ -100,6 +100,7 @@ void LoadPlayStateAssets(Game* game) {
 		std::cerr << "Error: The player could not be initialized." << std::endl;
 		return;
 	}
+	TextureCache_CreateTexture(game->renderer, "assets/background.png", "game_background");
 
 	//Creating animation
 	Animation playerAnimation;
@@ -337,6 +338,13 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	// Update systems
 	InputSystem_Update(keysdown, game->playState.inputComponent, game->playState.movementComponent);
 	MovementSystem_Update(delta, game->playState.movementComponent, game->playState.rectangleComponent);
+	Texture* background = TextureCache_GetTexture("game_background"); 
+	SDL_RenderClear(game->renderer);
+	if (background) {
+		Rectangle backgroundRect = {0, 0, background->w, background->h};
+		RenderSystem_RenderCoord(game->renderer, &backgroundRect, NULL, background);
+	}
+
 	RenderSystem_Update(game->renderer, delta, game->playState.textureComponent, game->playState.rectangleComponent, game->playState.animationComponent);
 
 }
