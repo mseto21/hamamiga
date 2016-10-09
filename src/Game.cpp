@@ -150,8 +150,8 @@ void SetEntities(Game* game) {
 		Entity* enemy = EntityCache_GetNewEntity();
 		Animation enemyAnimation;
 		Animation_Initialize(&enemyAnimation, 4, 10.f, Constants::DemonWSize_, Constants::DemonHSize_);
-		RectangleComponent_Add(game->playState.rectangleComponent, enemy->eid, enemyIndex*60+300, 0, Constants::DemonWSize_, Constants::DemonHSize_);
-		MovementComponent_Add(game->playState.movementComponent, enemy->eid, 0, 0, 0, 0);
+		RectangleComponent_Add(game->playState.rectangleComponent, enemy->eid, enemyIndex*65+300, (Constants::ScreenHeight_ - Constants::DemonHSize_), Constants::DemonWSize_, Constants::DemonHSize_);
+		MovementComponent_Add(game->playState.movementComponent, enemy->eid, 7, 0, 0, 0);
 		PhysicsComponent_Add(game->playState.physicsComponent, enemy->eid, 10);
 		TextureCache_CreateTexture(game->renderer, "assets/demon.png", "enemy");
 		TextureComponent_Add(game->playState.textureComponent, enemy->eid, TextureCache_GetTexture("enemy"));
