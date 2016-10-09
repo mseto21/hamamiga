@@ -33,6 +33,7 @@ void LoadIntroStateAssets(Game* game) {
 	TextureCache_CreateTexture(game->renderer, "assets/title.png", Constants::TitleBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
 
+	TextureCache_CreateTexture(game->renderer, "assets/background.png", Constants::GameBackground_);
 	//Later make own fcn for win screen
 	TextureCache_CreateTexture(game->renderer, "assets/win.png", Constants::WinBackground_);
 }
@@ -106,9 +107,9 @@ void LoadPlayStateAssets(Game* game) {
 
 	//Component Adding
 	InputComponent_Add(game->playState.inputComponent, player->eid);
-	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, 32, 32);
+	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50, 0, Constants::PlayerWSize_, Constants::PlayerHSize_);
 	MovementComponent_Add(game->playState.movementComponent, player->eid, 10, 10, 0, 0);
-	TextureCache_CreateTexture(game->renderer, "assets/panim.jpg", "player");
+	TextureCache_CreateTexture(game->renderer, "assets/tinykev.png", "player");
 	if (TextureCache_GetTexture("player") == nullptr) {
 		std::cerr << "Error: The player's texture could not be initialized." << std::endl;
 	}
@@ -117,8 +118,8 @@ void LoadPlayStateAssets(Game* game) {
 	AnimationComponent_Add(game->playState.animationComponent, player->eid, &playerAnimation);
 	//Win state for now
 	Entity* trophy = EntityCache_GetNewEntity();
-	RectangleComponent_Add(game->playState.rectangleComponent, trophy->eid, 500, 350, 32, 32);
-	TextureCache_CreateTexture(game->renderer, "assets/trophy.png", "trophy");
+	RectangleComponent_Add(game->playState.rectangleComponent, trophy->eid, 500, 350, 30, 17);
+	TextureCache_CreateTexture(game->renderer, "assets/crown.png", "trophy");
 	if (TextureCache_GetTexture("trophy") == nullptr) {
 		std::cerr << "Error: The trophy's texture could not be initialized." << std::endl;
 	}
@@ -323,8 +324,8 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	//Checking if the player has reached the trophy
 	Rectangle* rect = &game->playState.rectangleComponent->entityRectangles[0];//hax with 0
 	//std::cout << rect->x << "\n";
-	if (rect->x > 500 && rect->x < 500+32){
-		if (rect->y > 350 && rect->y < 350+32){
+	if ((rect->x+rect->w) > 500 && rect->x < 530){
+		if ((rect->y+rect->h) > 350 && rect->y < 367){
 			std::cout << "WIN!";
 			game->gameState = GameState_Win;
 		}
@@ -337,6 +338,7 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	InputSystem_Update(keysdown, game->playState.inputComponent, game->playState.movementComponent);
 	MovementSystem_Update(delta, game->playState.movementComponent, game->playState.rectangleComponent);
 	RenderSystem_Update(game->renderer, delta, game->playState.textureComponent, game->playState.rectangleComponent, game->playState.animationComponent);
+
 }
 
 
