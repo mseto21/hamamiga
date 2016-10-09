@@ -35,6 +35,7 @@ void LoadIntroStateAssets(Game* game) {
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
 	TextureCache_CreateTexture(game->renderer, "assets/background.png", Constants::GameBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
+	TextureCache_CreateTexture(game->renderer, "assets/lose-screen.png", Constants::LoseBackground_);
 }
 
 
@@ -365,6 +366,8 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 			}
 		}
 	}
+	//Checking if the player has lost their health
+	
 
 	game->playState.score += delta;
 	// If game ends regularly...
@@ -431,6 +434,20 @@ void UpdateWin(Game* game, bool* keysdown) {
 	SDL_RenderPresent(game->renderer);
 }
 
+//-------------------------------------------------------------------
+void UpdateLose(Game* game, bool* keysdown) {
+        if (keysdown[SDLK_m] == true) {
+	  ResetComponents(game);
+               EntityCache_RemoveAll();
+               game->gameState = GameState_Title;
+        }
+
+        //Render
+        Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
+        SDL_RenderClear(game->renderer);
+        RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
+	SDL_RenderPresent(game->renderer);
+}
 
 //--------------------------------------------------------------------
 void Game_RunLoop(Game* game) {
@@ -500,6 +517,10 @@ void Game_RunLoop(Game* game) {
 				break;
 			case GameState_Win:
 				UpdateWin(game, keysdown);
+				break;
+		        case GameState_Lose:
+			        UpdateLose(game, keysdown);
+				break;
 			default:
 				break;
 		}
