@@ -8,5 +8,7 @@ be affected by gravity controls from the user.
 // Forward Declarations
 struct PhysicsComponent;
 struct MovementComponent;
+struct RectangleComponent;
+struct HealthComponent;
 
-void PhysicsSystem_Update(PhysicsComponent* physicsComponent, MovementComponent* movementComponent);
+void PhysicsSystem_Update(PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HealthComponent* healthComponent);
