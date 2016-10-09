@@ -31,6 +31,7 @@ void LoadIntroStateAssets(Game* game) {
 	game->introState.alpha = 0.f;
 
 	TextureCache_CreateTexture(game->renderer, "assets/menu-screen.png", Constants::TitleBackground_);
+	TextureCache_CreateTexture(game->renderer, "assets/menu-screen-overlay.png", Constants::MenuOverlay_);
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
 	TextureCache_CreateTexture(game->renderer, "assets/background.png", Constants::GameBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
@@ -247,11 +248,14 @@ void UpdateIntro(Game* game, float delta) {
 	// Render intro
 	Texture* fader = TextureCache_GetTexture(Constants::TitleFader_);
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
+	Texture* menuOverlay = TextureCache_GetTexture(Constants::MenuOverlay_);
+
 	SDL_RenderClear(game->renderer);
 	if (background) {
 		RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
 	}
 	if (fader) { 
+		RenderSystem_Render_xywh(game->renderer, 0, 0, menuOverlay->w, menuOverlay->h, menuOverlay);
 		SDL_SetTextureAlphaMod(fader->sdltexture, (game->introState.alpha * 255));
 		RenderSystem_Render_xywh(game->renderer, 0, 0, fader->w, fader->h, fader);
 	}

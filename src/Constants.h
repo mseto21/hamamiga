@@ -36,4 +36,5 @@ namespace Constants {
 	const String128	TitleFader_			=	"title_fader";
 	const String128	WinBackground_		= 	"win_background";
 	const String128 GameBackground_ 	= 	"game_background";
+	const String128 MenuOverlay_    	= 	"menu_overlay";
 }
