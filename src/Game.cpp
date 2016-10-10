@@ -562,6 +562,7 @@ void Game_Close(Game* game) {
 	free(game->playState.healthComponent);
 
 	TTF_CloseFont(game->playState.scoreFont);
+	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);
 	TextureCache_Free();
 	EntityCache_Free();

@@ -3,7 +3,7 @@
 #HaMaMiGa
 Harry Cohen hcohen23
 Matt Kosarek mkosare1
-Mindy Seto mSeto
+Mindy Seto mSeto2
 Gavi Rawson grawson
 
 The Fat Hactory Game! Yay!
@@ -19,13 +19,19 @@ the menu screen use 'w' and 's' to navigate through the different options
 and enter to select.
 
 Options:
+---------------
+Pressing the "M" key at any time will return to Main menu. This is useful
+for returning to the menu after dying or winning the game.
 
 Play
 -----
 By choosing the play game option you are in for a world of excitement
 of running around with enemies attempting to scythe you to death.
-Use'WASD' to jump and move. Colliding with enemies will lead to Kevin losing
-health. When he runs out of health he dies! (after 2 hits) :(
+Use 'WASD' to jump and move. 'W' to jump. Colliding with enemies will lead to Kevin losing
+health. Falling on demon horns leads to instant death, or you can choose to have a longer,
+more painful death by running into the demons' scythes 5 times. When Kevin runs out of
+health (displayed in the top right corner) he dies! :(
+
 In order to win and escape this hell factory, you have to dodge the demons
 and reach the magical crown!
 
@@ -33,8 +39,10 @@ High Scores
 -----
 'High Scores' is also filled with the past accomplishments of Kevin. The
 score is based off of how long it takes Kevin to reach the crown and win. The
-score is displayed while playing the game and can be seen afterwards in this
-screen. Compete with fellow Kevins to see who can get the crown the fastest! :)
+score is displayed in the top left corner of the scren while playing the game
+and can be seen afterwards in the 'High Scores' screen. Compete with friends
+to see who can get the crown the fastest! :) Rumor has it that the best record
+so far is 160.
 
 Options
 -----
