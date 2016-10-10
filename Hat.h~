@@ -1,0 +1,18 @@
+#ifndef HAT_H
+#define HAT_H
+
+class Hat {
+ private:
+  int jump = 1;
+
+ public:
+
+  /**methods*/
+  int getJump() { return jump; }
+
+  /** Constructors */
+  Hat();
+  Hat(int jump);
+
+
+#endif
