@@ -6,7 +6,7 @@ namespace Constants {
 	const uint16 	ScreenWidth_ 	= 	640;
 	const uint16 	ScreenHeight_ 	= 	480;
 	const float   	StepSize_ 		= 	8.f;
-	const int  		NumKeys_		=	323;
+	const uint32  	NumKeys_		=	323;
 	const uint32	MaxEntities_  	=   128;
 	const float 	TargetFps_ 		= 	60.f;
 	const float 	OptimalTime_ 	= 	1000 / TargetFps_;
@@ -22,9 +22,9 @@ namespace Constants {
 	const uint16 	PlayerHSize_ 	=	60; //player image size
 	const float    	Gravity_        =   0.5; //gravity
     const float     Friction_    	=   1; //friction
-	const uint16    MaxVY_          =   16; //max y velocity
+	const uint16    MaxVY_          =   10; //max y velocity
 	const uint16    MaxVX_          =   6; //max x velocity
-	const uint16    Jump_           =   16; //jump velocity
+	const uint16    Jump_           =   10; //jump velocity
     const float     Accel_       	=   6; //acceleration
 	const uint16  	DemonHSize_   	= 	60; 
   	const uint16 	DemonWSize_   	= 	61;// demon image size

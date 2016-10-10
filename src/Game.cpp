@@ -510,12 +510,12 @@ void Game_RunLoop(Game* game) {
 				return;
 			}
 			if (event.type == SDL_KEYDOWN) {
-				keysdown[event.key.keysym.sym] = true;
-				keysup[event.key.keysym.sym] = false;
+				keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
+				keysup[event.key.keysym.sym % Constants::NumKeys_] = false;
 			}
 			if (event.type == SDL_KEYUP) {
-				keysdown[event.key.keysym.sym] = false;
-				keysup[event.key.keysym.sym] = true;
+				keysdown[event.key.keysym.sym % Constants::NumKeys_] = false;
+				keysup[event.key.keysym.sym % Constants::NumKeys_] = true;
 			}
 		}
 
