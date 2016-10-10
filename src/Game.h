@@ -1,18 +1,11 @@
 #include "Constants.h"
 #include "Types.h"
+#include "ComponentBag.h"
 
 // Forward Declarations
 struct SDL_Window;
 struct SDL_Renderer;
 struct _TTF_Font;
-
-struct RectangleComponent;
-struct MovementComponent;
-struct TextureComponent;
-struct InputComponent;
-struct AnimationComponent;
-struct PhysicsComponent;
-struct HealthComponent;
 struct _Mix_Music;
 
 enum GameState {
@@ -23,6 +16,7 @@ enum GameState {
 	GameState_Pause,
 	GameState_Win,
 	GameState_Lose,
+	GameState_Returning,
 	GameState_Closing,
 };
 
@@ -46,17 +40,14 @@ struct HighScoreState {
 };
 
 struct PlayState {
+	// Score
 	float score;
+
+	// Fonts
 	_TTF_Font* scoreFont;
 	_TTF_Font* healthFont;
-	// Components
-	RectangleComponent* rectangleComponent;
-	MovementComponent* 	movementComponent;
-	TextureComponent*   textureComponent;
-	InputComponent* inputComponent;
-	AnimationComponent* animationComponent;
-	PhysicsComponent* physicsComponent;
-	HealthComponent* healthComponent;
+
+	ComponentBag cBag;
 };
 
 struct Game {

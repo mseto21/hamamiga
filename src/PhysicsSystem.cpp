@@ -30,10 +30,10 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		      moveValues->xVelocity *= -1;
 		      moveValues->yVelocity *= -1;
 		      if (Component_HasIndex(healthComponent, entityIndex)) {
-			  healthComponent->health[entityIndex] -= Constants::Damage_;
+			  		healthComponent->health[entityIndex] -= Constants::Damage_;
 		      } else {
-			moveValues->xVelocity *= -1;
-			moveValues->xAccel *= -1;
+						moveValues->xVelocity *= -1;
+						moveValues->xAccel *= -1;
 		      }
 		      
 		      MovementValues* moveValues2 = &movementComponent->movementValues[movementComponent->entityArray[j]];
@@ -42,10 +42,10 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		      moveValues2->xVelocity *= -1;
 		      moveValues2->yVelocity *= -1;
 		      if (Component_HasIndex(healthComponent, j)) {
-			  healthComponent->health[j] -= Constants::Damage_;
+			  		healthComponent->health[j] -= Constants::Damage_;
 		      } else {
-			moveValues2->xVelocity *= -1;
-			moveValues2->xAccel *= -1;
+						moveValues2->xVelocity *= -1;
+						moveValues2->xAccel *= -1;
 		      }
 		  }
 		}
@@ -55,8 +55,7 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 }
 
 bool collision(const Rectangle* r1, const Rectangle* r2) {
-  if (r1->x <= r2->x + r2->w && r1->x + r1->w >= r2->x &&
-      r1->y <= r2->y + r2->h && r1->y + r1->h >= r2->y) {
+  if (r1->x <= r2->x + r2->w && r1->x + r1->w >= r2->x && r1->y <= r2->y + r2->h && r1->y + r1->h >= r2->y) {
     return true;
   }
   return false;

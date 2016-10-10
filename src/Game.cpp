@@ -6,12 +6,6 @@
 #include "TextureCache.h"
 #include "EntityCache.h"
 
-#include "RectangleComponent.h"
-#include "MovementComponent.h"
-#include "TextureComponent.h"
-#include "InputComponent.h"
-#include "AnimationComponent.h"
-#include "PhysicsComponent.h"
 #include "HealthComponent.h"
 
 #include <iostream>
@@ -75,18 +69,6 @@ void LoadTitleStateAssets(Game* game) {
 
 
 //--------------------------------------------------------------------
-void ResetComponents(Game* game) {
-	Component_Initialize(game->playState.rectangleComponent);
-	Component_Initialize(game->playState.movementComponent);
-	Component_Initialize(game->playState.physicsComponent);
-	Component_Initialize(game->playState.textureComponent);
-	Component_Initialize(game->playState.inputComponent);
-	Component_Initialize(game->playState.animationComponent);
-	Component_Initialize(game->playState.healthComponent);
-}
-
-
-//--------------------------------------------------------------------
 void LoadPlayStateAssets(Game* game) {
 	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
@@ -95,20 +77,12 @@ void LoadPlayStateAssets(Game* game) {
 		return;
 	}
 	if (!game->playState.healthFont) {
-	        std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
-                return;
+    std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+    return;
 	}
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
-	// Initialize Components
-	game->playState.rectangleComponent 	= (RectangleComponent*)malloc(sizeof(*game->playState.rectangleComponent));
-	game->playState.movementComponent 	= (MovementComponent*)malloc(sizeof(*game->playState.movementComponent));
-	game->playState.textureComponent 		= (TextureComponent*)malloc(sizeof(*game->playState.textureComponent));
-	game->playState.inputComponent 			= (InputComponent*)malloc(sizeof(*game->playState.inputComponent));
-	game->playState.animationComponent 	= (AnimationComponent*)malloc(sizeof(*game->playState.animationComponent));
-	game->playState.physicsComponent 		= (PhysicsComponent*)malloc(sizeof(*game->playState.physicsComponent));
-	game->playState.healthComponent 		= (HealthComponent*)malloc(sizeof(*game->playState.healthComponent));
-	ResetComponents(game);
+	ComponentBag_Malloc(&game->playState.cBag);
 }
 
 
@@ -131,55 +105,6 @@ void LoadHighScoreStateAssets(Game* game) {
 	}
 	TTF_CloseFont(game->highScoreState.font);
 }
-
-
-//--------------------------------------------------------------------
-// Super duper tempoorary for now
-void SetEntities(Game* game) {
-	// Initialize variables
-	game->playState.score = 0;
-
-	// Initialize player
-	Entity* player = EntityCache_GetNewEntity();
-	Animation playerAnimation;
-	Animation_Initialize(&playerAnimation, 4, 10.f, Constants::PlayerWSize_, Constants::PlayerHSize_);
-	InputComponent_Add(game->playState.inputComponent, player->eid);
-	RectangleComponent_Add(game->playState.rectangleComponent, player->eid, 50,
-			       Constants::ScreenHeight_ - Constants::PlayerHSize_,
-			       Constants::PlayerWSize_, Constants::PlayerHSize_);
-	MovementComponent_Add(game->playState.movementComponent, player->eid, 0, 0, 0, 0);
-	PhysicsComponent_Add(game->playState.physicsComponent, player->eid, 10);
-	TextureCache_CreateTexture(game->renderer, "assets/tinykev.png", "player");
-	TextureComponent_Add(game->playState.textureComponent, player->eid, TextureCache_GetTexture("player"));
-	HealthComponent_Add(game->playState.healthComponent, player->eid, 100);
-	AnimationComponent_Add(game->playState.animationComponent, player->eid, &playerAnimation);
-
-	// Initialize enemies
-	int neg1 = 1;
-	for (int enemyIndex = 0; enemyIndex < 3; enemyIndex++) {
-		Entity* enemy = EntityCache_GetNewEntity();
-		Animation enemyAnimation;
-		Animation_Initialize(&enemyAnimation, 4, 10.f, Constants::DemonWSize_, Constants::DemonHSize_);
-		RectangleComponent_Add(game->playState.rectangleComponent, enemy->eid, enemyIndex*70+300, (Constants::ScreenHeight_ - Constants::DemonHSize_), Constants::DemonWSize_, Constants::DemonHSize_);
-		MovementComponent_Add(game->playState.movementComponent, enemy->eid, 0, 0,5*neg1, 0);
-		PhysicsComponent_Add(game->playState.physicsComponent, enemy->eid, 10);
-		TextureCache_CreateTexture(game->renderer, "assets/demon.png", "enemy");
-		TextureComponent_Add(game->playState.textureComponent, enemy->eid, TextureCache_GetTexture("enemy"));
-		AnimationComponent_Add(game->playState.animationComponent, enemy->eid, &enemyAnimation);
-		neg1 *= -1;
-	}
-
-	// Initialize win state
-	Entity* trophy = EntityCache_GetNewEntity();
-	RectangleComponent_Add(game->playState.rectangleComponent, trophy->eid, 500, 350, 30, 17);
-	TextureCache_CreateTexture(game->renderer, "assets/crown.png", "trophy");
-	if (TextureCache_GetTexture("trophy") == nullptr) {
-		std::cerr << "Error: The trophy's texture could not be initialized." << std::endl;
-	}
-	TextureComponent_Add(game->playState.textureComponent, trophy->eid, TextureCache_GetTexture("trophy"));
-
-}
-
 
 //--------------------------------------------------------------------
 bool Game_Initialize(Game* game) {
@@ -234,7 +159,7 @@ bool Game_Initialize(Game* game) {
 		return false;
 	}
 
-	// Initialize current states
+	// Initialize states
 	LoadIntroStateAssets(game);
 	LoadTitleStateAssets(game);
 	LoadPlayStateAssets(game);
@@ -310,12 +235,10 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 	if (keysdown[SDLK_RETURN]) {
 		switch (game->titleState.selection) {
 			case 0:
-				SetEntities(game);
-			  Mix_HaltMusic(); // Stop Playing any music.
+			  Mix_HaltMusic();
 			  game->gameState = GameState_Play;
 			  break;
 			case 1:
-			  //Mix_HaltMusic();
 			  game->gameState = GameState_HighScore;
 			  LoadHighScoreStateAssets(game);
 			  break;
@@ -355,46 +278,20 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	game->playState.score += delta;
 
-	if (keysdown[SDLK_m] == true) {
-		ResetComponents(game);
-		EntityCache_RemoveAll();
-		game->gameState = GameState_Title;
-	}
-
-	//Checking if the player has reached the trophy
-	Rectangle* rect = &game->playState.rectangleComponent->entityRectangles[0];//hax with 0
-	if ((rect->x+rect->w) > 500 && rect->x < 530){
-		if ((rect->y+rect->h) > 350 && rect->y < 367){
-			game->gameState = GameState_Win;
-			for (int scoreIndex = 0; scoreIndex < Constants::MaxHighScores_; scoreIndex++) {
-				if (game->playState.score < game->highScoreState.scores[scoreIndex] || game->highScoreState.scores[scoreIndex] == 0) {
-					for (int moveIndex = Constants::MaxHighScores_ - 1; moveIndex > scoreIndex; moveIndex--) {
-						game->highScoreState.scores[moveIndex] = game->highScoreState.scores[moveIndex - 1];
-					}
-					game->highScoreState.scores[scoreIndex] = game->playState.score;
-					break;
-				}
-			}
-		}
-	}
-	//Checking if the player has lost their health
-	int* health = &game->playState.healthComponent->health[0]; //hax with 0
+	int* health = &game->playState.cBag.healthComponent->health[Constants::PlayerIndex_]; //hax with 0
 	if (*health <= 0) {
 	  game->gameState = GameState_Lose;
 	}
 
-	game->playState.score += delta;
-	// If game ends regularly...
-		// update game->highScoreState.scores
-
 	// Update systems
-	InputSystem_Update(keysdown, game->playState.inputComponent, game->playState.movementComponent, game->playState.rectangleComponent);
-	MovementSystem_Update(delta, game->playState.movementComponent, game->playState.rectangleComponent);
-	PhysicsSystem_Update(delta, game->playState.physicsComponent, game->playState.movementComponent, game->playState.rectangleComponent, game->playState.healthComponent);
+	InputSystem_Update(keysdown, game->playState.cBag.inputComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
+	MovementSystem_Update(delta, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
+	PhysicsSystem_Update(delta, game->playState.cBag.physicsComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.healthComponent);
+	
 	Texture* background = TextureCache_GetTexture("game_background"); 
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
-	RenderSystem_Update(game->renderer, delta, game->playState.textureComponent, game->playState.rectangleComponent, game->playState.animationComponent);
+	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.animationComponent);
 	Texture scoreTexture;
 	Texture_CreateTextureFromFont(&scoreTexture, game->renderer, game->playState.scoreFont, {255, 255, 255, 255}, std::to_string(game->playState.score).c_str(), "score");
 	RenderSystem_Render_xywh(game->renderer, 0, 0, scoreTexture.w, scoreTexture.h, &scoreTexture);
@@ -408,10 +305,7 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 //--------------------------------------------------------------------
 void UpdateHighScore(Game* game, bool* keysdown, float delta) {
 	(void) delta;
-
-	if (keysdown[SDLK_m] == true) {
-		game->gameState = GameState_Title;
-	}
+	(void) keysdown;
 
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
@@ -438,12 +332,7 @@ void UpdatePause(Game* game, float delta) {
 
 //--------------------------------------------------------------------
 void UpdateWin(Game* game, bool* keysdown) {
-	if (keysdown[SDLK_m] == true) {
-		ResetComponents(game);
-		EntityCache_RemoveAll();
-		game->gameState = GameState_Title;
-	}
-
+	(void) keysdown;
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
 	SDL_RenderClear(game->renderer);
@@ -453,12 +342,7 @@ void UpdateWin(Game* game, bool* keysdown) {
 
 //-------------------------------------------------------------------
 void UpdateLose(Game* game, bool* keysdown) {
-  if (keysdown[SDLK_m] == true) {
-	  ResetComponents(game);
-    EntityCache_RemoveAll();
-    game->gameState = GameState_Title;
-  }
-
+	(void) keysdown;
   //Render
   Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
   SDL_RenderClear(game->renderer);
@@ -505,9 +389,11 @@ void Game_RunLoop(Game* game) {
 				return;
 			}
 			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
-				game->running = false;
-				Game_Close(game);
+				game->gameState = GameState_Closing;
 				return;
+			}
+			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_m) {
+				game->gameState = GameState_Returning;
 			}
 			if (event.type == SDL_KEYDOWN) {
 				keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
@@ -517,6 +403,7 @@ void Game_RunLoop(Game* game) {
 				keysdown[event.key.keysym.sym % Constants::NumKeys_] = false;
 				keysup[event.key.keysym.sym % Constants::NumKeys_] = true;
 			}
+
 		}
 
 		// Update appropriate game state
@@ -542,9 +429,15 @@ void Game_RunLoop(Game* game) {
       case GameState_Lose:
         UpdateLose(game, keysdown);
 				break;
+			case GameState_Returning:
+				ComponentBag_Reset(&game->playState.cBag);
+				EntityCache_RemoveAll();
+				game->gameState = GameState_Title;
+				break;
 			case GameState_Closing:
+				game->running = false;
 				Game_Close(game);
-				return;
+				break;
 			default:
 				break;
 		}
@@ -553,14 +446,7 @@ void Game_RunLoop(Game* game) {
 
 //--------------------------------------------------------------------
 void Game_Close(Game* game) {
-	free(game->playState.rectangleComponent);
-	free(game->playState.movementComponent);
-	free(game->playState.textureComponent);
-	free(game->playState.inputComponent);
-	free(game->playState.animationComponent);
-	free(game->playState.physicsComponent);
-	free(game->playState.healthComponent);
-
+	ComponentBag_Free(&game->playState.cBag);
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);

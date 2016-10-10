@@ -1,6 +1,5 @@
 #pragma once
 #include "Types.h"
-#include <string>
 
 namespace Constants {
 	const uint16 	ScreenWidth_ 	= 	640;
@@ -29,6 +28,7 @@ namespace Constants {
 	const uint16  	DemonHSize_   	= 	60; 
   	const uint16 	DemonWSize_   	= 	61;// demon image size
 	const uint16 	Damage_         =   20; //damage
+	const uint8		PlayerIndex_	=	0;
 
 	// High Score State
 	const int     MaxHighScores_	=	5;
