@@ -11,4 +11,4 @@ struct MovementComponent;
 struct RectangleComponent;
 struct HealthComponent;
 
-void PhysicsSystem_Update(PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HealthComponent* healthComponent);
+void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HealthComponent* healthComponent);

@@ -11,7 +11,7 @@
 
 bool collision(const Rectangle* r1, const Rectangle* r2);
 
-void PhysicsSystem_Update(PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HealthComponent* healthComponent) {
+void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HealthComponent* healthComponent) {
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
 		if (!Component_HasIndex(movementComponent, entityIndex)) {
 			continue;
@@ -25,9 +25,10 @@ void PhysicsSystem_Update(PhysicsComponent* physicsComponent, MovementComponent*
 		for (uint32 j = (entityIndex+1); j < physicsComponent->count; j++) {
 		  Rectangle* r2 = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[j]];
 		  if (collision(r1, r2)) {
-		      r1->x -= moveValues->xVelocity;
-		      //r1->y -= moveValues->yVelocity;
-		      //moveValues->yAccel *= -1;
+		      r1->x -= moveValues->xVelocity * timestep;
+		      r1->y -= moveValues->yVelocity * timestep;
+		      moveValues->xVelocity *= -1;
+		      moveValues->yVelocity *= -1;
 		      if (Component_HasIndex(healthComponent, entityIndex)) {
 			  healthComponent->health[entityIndex] -= Constants::Damage_;
 		      } else {
@@ -36,9 +37,10 @@ void PhysicsSystem_Update(PhysicsComponent* physicsComponent, MovementComponent*
 		      }
 		      
 		      MovementValues* moveValues2 = &movementComponent->movementValues[movementComponent->entityArray[j]];
-		      r2->x -= moveValues2->xVelocity;
-		      //r2->y -= moveValues->yVelocity;
-		      //moveValues2->yAccel *= -1;
+		      r2->x -= moveValues2->xVelocity * timestep;
+		      r2->y -= moveValues->yVelocity * timestep;
+		      moveValues2->xVelocity *= -1;
+		      moveValues2->yVelocity *= -1;
 		      if (Component_HasIndex(healthComponent, j)) {
 			  healthComponent->health[j] -= Constants::Damage_;
 		      } else {
@@ -47,8 +49,8 @@ void PhysicsSystem_Update(PhysicsComponent* physicsComponent, MovementComponent*
 		      }
 		  }
 		}
-		moveValues->yVelocity += Constants::Gravity_; //gravity
-		moveValues->xVelocity -= Constants::Friction_*moveValues->xVelocity;  
+		moveValues->yVelocity += Constants::Gravity_*timestep; //gravity
+		moveValues->xVelocity -= Constants::Friction_*moveValues->xVelocity*timestep;  
 	}
 }
 
