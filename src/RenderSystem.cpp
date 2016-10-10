@@ -78,10 +78,3 @@ void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* 
 		RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 	}
 }
-
-// --------------------------------------------------------------------
-void RenderSystem_Free(SDL_Renderer* renderer) {
-	if (renderer) {
-		SDL_DestroyRenderer(renderer);
-	}
-}

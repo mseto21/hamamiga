@@ -317,7 +317,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 			  break;
 			case 3:
 			  Mix_HaltMusic();
-			  Game_Close(game);
+			  game->gameState = GameState_Closing;
 			  break;
 		}
 	}
@@ -347,6 +347,8 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 
 //--------------------------------------------------------------------
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
+	game->playState.score += delta;
+
 	if (keysdown[SDLK_m] == true) {
 		ResetComponents(game);
 		EntityCache_RemoveAll();
@@ -360,16 +362,15 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 			game->gameState = GameState_Win;
 			for (int scoreIndex = 0; scoreIndex < Constants::MaxHighScores_; scoreIndex++) {
 				if (game->playState.score < game->highScoreState.scores[scoreIndex] || game->highScoreState.scores[scoreIndex] == 0) {
+					for (int moveIndex = Constants::MaxHighScores_ - 1; moveIndex > scoreIndex; moveIndex--) {
+						game->highScoreState.scores[moveIndex] = game->highScoreState.scores[moveIndex - 1];
+					}
 					game->highScoreState.scores[scoreIndex] = game->playState.score;
 					break;
 				}
 			}
 		}
 	}
-	//Checking if the player has lost their health
-	
-
-	game->playState.score += delta;
 	// If game ends regularly...
 		// update game->highScoreState.scores
 
@@ -436,16 +437,16 @@ void UpdateWin(Game* game, bool* keysdown) {
 
 //-------------------------------------------------------------------
 void UpdateLose(Game* game, bool* keysdown) {
-        if (keysdown[SDLK_m] == true) {
+  if (keysdown[SDLK_m] == true) {
 	  ResetComponents(game);
-               EntityCache_RemoveAll();
-               game->gameState = GameState_Title;
-        }
+    EntityCache_RemoveAll();
+    game->gameState = GameState_Title;
+  }
 
-        //Render
-        Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
-        SDL_RenderClear(game->renderer);
-        RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
+  //Render
+  Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
+  SDL_RenderClear(game->renderer);
+  RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
 	SDL_RenderPresent(game->renderer);
 }
 
@@ -484,9 +485,13 @@ void Game_RunLoop(Game* game) {
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT) {
 				game->running = false;
+				Game_Close(game);
+				return;
 			}
 			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
 				game->running = false;
+				Game_Close(game);
+				return;
 			}
 			if (event.type == SDL_KEYDOWN) {
 				keysdown[event.key.keysym.sym] = true;
@@ -518,9 +523,12 @@ void Game_RunLoop(Game* game) {
 			case GameState_Win:
 				UpdateWin(game, keysdown);
 				break;
-		        case GameState_Lose:
-			        UpdateLose(game, keysdown);
+      case GameState_Lose:
+        UpdateLose(game, keysdown);
 				break;
+			case GameState_Closing:
+				Game_Close(game);
+				return;
 			default:
 				break;
 		}
@@ -543,7 +551,7 @@ void Game_Close(Game* game) {
 	EntityCache_Free();
 	Mix_CloseAudio();
 	TTF_Quit();
-	RenderSystem_Free(game->renderer);
+	SDL_DestroyRenderer(game->renderer);
 	SDL_DestroyWindow(game->window);
 	SDL_Quit();
 }

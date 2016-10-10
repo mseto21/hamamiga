@@ -23,6 +23,7 @@ enum GameState {
 	GameState_Pause,
 	GameState_Win,
 	GameState_Lose,
+	GameState_Closing,
 };
 
 struct IntroState {
