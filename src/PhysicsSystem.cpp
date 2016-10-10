@@ -29,7 +29,6 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		      r1->y -= moveValues->yVelocity * timestep;
 		      moveValues->xVelocity *= -1;
 		      moveValues->yVelocity *= -1;
-		      //moveValues->yAccel *= -1;
 		      if (Component_HasIndex(healthComponent, entityIndex)) {
 			  healthComponent->health[entityIndex] -= Constants::Damage_;
 		      } else {
@@ -42,7 +41,6 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		      r2->y -= moveValues->yVelocity * timestep;
 		      moveValues2->xVelocity *= -1;
 		      moveValues2->yVelocity *= -1;
-		      //moveValues2->yAccel *= -1;
 		      if (Component_HasIndex(healthComponent, j)) {
 			  healthComponent->health[j] -= Constants::Damage_;
 		      } else {
