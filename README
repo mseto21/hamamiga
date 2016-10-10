@@ -1,0 +1,46 @@
+#include a bit of happiness
+
+#HaMaMiGa
+Harry Cohen hcohen23
+Matt Kosarek mkosare1
+Mindy Seto mSeto
+Gavi Rawson grawson
+
+The Fat Hactory Game! Yay!
+
+To run just make clean && make then ./fathactory and you may enjoy the
+splendor that is our game. At any point while running the game 'esc'
+will exit you to safety (sometimes this takes time but remember,
+all good things come to those who wait).
+
+The title screen will slowly fade in, if you find it too slow for your
+tastes have a glass of wine and reflect on your own life. Once you reach 
+the menu screen use 'w' and 's' to navigate through the different options 
+and enter to select.
+
+Options:
+
+Play
+-----
+By choosing the play game option you are in for a world of excitement
+of running around with enemies attempting to scythe you to death.
+Use'WASD' to jump and move. Colliding with enemies will lead to Kevin losing
+health. When he runs out of health he dies! (after 2 hits) :(
+In order to win and escape this hell factory, you have to dodge the demons
+and reach the magical crown!
+
+High Scores
+-----
+'High Scores' is also filled with the past accomplishments of Kevin. The
+score is based off of how long it takes Kevin to reach the crown and win. The
+score is displayed while playing the game and can be seen afterwards in this
+screen. Compete with fellow Kevins to see who can get the crown the fastest! :)
+
+Options
+-----
+Currently 'options' is not implemented but that is where audio and
+visual adjustments will go.
+
+Quit
+----
+'quit' quits
