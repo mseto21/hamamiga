@@ -89,11 +89,17 @@ void ResetComponents(Game* game) {
 //--------------------------------------------------------------------
 void LoadPlayStateAssets(Game* game) {
 	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
+	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	if (!game->playState.scoreFont) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
+	if (!game->playState.healthFont) {
+	        std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+                return;
+	}
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
+	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 	// Initialize Components
 	game->playState.rectangleComponent 	= (RectangleComponent*)malloc(sizeof(*game->playState.rectangleComponent));
 	game->playState.movementComponent 	= (MovementComponent*)malloc(sizeof(*game->playState.movementComponent));
@@ -371,6 +377,13 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 			}
 		}
 	}
+	//Checking if the player has lost their health
+	int* health = &game->playState.healthComponent->health[0]; //hax with 0
+	if (*health <= 0) {
+	  game->gameState = GameState_Lose;
+	}
+
+	game->playState.score += delta;
 	// If game ends regularly...
 		// update game->highScoreState.scores
 
@@ -385,6 +398,9 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	Texture scoreTexture;
 	Texture_CreateTextureFromFont(&scoreTexture, game->renderer, game->playState.scoreFont, {255, 255, 255, 255}, std::to_string(game->playState.score).c_str(), "score");
 	RenderSystem_Render_xywh(game->renderer, 0, 0, scoreTexture.w, scoreTexture.h, &scoreTexture);
+	Texture healthTexture;
+	Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
+	RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, &healthTexture);
 	SDL_RenderPresent(game->renderer);
 }
 
