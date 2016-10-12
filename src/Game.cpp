@@ -3,6 +3,7 @@
 #include "PhysicsSystem.h"
 #include "MovementSystem.h"
 #include "RenderSystem.h"
+
 #include "TextureCache.h"
 #include "EntityCache.h"
 
@@ -291,7 +292,7 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	Texture* background = TextureCache_GetTexture("game_background"); 
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
-	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.animationComponent);
+	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.animationComponent, game->playState.cBag.movementComponent);
 	Texture scoreTexture;
 	Texture_CreateTextureFromFont(&scoreTexture, game->renderer, game->playState.scoreFont, {255, 255, 255, 255}, std::to_string(game->playState.score).c_str(), "score");
 	RenderSystem_Render_xywh(game->renderer, 0, 0, scoreTexture.w, scoreTexture.h, &scoreTexture);
