@@ -67,7 +67,7 @@ void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* 
 					animation->currentFrameTime = 0;
 				}
 				if (Component_HasIndex(movementComponent, eid)) {
-					(movementComponent->movementValues[eid].xVelocity < 0) ? flip = SDL_FLIP_HORIZONTAL;
+					if (movementComponent->movementValues[eid].xVelocity < 0) flip = SDL_FLIP_HORIZONTAL;
 				}
 				SDL_Rect clip = {animation->spriteW * animation->currentFrame, 0, animation->spriteW, animation->spriteH};
 				RenderSystem_RenderCoord(renderer, rect, &clip, texture, flip);
