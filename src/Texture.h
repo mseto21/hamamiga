@@ -5,7 +5,6 @@ struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Color;
 struct _TTF_Font;
-class Character;
 
 struct Texture {
 	int w;

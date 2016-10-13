@@ -3,11 +3,20 @@
 #include "PhysicsSystem.h"
 #include "MovementSystem.h"
 #include "RenderSystem.h"
+#include "CameraSystem.h"
 
 #include "TextureCache.h"
 #include "EntityCache.h"
 
+#include "RectangleComponent.h"
+#include "MovementComponent.h"
+#include "TextureComponent.h"
+#include "InputComponent.h"
+#include "AnimationComponent.h"
+#include "PhysicsComponent.h"
 #include "HealthComponent.h"
+#include "CameraComponent.h"
+
 
 #include <iostream>
 #include <cstdio>
@@ -199,6 +208,52 @@ void UpdateIntro(Game* game, float delta) {
 	SDL_RenderPresent(game->renderer);
 }
 
+void SetEntities(Game* game) {
+	// Initialize variables
+	game->playState.score = 0;
+
+	// Initialize player
+	Entity* player = EntityCache_GetNewEntity();
+	Animation playerAnimation;
+	Animation_Initialize(&playerAnimation, 4, 10.f, Constants::PlayerWSize_, Constants::PlayerHSize_);
+	InputComponent_Add(game->playState.cBag.inputComponent, player->eid);
+	RectangleComponent_Add(game->playState.cBag.rectangleComponent, player->eid, 50,
+			       Constants::LevelHeight_ - Constants::PlayerHSize_,
+			       Constants::PlayerWSize_, Constants::PlayerHSize_);
+	MovementComponent_Add(game->playState.cBag.movementComponent, player->eid, 0, 0, 0, 0);
+	PhysicsComponent_Add(game->playState.cBag.physicsComponent, player->eid, 10);
+	TextureCache_CreateTexture(game->renderer, "assets/tinykev.png", "player");
+	TextureComponent_Add(game->playState.cBag.textureComponent, player->eid, TextureCache_GetTexture("player"));
+	HealthComponent_Add(game->playState.cBag.healthComponent, player->eid, 100);
+	AnimationComponent_Add(game->playState.cBag.animationComponent, player->eid, &playerAnimation);
+
+	CameraComponent_Add(game->playState.cBag.cameraComponent, player->eid);
+
+	// Initialize enemies
+/*	int neg1 = 1;
+	for (int enemyIndex = 0; enemyIndex < 3; enemyIndex++) {
+		Entity* enemy = EntityCache_GetNewEntity();
+		Animation enemyAnimation;
+		Animation_Initialize(&enemyAnimation, 4, 10.f, Constants::DemonWSize_, Constants::DemonHSize_);
+		RectangleComponent_Add(game->playState.cBag.rectangleComponent, enemy->eid, enemyIndex*70+300, (Constants::ScreenHeight_ - Constants::DemonHSize_), Constants::DemonWSize_, Constants::DemonHSize_);
+		MovementComponent_Add(game->playState.cBag.movementComponent, enemy->eid, 0, 0,5*neg1, 0);
+		PhysicsComponent_Add(game->playState.cBag.physicsComponent, enemy->eid, 10);
+		TextureCache_CreateTexture(game->renderer, "assets/demon.png", "enemy");
+		TextureComponent_Add(game->playState.cBag.textureComponent, enemy->eid, TextureCache_GetTexture("enemy"));
+		AnimationComponent_Add(game->playState.cBag.animationComponent, enemy->eid, &enemyAnimation);
+		neg1 *= -1;
+	}*/
+
+	// Initialize win state
+	Entity* trophy = EntityCache_GetNewEntity();
+	RectangleComponent_Add(game->playState.cBag.rectangleComponent, trophy->eid, 500, 350, 30, 17);
+	TextureCache_CreateTexture(game->renderer, "assets/crown.png", "trophy");
+	if (TextureCache_GetTexture("trophy") == nullptr) {
+		std::cerr << "Error: The trophy's texture could not be initialized." << std::endl;
+	}
+	TextureComponent_Add(game->playState.cBag.textureComponent, trophy->eid, TextureCache_GetTexture("trophy"));
+
+}
 
 //--------------------------------------------------------------------
 void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
@@ -236,6 +291,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 	if (keysdown[SDLK_RETURN]) {
 		switch (game->titleState.selection) {
 			case 0:
+				SetEntities(game);
 			  Mix_HaltMusic();
 			  game->gameState = GameState_Play;
 			  break;
@@ -284,15 +340,19 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	  game->gameState = GameState_Lose;
 	}
 
+	Rectangle* rect = &game->playState.cBag.rectangleComponent->entityRectangles[Constants::PlayerIndex_];
 	// Update systems
+	CameraSystem_Update(game->playState.cBag.cameraComponent, rect);
 	InputSystem_Update(keysdown, game->playState.cBag.inputComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
 	MovementSystem_Update(delta, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
 	PhysicsSystem_Update(delta, game->playState.cBag.physicsComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.healthComponent);
 	
-	Texture* background = TextureCache_GetTexture("game_background"); 
+	Texture* background = TextureCache_GetTexture(Constants::GameBackground_); 
+	Rectangle rect2 = {0, 0, background->w, background->h};
 	SDL_RenderClear(game->renderer);
-	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
-	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.animationComponent, game->playState.cBag.movementComponent);
+	RenderSystem_RenderCoord(game->renderer, &rect2, &game->playState.cBag.cameraComponent->camera, background, SDL_FLIP_NONE);
+	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, 
+		game->playState.cBag.animationComponent, game->playState.cBag.movementComponent, game->playState.cBag.cameraComponent);
 	Texture scoreTexture;
 	Texture_CreateTextureFromFont(&scoreTexture, game->renderer, game->playState.scoreFont, {255, 255, 255, 255}, std::to_string(game->playState.score).c_str(), "score");
 	RenderSystem_Render_xywh(game->renderer, 0, 0, scoreTexture.w, scoreTexture.h, &scoreTexture);
@@ -384,6 +444,7 @@ void Game_RunLoop(Game* game) {
 
 		// Poll for input
 		while (SDL_PollEvent(&event) != 0) {
+
 			if (event.type == SDL_QUIT) {
 				game->running = false;
 				Game_Close(game);

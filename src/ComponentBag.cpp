@@ -6,6 +6,7 @@
 #include "AnimationComponent.h"
 #include "PhysicsComponent.h"
 #include "HealthComponent.h"
+#include "CameraComponent.h"
 
 void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->rectangleComponent 	= (RectangleComponent*)malloc(sizeof(*bag->rectangleComponent));
@@ -15,6 +16,7 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->animationComponent 	= (AnimationComponent*)malloc(sizeof(*bag->animationComponent));
 	bag->physicsComponent 		= (PhysicsComponent*)malloc(sizeof(*bag->physicsComponent));
 	bag->healthComponent 		= (HealthComponent*)malloc(sizeof(*bag->healthComponent));
+	bag->cameraComponent = (CameraComponent*)malloc(sizeof(*bag->cameraComponent));
 	ComponentBag_Reset(bag);
 }
 
@@ -26,6 +28,7 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->inputComponent);
 	Component_Initialize(bag->animationComponent);
 	Component_Initialize(bag->healthComponent);
+	Component_Initialize(bag->cameraComponent);
 }
 
 void ComponentBag_Free(ComponentBag* bag) {
@@ -36,4 +39,5 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->animationComponent);
 	free(bag->physicsComponent);
 	free(bag->healthComponent);
+	free(bag->cameraComponent);
 }

@@ -5,6 +5,7 @@
 #include "TextureComponent.h"
 #include "AnimationComponent.h"
 #include "MovementComponent.h"
+#include "CameraComponent.h"
 #include <SDL.h>
 #include <iostream>
 
@@ -51,13 +52,18 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 }
 
 // --------------------------------------------------------------------
-void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* textureComponent, RectangleComponent* rectangleComponent, AnimationComponent* animationComponent, MovementComponent* movementComponent) {
+void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* textureComponent,
+ RectangleComponent* rectangleComponent, AnimationComponent* animationComponent, MovementComponent* movementComponent,
+ CameraComponent* cameraComponent) {
 	for (uint32 texIndex = 0; texIndex < textureComponent->count; texIndex++) {
 		uint32 eid = textureComponent->entityArray[texIndex];
 		Texture* texture = textureComponent->textures[eid];
 		SDL_RendererFlip flip = SDL_FLIP_NONE;
 		if (Component_HasIndex(rectangleComponent, eid)) {
-			Rectangle* rect = &rectangleComponent->entityRectangles[eid];
+
+			Rectangle rect = rectangleComponent->entityRectangles[eid];
+			rect.x -= cameraComponent->camera.x;
+			rect.y -= cameraComponent->camera.y;
 			if (Component_HasIndex(animationComponent, eid)) {
 				Animation* animation = &animationComponent->animations[eid];
 				animation->currentFrameTime += delta;
@@ -70,9 +76,9 @@ void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* 
 					if (movementComponent->movementValues[eid].xVelocity < 0) flip = SDL_FLIP_HORIZONTAL;
 				}
 				SDL_Rect clip = {animation->spriteW * animation->currentFrame, 0, animation->spriteW, animation->spriteH};
-				RenderSystem_RenderCoord(renderer, rect, &clip, texture, flip);
+				RenderSystem_RenderCoord(renderer, &rect, &clip, texture, flip);
 			} else {
-				RenderSystem_RenderCoord(renderer, rect, NULL, texture, flip);
+				RenderSystem_RenderCoord(renderer, &rect, NULL, texture, flip);
 			}
 			continue;
 		}
