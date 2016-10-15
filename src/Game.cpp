@@ -6,8 +6,9 @@
 
 #include "TextureCache.h"
 #include "EntityCache.h"
-
-#include "HealthComponent.h"
+#include "HealthComponent.h" // Shouldn't be here!
+#include "FileLoader.h"
+#include "Zone.h"
 
 #include <iostream>
 #include <cstdio>
@@ -78,12 +79,17 @@ void LoadPlayStateAssets(Game* game) {
 		return;
 	}
 	if (!game->playState.healthFont) {
-    std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
-    return;
+	    std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+	    return;
 	}
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 	ComponentBag_Malloc(&game->playState.cBag);
+
+	// TO-DO: Hardcoded fro now, but its coolio!
+	game->playState.chapter = (Zone*)malloc(sizeof(game->playState.chapter));
+	FileLoader_Load(game->playState.chapter, "assets/chapter_1/chapter_1.txt"); // Hardcoded for now, but easily an array.
+	TextureCache_CreateTexture(game->renderer, game->playState.chapter->tileset, "tileset");
 }
 
 
@@ -277,28 +283,16 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 
 //--------------------------------------------------------------------
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
-	game->playState.score += delta;
-
-	int* health = &game->playState.cBag.healthComponent->health[Constants::PlayerIndex_]; //hax with 0
-	if (*health <= 0) {
-	  game->gameState = GameState_Lose;
-	}
-
 	// Update systems
 	InputSystem_Update(keysdown, game->playState.cBag.inputComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
 	MovementSystem_Update(delta, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
 	PhysicsSystem_Update(delta, game->playState.cBag.physicsComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.healthComponent);
 	
+	// TO-DO: Move background rendering into the render system, really makes no sense to have it here.
 	Texture* background = TextureCache_GetTexture("game_background"); 
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
 	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.animationComponent, game->playState.cBag.movementComponent);
-	Texture scoreTexture;
-	Texture_CreateTextureFromFont(&scoreTexture, game->renderer, game->playState.scoreFont, {255, 255, 255, 255}, std::to_string(game->playState.score).c_str(), "score");
-	RenderSystem_Render_xywh(game->renderer, 0, 0, scoreTexture.w, scoreTexture.h, &scoreTexture);
-	Texture healthTexture;
-	Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
-	RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, &healthTexture);
 	SDL_RenderPresent(game->renderer);
 }
 
@@ -431,7 +425,8 @@ void Game_RunLoop(Game* game) {
         UpdateLose(game, keysdown);
 				break;
 			case GameState_Returning:
-				ComponentBag_Reset(&game->playState.cBag);
+				if (game->playState.chapter) free(game->playState.chapter);
+				if (!game->playState.cBag.freed) ComponentBag_Free(&game->playState.cBag);
 				EntityCache_RemoveAll();
 				game->gameState = GameState_Title;
 				break;
@@ -447,7 +442,8 @@ void Game_RunLoop(Game* game) {
 
 //--------------------------------------------------------------------
 void Game_Close(Game* game) {
-	ComponentBag_Free(&game->playState.cBag);
+	if (game->playState.chapter) free(game->playState.chapter);
+	if (!game->playState.cBag.freed) ComponentBag_Free(&game->playState.cBag);
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);

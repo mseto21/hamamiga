@@ -17,6 +17,8 @@ struct ComponentBag {
 	AnimationComponent* animationComponent;
 	PhysicsComponent* 	physicsComponent;
 	HealthComponent* 	healthComponent;
+
+	bool freed;
 };
 
 void ComponentBag_Malloc(ComponentBag* bag);

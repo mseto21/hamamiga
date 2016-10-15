@@ -7,6 +7,7 @@ struct SDL_Window;
 struct SDL_Renderer;
 struct _TTF_Font;
 struct _Mix_Music;
+struct Zone;
 
 enum GameState {
 	GameState_Intro = 0,
@@ -40,13 +41,11 @@ struct HighScoreState {
 };
 
 struct PlayState {
-	// Score
-	float score;
-
 	// Fonts
 	_TTF_Font* scoreFont;
 	_TTF_Font* healthFont;
 
+	Zone* chapter;/* The current level, loaded by FileLoader. */
 	ComponentBag cBag;
 };
 

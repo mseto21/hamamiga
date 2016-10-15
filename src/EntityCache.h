@@ -2,6 +2,7 @@
 #include "Types.h"
 #include "Entity.h"
 #include <cstdlib>
+#include <iostream>
 
 struct EntityCache {
 	Entity entities[Constants::MaxEntities_];
@@ -19,7 +20,7 @@ EntityCache* EntityCache_GetCache() {
 	return eCache;
 }
 
-
+/* Returns a new entity with a new eid. */
 Entity* EntityCache_GetNewEntity() {
 	Entity* result = nullptr;
 	if (((uint)eCache->index) < Constants::MaxEntities_) {
@@ -33,6 +34,7 @@ Entity* EntityCache_GetNewEntity() {
 	return result;
 }
 
+/* Returns the entity at a specific eid. */
 Entity* EntityCache_GetNewEntityAtIndex(uint32 eid) {
 	if (eid > Constants::MaxEntities_) {
 		return nullptr;
@@ -44,10 +46,15 @@ Entity* EntityCache_GetNewEntityAtIndex(uint32 eid) {
 	return &eCache->entities[eid];
 }
 
+/* Resets the entity array. */
 void EntityCache_RemoveAll() {
 	eCache->index = 0;
 }
 
+/* Frees the ecache. */
 void EntityCache_Free() {
 	free(eCache);
 }
+
+
+

@@ -15,6 +15,7 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->animationComponent 	= (AnimationComponent*)malloc(sizeof(*bag->animationComponent));
 	bag->physicsComponent 		= (PhysicsComponent*)malloc(sizeof(*bag->physicsComponent));
 	bag->healthComponent 		= (HealthComponent*)malloc(sizeof(*bag->healthComponent));
+	bag->freed = false;
 	ComponentBag_Reset(bag);
 }
 
@@ -36,4 +37,5 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->animationComponent);
 	free(bag->physicsComponent);
 	free(bag->healthComponent);
+	bag->freed = true;
 }
