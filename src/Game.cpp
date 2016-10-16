@@ -488,10 +488,6 @@ void Game_RunLoop(Game* game) {
 
 //--------------------------------------------------------------------
 void Game_Close(Game* game) {
-	if (game->playState.chapter)
-		free(game->playState.chapter);
-	if (!game->playState.cBag.freed) 
-		ComponentBag_Free(&game->playState.cBag);
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);
