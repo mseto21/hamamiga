@@ -1,6 +1,14 @@
 #pragma once
 #include "Component.h"
 
-struct AIComponent : public Component {};
+struct MarchValues {
+	int range;
+	int distance;
+	int facing;
+};
 
-void AIComponent_Add(AIComponent* aiComponent, uint32 eid);
+struct AIComponent : public Component {
+        MarchValues marchValues[Constants::MaxEntities_]; //saved by id rather than index
+};
+
+void AIComponent_Add(AIComponent* aiComponent, uint32 eid, int range, int facing);

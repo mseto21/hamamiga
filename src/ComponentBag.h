@@ -10,6 +10,7 @@ struct PhysicsComponent;
 struct HealthComponent;
 struct CameraComponent;
 struct HatComponent;
+struct AIComponent;
 
 struct ComponentBag {
 	RectangleComponent* rectangleComponent;
@@ -21,6 +22,7 @@ struct ComponentBag {
 	HealthComponent* 	healthComponent;
 	CameraComponent*	cameraComponent;
         HatComponent*           hatComponent;
+	AIComponent* 		aiComponent;
         bool freed;
 
 };

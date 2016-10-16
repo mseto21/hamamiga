@@ -8,6 +8,7 @@
 #include "HealthComponent.h"
 #include "CameraComponent.h"
 #include "HatComponent.h"
+#include "AIComponent.h"
 #include <iostream>
 
 void ComponentBag_Malloc(ComponentBag* bag) {
@@ -21,6 +22,7 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->cameraComponent 		= (CameraComponent*)malloc(sizeof(*bag->cameraComponent));
 	bag->cameraComponent = (CameraComponent*)malloc(sizeof(*bag->cameraComponent));
 	bag->hatComponent = (HatComponent*)malloc(sizeof(*bag->hatComponent));
+	bag->aiComponent = (AIComponent*)malloc(sizeof(*bag->aiComponent));
 	ComponentBag_Reset(bag);
 	bag->freed = false;
 }
@@ -35,6 +37,7 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->healthComponent);
 	Component_Initialize(bag->cameraComponent);
 	Component_Initialize(bag->hatComponent);
+	Component_Initialize(bag->aiComponent);
 }
 
 void ComponentBag_Check(ComponentBag* bag) {
@@ -62,6 +65,12 @@ void ComponentBag_Check(ComponentBag* bag) {
 	if (!bag->cameraComponent) {
 		std::cout << "Error: Uninitialized cameraComponent" << std::endl;
 	}
+	if (!bag->hatComponent) {
+	  std::cout << "Error: Uninitialized hatComponent" << std::endl;
+	}
+	if (!bag->aiComponent) {
+	  std::cout << "Error: Uninitialized aiComponent" << std::endl;
+	}
 }
 
 void ComponentBag_Free(ComponentBag* bag) {
@@ -74,5 +83,6 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->healthComponent);
 	free(bag->cameraComponent);
 	free(bag->hatComponent);
+	free(bag->aiComponent);
        	bag->freed = true;
 }
