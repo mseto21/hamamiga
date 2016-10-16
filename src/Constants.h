@@ -4,7 +4,7 @@
 namespace Constants {
 	const uint16 	ScreenWidth_ 	= 	1080;
 	const uint16 	ScreenHeight_ 	= 	761;
-	const uint16 	LevelWidth_ 	= 	2560;
+	const uint16 	LevelWidth_ 	= 	5120;
 	const uint16 	LevelHeight_ 	= 	768;
 	const float   	StepSize_ 		= 	8.f;
 	const uint32  	NumKeys_		=	323;
@@ -30,7 +30,7 @@ namespace Constants {
 	const uint16  	MaxVY_          	=   10; //max y velocity
 	const uint16  	MaxVX_          	=   6; //max x velocity
 	const uint16  	Jump_           	=   10; //jump velocity
-    const float   	Accel_     	  		=   0.2; //acceleration
+    const float   	Accel_     	  		=   6; //acceleration
 	const uint16	DemonHSize_   		= 	60; 
     const uint16 	DemonWSize_   		= 	61;// demon image size
 	const uint16 	Damage_         	=   20; //damage
