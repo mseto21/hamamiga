@@ -271,7 +271,7 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 				} else if (strcmp(cmd, "hat") == 0) {
 					Hat hat;
 					cout << "Adding hat to entity " << eid << "..." << endl;
-					HealthComponent_Add(cBag->hatComponent, eid, hat);
+					HatComponent_Add(cBag->hatComponent, eid, hat);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}
