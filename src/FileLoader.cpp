@@ -107,6 +107,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 
 	// Hold the tile data.
 	Tile tile;
+	tile.tid = 0;
 	tile.solid = false;
 	tile.moving = false;
 	char tilestr[MaxBuffSize_];
@@ -117,12 +118,15 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 	while ((t=fgetc(tilemapFile)) != EOF) {
 		switch (t) {
 			case '\n': // New line
+				tileMap->w = xIndex;
 				yIndex++;
 				break;
 			case ' ': // Flush tile
-				tileMap->map[xIndex][yIndex] = tile;
+				tileMap->map[yIndex][xIndex] = tile;
 				tilepos = 0;
 				tile.tid = 0;
+				tile.solid = false;
+				tile.moving = false;
 				memset(&tilestr, 0, MaxBuffSize_);
 				xIndex++;
 				getParams = false;
@@ -152,8 +156,10 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				break;
 			default: // Add to integer string
 				tilestr[tilepos++] = t;
+				cout << tilestr << endl;
 				break;
 		}
+		tileMap->h = yIndex;
 	}
 
 	fclose(tilemapFile);

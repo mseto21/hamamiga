@@ -64,18 +64,18 @@ void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* 
  	
  	// Render tile map
 	Texture* tileset = TextureCache_GetTexture("tileset");
-	for (int r = 0; r < Constants::MaxMapHeight_; r++) {
-		for (int c = 0; c < Constants::MaxMapWidth_; c++) {
+	for (int r = 0; r < map->h; r++) {
+		for (int c = 0; c < map->w; c++) {
 			if (map->map[r][c].tid == 0) {
 				continue;
 			}
 			int tid = map->map[r][c].tid;
 			int mapWidth = Constants::LevelWidth_ / Constants::TileSize_;
 			int mapHeight = Constants::LevelHeight_ / Constants::TileSize_;
-			int x = floor(tid / mapWidth) * Constants::TileSize_;
-			int y = (tid % mapHeight) * Constants::TileSize_;
+			int y = floor(tid / mapWidth) * Constants::TileSize_;
+			int x = (tid % mapHeight) * Constants::TileSize_;
 			SDL_Rect clip = {x, y, Constants::TileSize_, Constants::TileSize_};
-			//std::cout << x << ", " << y << std::endl;
+			std::cout << tid << std::endl;
 			RenderSystem_Render_xywh(renderer, r * Constants::TileSize_, c * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_, &clip, tileset);
 		}
 	}

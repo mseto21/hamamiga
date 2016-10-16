@@ -9,5 +9,7 @@ struct Tile {
 };
 
 struct TileMap {
+	int w;
+	int h;
 	Tile map[Constants::MaxMapWidth_][Constants::MaxMapHeight_];
 };
