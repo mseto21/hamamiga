@@ -14,6 +14,7 @@
 #include "PhysicsComponent.h"
 #include "HealthComponent.h"
 #include "CameraComponent.h"
+#include "HatComponent.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -267,6 +268,10 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 				} else if (strcmp(cmd, "camera") == 0) {
 					cout << "Adding camera to entity " << eid << "..." << endl;
 					CameraComponent_Add(cBag->cameraComponent, eid);
+				} else if (strcmp(cmd, "hat") == 0) {
+					Hat hat;
+					cout << "Adding hat to entity " << eid << "..." << endl;
+					HealthComponent_Add(cBag->hatComponent, eid, hat);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}
