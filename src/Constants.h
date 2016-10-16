@@ -25,7 +25,7 @@ namespace Constants {
 	// Play State
 	const uint16 	PlayerWSize_ 		=	48; //player image size
 	const uint16 	PlayerHSize_ 		=	87; //player image size
-	const float   	Gravity_        	=   0.6; //gravity
+	const float   	Gravity_        	=   0.75; //gravity
     const float   	Friction_   	 	=   .15; //friction
 	const uint16  	MaxVY_          	=   15; //max y velocity
 	const uint16  	MaxVX_          	=   10; //max x velocity
