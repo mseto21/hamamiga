@@ -8,6 +8,10 @@
 
 //--------------------------------------------------------------------
 bool Texture_LoadTexture(Texture* texture, SDL_Renderer* renderer, const char* path, const char* name) {
+	if (!renderer) {
+		std::cerr << "Error: The renderer was null!" << std::endl;
+		return;
+	}
 	if (!texture) {
 		std::cerr << "Error: Uninitialized texture!" << std::endl;
 		return false;

@@ -256,7 +256,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 			case 0:
 			  Mix_HaltMusic();
 			  game->playState.loaded = LoadPlayStateAssets(game);
-				SDL_Delay(500);
+				SDL_Delay(1000);
 			  if (game->playState.loaded)
 			  	game->gameState = GameState_Play;
 			  else
