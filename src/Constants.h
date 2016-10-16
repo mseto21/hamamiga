@@ -31,8 +31,8 @@ namespace Constants {
 	const uint16  	MaxVX_          	=   10; //max x velocity
 	const uint16  	Jump_           	=   15; //jump velocity
     const float   	Accel_     	  		=   0.75; //acceleration
-	const uint16	DemonHSize_   		= 	60; 
-    const uint16 	DemonWSize_   		= 	61;// demon image size
+	const uint16	DemonHSize_   		= 	87; 
+    const uint16 	DemonWSize_   		= 	88;// demon image size
 	const uint16 	Damage_         	=   20; //damage
 	const uint8		PlayerIndex_		=	0;
 	const uint16    Range_               =    200;

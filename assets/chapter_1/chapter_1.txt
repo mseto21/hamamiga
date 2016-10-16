@@ -12,11 +12,11 @@ zone=
 		texture(assets/tinykev.png,player,)
 		camera();
 	entity=
-		animation(4,10.0,60,60,)
+		animation(4,10.0,88,87,)
 		health(100,)
 		movement(50.0,50.0,0,0,)
 		physics(100,)
-		rectangle(1000,0,60,60,)
+		rectangle(1000,0,88,87,)
 		texture(assets/demon.png,demon,)
 		ai(300,1,);
 END=
