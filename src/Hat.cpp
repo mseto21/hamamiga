@@ -17,7 +17,7 @@ Hat::Hat(int type) {
 
 Hat::Hat() {
   jump = 1;
-  damage = 1;
+  dmgRed = 1;
 }
 
 int Hat::getJump() {

@@ -9,5 +9,6 @@ accept basic input controls from the user.
 struct MovementComponent;
 struct InputComponent;
 struct RectangleComponent;
+struct HatComponent;
 
-void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent);
+void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HatComponent* hatComponent);
