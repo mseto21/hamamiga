@@ -12,19 +12,19 @@
 bool collides(const Rectangle* r1, const Rectangle* r2);
 
 void AISystem_Update(AIComponent* aiComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, float timeStep) {
-  Rectangle* pRect = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[Constants::PlayerIndex_]];
-  pRect->x -= Constants::Range_;
-  pRect->y += Constants::Range_;
-  pRect->w += 2*Constants::Range_;
-  pRect->h += 2*Constants::Range_;
+  Rectangle pRect = rectangleComponent->entityRectangles[rectangleComponent->entityArray[Constants::PlayerIndex_]];
+  pRect.x -= Constants::Range_;
+  pRect.y += Constants::Range_;
+  pRect.w += 2*Constants::Range_;
+  pRect.h += 2*Constants::Range_;
   for (uint32 entityIndex = 0; entityIndex < aiComponent->count; entityIndex++) {
     if (!Component_HasIndex(movementComponent, entityIndex)) {
 	continue;
       }
       MovementValues* moveValues = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
       Rectangle* eRect = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[entityIndex]];
-      if (collides(pRect, eRect)) {
-	  if (pRect->x < eRect->x) {
+      if (collides(&pRect, eRect)) {
+	  if (pRect.x < eRect->x) {
 	    moveValues->xAccel = -Constants::Accel_;
 	  } else {
 	    moveValues->xAccel = Constants::Accel_;
