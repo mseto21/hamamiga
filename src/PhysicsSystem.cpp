@@ -6,6 +6,7 @@
 #include "RectangleComponent.h"
 #include "HealthComponent.h"
 #include "HatComponent.h"
+#include "TileMap.h"
 
 #include <SDL.h>
 #include <iostream>
@@ -39,7 +40,7 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 	      moveValues->xVelocity *= -1;
 	      moveValues->yVelocity *= -1;
 
-	      // Get damage if necessary
+	      /* Get damage if necessary
 	      if (Component_HasIndex(healthComponent, physicsComponent->entityArray[entityIndex])) {
 					int dmgRed = 1;
 					if (Component_HasIndex(hatComponent, physicsComponent->entityArray[entityIndex])) {
@@ -47,7 +48,7 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 					  dmgRed = hat->getDmgRed();
 					}
 		  		healthComponent->health[entityIndex] -= Constants::Damage_/dmgRed;
-	      }
+	      }*/
 	      
 	      MovementValues* moveValues2 = &movementComponent->movementValues[movementComponent->entityArray[j]];
 	      r2->x -= moveValues2->xVelocity;
@@ -66,25 +67,9 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		  }
 		}
 
-		// Check collision with tilemap
-		for (int r = 0; r <= map->h; r++) {
-			for (int c = 0; c <= map->w; c++) {
-				if (map->map[r][c].tid == 0) {
-					continue;
-				}
-				int tid = map->map[r][c].tid - 1; // Minus zero to account for null tile
-				int mapWidth = Constants::LevelWidth_ / Constants::TileSize_;
-				int mapHeight = Constants::LevelHeight_ / Constants::TileSize_;
-				int x = floor(tid / mapWidth) * Constants::TileSize_;
-				int y = (tid % mapHeight) * Constants::TileSize_;
-				SDL_Rect clip = {x, y, Constants::TileSize_, Constants::TileSize_};
-				RenderSystem_Render_xywh(renderer, c * Constants::TileSize_  - cameraComponent->camera.x, r * Constants::TileSize_  - cameraComponent->camera.y, Constants::TileSize_, Constants::TileSize_, &clip, tileset);
-			}
-		}
-
 		// TO-DO: Make this generic for all maps.
-		int tileX = floor(Constants::LevelWidth_ / r1->x);
-		int tileY = floor(Constants::LevelHeight_ / r1->y);
+		//int tileX = floor(Constants::LevelWidth_ / r1->x);
+		//int tileY = floor(Constants::LevelHeight_ / r1->y);
 
 		moveValues->yVelocity += Constants::Gravity_*timestep; //gravity
 		moveValues->xVelocity -= Constants::Friction_*moveValues->xVelocity;

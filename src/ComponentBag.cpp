@@ -20,9 +20,8 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->physicsComponent 		= (PhysicsComponent*)malloc(sizeof(*bag->physicsComponent));
 	bag->healthComponent 		= (HealthComponent*)malloc(sizeof(*bag->healthComponent));
 	bag->cameraComponent 		= (CameraComponent*)malloc(sizeof(*bag->cameraComponent));
-	bag->cameraComponent = (CameraComponent*)malloc(sizeof(*bag->cameraComponent));
-	bag->hatComponent = (HatComponent*)malloc(sizeof(*bag->hatComponent));
-	bag->aiComponent = (AIComponent*)malloc(sizeof(*bag->aiComponent));
+	bag->hatComponent 			= (HatComponent*)malloc(sizeof(*bag->hatComponent));
+	bag->aiComponent 			= (AIComponent*)malloc(sizeof(*bag->aiComponent));
 	ComponentBag_Reset(bag);
 	bag->freed = false;
 }
