@@ -4,7 +4,8 @@
 
 struct Tile {
 	uint16 tid;
-	uint8  parameters;
+	bool  solid;
+	bool moving;
 };
 
 struct TileMap {

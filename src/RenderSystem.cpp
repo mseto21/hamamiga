@@ -1,4 +1,3 @@
-#include "Texture.h"
 #include "RenderSystem.h"
 #include "Types.h"
 #include "RectangleComponent.h"
@@ -6,10 +5,12 @@
 #include "AnimationComponent.h"
 #include "MovementComponent.h"
 #include "CameraComponent.h"
+#include "TextureCache.h"
+#include "TileMap.h"
 #include <SDL.h>
 #include <iostream>
 
-void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, Texture* texture) {
+void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture) {
 	if (!renderer) {
 		return;
 	}
@@ -23,7 +24,7 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 	rquad.w = w;
 	rquad.h = h;
 
-	SDL_RenderCopy(renderer, texture->sdltexture, NULL, &rquad);
+	SDL_RenderCopy(renderer, texture->sdltexture, clip, &rquad);
 }
 
 // --------------------------------------------------------------------
@@ -59,7 +60,27 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 // --------------------------------------------------------------------
 void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* textureComponent,
  RectangleComponent* rectangleComponent, AnimationComponent* animationComponent, MovementComponent* movementComponent,
- CameraComponent* cameraComponent) {
+ CameraComponent* cameraComponent, TileMap* map) {
+ 	
+ 	// Render tile map
+	Texture* tileset = TextureCache_GetTexture("tileset");
+	for (int r = 0; r < Constants::MaxMapHeight_; r++) {
+		for (int c = 0; c < Constants::MaxMapWidth_; c++) {
+			if (map->map[r][c].tid == 0) {
+				continue;
+			}
+			int tid = map->map[r][c].tid;
+			int mapWidth = Constants::LevelWidth_ / Constants::TileSize_;
+			int mapHeight = Constants::LevelHeight_ / Constants::TileSize_;
+			int x = floor(tid / mapWidth) * Constants::TileSize_;
+			int y = (tid % mapHeight) * Constants::TileSize_;
+			SDL_Rect clip = {x, y, Constants::TileSize_, Constants::TileSize_};
+			//std::cout << x << ", " << y << std::endl;
+			RenderSystem_Render_xywh(renderer, r * Constants::TileSize_, c * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_, &clip, tileset);
+		}
+	}
+
+ 	// Render entities
 	for (uint32 texIndex = 0; texIndex < textureComponent->count; texIndex++) {
 		uint32 eid = textureComponent->entityArray[texIndex];
 		Texture* texture = textureComponent->textures[eid];

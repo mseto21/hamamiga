@@ -11,11 +11,11 @@
 
 void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HatComponent * hatComponent) {
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
-		if (!Component_HasIndex(movementComponent, entityIndex)) {
+		if (!Component_HasIndex(movementComponent, inputComponent->entityArray[entityIndex])) {
 			continue;
 		}
 		int jump = 1;
-		if (Component_HasIndex(hatComponent, entityIndex)) {
+		if (Component_HasIndex(hatComponent, inputComponent->entityArray[entityIndex])) {
 		  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
 		  jump = hat->getJump();
 		}

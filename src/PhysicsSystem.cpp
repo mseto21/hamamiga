@@ -14,7 +14,7 @@ bool collision(const Rectangle* r1, const Rectangle* r2);
 
 void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HealthComponent* healthComponent, HatComponent* hatComponent) {
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
-		if (!Component_HasIndex(movementComponent, entityIndex)) {
+		if (!Component_HasIndex(movementComponent, physicsComponent->entityArray[entityIndex])) {
 			continue;
 		}
 		// Get the movement value
@@ -22,12 +22,12 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		
 
 		//Collisions
-		if (!Component_HasIndex(rectangleComponent, entityIndex)) {
+		if (!Component_HasIndex(rectangleComponent, physicsComponent->entityArray[entityIndex])) {
 			continue;
 		}
 		Rectangle* r1 = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[entityIndex]];
 		for (uint32 j = (entityIndex+1); j < physicsComponent->count; j++) {
-			if (!Component_HasIndex(rectangleComponent, j)) {
+			if (!Component_HasIndex(rectangleComponent, physicsComponent->entityArray[j])) {
 				continue;
 			}
 		  Rectangle* r2 = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[j]];
@@ -36,12 +36,12 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		      r1->y -= moveValues->yVelocity;
 		      moveValues->xVelocity *= -1;
 		      moveValues->yVelocity *= -1;
-		      if (Component_HasIndex(healthComponent, entityIndex)) {
-			int dmgRed = 1;
-			if (Component_HasIndex(hatComponent, entityIndex)) {
-			  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
-			  dmgRed = hat->getDmgRed();
-			}
+		      if (Component_HasIndex(healthComponent, physicsComponent->entityArray[entityIndex])) {
+						int dmgRed = 1;
+						if (Component_HasIndex(hatComponent, physicsComponent->entityArray[entityIndex])) {
+						  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
+						  dmgRed = hat->getDmgRed();
+						}
 			  		healthComponent->health[entityIndex] -= Constants::Damage_/dmgRed;
 		      }
 		      
@@ -50,12 +50,13 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		      r2->y -= moveValues->yVelocity;
 		      moveValues2->xVelocity *= -1;
 		      moveValues2->yVelocity *= -1;
-		      if (Component_HasIndex(healthComponent, j)) {
-			int dmgRed = 1;
-			if (Component_HasIndex(hatComponent, j)) {
-			  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
-			  dmgRed = hat->getDmgRed();
-			}
+		      
+		      if (Component_HasIndex(healthComponent, physicsComponent->entityArray[j])) {
+						int dmgRed = 1;
+						if (Component_HasIndex(hatComponent, physicsComponent->entityArray[j])) {
+						  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
+						  dmgRed = hat->getDmgRed();
+						}
 			  		healthComponent->health[j] -= Constants::Damage_/dmgRed;
 		      }
 		  }

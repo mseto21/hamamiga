@@ -205,12 +205,12 @@ void UpdateIntro(Game* game, float delta) {
 
 	SDL_RenderClear(game->renderer);
 	if (background) {
-		RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
+		RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	}
 	if (fader) { 
-		RenderSystem_Render_xywh(game->renderer, 0, 0, menuOverlay->w, menuOverlay->h, menuOverlay);
+		RenderSystem_Render_xywh(game->renderer, 0, 0, menuOverlay->w, menuOverlay->h, NULL,menuOverlay);
 		SDL_SetTextureAlphaMod(fader->sdltexture, (game->introState.alpha * 255));
-		RenderSystem_Render_xywh(game->renderer, 0, 0, fader->w, fader->h, fader);
+		RenderSystem_Render_xywh(game->renderer, 0, 0, fader->w, fader->h, NULL,  fader);
 	}
 	SDL_RenderPresent(game->renderer);
 }
@@ -275,7 +275,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
-	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
 		Texture* selection;
 		if (selectionIndex == game->titleState.selection) {
@@ -289,7 +289,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 		}
 		int renderX = Constants::ScreenWidth_ / 2 - selection->w / 2;
 		int renderY = selectionIndex * (Constants::ScreenHeight_ / Constants::TitleScreenSelections_);
-		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, selection);
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, NULL, selection);
 	}
 	SDL_RenderPresent(game->renderer);
 }
@@ -320,7 +320,8 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	SDL_RenderClear(game->renderer);
 	RenderSystem_RenderCoord(game->renderer, &rect2, &game->playState.cBag.cameraComponent->camera, background);
 	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, 
-		game->playState.cBag.animationComponent, game->playState.cBag.movementComponent, game->playState.cBag.cameraComponent);
+		game->playState.cBag.animationComponent, game->playState.cBag.movementComponent, game->playState.cBag.cameraComponent,
+		&game->playState.chapter.tileMap);
 	//Texture healthTexture;
 	//Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
 	//RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, &healthTexture);
@@ -336,14 +337,14 @@ void UpdateHighScore(Game* game, bool* keysdown, float delta) {
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
-	if (background) RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
+	if (background) RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	for (int highScoreIndex = 0; highScoreIndex < Constants::MaxHighScores_; highScoreIndex++) {
 		std::string name = "high_score_";
 		name.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
 		Texture* score = TextureCache_GetTexture(name.c_str());
 		int renderX = Constants::ScreenWidth_ / 2 - score->w / 2;
 		int renderY = highScoreIndex * (Constants::ScreenHeight_ / Constants::MaxHighScores_);
-		RenderSystem_Render_xywh(game->renderer, renderX, renderY, score->w, score->h, score);
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, score->w, score->h, NULL, score);
 	}
 	SDL_RenderPresent(game->renderer);
 }
@@ -362,17 +363,17 @@ void UpdateWin(Game* game, bool* keysdown) {
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
 	SDL_RenderClear(game->renderer);
-	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	SDL_RenderPresent(game->renderer);
 }
 
 //-------------------------------------------------------------------
 void UpdateLose(Game* game, bool* keysdown) {
-	(void) keysdown;
+  (void) keysdown;
   //Render
   Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
   SDL_RenderClear(game->renderer);
-  RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
+  RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	SDL_RenderPresent(game->renderer);
 }
 
@@ -456,8 +457,8 @@ void Game_RunLoop(Game* game) {
 			case GameState_Win:
 				UpdateWin(game, keysdown);
 				break;
-      case GameState_Lose:
-        UpdateLose(game, keysdown);
+      		case GameState_Lose:
+        		UpdateLose(game, keysdown);
 				break;
 			case GameState_Returning:
 				if (game->playState.loaded) {

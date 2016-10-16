@@ -107,6 +107,8 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 
 	// Hold the tile data.
 	Tile tile;
+	tile.solid = false;
+	tile.moving = false;
 	char tilestr[MaxBuffSize_];
 	memset(&tilestr, 0, MaxBuffSize_);
 	uint8 tilepos = 0;
@@ -121,7 +123,6 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				tileMap->map[xIndex][yIndex] = tile;
 				tilepos = 0;
 				tile.tid = 0;
-				tile.parameters = 0;
 				memset(&tilestr, 0, MaxBuffSize_);
 				xIndex++;
 				getParams = false;
@@ -137,18 +138,17 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				break;
 			case '0': // Null tile
 				tile.tid = 0;
-				tile.parameters = 0;
 				break;
 			case 0: // Null character error; needs better error checking
 				cerr << "Error: Encountered a null character in the tilemap file at line " << lineNumber << "." << endl;
 				break;
 			case 's':
 				if (getParams)
-					tile.parameters |= 0xF; // TO-DO: Make this not temporary.
+					tile.solid = true; // TO-DO: Make this not temporary.
 				break;
 			case 'm':
 				if (getParams)
-					tile.parameters |= 0xF0;	// TO-DO: Make this not temporary.
+					tile.moving = true;// TO-DO: Make this not temporary.
 				break;
 			default: // Add to integer string
 				tilestr[tilepos++] = t;

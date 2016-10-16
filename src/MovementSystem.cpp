@@ -3,7 +3,7 @@
 
 void MovementSystem_Update(float timestep, MovementComponent* movementComponent, RectangleComponent * rectangleComponent) {
 	for (uint32 entityIndex = 0; entityIndex < movementComponent->count; entityIndex++) {
-		if (!Component_HasIndex(rectangleComponent, entityIndex)) {
+		if (!Component_HasIndex(rectangleComponent, movementComponent->entityArray[entityIndex])) {
 			continue;
 		}
 		

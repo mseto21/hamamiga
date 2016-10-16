@@ -4,7 +4,7 @@
 namespace Constants {
 	const uint16 	ScreenWidth_ 	= 	1080;
 	const uint16 	ScreenHeight_ 	= 	761;
-	const uint16 	LevelWidth_ 	= 	2560;
+	const uint16 	LevelWidth_ 	= 	5120;
 	const uint16 	LevelHeight_ 	= 	768;
 	const float   	StepSize_ 		= 	8.f;
 	const uint32  	NumKeys_		=	323;
@@ -14,6 +14,7 @@ namespace Constants {
 
 	const uint16	MaxMapWidth_	=	256; // In number of tiles
 	const uint16	MaxMapHeight_	=	256;
+	const uint16	TileSize_		=	42;
 
 	// Intro State
 	const float		IntroTime_		= 	250.f;
