@@ -15,6 +15,7 @@
 #include "HealthComponent.h"
 #include "CameraComponent.h"
 #include "HatComponent.h"
+#include "AIComponent.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -127,7 +128,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				memset(&tilestr, 0, MaxBuffSize_);
 				xIndex++;
 				getParams = false;
-				
+
 				tileMap->w = xIndex;
 				yIndex++;
 				xIndex = 0;
@@ -287,6 +288,13 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					Hat hat;
 					cout << "Adding hat to entity " << eid << "..." << endl;
 					HatComponent_Add(cBag->hatComponent, eid, hat);
+				} else if (strcmp(cmd, "ai") == 0) {
+					int range = int_parameters.front();
+					int_parameters.pop();
+					int facing = int_parameters.front();
+					int_parameters.pop();
+					cout << "Adding AI to entity " << eid << "..." << endl;
+					AIComponent_Add(cBag->aiComponent, eid, range, facing);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}

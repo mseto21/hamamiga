@@ -12,7 +12,9 @@
 
 bool collision(const Rectangle* r1, const Rectangle* r2);
 
-void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HealthComponent* healthComponent, HatComponent* hatComponent) {
+void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, 
+	HealthComponent* healthComponent, HatComponent* hatComponent, TileMap* map) {
+
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
 		if (!Component_HasIndex(movementComponent, physicsComponent->entityArray[entityIndex])) {
 			continue;
@@ -21,7 +23,7 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		MovementValues* moveValues = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
 		
 
-		//Collisions
+		// Check collisions with entities
 		if (!Component_HasIndex(rectangleComponent, physicsComponent->entityArray[entityIndex])) {
 			continue;
 		}
@@ -32,35 +34,58 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 			}
 		  Rectangle* r2 = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[j]];
 		  if (collision(r1, r2)) {
-		      r1->x -= moveValues->xVelocity;
-		      r1->y -= moveValues->yVelocity;
-		      moveValues->xVelocity *= -1;
-		      moveValues->yVelocity *= -1;
-		      if (Component_HasIndex(healthComponent, physicsComponent->entityArray[entityIndex])) {
-						int dmgRed = 1;
-						if (Component_HasIndex(hatComponent, physicsComponent->entityArray[entityIndex])) {
-						  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
-						  dmgRed = hat->getDmgRed();
-						}
-			  		healthComponent->health[entityIndex] -= Constants::Damage_/dmgRed;
-		      }
-		      
-		      MovementValues* moveValues2 = &movementComponent->movementValues[movementComponent->entityArray[j]];
-		      r2->x -= moveValues2->xVelocity;
-		      r2->y -= moveValues->yVelocity;
-		      moveValues2->xVelocity *= -1;
-		      moveValues2->yVelocity *= -1;
-		      
-		      if (Component_HasIndex(healthComponent, physicsComponent->entityArray[j])) {
-						int dmgRed = 1;
-						if (Component_HasIndex(hatComponent, physicsComponent->entityArray[j])) {
-						  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
-						  dmgRed = hat->getDmgRed();
-						}
-			  		healthComponent->health[j] -= Constants::Damage_/dmgRed;
-		      }
+	      r1->x -= moveValues->xVelocity;
+	      r1->y -= moveValues->yVelocity;
+	      moveValues->xVelocity *= -1;
+	      moveValues->yVelocity *= -1;
+
+	      // Get damage if necessary
+	      if (Component_HasIndex(healthComponent, physicsComponent->entityArray[entityIndex])) {
+					int dmgRed = 1;
+					if (Component_HasIndex(hatComponent, physicsComponent->entityArray[entityIndex])) {
+					  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
+					  dmgRed = hat->getDmgRed();
+					}
+		  		healthComponent->health[entityIndex] -= Constants::Damage_/dmgRed;
+	      }
+	      
+	      MovementValues* moveValues2 = &movementComponent->movementValues[movementComponent->entityArray[j]];
+	      r2->x -= moveValues2->xVelocity;
+	      r2->y -= moveValues->yVelocity;
+	      moveValues2->xVelocity *= -1;
+	      moveValues2->yVelocity *= -1;
+	      
+	      if (Component_HasIndex(healthComponent, physicsComponent->entityArray[j])) {
+					int dmgRed = 1;
+					if (Component_HasIndex(hatComponent, physicsComponent->entityArray[j])) {
+					  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
+					  dmgRed = hat->getDmgRed();
+					}
+		  		healthComponent->health[j] -= Constants::Damage_/dmgRed;
+	      }
 		  }
 		}
+
+		// Check collision with tilemap
+		for (int r = 0; r <= map->h; r++) {
+			for (int c = 0; c <= map->w; c++) {
+				if (map->map[r][c].tid == 0) {
+					continue;
+				}
+				int tid = map->map[r][c].tid - 1; // Minus zero to account for null tile
+				int mapWidth = Constants::LevelWidth_ / Constants::TileSize_;
+				int mapHeight = Constants::LevelHeight_ / Constants::TileSize_;
+				int x = floor(tid / mapWidth) * Constants::TileSize_;
+				int y = (tid % mapHeight) * Constants::TileSize_;
+				SDL_Rect clip = {x, y, Constants::TileSize_, Constants::TileSize_};
+				RenderSystem_Render_xywh(renderer, c * Constants::TileSize_  - cameraComponent->camera.x, r * Constants::TileSize_  - cameraComponent->camera.y, Constants::TileSize_, Constants::TileSize_, &clip, tileset);
+			}
+		}
+
+		// TO-DO: Make this generic for all maps.
+		int tileX = floor(Constants::LevelWidth_ / r1->x);
+		int tileY = floor(Constants::LevelHeight_ / r1->y);
+
 		moveValues->yVelocity += Constants::Gravity_*timestep; //gravity
 		moveValues->xVelocity -= Constants::Friction_*moveValues->xVelocity;
 	}

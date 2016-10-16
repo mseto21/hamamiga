@@ -8,7 +8,7 @@ zone=
 		input()
 		movement(50.0,50.0,4,4,)
 		physics(100,)
-		rectangle(0,450,48,87,)
+		rectangle(0,100,48,87,)
 		texture(assets/tinykev.png,player,)
 		camera();
 	entity=
@@ -17,6 +17,8 @@ zone=
 		input()
 		movement(50.0,50.0,4,4,)
 		physics(100,)
-		rectangle(100,450,48,87,)
-		texture(assets/tinykev.png,player2,);
+		rectangle(500,300,48,87,)
+		texture(assets/demon.png,demon,)
+		ai(300, -1);
+		camera();
 END=
