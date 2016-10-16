@@ -3,7 +3,7 @@
 
 struct MarchValues {
 	int range;
-	int distance;
+	float distance;
 	int facing;
 };
 
