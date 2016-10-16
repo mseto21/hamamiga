@@ -42,6 +42,8 @@ namespace Constants {
 	const uint16  	BunnyHatW_          	=   38;
 	const uint16  	ConstructionHatH_       =   24; 
 	const uint16  	ConstructionHatW_       =   48;
+	const uint16  	CrownH_          	    =   23; 
+	const uint16  	CrownW_          	    =   43;
 
 	// High Score State
 	const int     MaxHighScores_	=		5;
