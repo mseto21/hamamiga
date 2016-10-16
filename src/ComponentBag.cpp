@@ -6,6 +6,8 @@
 #include "AnimationComponent.h"
 #include "PhysicsComponent.h"
 #include "HealthComponent.h"
+#include "CameraComponent.h"
+#include <iostream>
 
 void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->rectangleComponent 	= (RectangleComponent*)malloc(sizeof(*bag->rectangleComponent));
@@ -15,6 +17,7 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->animationComponent 	= (AnimationComponent*)malloc(sizeof(*bag->animationComponent));
 	bag->physicsComponent 		= (PhysicsComponent*)malloc(sizeof(*bag->physicsComponent));
 	bag->healthComponent 		= (HealthComponent*)malloc(sizeof(*bag->healthComponent));
+	bag->cameraComponent 		= (CameraComponent*)malloc(sizeof(*bag->cameraComponent));
 	bag->freed = false;
 	ComponentBag_Reset(bag);
 }
@@ -27,6 +30,34 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->inputComponent);
 	Component_Initialize(bag->animationComponent);
 	Component_Initialize(bag->healthComponent);
+	Component_Initialize(bag->cameraComponent);
+}
+
+void ComponentBag_Check(ComponentBag* bag) {
+	if (!bag->rectangleComponent) {
+		std::cout << "Error: Uninitialized rectangleComponent" << std::endl;
+	}
+	if (!bag->movementComponent) {
+		std::cout << "Error: Uninitialized movementComponent" << std::endl;
+	}
+	if (!bag->textureComponent) {
+		std::cout << "Error: Uninitialized textureComponent" << std::endl;
+	}
+	if (!bag->inputComponent) {
+		std::cout << "Error: Uninitialized inputComponent" << std::endl;
+	}
+	if (!bag->animationComponent) {
+		std::cout << "Error: Uninitialized animationComponent" << std::endl;
+	}
+	if (!bag->physicsComponent) {
+		std::cout << "Error: Uninitialized physicsComponent" << std::endl;
+	}
+	if (!bag->healthComponent) {
+		std::cout << "Error: Uninitialized healthComponent" << std::endl;
+	}
+	if (!bag->cameraComponent) {
+		std::cout << "Error: Uninitialized cameraComponent" << std::endl;
+	}
 }
 
 void ComponentBag_Free(ComponentBag* bag) {
@@ -37,5 +68,6 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->animationComponent);
 	free(bag->physicsComponent);
 	free(bag->healthComponent);
+	free(bag->cameraComponent);
 	bag->freed = true;
 }

@@ -2,6 +2,18 @@
 #include "Zone.h"
 #include "TileMap.h"
 #include "Animation.h"
+#include "EntityCache.h"
+#include "TextureCache.h"
+
+#include "ComponentBag.h"
+#include "RectangleComponent.h"
+#include "MovementComponent.h"
+#include "TextureComponent.h"
+#include "InputComponent.h"
+#include "AnimationComponent.h"
+#include "PhysicsComponent.h"
+#include "HealthComponent.h"
+#include "CameraComponent.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -40,7 +52,7 @@ int ReadName(FILE* chapterFile, Zone* zone) {
 
 
 /* Read in the tileset that we're using for this zone. */
-int ReadTileset(FILE* chapterFile, Zone* zone) {
+int ReadTileset(FILE* chapterFile, SDL_Renderer* renderer) {
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
 	uint8 pos = 0;
@@ -56,7 +68,7 @@ int ReadTileset(FILE* chapterFile, Zone* zone) {
 				str[pos++] = c;
 		}
 	}
-	memcpy(&zone->tileset, str, sizeof(str));
+	TextureCache_CreateTexture(renderer, str, "tileset");
 	return lineNumber;
 }
 
@@ -154,15 +166,15 @@ int GetType(char* str) {
 	int decimalCount = 0;
 	int i = 0;
 	while (str[i] != 0) {
-		if (!isdigit(str[i])) {
-			return TYPE_STR;
-		} else if (str[i] == '.') {
+		if (str[i] == '.') {
 			if (decimalCount == 1) {
 				return TYPE_STR;
 			}
 			type = TYPE_FLOAT;
 			decimalCount++;
-		}
+		} else if (!isdigit(str[i])) {
+			return TYPE_STR;
+		} 
 		i++;
 	}
 	return type;
@@ -170,10 +182,10 @@ int GetType(char* str) {
 
 
 /* Read entities into the entity cache. */
-int ReadEntity(FILE* chapterFile) {
+int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 	int lineNumber = 0;
-	//Entity* entity = EntityCache_GetNewEntity();
-	uint32 eid = 0;
+	Entity* entity = EntityCache_GetNewEntity();
+	uint32 eid = entity->eid;
 
 	// Command buffer
 	char cmd[MaxBuffSize_];
@@ -184,10 +196,10 @@ int ReadEntity(FILE* chapterFile) {
 	char param[MaxBuffSize_];
 	memset(&param, 0, MaxBuffSize_);
 	uint8 parampos = 0;
-	bool getParams;
+	bool getParams = false;
 
 	queue<int> int_parameters;
-	queue<char*> str_parameters;
+	queue<string> str_parameters;
 	queue<float> float_parameters;
 
 	int c;
@@ -206,14 +218,18 @@ int ReadEntity(FILE* chapterFile) {
 					int_parameters.pop();
 					int spriteH = int_parameters.front();
 					int_parameters.pop();
-					//Animation_Initialize(&animation, frames, frameTime, spriteW, spriteH);
-					//AnimationComponent_Add(eid, animation);
-				} else if (strcmp(cmd, "health")) {
+					cout << "Adding animation to entity " << eid << ":(" << frames << "," << frameTime << "," << spriteW << "," << spriteH << ")" << endl;
+					Animation_Initialize(&animation, frames, frameTime, spriteW, spriteH);
+					AnimationComponent_Add(cBag->animationComponent, eid, animation);
+				} else if (strcmp(cmd, "health") == 0) {
 					int health = int_parameters.front();
-					//HealthComponent_Add(eid, health);
-				} else if (strcmp(cmd, "input")) {
-					//InputComponent_Add(eid);
-				} else if (strcmp(cmd, "movement")) {
+					int_parameters.pop();
+					cout << "Adding health to entity " << eid << ":(" << health << ")" << endl;
+					HealthComponent_Add(cBag->healthComponent, eid, health);
+				} else if (strcmp(cmd, "input") == 0) {
+					cout << "Adding input to entity " << eid << "..." << endl;
+					InputComponent_Add(cBag->inputComponent, eid);
+				} else if (strcmp(cmd, "movement") == 0) {
 					float xVelocity = float_parameters.front();
 					float_parameters.pop();
 					float yVelocity = float_parameters.front();
@@ -222,11 +238,14 @@ int ReadEntity(FILE* chapterFile) {
 					int_parameters.pop();
 					int yAccel = int_parameters.front();
 					int_parameters.pop();
-					//MovementComponent_Add(eid, xVelocity, yVelocity, xAccel, yAccel);
-				} else if (strcmp(cmd, "physics")) {
+					cout << "Adding movement to entity " << eid << ":(" << xVelocity << "," << yVelocity << "," << xAccel << "," << yAccel << ")" << endl;
+					MovementComponent_Add(cBag->movementComponent, eid, xVelocity, yVelocity, xAccel, yAccel);
+				} else if (strcmp(cmd, "physics") == 0) {
 					int mass = int_parameters.front();
-					//PhysicsComponent_Add(eid, mass);
-				} else if (strcmp(cmd, "rectangle")) {
+					int_parameters.pop();
+					cout << "Adding physics to entity " << eid << ":(" << mass << ")" << endl;
+					PhysicsComponent_Add(cBag->physicsComponent, eid, mass);
+				} else if (strcmp(cmd, "rectangle") == 0) {
 					int x = int_parameters.front();
 					int_parameters.pop();
 					int y = int_parameters.front();
@@ -235,15 +254,22 @@ int ReadEntity(FILE* chapterFile) {
 					int_parameters.pop();
 					int h = int_parameters.front();
 					int_parameters.pop();
-					//RectangleComponent_Add(x, y, w, h);
-				} else if (strcmp(cmd, "texture")) {
-					char* path = str_parameters.front();
+					cout << "Adding rectangle to entity " << eid << ":(" << x << "," << y << "," << w << "," << h << ")" << endl;
+					RectangleComponent_Add(cBag->rectangleComponent, eid, x, y, w, h);
+				} else if (strcmp(cmd, "texture") == 0) {
+					const char* path = str_parameters.front().c_str();
 					str_parameters.pop();
-					char* tag = str_parameters.front();
+					const char* tag = str_parameters.front().c_str();
 					str_parameters.pop();
+					cout << "Adding texture to entity " << eid << ":(" << path << "," << tag << ")" << endl;
+					TextureComponent_Add(cBag->textureComponent, eid, TextureCache_CreateTexture(renderer, path, tag));
+				} else if (strcmp(cmd, "camera") == 0) {
+					cout << "Adding camera to entity " << eid << "..." << endl;
+					CameraComponent_Add(cBag->cameraComponent, eid);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}
+				memset(&cmd, 0, MaxBuffSize_);
 				cmdpos = 0;
 				getParams = false;
 			} else if (c == ',') { // Add parameter to queue
@@ -259,11 +285,10 @@ int ReadEntity(FILE* chapterFile) {
 						str_parameters.push(param);
 						break;
 				}
-
 				memset(&param, 0, MaxBuffSize_);
 				parampos = 0;
-			} else {
-				param[parampos++] = c;
+			} else if (c != '\t') {
+					param[parampos++] = c;
 			}
 		} else if (c == '(') { // Add correct Component to the entity
 			getParams = true;
@@ -274,13 +299,13 @@ int ReadEntity(FILE* chapterFile) {
 				cmd[cmdpos++] = c;
 		}
 	}
-	cout << "SUCCESS: Entity successfully loaded!" << endl;
+	cout << "SUCCESS: Entity " << eid << " successfully loaded!" << endl;
 	return lineNumber;
 }
 
 
 /* Read in a zone and its parts. */
-int ReadZone(Zone* zone, FILE* chapterFile) {
+int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 	int c;
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
@@ -292,11 +317,11 @@ int ReadZone(Zone* zone, FILE* chapterFile) {
 			if (strcmp(str, "name") == 0) {
 				lineNumber += ReadName(chapterFile, zone);
 			} else if (strcmp(str, "tileset") == 0) {
-				lineNumber += ReadTileset(chapterFile, zone);
+				lineNumber += ReadTileset(chapterFile, renderer);
 			} else if (strcmp(str, "tilemap") == 0) {
 				lineNumber += ReadTileMap(chapterFile, zone);
 			} else if (strcmp(str, "entity") == 0) {
-				lineNumber += ReadEntity(chapterFile);
+				lineNumber += ReadEntity(chapterFile, cBag, renderer);
 			} else if (strcmp(str, "zone") == 0) {
 				// Embedded zone, won't worry about that right now.
 			} else if (strcmp(str, "END") == 0) {
@@ -323,13 +348,13 @@ int ReadZone(Zone* zone, FILE* chapterFile) {
 
 
 /* Begin reading a chapter file. */
-void FileLoader_Load(Zone* zone, const char* path) {
+void FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Renderer* renderer) {
 	if (!zone) {
 		std::cerr << "Error: The given zone was uninitialized." << std::endl;
 		return;
 	}
-	FILE* chapterFile = fopen(path, "r");
 
+	FILE* chapterFile = fopen(path, "r");
 	if (chapterFile == NULL) {
 		std::cerr << "Error: The chapter file " << path << " was NULL" << std::endl;
 		return;
@@ -344,7 +369,7 @@ void FileLoader_Load(Zone* zone, const char* path) {
 	while ((c=fgetc(chapterFile)) != EOF) {
 		if (c =='=') {
 			if (strcmp(str, "zone") == 0) {
-				lineNumber += ReadZone(zone, chapterFile);
+				lineNumber += ReadZone(zone, chapterFile, cBag, renderer);
 				pos = 0;
 				memset(&str, 0, MaxBuffSize_);
 			} else {

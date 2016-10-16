@@ -21,8 +21,14 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		
 
 		//Collisions
+		if (!Component_HasIndex(rectangleComponent, entityIndex)) {
+			continue;
+		}
 		Rectangle* r1 = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[entityIndex]];
 		for (uint32 j = (entityIndex+1); j < physicsComponent->count; j++) {
+			if (!Component_HasIndex(rectangleComponent, j)) {
+				continue;
+			}
 		  Rectangle* r2 = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[j]];
 		  if (collision(r1, r2)) {
 		      r1->x -= moveValues->xVelocity * timestep;
@@ -50,7 +56,7 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		  }
 		}
 		moveValues->yVelocity += Constants::Gravity_*timestep; //gravity
-		moveValues->xVelocity -= Constants::Friction_*moveValues->xVelocity*timestep;  
+		moveValues->xVelocity -= Constants::Friction_*moveValues->xVelocity*timestep;
 	}
 }
 

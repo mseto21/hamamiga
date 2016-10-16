@@ -29,6 +29,7 @@ bool Texture_LoadTexture(Texture* texture, SDL_Renderer* renderer, const char* p
 
 	texture->w = surface->w;
 	texture->h = surface->h;
+	texture->flip = SDL_FLIP_NONE;
 	strcpy(texture->name, name);
 	SDL_FreeSurface(surface);
 
@@ -50,7 +51,7 @@ bool Texture_CreateTextureFromFont(Texture* texture, SDL_Renderer* renderer, TTF
 
 	SDL_Surface* surface = TTF_RenderText_Blended(font, message, color);
 	if (surface == NULL) {
-		std::cerr << "Could not load sruface for message: " << message << "! Error: " << IMG_GetError() << std::endl;
+		std::cerr << "Could not load surface for message: " << message << "! Error: " << IMG_GetError() << std::endl;
 		return false;
 	}
 

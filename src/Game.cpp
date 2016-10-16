@@ -3,12 +3,22 @@
 #include "PhysicsSystem.h"
 #include "MovementSystem.h"
 #include "RenderSystem.h"
+#include "CameraSystem.h"
 
 #include "TextureCache.h"
 #include "EntityCache.h"
-#include "HealthComponent.h" // Shouldn't be here!
 #include "FileLoader.h"
 #include "Zone.h"
+
+// These includes shouldn't be here, but we'll leave it as-is for now.
+#include "RectangleComponent.h"
+#include "MovementComponent.h"
+#include "TextureComponent.h"
+#include "InputComponent.h"
+#include "AnimationComponent.h"
+#include "PhysicsComponent.h"
+#include "HealthComponent.h"
+#include "CameraComponent.h"
 
 #include <iostream>
 #include <cstdio>
@@ -71,25 +81,26 @@ void LoadTitleStateAssets(Game* game) {
 
 
 //--------------------------------------------------------------------
-void LoadPlayStateAssets(Game* game) {
+bool LoadPlayStateAssets(Game* game) {
 	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	if (!game->playState.scoreFont) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
-		return;
+		return false;
 	}
 	if (!game->playState.healthFont) {
 	    std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
-	    return;
+	    return false;
 	}
+	
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 	ComponentBag_Malloc(&game->playState.cBag);
 
 	// TO-DO: Hardcoded fro now, but its coolio!
 	game->playState.chapter = (Zone*)malloc(sizeof(game->playState.chapter));
-	FileLoader_Load(game->playState.chapter, "assets/chapter_1/chapter_1.txt"); // Hardcoded for now, but easily an array.
-	TextureCache_CreateTexture(game->renderer, game->playState.chapter->tileset, "tileset");
+	FileLoader_Load(game->playState.chapter, "assets/chapter_1/chapter_1.txt", &game->playState.cBag, game->renderer); // Hardcoded for now, but easily an array.
+	return true;
 }
 
 
@@ -169,8 +180,10 @@ bool Game_Initialize(Game* game) {
 	// Initialize states
 	LoadIntroStateAssets(game);
 	LoadTitleStateAssets(game);
-	LoadPlayStateAssets(game);
 	memset(&game->highScoreState.scores, 0, sizeof(game->highScoreState.scores));
+	game->playState.chapter = nullptr;
+	game->playState.cBag.freed = true;
+	game->playState.loaded = false;
 
 	// Enter title state
 	game->gameState = GameState_Intro;
@@ -204,7 +217,6 @@ void UpdateIntro(Game* game, float delta) {
 	}
 	SDL_RenderPresent(game->renderer);
 }
-
 
 //--------------------------------------------------------------------
 void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
@@ -243,7 +255,12 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 		switch (game->titleState.selection) {
 			case 0:
 			  Mix_HaltMusic();
-			  game->gameState = GameState_Play;
+			  game->playState.loaded = LoadPlayStateAssets(game);
+				SDL_Delay(500);
+			  if (game->playState.loaded)
+			  	game->gameState = GameState_Play;
+			  else
+			  	std::cerr << "Error: Unable to load play state assets." << std::endl;
 			  break;
 			case 1:
 			  game->gameState = GameState_HighScore;
@@ -283,16 +300,33 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 
 //--------------------------------------------------------------------
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
+	ComponentBag_Check(&game->playState.cBag);
+	int* health = &game->playState.cBag.healthComponent->health[Constants::PlayerIndex_];
+	if (*health <= 0) {
+	  game->gameState = GameState_Lose;
+	}
+
+	Rectangle* rect = &game->playState.cBag.rectangleComponent->entityRectangles[Constants::PlayerIndex_];
 	// Update systems
+	CameraSystem_Update(game->playState.cBag.cameraComponent, rect);
 	InputSystem_Update(keysdown, game->playState.cBag.inputComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
 	MovementSystem_Update(delta, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
 	PhysicsSystem_Update(delta, game->playState.cBag.physicsComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.healthComponent);
 	
-	// TO-DO: Move background rendering into the render system, really makes no sense to have it here.
-	Texture* background = TextureCache_GetTexture("game_background"); 
+	// TO-DO: Move background rendering into the render system, makes no sense to have it here.
+	Texture* background = TextureCache_GetTexture(Constants::GameBackground_);
+	if (!background) {
+		std::cerr << "Error: The game background is not available." << std::endl;
+		return;
+	}
+	Rectangle rect2 = {0, 0, background->w, background->h};
 	SDL_RenderClear(game->renderer);
-	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, background);
-	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.animationComponent, game->playState.cBag.movementComponent);
+	RenderSystem_RenderCoord(game->renderer, &rect2, &game->playState.cBag.cameraComponent->camera, background);
+	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, 
+		game->playState.cBag.animationComponent, game->playState.cBag.movementComponent, game->playState.cBag.cameraComponent);
+	//Texture healthTexture;
+	//Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
+	//RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, &healthTexture);
 	SDL_RenderPresent(game->renderer);
 }
 
@@ -378,6 +412,7 @@ void Game_RunLoop(Game* game) {
 
 		// Poll for input
 		while (SDL_PollEvent(&event) != 0) {
+
 			if (event.type == SDL_QUIT) {
 				game->running = false;
 				Game_Close(game);
@@ -388,7 +423,10 @@ void Game_RunLoop(Game* game) {
 				return;
 			}
 			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_m) {
-				game->gameState = GameState_Returning;
+				if (game->gameState == GameState_Play)
+					game->gameState = GameState_Returning;
+				else
+					game->gameState = GameState_Title;
 			}
 			if (event.type == SDL_KEYDOWN) {
 				keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
@@ -425,9 +463,17 @@ void Game_RunLoop(Game* game) {
         UpdateLose(game, keysdown);
 				break;
 			case GameState_Returning:
-				if (game->playState.chapter) free(game->playState.chapter);
-				if (!game->playState.cBag.freed) ComponentBag_Free(&game->playState.cBag);
-				EntityCache_RemoveAll();
+				if (game->playState.loaded) {
+					if (game->playState.chapter) {
+						free(game->playState.chapter);
+						game->playState.chapter = nullptr;
+					}
+					if (!game->playState.cBag.freed) {
+						ComponentBag_Free(&game->playState.cBag);
+					}
+					EntityCache_RemoveAll();
+					game->playState.loaded = false;
+				}
 				game->gameState = GameState_Title;
 				break;
 			case GameState_Closing:
@@ -442,8 +488,10 @@ void Game_RunLoop(Game* game) {
 
 //--------------------------------------------------------------------
 void Game_Close(Game* game) {
-	if (game->playState.chapter) free(game->playState.chapter);
-	if (!game->playState.cBag.freed) ComponentBag_Free(&game->playState.cBag);
+	if (game->playState.chapter)
+		free(game->playState.chapter);
+	if (!game->playState.cBag.freed) 
+		ComponentBag_Free(&game->playState.cBag);
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);

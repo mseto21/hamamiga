@@ -16,6 +16,10 @@ void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, Move
 		Rectangle* rectangle = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[entityIndex]];
 		// Get the movement value
 		MovementValues* moveValues = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
+		if (!moveValues) {
+			std::cerr << "Error: No movement values for the input system to use." << std::endl;
+			continue;
+		}
 		moveValues->xAccel = 0;
 		moveValues->yAccel = 0;
 		if (keysPressed[SDLK_w] && (rectangle->y + rectangle->h) >= Constants::ScreenHeight_) {

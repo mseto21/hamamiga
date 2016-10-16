@@ -45,6 +45,8 @@ struct PlayState {
 	_TTF_Font* scoreFont;
 	_TTF_Font* healthFont;
 
+	bool loaded;
+
 	Zone* chapter;/* The current level, loaded by FileLoader. */
 	ComponentBag cBag;
 };

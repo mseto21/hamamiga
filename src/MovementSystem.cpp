@@ -44,13 +44,13 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 			rectangle->y = 0;
 		}
 
-		if (rectangle->y + rectangle->h >= Constants::ScreenHeight_) {
-		        rectangle->y = Constants::ScreenHeight_ - rectangle->h;
+		if (rectangle->y + rectangle->h >= Constants::LevelHeight_) {
+		        rectangle->y = Constants::LevelHeight_ - rectangle->h;
 			moveValue->yVelocity = 0;
 		}
 
-		if (rectangle->x + rectangle->w >= Constants::ScreenWidth_) {
-		        rectangle->x = Constants::ScreenWidth_ - rectangle->w;
+		if (rectangle->x + rectangle->w >= Constants::LevelWidth_) {
+		        rectangle->x = Constants::LevelWidth_ - rectangle->w;
 			moveValue->xVelocity *= -1;
 			moveValue->xAccel *= -1;
 		}
