@@ -118,8 +118,19 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 	while ((t=fgetc(tilemapFile)) != EOF) {
 		switch (t) {
 			case '\n': // New line
+				// Hacky for now
+				tileMap->map[yIndex][xIndex] = tile;
+				tilepos = 0;
+				tile.tid = 0;
+				tile.solid = false;
+				tile.moving = false;
+				memset(&tilestr, 0, MaxBuffSize_);
+				xIndex++;
+				getParams = false;
+				
 				tileMap->w = xIndex;
 				yIndex++;
+				xIndex = 0;
 				break;
 			case ' ': // Flush tile
 				tileMap->map[yIndex][xIndex] = tile;
@@ -156,12 +167,10 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				break;
 			default: // Add to integer string
 				tilestr[tilepos++] = t;
-				cout << tilestr << endl;
 				break;
 		}
-		tileMap->h = yIndex;
 	}
-
+	tileMap->h = yIndex;
 	fclose(tilemapFile);
 	cout << "SUCCESS: Tilemap successfully loaded!" << endl;
 	return lineNumber;
