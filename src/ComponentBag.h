@@ -9,6 +9,7 @@ struct AnimationComponent;
 struct PhysicsComponent;
 struct HealthComponent;
 struct CameraComponent;
+struct HatComponent;
 
 struct ComponentBag {
 	RectangleComponent* rectangleComponent;
@@ -19,8 +20,9 @@ struct ComponentBag {
 	PhysicsComponent* 	physicsComponent;
 	HealthComponent* 	healthComponent;
 	CameraComponent*	cameraComponent;
+        HatComponent*           hatComponent;
+        bool freed;
 
-	bool freed;
 };
 
 void ComponentBag_Malloc(ComponentBag* bag);

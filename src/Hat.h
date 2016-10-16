@@ -4,12 +4,14 @@
 class Hat {
  private:
   int jump;
+  int dmgRed;
 
  public:
 
   /**methods*/
   int getJump();
-
+  int getDmgRed();
+  
   /** Constructors */
   Hat();
   Hat(int type);
