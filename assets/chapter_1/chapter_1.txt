@@ -1,0 +1,22 @@
+zone=
+	name=Chapter 1: The Mysterious, Murderous Memo;
+	tileset=assets/chapter_1/chapter_1_tileset.png;
+	tilemap=assets/chapter_1/chapter_1_tilemap.txt;
+	entity=
+		animation(4,10.0,48,87,)
+		health(100,)
+		input()
+		movement(50.0,50.0,4,4,)
+		physics(100,)
+		rectangle(0,450,48,87,)
+		texture(assets/tinykev.png,player,)
+		camera();
+	entity=
+		animation(4,10.0,48,87,)
+		health(100,)
+		input()
+		movement(50.0,50.0,4,4,)
+		physics(100,)
+		rectangle(100,450,48,87,)
+		texture(assets/tinykev.png,player2,);
+END=
