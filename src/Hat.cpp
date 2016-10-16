@@ -7,6 +7,9 @@ Hat::Hat(int type) {
   case 0: //jumping hat
     jump = 2;
     break;
+  case 1: //army hat
+    dmgRed = 2;
+    break;
   default:
     break;
   }
@@ -14,8 +17,13 @@ Hat::Hat(int type) {
 
 Hat::Hat() {
   jump = 1;
+  dmgRed = 1;
 }
 
 int Hat::getJump() {
   return jump;
+}
+
+int Hat::getDmgRed() {
+  return dmgRed;
 }

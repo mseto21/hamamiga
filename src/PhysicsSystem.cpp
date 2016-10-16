@@ -5,13 +5,14 @@
 #include "PhysicsComponent.h"
 #include "RectangleComponent.h"
 #include "HealthComponent.h"
+#include "HatComponent.h"
 
 #include <SDL.h>
 #include <iostream>
 
 bool collision(const Rectangle* r1, const Rectangle* r2);
 
-void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HealthComponent* healthComponent) {
+void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HealthComponent* healthComponent, HatComponent* hatComponent) {
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
 		if (!Component_HasIndex(movementComponent, entityIndex)) {
 			continue;
@@ -36,10 +37,12 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		      moveValues->xVelocity *= -1;
 		      moveValues->yVelocity *= -1;
 		      if (Component_HasIndex(healthComponent, entityIndex)) {
-			  		healthComponent->health[entityIndex] -= Constants::Damage_;
-		      } else {
-						moveValues->xVelocity *= -1;
-						moveValues->xAccel *= -1;
+			int dmgRed = 1;
+			if (Component_HasIndex(hatComponent, entityIndex)) {
+			  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
+			  dmgRed = hat->getDmgRed();
+			}
+			  		healthComponent->health[entityIndex] -= Constants::Damage_/dmgRed;
 		      }
 		      
 		      MovementValues* moveValues2 = &movementComponent->movementValues[movementComponent->entityArray[j]];
@@ -48,10 +51,12 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		      moveValues2->xVelocity *= -1;
 		      moveValues2->yVelocity *= -1;
 		      if (Component_HasIndex(healthComponent, j)) {
-			  		healthComponent->health[j] -= Constants::Damage_;
-		      } else {
-						moveValues2->xVelocity *= -1;
-						moveValues2->xAccel *= -1;
+			int dmgRed = 1;
+			if (Component_HasIndex(hatComponent, j)) {
+			  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
+			  dmgRed = hat->getDmgRed();
+			}
+			  		healthComponent->health[j] -= Constants::Damage_/dmgRed;
 		      }
 		  }
 		}

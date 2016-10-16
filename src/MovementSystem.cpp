@@ -6,6 +6,7 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 		if (!Component_HasIndex(rectangleComponent, entityIndex)) {
 			continue;
 		}
+		
 
 		// Get movement values for the entity
 		MovementValues* moveValue = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];

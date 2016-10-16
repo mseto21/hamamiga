@@ -4,14 +4,20 @@
 #include "MovementComponent.h"
 #include "InputComponent.h"
 #include "RectangleComponent.h"
+#include "HatComponent.h"
 
 #include <SDL.h>
 #include <iostream>
 
-void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent) {
+void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HatComponent * hatComponent) {
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
 		if (!Component_HasIndex(movementComponent, entityIndex)) {
 			continue;
+		}
+		int jump = 1;
+		if (Component_HasIndex(hatComponent, entityIndex)) {
+		  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
+		  jump = hat->getJump();
 		}
 		Rectangle* rectangle = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[entityIndex]];
 		// Get the movement value
@@ -23,7 +29,7 @@ void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, Move
 		moveValues->xAccel = 0;
 		moveValues->yAccel = 0;
 		if (keysPressed[SDLK_w] && (rectangle->y + rectangle->h) >= Constants::ScreenHeight_) {
-			moveValues->yVelocity = -Constants::Jump_;
+			moveValues->yVelocity = -Constants::Jump_*jump;
 		}
 		if (keysPressed[SDLK_a]) {
 		        moveValues->xAccel = -Constants::Accel_;
