@@ -421,7 +421,7 @@ void Game_RunLoop(Game* game) {
 				return;
 			}
 			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_m) {
-				if (game->gameState == GameState_Play)
+				if (game->gameState == GameState_Play || game->gameState == GameState_Lose)
 					game->gameState = GameState_Returning;
 				else
 					game->gameState = GameState_Title;

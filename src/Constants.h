@@ -26,11 +26,11 @@ namespace Constants {
 	const uint16 	PlayerWSize_ 		=	48; //player image size
 	const uint16 	PlayerHSize_ 		=	87; //player image size
 	const float   	Gravity_        	=   0.5; //gravity
-    const float   	Friction_   	 	=   1; //friction
-	const uint16  	MaxVY_          	=   10; //max y velocity
-	const uint16  	MaxVX_          	=   6; //max x velocity
-	const uint16  	Jump_           	=   10; //jump velocity
-    const float   	Accel_     	  		=   6; //acceleration
+    const float   	Friction_   	 	=   .15; //friction
+	const uint16  	MaxVY_          	=   20; //max y velocity
+	const uint16  	MaxVX_          	=   10; //max x velocity
+	const uint16  	Jump_           	=   20; //jump velocity
+    const float   	Accel_     	  		=   0.75; //acceleration
 	const uint16	DemonHSize_   		= 	60; 
     const uint16 	DemonWSize_   		= 	61;// demon image size
 	const uint16 	Damage_         	=   20; //damage
