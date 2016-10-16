@@ -18,7 +18,7 @@ void AISystem_Update(AIComponent* aiComponent, MovementComponent* movementCompon
   pRect.w += 2*Constants::Range_;
   pRect.h += 2*Constants::Range_;
   for (uint32 entityIndex = 0; entityIndex < aiComponent->count; entityIndex++) {
-    if (!Component_HasIndex(movementComponent, entityIndex)) {
+    if (!Component_HasIndex(aiComponent, entityIndex)) {
 	continue;
       }
       MovementValues* moveValues = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
