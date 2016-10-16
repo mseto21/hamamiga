@@ -14,6 +14,7 @@ namespace Constants {
 
 	const uint16	MaxMapWidth_	=	256; // In number of tiles
 	const uint16	MaxMapHeight_	=	256;
+	const uint16	TileSize_		=	42;
 
 	// Intro State
 	const float		IntroTime_		= 	250.f;
