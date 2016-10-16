@@ -32,8 +32,8 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 			}
 		  Rectangle* r2 = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[j]];
 		  if (collision(r1, r2)) {
-		      r1->x -= moveValues->xVelocity * timestep;
-		      r1->y -= moveValues->yVelocity * timestep;
+		      r1->x -= moveValues->xVelocity;
+		      r1->y -= moveValues->yVelocity;
 		      moveValues->xVelocity *= -1;
 		      moveValues->yVelocity *= -1;
 		      if (Component_HasIndex(healthComponent, entityIndex)) {
@@ -46,8 +46,8 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		      }
 		      
 		      MovementValues* moveValues2 = &movementComponent->movementValues[movementComponent->entityArray[j]];
-		      r2->x -= moveValues2->xVelocity * timestep;
-		      r2->y -= moveValues->yVelocity * timestep;
+		      r2->x -= moveValues2->xVelocity;
+		      r2->y -= moveValues->yVelocity;
 		      moveValues2->xVelocity *= -1;
 		      moveValues2->yVelocity *= -1;
 		      if (Component_HasIndex(healthComponent, j)) {
@@ -61,7 +61,7 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		  }
 		}
 		moveValues->yVelocity += Constants::Gravity_*timestep; //gravity
-		moveValues->xVelocity -= Constants::Friction_*moveValues->xVelocity*timestep;
+		moveValues->xVelocity -= Constants::Friction_*moveValues->xVelocity;
 	}
 }
 

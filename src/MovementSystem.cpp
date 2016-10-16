@@ -10,8 +10,8 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 
 		// Get movement values for the entity
 		MovementValues* moveValue = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
-		moveValue->xVelocity      += moveValue->xAccel;
-		moveValue->yVelocity      += moveValue->yAccel;
+		moveValue->xVelocity      += moveValue->xAccel*timestep;
+		moveValue->yVelocity      += moveValue->yAccel*timestep;
 		if (moveValue->xVelocity >= Constants::MaxVX_
 		    && moveValue->xVelocity > 0) {
 		  moveValue->xVelocity = Constants::MaxVX_;
@@ -31,7 +31,7 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 		// Get the entity's rectangle
 		Rectangle* rectangle = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[entityIndex]];
 		// Move the rectangle appropriately
-		rectangle->x += (int)(moveValue->xVelocity * timestep);
+		rectangle->x += (int)(moveValue->xVelocity);
 
 		if (rectangle->x <= 0) {
 			rectangle->x = 0;
@@ -39,7 +39,7 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 			moveValue->xAccel *= -1;
 		}
 
-		rectangle->y += (int)(moveValue->yVelocity * timestep);
+		rectangle->y += (int)(moveValue->yVelocity);
 
 		if (rectangle->y <= 0) {
 			rectangle->y = 0;
