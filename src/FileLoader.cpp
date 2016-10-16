@@ -259,12 +259,12 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					cout << "Adding rectangle to entity " << eid << ":(" << x << "," << y << "," << w << "," << h << ")" << endl;
 					RectangleComponent_Add(cBag->rectangleComponent, eid, x, y, w, h);
 				} else if (strcmp(cmd, "texture") == 0) {
-					const char* path = str_parameters.front().c_str();
+					string path = str_parameters.front();
 					str_parameters.pop();
-					const char* tag = str_parameters.front().c_str();
+					string tag = str_parameters.front();
 					str_parameters.pop();
 					cout << "Adding texture to entity " << eid << ":(" << path << "," << tag << ")" << endl;
-					TextureComponent_Add(cBag->textureComponent, eid, TextureCache_CreateTexture(renderer, path, tag));
+					TextureComponent_Add(cBag->textureComponent, eid, TextureCache_CreateTexture(renderer, path.c_str(), tag.c_str()));
 				} else if (strcmp(cmd, "camera") == 0) {
 					cout << "Adding camera to entity " << eid << "..." << endl;
 					CameraComponent_Add(cBag->cameraComponent, eid);
