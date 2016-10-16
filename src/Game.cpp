@@ -4,6 +4,7 @@
 #include "MovementSystem.h"
 #include "RenderSystem.h"
 #include "CameraSystem.h"
+#include "AISystem.h"
 
 #include "TextureCache.h"
 #include "EntityCache.h"
@@ -18,6 +19,7 @@
 #include "PhysicsComponent.h"
 #include "HealthComponent.h"
 #include "CameraComponent.h"
+#include "AIComponent.h"
 
 #include <iostream>
 #include <cstdio>
@@ -307,6 +309,7 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	// Update systems
 	CameraSystem_Update(game->playState.cBag.cameraComponent, rect);
 	InputSystem_Update(keysdown, game->playState.cBag.inputComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.hatComponent);
+	AISystem_Update(game->playState.cBag.aiComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, delta);
 	MovementSystem_Update(delta, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
 	PhysicsSystem_Update(delta, game->playState.cBag.physicsComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.healthComponent, game->playState.cBag.hatComponent);
 	
