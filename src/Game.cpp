@@ -8,7 +8,6 @@
 #include "TextureCache.h"
 #include "EntityCache.h"
 #include "FileLoader.h"
-#include "Zone.h"
 
 // These includes shouldn't be here, but we'll leave it as-is for now.
 #include "RectangleComponent.h"
@@ -98,8 +97,7 @@ bool LoadPlayStateAssets(Game* game) {
 	ComponentBag_Malloc(&game->playState.cBag);
 
 	// TO-DO: Hardcoded fro now, but its coolio!
-	game->playState.chapter = (Zone*)malloc(sizeof(game->playState.chapter));
-	FileLoader_Load(game->playState.chapter, "assets/chapter_1/chapter_1.txt", &game->playState.cBag, game->renderer); // Hardcoded for now, but easily an array.
+	FileLoader_Load(&game->playState.chapter, "assets/chapter_1/chapter_1.txt", &game->playState.cBag, game->renderer); // Hardcoded for now, but easily an array.
 	return true;
 }
 
@@ -181,7 +179,6 @@ bool Game_Initialize(Game* game) {
 	LoadIntroStateAssets(game);
 	LoadTitleStateAssets(game);
 	memset(&game->highScoreState.scores, 0, sizeof(game->highScoreState.scores));
-	game->playState.chapter = nullptr;
 	game->playState.cBag.freed = true;
 	game->playState.loaded = false;
 
@@ -464,10 +461,6 @@ void Game_RunLoop(Game* game) {
 				break;
 			case GameState_Returning:
 				if (game->playState.loaded) {
-					if (game->playState.chapter) {
-						free(game->playState.chapter);
-						game->playState.chapter = nullptr;
-					}
 					if (!game->playState.cBag.freed) {
 						ComponentBag_Free(&game->playState.cBag);
 					}

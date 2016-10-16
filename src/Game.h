@@ -1,13 +1,13 @@
 #include "Constants.h"
 #include "Types.h"
 #include "ComponentBag.h"
+#include "Zone.h"
 
 // Forward Declarations
 struct SDL_Window;
 struct SDL_Renderer;
 struct _TTF_Font;
 struct _Mix_Music;
-struct Zone;
 
 enum GameState {
 	GameState_Intro = 0,
@@ -47,7 +47,7 @@ struct PlayState {
 
 	bool loaded;
 
-	Zone* chapter;/* The current level, loaded by FileLoader. */
+	Zone chapter;/* The current level, loaded by FileLoader. */
 	ComponentBag cBag;
 };
 

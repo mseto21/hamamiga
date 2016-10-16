@@ -69,8 +69,8 @@ int ReadTileset(FILE* chapterFile, SDL_Renderer* renderer) {
 				str[pos++] = c;
 		}
 	}
-	cout << "SUCCESS: tileset successfully loaded!" << endl;
 	TextureCache_CreateTexture(renderer, str, "tileset");
+	cout << "SUCCESS: tileset successfully loaded!" << endl;
 	return lineNumber;
 }
 
