@@ -38,6 +38,8 @@ namespace Constants {
 	// Hats sizes
 	const uint16  	BunnyHatH_          	=   52; 
 	const uint16  	BunnyHatW_          	=   38;
+	const uint16  	ConstructionHatH_       =   24; 
+	const uint16  	ConstructionHatW_       =   48;
 
 	// High Score State
 	const int     MaxHighScores_	=		5;
