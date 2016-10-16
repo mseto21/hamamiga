@@ -35,6 +35,10 @@ namespace Constants {
 	const uint16 	Damage_         	=   20; //damage
 	const uint8		PlayerIndex_		=	0;
 
+	// Hats sizes
+	const uint16  	BunnyHatH_          	=   52; 
+	const uint16  	BunnyHatW_          	=   38;
+
 	// High Score State
 	const int     MaxHighScores_	=		5;
 
