@@ -13,8 +13,8 @@ its index in 'entityArray'
 
 struct Component {
 	uint32 	count;
-	uint32 	entityArray[Constants::MaxEntities_];  // Index of enemies being used (0, count]
-	bool   	usedEntities[Constants::MaxEntities_]; // TO-DO: Replace array with a search.
+	uint32 	entityArray[Constants::MaxEntities_];  // holds eid of enemies being used (0, count]
+	bool   	usedEntities[Constants::MaxEntities_]; // usedEntities[eid] tells whether that nemy is in use
 };
 
 void Component_Initialize(Component* component);

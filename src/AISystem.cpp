@@ -18,29 +18,32 @@ void AISystem_Update(AIComponent* aiComponent, MovementComponent* movementCompon
   pRect.w += 2*Constants::Range_;
   pRect.h += 2*Constants::Range_;
   for (uint32 entityIndex = 0; entityIndex < aiComponent->count; entityIndex++) {
-    if (!Component_HasIndex(aiComponent, aiComponent->entityArray[entityIndex])) {
-	continue;
-      }
-      MovementValues* moveValues = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
-      Rectangle* eRect = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[entityIndex]];
-      moveValues->xAccel = 0;
-      if (collides(&pRect, eRect)) {
-	  if (pRect.x < eRect->x) {
-	    moveValues->xAccel = -Constants::Accel_;
-	  } else {
-	    moveValues->xAccel = Constants::Accel_;
-	  }
-	} else {
-	  MarchValues* marchValues = &aiComponent->marchValues[aiComponent->entityArray[entityIndex]];
-	  moveValues->xAccel = Constants::Accel_*marchValues->facing;
-	  marchValues->distance += moveValues->xAccel*timeStep;
-	  if (marchValues->distance >= marchValues->range) {
-	    marchValues->distance = 0;
-	    marchValues->facing *= -1;
-	    moveValues->xAccel *= -1;
-	  }
-      }
-      
+    uint32 eid = aiComponent->entityArray[entityIndex];
+    if (!Component_HasIndex(movementComponent, eid)) {
+      continue;
+    }
+    if (!Component_HasIndex(rectangleComponent, eid)) {
+      continue;
+    }
+    MovementValues* moveValues = &movementComponent->movementValues[eid];
+    Rectangle* eRect = &rectangleComponent->entityRectangles[0];
+    moveValues->xAccel = 0;
+    if (collides(&pRect, eRect)) {
+  	  if (pRect.x < eRect->x) {
+  	    moveValues->xAccel = -Constants::Accel_;
+  	  } else {
+  	    moveValues->xAccel = Constants::Accel_;
+  	  }
+  	} else {
+  	  MarchValues* marchValues = &aiComponent->marchValues[eid];
+  	  moveValues->xAccel = Constants::Accel_*marchValues->facing;
+  	  marchValues->distance += moveValues->xAccel*timeStep;
+  	  if (marchValues->distance >= marchValues->range) {
+  	    marchValues->distance = 0;
+  	    marchValues->facing *= -1;
+  	    moveValues->xAccel *= -1;
+  	  }
+    }  
   }
 }
 
