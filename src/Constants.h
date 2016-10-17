@@ -23,21 +23,15 @@ namespace Constants {
 	const uint8	 	TitleScreenSelections_	=	4;
 
 	// Play State
-	const uint16 	PlayerWSize_ 		=	48; //player image size
-	const uint16 	PlayerHSize_ 		=	87; //player image size
 	const float   	Gravity_        	=   0.75; //gravity
     const float   	Friction_   	 	=   .15; //friction
-
 	const uint16  	MaxVY_          	=   30; //max y velocity
 	const uint16  	MaxVX_          	=   20; //max x velocity
-
 	const uint16  	Jump_           	=   15; //jump velocity
     const float   	Accel_     	  		=   1; //acceleration
-	const uint16	DemonHSize_   		= 	87; 
-    const uint16 	DemonWSize_   		= 	88;// demon image size
 	const uint16 	Damage_         	=   20; //damage
 	const uint8		PlayerIndex_		=	0;
-	const uint16    Range_               =    200;
+	const uint16    Range_              =   200;
 
 	// Hats sizes
 	const uint16  	BunnyHatH_          	=   52; 
@@ -48,11 +42,11 @@ namespace Constants {
 	const uint16  	CrownW_          	    =   43;
 
 	// High Score State
-	const int     MaxHighScores_	=		5;
+	const int     MaxHighScores_			=		5;
 
 	// String names (TO-DO: Don't have them in here!)
 	const String128	TitleBackground_	= 	"title_background";
-	const String128	TitleFader_				=		"title_fader";
+	const String128	TitleFader_			=	"title_fader";
 	const String128	WinBackground_		= 	"win_background";
 	const String128 LoseBackground_ 	=   "lose_background";
 	const String128 GameBackground_ 	= 	"game_background";
