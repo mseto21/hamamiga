@@ -7,6 +7,7 @@
 #include "HealthComponent.h"
 #include "HatComponent.h"
 #include "TileMap.h"
+#include "Hat.h"
 
 #include <SDL.h>
 #include <iostream>
@@ -85,6 +86,12 @@ bool PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 				r1->y = tileEndY * Constants::TileSize_ - r1->h;
 				moveValues->yVelocity = 0;
 			}
+			if (map->map[tileEndY][tileX].bunny || map->map[tileEndY][tileEndX].bunny) {
+			  if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {
+			    HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
+			    hats->hat = Hat(0);
+			  }
+			}
 		}
 
 		if (moveValues->xVelocity != 0) {
@@ -92,6 +99,12 @@ bool PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 				moveValues->xVelocity = 0;
 			} else if (map->map[tileCenterY][tileEndX].solid && moveValues->xVelocity > 0) {
 				moveValues->xVelocity = 0;
+			}
+			if (map->map[tileCenterY][tileX].bunny || map->map[tileCenterY][tileEndX].bunny) {
+			  if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {
+			    HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
+			    hats->hat = Hat(0);
+			  }
 			}
 		}
 
