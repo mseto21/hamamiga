@@ -49,7 +49,6 @@ void AISystem_Update(AIComponent* aiComponent, MovementComponent* movementCompon
 
 bool close(const Rectangle* r1, const Rectangle* r2) {
   if (abs((r1->x+r1->w)/2 - (r2->x+r2->w)/2) < Constants::Range_) {
-    std::cout << "in here" << std::endl;
     return true;
   }
   return false;
