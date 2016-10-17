@@ -325,9 +325,9 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, 
 		game->playState.cBag.animationComponent, game->playState.cBag.movementComponent, game->playState.cBag.cameraComponent,
 		&game->playState.chapter.tileMap);
-	//Texture healthTexture;
-	//Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
-	//RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, &healthTexture);
+	Texture healthTexture;
+	Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
+	RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, NULL, &healthTexture);
 	SDL_RenderPresent(game->renderer);
 }
 
