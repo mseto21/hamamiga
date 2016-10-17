@@ -56,8 +56,13 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 
 		if (rectangle->y >= Constants::LevelHeight_) {
 		  Component_Remove(movementComponent, movementComponent->entityArray[entityIndex]);
+		  Component_Remove(rectangleComponent, rectangleComponent->entityArray[entityIndex]);
 		}
-
+		if (rectangle->y <= 0) {
+		  rectangle->y = 0;
+		  moveValue->yVelocity *= -1;
+		  moveValue->yAccel *= -1;
+		}
 		if (rectangle->x + rectangle->w >= Constants::LevelWidth_) {
 			rectangle->x = Constants::LevelWidth_ - rectangle->w;
 			moveValue->xVelocity *= -1;
