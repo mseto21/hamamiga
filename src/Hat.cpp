@@ -20,7 +20,7 @@ Hat::Hat() {
   dmgRed = 1;
 }
 
-int Hat::getJump() {
+float Hat::getJump() {
   return jump;
 }
 

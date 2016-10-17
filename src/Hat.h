@@ -9,7 +9,7 @@ class Hat {
  public:
 
   /**methods*/
-  int getJump();
+  float getJump();
   int getDmgRed();
   
   /** Constructors */
