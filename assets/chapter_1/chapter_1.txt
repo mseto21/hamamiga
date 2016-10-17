@@ -15,14 +15,14 @@ zone=
 		animation(4,10.0,88,87,)
 		movement(50.0,50.0,0,0,)
 		physics(100,)
-		rectangle(1000,0,88,87,)
+		rectangle(1500,200,88,87,)
 		texture(assets/demon.png,demon,)
-		ai(300,1,);
+		ai(100,1,);
 	entity=
 		animation(4,10.0,88,87,)
 		movement(50.0,50.0,0,0,)
 		physics(100,)
-		rectangle(500,0,88,87,)
+		rectangle(1000,100,88,87,)
 		texture(assets/demon.png,demon,)
-		ai(300,1,);
+		ai(100,1,);
 END=
