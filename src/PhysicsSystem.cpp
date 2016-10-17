@@ -70,6 +70,7 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 				if (Component_HasIndex(healthComponent, physicsComponent->entityArray[entityIndex])) {
 					int dmgRed = 1;
 					if (Component_HasIndex(hatComponent, physicsComponent->entityArray[entityIndex])) {
+					  std::cout << "HATS" << std::endl;
 						Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
 						dmgRed = hat->getDmgRed();
 					}
@@ -126,6 +127,7 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 			}
 			if (map->map[tileCenterY][tileX].bunny || map->map[tileCenterY][tileEndX].bunny) {
 			  if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {
+			    
 			    HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
 			    hats->hat = Hat(0);
 			  }
