@@ -9,6 +9,7 @@
 #include "MovementSystem.h"
 #include "PhysicsSystem.h"
 #include "RenderSystem.h"
+#include "StatSystem.h"
 
 // Forward Declarations
 struct SDL_Window;
@@ -65,6 +66,7 @@ struct PlayState {
 	MovementSystem movementSystem;
 	PhysicsSystem physicsSystem;
 	RenderSystem renderSystem;
+	StatSystem statSystem;
 };
 
 struct Game {

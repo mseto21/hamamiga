@@ -1,25 +1,7 @@
 #include "Game.h"
-#include "InputSystem.h"
-#include "PhysicsSystem.h"
-#include "MovementSystem.h"
-#include "RenderSystem.h"
-#include "CameraSystem.h"
-#include "AISystem.h"
-
 #include "TextureCache.h"
 #include "EntityCache.h"
 #include "FileLoader.h"
-
-// These includes shouldn't be here, but we'll leave it as-is for now.
-#include "RectangleComponent.h"
-#include "MovementComponent.h"
-#include "TextureComponent.h"
-#include "InputComponent.h"
-#include "AnimationComponent.h"
-#include "PhysicsComponent.h"
-#include "HealthComponent.h"
-#include "CameraComponent.h"
-#include "AIComponent.h"
 
 #include <iostream>
 #include <cstdio>
@@ -123,11 +105,12 @@ bool LoadPlayStateAssets(Game* game) {
 	FileLoader_Load(&game->playState.chapter, "assets/chapter_1/chapter_1.txt", &game->playState.cBag, game->renderer); // Hardcoded for now, but easily an array.
 	
 	AISystem_Initialize(&game->playState.aiSystem, &game->playState.cBag);
-	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag, &game->playState.cBag.rectangleComponent->entityRectangles[Constants::PlayerIndex_]);
+	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag);
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
 	MovementSystem_Initialize(&game->playState.movementSystem, &game->playState.cBag);
 	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap);
 	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap);
+	StatSystem_Initialize(&game->playState.statSystem, &game->playState.cBag);
 	return true;
 }
 
@@ -358,19 +341,14 @@ void UpdateLose(Game* game, bool* keysdown) {
 
 //--------------------------------------------------------------------
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
-	ComponentBag_Check(&game->playState.cBag);
-	int* health = &game->playState.cBag.healthComponent->health[Constants::PlayerIndex_];
-	int* y = &game->playState.cBag.rectangleComponent->entityRectangles[Constants::PlayerIndex_].y;
-	if (*health <= 0 || *y >= Constants::LevelHeight_) {
-	  game->gameState = GameState_Lose;
-	}
-
+	// ComponentBag_Check(&game->playState.cBag); For debugging purposes!
 	// Update systems
 	CameraSystem_Update(&game->playState.cameraSystem);
 	InputSystem_Update(&game->playState.inputSystem, keysdown);
 	AISystem_Update(&game->playState.aiSystem, delta);
 	MovementSystem_Update(&game->playState.movementSystem, delta);
 	PhysicsSystem_Update(&game->playState.physicsSystem, delta);
+	StatSystem_Update(&game->playState.statSystem, delta);
 	RenderSystem_Update(&game->playState.renderSystem, game->renderer, delta);
 }
 
