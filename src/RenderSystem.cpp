@@ -1,13 +1,16 @@
 #include "RenderSystem.h"
+#include "TextureCache.h"
 #include "Types.h"
+#include "ComponentBag.h"
+
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
 #include "AnimationComponent.h"
 #include "MovementComponent.h"
 #include "CameraComponent.h"
-#include "TextureCache.h"
 #include "TileMap.h"
-#include "ComponentBag.h"
+#include "HatComponent.h"
+
 #include <SDL.h>
 #include <iostream>
 
@@ -19,6 +22,7 @@ void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, Til
 	renderSystem->animationComponent 	= cBag->animationComponent;
 	renderSystem->movementComponent 	= cBag->movementComponent;
 	renderSystem->cameraComponent 		= cBag->cameraComponent;
+	renderSystem->hatComponent 			= cBag->hatComponent;
 	renderSystem->map 					= tileMap;
 }
 
@@ -78,6 +82,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
  	AnimationComponent* animationComponent = renderSystem->animationComponent;
  	MovementComponent* movementComponent = renderSystem->movementComponent;
  	CameraComponent* cameraComponent = renderSystem->cameraComponent;
+ 	HatComponent* hatComponent = renderSystem->hatComponent;
  	TileMap* map = renderSystem->map;
 
  	SDL_RenderClear(renderer);
@@ -115,6 +120,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 			Rectangle rect = rectangleComponent->entityRectangles[eid];
 			rect.x -= cameraComponent->camera.x;
 			rect.y -= cameraComponent->camera.y;
+
+			// Check for animation
 			if (Component_HasIndex(animationComponent, eid)) {
 				Animation* animation = &animationComponent->animations[eid];
 				if (!animation) {
@@ -128,25 +135,30 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 					animation->currentFrameTime = 0;
 				}
 				if (Component_HasIndex(movementComponent, eid)) {
-					
+					// TO-DO: Flip
 				}
 				SDL_Rect clip = {animation->spriteW * animation->currentFrame, 0, animation->spriteW, animation->spriteH};
 				RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 			} else {
 				RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 			}
+
+			// Check for hat
+			if (Component_HasIndex(hatComponent, eid)) {
+				Hat* hat = &hatComponent->hats[eid].hat;
+				Texture* hatTexture = TextureCache_GetTexture(hat->name);
+				RenderSystem_Render_xywh(renderer, rect.x, rect.y, hatTexture->w, hatTexture->h, NULL, hatTexture);
+			}
+
 			continue;
 		}
 
+		// If no rectangle, render at (0,0)
 		Rectangle rect = {0, 0, texture->w, texture->h};
 		RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 	}
 
-	/*Texture_CreateTextureFromFont
-	Texture* healthTexture = TextureCache_CreateFont(renderer, game->playState.healthFont, SDL_Color color, const char* message, const char* name)
-	Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
-	RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, NULL, &healthTexture);
-	*/
+	
 	SDL_RenderPresent(renderer);
 }
 

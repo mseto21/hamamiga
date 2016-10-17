@@ -11,6 +11,7 @@ struct RectangleComponent;
 struct AnimationComponent;
 struct MovementComponent;
 struct CameraComponent;
+struct HatComponent;
 struct TileMap;
 struct ComponentBag;
 
@@ -20,6 +21,7 @@ struct RenderSystem {
 	AnimationComponent* animationComponent;
 	MovementComponent* movementComponent;
 	CameraComponent* cameraComponent;
+	HatComponent* hatComponent;
 	TileMap* map;
 };
 

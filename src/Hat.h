@@ -1,3 +1,4 @@
+#include "Types.h"
 #ifndef HAT_H
 #define HAT_H
 
@@ -7,6 +8,7 @@ class Hat {
   int dmgRed;
 
  public:
+ 	String128 name;
 
   /**methods*/
   float getJump();
