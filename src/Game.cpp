@@ -301,7 +301,8 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	ComponentBag_Check(&game->playState.cBag);
 	int* health = &game->playState.cBag.healthComponent->health[Constants::PlayerIndex_];
-	if (*health <= 0) {
+	int* y = &game->playState.cBag.rectangleComponent->entityRectangles[Constants::PlayerIndex_].y;
+	if (*health <= 0 || *y >= Constants::LevelHeight_) {
 	  game->gameState = GameState_Lose;
 	}
 
