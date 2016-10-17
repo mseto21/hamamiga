@@ -5,7 +5,7 @@ Hat::Hat(int type) {
   Hat();
   switch (type) {
   case 0: //jumping hat
-    jump = 2;
+    jump = 1.5;
     break;
   case 1: //army hat
     dmgRed = 2;
@@ -20,7 +20,7 @@ Hat::Hat() {
   dmgRed = 1;
 }
 
-int Hat::getJump() {
+float Hat::getJump() {
   return jump;
 }
 

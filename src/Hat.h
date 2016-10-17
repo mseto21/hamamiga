@@ -3,13 +3,13 @@
 
 class Hat {
  private:
-  int jump;
+  float jump;
   int dmgRed;
 
  public:
 
   /**methods*/
-  int getJump();
+  float getJump();
   int getDmgRed();
   
   /** Constructors */
