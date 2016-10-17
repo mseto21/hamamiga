@@ -371,21 +371,7 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	AISystem_Update(&game->playState.aiSystem, delta);
 	MovementSystem_Update(&game->playState.movementSystem, delta);
 	PhysicsSystem_Update(&game->playState.physicsSystem, delta);
-	
-	// TO-DO: Move background rendering into the render system, makes no sense to have it here.
-	Texture* background = TextureCache_GetTexture(Constants::GameBackground_);
-	if (!background) {
-		std::cerr << "Error: The game background is not available." << std::endl;
-		return;
-	}
-	Rectangle rect2 = {0, 0, background->w, background->h};
-	SDL_RenderClear(game->renderer);
-	RenderSystem_RenderCoord(game->renderer, &rect2, &game->playState.cBag.cameraComponent->camera, background);
 	RenderSystem_Update(&game->playState.renderSystem, game->renderer, delta);
-	Texture healthTexture;
-	Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
-	RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, NULL, &healthTexture);
-	SDL_RenderPresent(game->renderer);
 }
 
 
