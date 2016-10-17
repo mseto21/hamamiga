@@ -23,9 +23,9 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 		MovementValues* moveValue = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
 		moveValue->xVelocity      += moveValue->xAccel * timestep;
 		moveValue->yVelocity      += moveValue->yAccel * timestep;
-		int slow = 0;
-		if (entityIndex == Constants::PlayerIndex_) {
-		  slow = 4;
+		float slow = 0;
+		if (movementComponent->entityArray[entityIndex] != Constants::PlayerIndex_) {
+		  slow = 15;
 		}
 
 		if (moveValue->xVelocity >= (Constants::MaxVX_ - slow) && moveValue->xVelocity > 0) {
