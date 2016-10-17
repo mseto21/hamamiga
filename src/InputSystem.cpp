@@ -19,7 +19,6 @@ void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, Move
 		  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
 		  jump = hat->getJump();
 		}
-		Rectangle* rectangle = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[entityIndex]];
 		// Get the movement value
 		MovementValues* moveValues = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
 		if (!moveValues) {

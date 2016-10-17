@@ -12,11 +12,15 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 		MovementValues* moveValue = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
 		moveValue->xVelocity      += moveValue->xAccel * timestep;
 		moveValue->yVelocity      += moveValue->yAccel * timestep;
+		int slow = 0;
+		if (entityIndex == Constants::PlayerIndex_) {
+		  slow = 4;
+		}
 
-		if (moveValue->xVelocity >= Constants::MaxVX_ && moveValue->xVelocity > 0) {
-		  moveValue->xVelocity = Constants::MaxVX_;
-		} else if (moveValue->xVelocity <= -Constants::MaxVX_ && moveValue->xVelocity < 0) {
-		  moveValue->xVelocity = -Constants::MaxVX_;
+		if (moveValue->xVelocity >= (Constants::MaxVX_ - slow) && moveValue->xVelocity > 0) {
+		  moveValue->xVelocity = Constants::MaxVX_ - slow;
+		} else if (moveValue->xVelocity <= (-Constants::MaxVX_ + slow) && moveValue->xVelocity < 0) {
+		  moveValue->xVelocity = -Constants::MaxVX_ + slow;
 		}
 
 		if (moveValue->yVelocity >= Constants::MaxVY_ && moveValue->yVelocity > 0) {
