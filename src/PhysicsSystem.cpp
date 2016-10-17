@@ -8,14 +8,38 @@
 #include "HatComponent.h"
 #include "TileMap.h"
 #include "Hat.h"
+#include "ComponentBag.h"
 
 #include <SDL.h>
 #include <iostream>
 
-bool collision(const Rectangle* r1, const Rectangle* r2);
 
-bool PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, 
-	HealthComponent* healthComponent, HatComponent* hatComponent, TileMap* map) {
+void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap) {
+	physicsSystem->physicsComponent 	= cBag->physicsComponent;
+	physicsSystem->movementComponent 	= cBag->movementComponent;
+	physicsSystem->rectangleComponent  	= cBag->rectangleComponent;
+	physicsSystem->healthComponent 		= cBag->healthComponent;
+	physicsSystem->hatComponent 		= cBag->hatComponent;
+	physicsSystem->map 					= tileMap;
+}
+bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep);
+
+
+bool collision(const Rectangle* r1, const Rectangle* r2) {
+  if (r1->x <= r2->x + r2->w && r1->x + r1->w >= r2->x && r1->y <= r2->y + r2->h && r1->y + r1->h >= r2->y) {
+    return true;
+  }
+  return false;
+}
+
+
+bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
+	PhysicsComponent* physicsComponent = physicsSystem->physicsComponent;
+	MovementComponent* movementComponent = physicsSystem->movementComponent;
+	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;
+	HealthComponent* healthComponent = physicsSystem->healthComponent;
+	HatComponent* hatComponent = physicsSystem->hatComponent;
+	TileMap* map = physicsSystem->map;
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
 		if (!Component_HasIndex(movementComponent, physicsComponent->entityArray[entityIndex])) {
@@ -114,11 +138,4 @@ bool PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 
 	}
 	return false;
-}
-
-bool collision(const Rectangle* r1, const Rectangle* r2) {
-  if (r1->x <= r2->x + r2->w && r1->x + r1->w >= r2->x && r1->y <= r2->y + r2->h && r1->y + r1->h >= r2->y) {
-    return true;
-  }
-  return false;
 }

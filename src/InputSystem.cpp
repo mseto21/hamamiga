@@ -5,11 +5,24 @@
 #include "InputComponent.h"
 #include "RectangleComponent.h"
 #include "HatComponent.h"
+#include "ComponentBag.h"
 
 #include <SDL.h>
 #include <iostream>
 
-void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HatComponent * hatComponent) {
+void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag) {
+	inputSystem->inputComponent 	= cBag->inputComponent;
+	inputSystem->movementComponent 	= cBag->movementComponent;
+	inputSystem->rectangleComponent = cBag->rectangleComponent;
+	inputSystem->hatComponent 		= cBag->hatComponent;
+}
+
+void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]) {
+	InputComponent* inputComponent = inputSystem->inputComponent;
+	MovementComponent* movementComponent = inputSystem->movementComponent;
+	RectangleComponent* rectangleComponent = inputSystem->rectangleComponent;
+	HatComponent* hatComponent = inputSystem->hatComponent;
+
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
 		if (!Component_HasIndex(movementComponent, inputComponent->entityArray[entityIndex])) {
 			continue;

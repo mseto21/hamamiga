@@ -82,29 +82,6 @@ void LoadTitleStateAssets(Game* game) {
 
 
 //--------------------------------------------------------------------
-bool LoadPlayStateAssets(Game* game) {
-	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
-	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
-	if (!game->playState.scoreFont) {
-		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
-		return false;
-	}
-	if (!game->playState.healthFont) {
-	    std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
-	    return false;
-	}
-	
-	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
-	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
-	ComponentBag_Malloc(&game->playState.cBag);
-
-	// TO-DO: Hardcoded fro now, but its coolio!
-	FileLoader_Load(&game->playState.chapter, "assets/chapter_1/chapter_1.txt", &game->playState.cBag, game->renderer); // Hardcoded for now, but easily an array.
-	return true;
-}
-
-
-//--------------------------------------------------------------------
 void LoadHighScoreStateAssets(Game* game) {
 	// Load font
 	game->highScoreState.font = TTF_OpenFont("assets/minnie\'shat.ttf", 75);
@@ -123,6 +100,37 @@ void LoadHighScoreStateAssets(Game* game) {
 	}
 	TTF_CloseFont(game->highScoreState.font);
 }
+
+
+//--------------------------------------------------------------------
+bool LoadPlayStateAssets(Game* game) {
+	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
+	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
+	if (!game->playState.scoreFont) {
+		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+		return false;
+	}
+	if (!game->playState.healthFont) {
+	    std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+	    return false;
+	}
+	
+	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
+	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
+	ComponentBag_Malloc(&game->playState.cBag);
+
+	// TO-DO: Hardcoded fro now, but its coolio!
+	FileLoader_Load(&game->playState.chapter, "assets/chapter_1/chapter_1.txt", &game->playState.cBag, game->renderer); // Hardcoded for now, but easily an array.
+	
+	AISystem_Initialize(&game->playState.aiSystem, &game->playState.cBag);
+	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag, &game->playState.cBag.rectangleComponent->entityRectangles[Constants::PlayerIndex_]);
+	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
+	MovementSystem_Initialize(&game->playState.movementSystem, &game->playState.cBag);
+	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap);
+	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap);
+	return true;
+}
+
 
 //--------------------------------------------------------------------
 bool Game_Initialize(Game* game) {
@@ -298,44 +306,6 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 
 
 //--------------------------------------------------------------------
-void UpdatePlay(Game* game, bool* keysdown, float delta) {
-	ComponentBag_Check(&game->playState.cBag);
-	int* health = &game->playState.cBag.healthComponent->health[Constants::PlayerIndex_];
-	int* y = &game->playState.cBag.rectangleComponent->entityRectangles[Constants::PlayerIndex_].y;
-	if (*health <= 0 || *y >= Constants::LevelHeight_) {
-	  game->gameState = GameState_Lose;
-	}
-
-	Rectangle* rect = &game->playState.cBag.rectangleComponent->entityRectangles[Constants::PlayerIndex_];
-	// Update systems
-	CameraSystem_Update(game->playState.cBag.cameraComponent, rect);
-	InputSystem_Update(keysdown, game->playState.cBag.inputComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.hatComponent);
-	AISystem_Update(game->playState.cBag.aiComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, delta);
-	MovementSystem_Update(delta, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
-	if (PhysicsSystem_Update(delta, game->playState.cBag.physicsComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.healthComponent, game->playState.cBag.hatComponent, &game->playState.chapter.tileMap)) {
-		game->gameState = GameState_Win;
-	}
-	
-	// TO-DO: Move background rendering into the render system, makes no sense to have it here.
-	Texture* background = TextureCache_GetTexture(Constants::GameBackground_);
-	if (!background) {
-		std::cerr << "Error: The game background is not available." << std::endl;
-		return;
-	}
-	Rectangle rect2 = {0, 0, background->w, background->h};
-	SDL_RenderClear(game->renderer);
-	RenderSystem_RenderCoord(game->renderer, &rect2, &game->playState.cBag.cameraComponent->camera, background);
-	RenderSystem_Update(game->renderer, delta, game->playState.cBag.textureComponent, game->playState.cBag.rectangleComponent, 
-		game->playState.cBag.animationComponent, game->playState.cBag.movementComponent, game->playState.cBag.cameraComponent,
-		&game->playState.chapter.tileMap);
-	Texture healthTexture;
-	Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
-	RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, NULL, &healthTexture);
-	SDL_RenderPresent(game->renderer);
-}
-
-
-//--------------------------------------------------------------------
 void UpdateHighScore(Game* game, bool* keysdown, float delta) {
 	(void) delta;
 	(void) keysdown;
@@ -363,6 +333,7 @@ void UpdatePause(Game* game, float delta) {
 	(void) game;
 }
 
+
 //--------------------------------------------------------------------
 void UpdateWin(Game* game, bool* keysdown) {
 	(void) keysdown;
@@ -373,6 +344,7 @@ void UpdateWin(Game* game, bool* keysdown) {
 	SDL_RenderPresent(game->renderer);
 }
 
+
 //-------------------------------------------------------------------
 void UpdateLose(Game* game, bool* keysdown) {
   (void) keysdown;
@@ -382,6 +354,40 @@ void UpdateLose(Game* game, bool* keysdown) {
   RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	SDL_RenderPresent(game->renderer);
 }
+
+
+//--------------------------------------------------------------------
+void UpdatePlay(Game* game, bool* keysdown, float delta) {
+	ComponentBag_Check(&game->playState.cBag);
+	int* health = &game->playState.cBag.healthComponent->health[Constants::PlayerIndex_];
+	int* y = &game->playState.cBag.rectangleComponent->entityRectangles[Constants::PlayerIndex_].y;
+	if (*health <= 0 || *y >= Constants::LevelHeight_) {
+	  game->gameState = GameState_Lose;
+	}
+
+	// Update systems
+	CameraSystem_Update(&game->playState.cameraSystem);
+	InputSystem_Update(&game->playState.inputSystem, keysdown);
+	AISystem_Update(&game->playState.aiSystem, delta);
+	MovementSystem_Update(&game->playState.movementSystem, delta);
+	PhysicsSystem_Update(&game->playState.physicsSystem, delta);
+	
+	// TO-DO: Move background rendering into the render system, makes no sense to have it here.
+	Texture* background = TextureCache_GetTexture(Constants::GameBackground_);
+	if (!background) {
+		std::cerr << "Error: The game background is not available." << std::endl;
+		return;
+	}
+	Rectangle rect2 = {0, 0, background->w, background->h};
+	SDL_RenderClear(game->renderer);
+	RenderSystem_RenderCoord(game->renderer, &rect2, &game->playState.cBag.cameraComponent->camera, background);
+	RenderSystem_Update(&game->playState.renderSystem, game->renderer, delta);
+	Texture healthTexture;
+	Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
+	RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, NULL, &healthTexture);
+	SDL_RenderPresent(game->renderer);
+}
+
 
 //--------------------------------------------------------------------
 void Game_RunLoop(Game* game) {

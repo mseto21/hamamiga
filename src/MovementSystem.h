@@ -3,5 +3,12 @@
 // Forward Declarations
 struct MovementComponent;
 struct RectangleComponent;
+struct ComponentBag;
 
-void MovementSystem_Update(float timestep, MovementComponent* movementComponent, RectangleComponent * rectangleComponent);
+struct MovementSystem {
+	MovementComponent* movementComponent;
+	RectangleComponent * rectangleComponent;
+};
+
+void MovementSystem_Initialize(MovementSystem* movementSystem, ComponentBag* cBag);
+void MovementSystem_Update(MovementSystem* movementSystem, float timestep);

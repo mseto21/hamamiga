@@ -7,9 +7,23 @@
 #include "CameraComponent.h"
 #include "TextureCache.h"
 #include "TileMap.h"
+#include "ComponentBag.h"
 #include <SDL.h>
 #include <iostream>
 
+
+// --------------------------------------------------------------------
+void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, TileMap* tileMap) {
+	renderSystem->textureComponent 		= cBag->textureComponent;
+	renderSystem->rectangleComponent 	= cBag->rectangleComponent;
+	renderSystem->animationComponent 	= cBag->animationComponent;
+	renderSystem->movementComponent 	= cBag->movementComponent;
+	renderSystem->cameraComponent 		= cBag->cameraComponent;
+	renderSystem->map 					= tileMap;
+}
+
+
+// --------------------------------------------------------------------
 void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture) {
 	if (!renderer) {
 		return;
@@ -58,9 +72,13 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 }
 
 // --------------------------------------------------------------------
-void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* textureComponent,
- RectangleComponent* rectangleComponent, AnimationComponent* animationComponent, MovementComponent* movementComponent,
- CameraComponent* cameraComponent, TileMap* map) {
+void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, float delta) {
+	TextureComponent* textureComponent = renderSystem->textureComponent;
+ 	RectangleComponent* rectangleComponent = renderSystem->rectangleComponent;
+ 	AnimationComponent* animationComponent = renderSystem->animationComponent;
+ 	MovementComponent* movementComponent = renderSystem->movementComponent;
+ 	CameraComponent* cameraComponent = renderSystem->cameraComponent;
+ 	TileMap* map = renderSystem->map;	
  	
  	// Render tile map
 	Texture* tileset = TextureCache_GetTexture("tileset");

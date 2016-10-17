@@ -4,5 +4,13 @@
 struct MovementComponent;
 struct AIComponent;
 struct RectangleComponent;
+struct ComponentBag;
 
-void AISystem_Update(AIComponent* aiComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, float timeStep);
+struct AISystem {
+	MovementComponent* movementComponent;
+	RectangleComponent* rectangleComponent;
+	AIComponent* aiComponent;
+};
+
+void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag);
+void AISystem_Update(AISystem* aiSystem, float timeStep);

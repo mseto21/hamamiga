@@ -5,13 +5,29 @@
 #include "AIComponent.h"
 #include "RectangleComponent.h"
 #include "Rectangle.h"
+#include "ComponentBag.h"
 
 #include <SDL.h>
 #include <iostream>
 
-bool close(const Rectangle* r1, const Rectangle* r2);
+void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag) {
+  aiSystem->movementComponent   = cBag->movementComponent;
+  aiSystem->rectangleComponent  = cBag->rectangleComponent;
+  aiSystem->aiComponent         = cBag->aiComponent;
+}
 
-void AISystem_Update(AIComponent* aiComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, float timeStep) {
+bool close(const Rectangle* r1, const Rectangle* r2) {
+  if (abs((r1->x+r1->w)/2 - (r2->x+r2->w)/2) < Constants::Range_) {
+    return true;
+  }
+  return false;
+}
+
+void AISystem_Update(AISystem* aiSystem, float timeStep) {
+  RectangleComponent* rectangleComponent = aiSystem->rectangleComponent;
+  MovementComponent* movementComponent = aiSystem->movementComponent;
+  AIComponent* aiComponent = aiSystem->aiComponent;
+
   Rectangle pRect = rectangleComponent->entityRectangles[rectangleComponent->entityArray[Constants::PlayerIndex_]];
   pRect.x -= Constants::Range_;
   pRect.y += Constants::Range_;
@@ -26,7 +42,7 @@ void AISystem_Update(AIComponent* aiComponent, MovementComponent* movementCompon
       continue;
     }
     MovementValues* moveValues = &movementComponent->movementValues[eid];
-    Rectangle* eRect = &rectangleComponent->entityRectangles[eid];
+    Rectangle* eRect = &aiSystem->rectangleComponent->entityRectangles[eid];
     moveValues->xAccel = 0;
     if (close(&pRect, eRect)) {
       if ((pRect.x+Constants::Range_ + pRect.w/Constants::Range_)/2 < (eRect->x + eRect->w)/2) {
@@ -47,9 +63,4 @@ void AISystem_Update(AIComponent* aiComponent, MovementComponent* movementCompon
   }
 }
 
-bool close(const Rectangle* r1, const Rectangle* r2) {
-  if (abs((r1->x+r1->w)/2 - (r2->x+r2->w)/2) < Constants::Range_) {
-    return true;
-  }
-  return false;
-}
+
