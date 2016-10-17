@@ -3,5 +3,12 @@
 // Forward Declarations
 struct CameraComponent;
 struct Rectangle;
+struct ComponentBag;
 
-void CameraSystem_Update(CameraComponent * cameraComponent, Rectangle * rectangle);
+struct CameraSystem {
+	CameraComponent * cameraComponent;
+	Rectangle * playerRect;
+};
+
+void CameraSystem_Initialize(CameraSystem* cameraSystem, ComponentBag* cBag, Rectangle* playerRect);
+void CameraSystem_Update(CameraSystem* cameraSystem);

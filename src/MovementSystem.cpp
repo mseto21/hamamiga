@@ -1,7 +1,18 @@
+#include "MovementSystem.h"
 #include "MovementComponent.h"
 #include "RectangleComponent.h"
+#include "ComponentBag.h"
 
-void MovementSystem_Update(float timestep, MovementComponent* movementComponent, RectangleComponent * rectangleComponent) {
+void MovementSystem_Initialize(MovementSystem* movementSystem, ComponentBag* cBag) {
+	movementSystem->movementComponent 	=	cBag->movementComponent;
+	movementSystem->rectangleComponent  =	cBag->rectangleComponent;
+}
+
+
+void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
+	MovementComponent* movementComponent = movementSystem->movementComponent;
+	RectangleComponent* rectangleComponent = movementSystem->rectangleComponent;
+
 	for (uint32 entityIndex = 0; entityIndex < movementComponent->count; entityIndex++) {
 		if (!Component_HasIndex(rectangleComponent, movementComponent->entityArray[entityIndex])) {
 			continue;
@@ -12,9 +23,9 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 		MovementValues* moveValue = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
 		moveValue->xVelocity      += moveValue->xAccel * timestep;
 		moveValue->yVelocity      += moveValue->yAccel * timestep;
-		int slow = 0;
-		if (entityIndex == Constants::PlayerIndex_) {
-		  slow = 4;
+		float slow = 0;
+		if (movementComponent->entityArray[entityIndex] != Constants::PlayerIndex_) {
+		  slow = 15;
 		}
 
 		if (moveValue->xVelocity >= (Constants::MaxVX_ - slow) && moveValue->xVelocity > 0) {
@@ -42,6 +53,10 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 		}
 
 		rectangle->y += (int)(moveValue->yVelocity);
+
+		if (rectangle->y >= Constants::LevelHeight_) {
+		  Component_Remove(movementComponent, movementComponent->entityArray[entityIndex]);
+		}
 
 		if (rectangle->x + rectangle->w >= Constants::LevelWidth_) {
 			rectangle->x = Constants::LevelWidth_ - rectangle->w;

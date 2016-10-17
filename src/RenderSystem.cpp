@@ -7,9 +7,23 @@
 #include "CameraComponent.h"
 #include "TextureCache.h"
 #include "TileMap.h"
+#include "ComponentBag.h"
 #include <SDL.h>
 #include <iostream>
 
+
+// --------------------------------------------------------------------
+void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, TileMap* tileMap) {
+	renderSystem->textureComponent 		= cBag->textureComponent;
+	renderSystem->rectangleComponent 	= cBag->rectangleComponent;
+	renderSystem->animationComponent 	= cBag->animationComponent;
+	renderSystem->movementComponent 	= cBag->movementComponent;
+	renderSystem->cameraComponent 		= cBag->cameraComponent;
+	renderSystem->map 					= tileMap;
+}
+
+
+// --------------------------------------------------------------------
 void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture) {
 	if (!renderer) {
 		return;
@@ -50,7 +64,7 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 	}
 
 	if (!texture->sdltexture) {
-		std::cerr << "Error: The sdl texture was null!" << std::endl;
+		std::cerr << "Error: The sdl texture was null! Texture name: " << texture->name << "." << std::endl;
 		return;
 	}
 
@@ -58,9 +72,23 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 }
 
 // --------------------------------------------------------------------
-void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* textureComponent,
- RectangleComponent* rectangleComponent, AnimationComponent* animationComponent, MovementComponent* movementComponent,
- CameraComponent* cameraComponent, TileMap* map) {
+void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, float delta) {
+	TextureComponent* textureComponent = renderSystem->textureComponent;
+ 	RectangleComponent* rectangleComponent = renderSystem->rectangleComponent;
+ 	AnimationComponent* animationComponent = renderSystem->animationComponent;
+ 	MovementComponent* movementComponent = renderSystem->movementComponent;
+ 	CameraComponent* cameraComponent = renderSystem->cameraComponent;
+ 	TileMap* map = renderSystem->map;
+
+ 	SDL_RenderClear(renderer);
+
+ 	// Render background
+ 	Texture* background = TextureCache_GetTexture(Constants::GameBackground_);
+	if (!background) {
+		std::cerr << "Error: The game background is not available." << std::endl;
+		return;
+	}
+	RenderSystem_Render_xywh(renderer, 0, 0, background->w, background->h, NULL, background);
  	
  	// Render tile map
 	Texture* tileset = TextureCache_GetTexture("tileset");
@@ -113,6 +141,13 @@ void RenderSystem_Update(SDL_Renderer* renderer, float delta, TextureComponent* 
 		Rectangle rect = {0, 0, texture->w, texture->h};
 		RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 	}
+
+	/*Texture_CreateTextureFromFont
+	Texture* healthTexture = TextureCache_CreateFont(renderer, game->playState.healthFont, SDL_Color color, const char* message, const char* name)
+	Texture_CreateTextureFromFont(&healthTexture, game->renderer, game->playState.healthFont, {20, 200, 100, 255}, std::to_string(*health).c_str(), "health");
+	RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - healthTexture.w - 10, 0, healthTexture.w, healthTexture.h, NULL, &healthTexture);
+	*/
+	SDL_RenderPresent(renderer);
 }
 
 

@@ -295,7 +295,7 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					cout << "Adding camera to entity " << eid << "..." << endl;
 					CameraComponent_Add(cBag->cameraComponent, eid);
 				} else if (strcmp(cmd, "hat") == 0) {
-					Hat hat;
+				        Hat hat = Hat();
 					cout << "Adding hat to entity " << eid << "..." << endl;
 					HatComponent_Add(cBag->hatComponent, eid, hat);
 				} else if (strcmp(cmd, "ai") == 0) {

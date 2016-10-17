@@ -12,5 +12,16 @@ struct RectangleComponent;
 struct HealthComponent;
 struct HatComponent;
 struct TileMap;
+struct ComponentBag;
 
-bool PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HealthComponent* healthComponent, HatComponent* hatComponent, TileMap* map);
+struct PhysicsSystem {
+	PhysicsComponent* physicsComponent; 
+	MovementComponent* movementComponent; 
+	RectangleComponent* rectangleComponent; 
+	HealthComponent* healthComponent; 
+	HatComponent* hatComponent; 
+	TileMap* map;
+};
+
+void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap);
+bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep);

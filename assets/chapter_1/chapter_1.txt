@@ -10,7 +10,8 @@ zone=
 		physics(100,)
 		rectangle(0,100,48,87,)
 		texture(assets/tinykev.png,player,)
-		camera();
+		camera()
+		hat();
 	entity=
 		animation(4,10.0,88,87,)
 		movement(50.0,50.0,0,0,)

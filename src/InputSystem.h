@@ -10,5 +10,15 @@ struct MovementComponent;
 struct InputComponent;
 struct RectangleComponent;
 struct HatComponent;
+struct ComponentBag;
 
-void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, HatComponent* hatComponent);
+struct InputSystem {
+	InputComponent* inputComponent;
+	MovementComponent* movementComponent; 
+	RectangleComponent* rectangleComponent; 
+	HatComponent* hatComponent;
+};
+
+
+void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag);
+void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]);

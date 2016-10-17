@@ -3,11 +3,19 @@
 #include "ComponentBag.h"
 #include "Zone.h"
 
+#include "AISystem.h"
+#include "CameraSystem.h"
+#include "InputSystem.h"
+#include "MovementSystem.h"
+#include "PhysicsSystem.h"
+#include "RenderSystem.h"
+
 // Forward Declarations
 struct SDL_Window;
 struct SDL_Renderer;
 struct _TTF_Font;
 struct _Mix_Music;
+
 
 enum GameState {
 	GameState_Intro = 0,
@@ -45,10 +53,18 @@ struct PlayState {
 	_TTF_Font* scoreFont;
 	_TTF_Font* healthFont;
 
-	bool loaded;
+	bool loaded; // Check if the map is loaded
 
 	Zone chapter;/* The current level, loaded by FileLoader. */
 	ComponentBag cBag;
+
+	// Systems
+	AISystem aiSystem;
+	CameraSystem cameraSystem;
+	InputSystem inputSystem;
+	MovementSystem movementSystem;
+	PhysicsSystem physicsSystem;
+	RenderSystem renderSystem;
 };
 
 struct Game {
