@@ -4,8 +4,10 @@
 
 struct Tile {
 	uint16 tid;
-	bool  solid;
+	bool solid;
 	bool moving;
+	bool bunny;
+	bool winning;
 };
 
 struct TileMap {

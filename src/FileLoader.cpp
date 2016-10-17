@@ -139,6 +139,8 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				tile.tid = 0;
 				tile.solid = false;
 				tile.moving = false;
+				tile.bunny = false;
+				tile.winning = false;
 				memset(&tilestr, 0, MaxBuffSize_);
 				xIndex++;
 				getParams = false;
@@ -165,6 +167,14 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 			case 'm':
 				if (getParams)
 					tile.moving = true;// TO-DO: Make this not temporary.
+				break;
+			case 'w':
+				if (getParams)
+					tile.winning = true;
+				break;
+			case 'b':
+				if (getParams)
+					tile.bunny = true;
 				break;
 			default: // Add to integer string
 				tilestr[tilepos++] = t;
