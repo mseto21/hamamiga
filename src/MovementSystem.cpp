@@ -10,20 +10,18 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 
 		// Get movement values for the entity
 		MovementValues* moveValue = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
-		moveValue->xVelocity      += moveValue->xAccel*timestep;
-		moveValue->yVelocity      += moveValue->yAccel*timestep;
-		if (moveValue->xVelocity >= Constants::MaxVX_
-		    && moveValue->xVelocity > 0) {
+		moveValue->xVelocity      += moveValue->xAccel * timestep;
+		moveValue->yVelocity      += moveValue->yAccel * timestep;
+
+		if (moveValue->xVelocity >= Constants::MaxVX_ && moveValue->xVelocity > 0) {
 		  moveValue->xVelocity = Constants::MaxVX_;
-		} else if (moveValue->xVelocity <= -Constants::MaxVX_
-			   && moveValue->xVelocity < 0) {
+		} else if (moveValue->xVelocity <= -Constants::MaxVX_ && moveValue->xVelocity < 0) {
 		  moveValue->xVelocity = -Constants::MaxVX_;
 		}
-		if (moveValue->yVelocity >= Constants::MaxVY_
-		    && moveValue->yVelocity > 0) {
+
+		if (moveValue->yVelocity >= Constants::MaxVY_ && moveValue->yVelocity > 0) {
 		  moveValue->yVelocity = Constants::MaxVY_;
-	        } else if (moveValue->yVelocity <= -Constants::MaxVY_
-			   && moveValue->yVelocity < 0) {
+	    } else if (moveValue->yVelocity <= -Constants::MaxVY_ && moveValue->yVelocity < 0) {
 		  moveValue->yVelocity = -Constants::MaxVY_;
 		}
 		
@@ -41,17 +39,13 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 
 		rectangle->y += (int)(moveValue->yVelocity);
 
-		if (rectangle->y <= 0) {
-			rectangle->y = 0;
-		}
-
 		if (rectangle->y + rectangle->h >= Constants::LevelHeight_) {
-		        rectangle->y = Constants::LevelHeight_ - rectangle->h;
+			rectangle->y = Constants::LevelHeight_ - rectangle->h;
 			moveValue->yVelocity = 0;
 		}
 
 		if (rectangle->x + rectangle->w >= Constants::LevelWidth_) {
-		        rectangle->x = Constants::LevelWidth_ - rectangle->w;
+			rectangle->x = Constants::LevelWidth_ - rectangle->w;
 			moveValue->xVelocity *= -1;
 			moveValue->xAccel *= -1;
 		}
