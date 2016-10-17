@@ -28,7 +28,7 @@ void InputSystem_Update(bool keysPressed[], InputComponent* inputComponent, Move
 		}
 		moveValues->xAccel = 0;
 		moveValues->yAccel = 0;
-		if (keysPressed[SDLK_w] && (rectangle->y + rectangle->h) >= Constants::ScreenHeight_) {
+		if (keysPressed[SDLK_w] && moveValues->yVelocity == 0) {
 			moveValues->yVelocity = -Constants::Jump_*jump;
 		}
 		if (keysPressed[SDLK_a]) {
