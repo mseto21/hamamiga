@@ -13,7 +13,7 @@
 
 bool collision(const Rectangle* r1, const Rectangle* r2);
 
-void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, 
+bool PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, MovementComponent* movementComponent, RectangleComponent* rectangleComponent, 
 	HealthComponent* healthComponent, HatComponent* hatComponent, TileMap* map) {
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
@@ -75,6 +75,7 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 		int tileY = floor(r1->y / Constants::TileSize_);
 		int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
 		int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
+		int tileCenterX = floor((r1->x + (r1->w / 2)) / Constants::TileSize_);
 		int tileCenterY = floor((r1->y + (r1->h / 2)) / Constants::TileSize_);
 		moveValues->yVelocity += Constants::Gravity_ * timestep;
 
@@ -93,7 +94,13 @@ void PhysicsSystem_Update(float timestep, PhysicsComponent* physicsComponent, Mo
 				moveValues->xVelocity = 0;
 			}
 		}
+
+		if (physicsComponent->entityArray[entityIndex] == 0 && map->map[tileCenterY][tileCenterX].winning) {
+			return true;
+		}
+
 	}
+	return false;
 }
 
 bool collision(const Rectangle* r1, const Rectangle* r2) {

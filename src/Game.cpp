@@ -312,7 +312,9 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	InputSystem_Update(keysdown, game->playState.cBag.inputComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.hatComponent);
 	AISystem_Update(game->playState.cBag.aiComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, delta);
 	MovementSystem_Update(delta, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent);
-	PhysicsSystem_Update(delta, game->playState.cBag.physicsComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.healthComponent, game->playState.cBag.hatComponent, &game->playState.chapter.tileMap);
+	if (PhysicsSystem_Update(delta, game->playState.cBag.physicsComponent, game->playState.cBag.movementComponent, game->playState.cBag.rectangleComponent, game->playState.cBag.healthComponent, game->playState.cBag.hatComponent, &game->playState.chapter.tileMap)) {
+		game->gameState = GameState_Win;
+	}
 	
 	// TO-DO: Move background rendering into the render system, makes no sense to have it here.
 	Texture* background = TextureCache_GetTexture(Constants::GameBackground_);
