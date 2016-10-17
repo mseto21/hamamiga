@@ -27,7 +27,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]) {
 		if (!Component_HasIndex(movementComponent, inputComponent->entityArray[entityIndex])) {
 			continue;
 		}
-		int jump = 1;
+		float jump = 1;
 		if (Component_HasIndex(hatComponent, inputComponent->entityArray[entityIndex])) {
 		  Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
 		  jump = hat->getJump();

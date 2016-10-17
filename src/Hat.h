@@ -3,7 +3,7 @@
 
 class Hat {
  private:
-  int jump;
+  float jump;
   int dmgRed;
 
  public:
