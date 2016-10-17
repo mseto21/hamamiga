@@ -93,7 +93,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 		std::cerr << "Error: The game background is not available." << std::endl;
 		return;
 	}
-	RenderSystem_Render_xywh(renderer, 0, 0, background->w, background->h, NULL, background);
+	RenderSystem_Render_xywh(renderer, -cameraComponent->camera.x, -cameraComponent->camera.y, background->w, background->h, NULL, background);
  	
  	// Render tile map
 	Texture* tileset = TextureCache_GetTexture("tileset");
@@ -143,7 +143,16 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 				RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 			}
 
-			
+			// Check for hat
+			if (Component_HasIndex(hatComponent, eid)) {
+				Hat* hat = &hatComponent->hats[eid].hat;
+				if (hat) {
+					Texture* hatTexture = TextureCache_GetTexture(hat->name);
+					if (hatTexture) {
+						RenderSystem_Render_xywh(renderer, rect.x, rect.y, hatTexture->w, hatTexture->h, NULL, hatTexture);
+					}
+				}
+			}
 
 			continue;
 		}

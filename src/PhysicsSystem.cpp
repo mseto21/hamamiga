@@ -70,7 +70,6 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 				if (Component_HasIndex(healthComponent, physicsComponent->entityArray[entityIndex])) {
 					int dmgRed = 1;
 					if (Component_HasIndex(hatComponent, physicsComponent->entityArray[entityIndex])) {
-					  std::cout << "HATS" << std::endl;
 						Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
 						dmgRed = hat->getDmgRed();
 					}
