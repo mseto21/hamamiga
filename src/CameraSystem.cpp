@@ -21,8 +21,8 @@ void CameraSystem_Update(CameraSystem* cameraSystem) {
 
 		Rectangle rectangle = rectangleComponent->entityRectangles[eid];
 		SDL_Rect* camera = &cameraSystem->cameraComponent->camera;
-		camera->x = ( rectangle.x + Constants::PlayerWSize_ / 2 ) - Constants::ScreenWidth_ / 2;
-		camera->y = ( rectangle.y + Constants::PlayerHSize_ / 2 ) - Constants::ScreenWidth_ / 2;
+		camera->x = ( rectangle.x + rectangle.w / 2 ) - Constants::ScreenWidth_ / 2;
+		camera->y = ( rectangle.y + rectangle.h / 2 ) - Constants::ScreenWidth_ / 2;
 
 		//Keep the camera in bounds
 		if (camera->x < 0) { 
