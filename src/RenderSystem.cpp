@@ -143,12 +143,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 				RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 			}
 
-			// Check for hat
-			if (Component_HasIndex(hatComponent, eid)) {
-				Hat* hat = &hatComponent->hats[eid].hat;
-				Texture* hatTexture = TextureCache_GetTexture(hat->name);
-				RenderSystem_Render_xywh(renderer, rect.x, rect.y, hatTexture->w, hatTexture->h, NULL, hatTexture);
-			}
+			
 
 			continue;
 		}
