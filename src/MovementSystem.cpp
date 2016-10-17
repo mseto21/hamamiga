@@ -43,11 +43,6 @@ void MovementSystem_Update(float timestep, MovementComponent* movementComponent,
 
 		rectangle->y += (int)(moveValue->yVelocity);
 
-		if (rectangle->y + rectangle->h >= Constants::LevelHeight_) {
-			rectangle->y = Constants::LevelHeight_ - rectangle->h;
-			moveValue->yVelocity = 0;
-		}
-
 		if (rectangle->x + rectangle->w >= Constants::LevelWidth_) {
 			rectangle->x = Constants::LevelWidth_ - rectangle->w;
 			moveValue->xVelocity *= -1;
