@@ -1,7 +1,7 @@
 zone=
 	name=Chapter 1: The Mysterious, Murderous Memo;
 	tileset=assets/chapter_1/chapter_1_tileset.png;
-	tilemap=assets/chapter_1/level.csv;
+	tilemap=assets/chapter_1/chapter_1_level.csv;
 	entity=
 		animation(4,10.0,48,87,)
 		health(100,)
