@@ -23,7 +23,7 @@ namespace Constants {
 	const uint8	 	TitleScreenSelections_	=	4;
 
 	// Play State
-	const uint32   	Gravity_        	=   0.75; //gravity
+	const float   	Gravity_        	=   .15f; //gravity
     const float   	Friction_   	 	=   .13f; //friction
 	const uint16  	MaxVY_          	=   10; //max y velocity
 	const uint16  	MaxVX_          	=   10; //max x velocity

@@ -199,12 +199,12 @@ void RenderIntro(Game* game, uint32 elapsed) {
 
 	SDL_RenderClear(game->renderer);
 	if (background) {
-	  RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background, SDL_FLIP_NONE);
+	  RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	}
 	if (fader) { 
-		RenderSystem_Render_xywh(game->renderer, 0, 0, menuOverlay->w, menuOverlay->h, NULL,menuOverlay, SDL_FLIP_NONE);
+		RenderSystem_Render_xywh(game->renderer, 0, 0, menuOverlay->w, menuOverlay->h, NULL,menuOverlay);
 		SDL_SetTextureAlphaMod(fader->sdltexture, (game->introState.alpha * 255));
-		RenderSystem_Render_xywh(game->renderer, 0, 0, fader->w, fader->h, NULL,  fader, SDL_FLIP_NONE);
+		RenderSystem_Render_xywh(game->renderer, 0, 0, fader->w, fader->h, NULL,  fader);
 	}
 	SDL_RenderPresent(game->renderer);
 }
@@ -269,7 +269,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, uint32 elapsed) {
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
-	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background, SDL_FLIP_NONE);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
 		Texture* selection;
 		if (selectionIndex == game->titleState.selection) {
@@ -283,7 +283,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, uint32 elapsed) {
 		}
 		int renderX = Constants::ScreenWidth_ / 2 - selection->w / 2;
 		int renderY = selectionIndex * (Constants::ScreenHeight_ / Constants::TitleScreenSelections_);
-		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, NULL, selection, SDL_FLIP_NONE);
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, NULL, selection);
 	}
 	SDL_RenderPresent(game->renderer);
 }
@@ -297,14 +297,14 @@ void UpdateHighScore(Game* game, bool* keysdown, uint32 elapsed) {
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
-	if (background) RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background, SDL_FLIP_NONE);
+	if (background) RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	for (int highScoreIndex = 0; highScoreIndex < Constants::MaxHighScores_; highScoreIndex++) {
 		std::string name = "high_score_";
 		name.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
 		Texture* score = TextureCache_GetTexture(name.c_str());
 		int renderX = Constants::ScreenWidth_ / 2 - score->w / 2;
 		int renderY = highScoreIndex * (Constants::ScreenHeight_ / Constants::MaxHighScores_);
-		RenderSystem_Render_xywh(game->renderer, renderX, renderY, score->w, score->h, NULL, score, SDL_FLIP_NONE);
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, score->w, score->h, NULL, score);
 	}
 	SDL_RenderPresent(game->renderer);
 }
@@ -324,7 +324,7 @@ void UpdateWin(Game* game, bool* keysdown) {
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
 	SDL_RenderClear(game->renderer);
-	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background, SDL_FLIP_NONE);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	SDL_RenderPresent(game->renderer);
 }
 
@@ -357,9 +357,9 @@ void UpdateReturn(Game* game) {
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	// ComponentBag_Check(&game->playState.cBag); For debugging purposes!
 	InputSystem_Update(&game->playState.inputSystem, keysdown);
-	PhysicsSystem_Update(&game->playState.physicsSystem, delta);
 	AISystem_Update(&game->playState.aiSystem, delta);
 	MovementSystem_Update(&game->playState.movementSystem, delta);
+	PhysicsSystem_Update(&game->playState.physicsSystem, delta);
 	StatSystem_Update(&game->playState.statSystem, delta);
 }
 
@@ -454,6 +454,8 @@ void Game_RunLoop(Game* game) {
 				case GameState_Closing:
 					game->running = false;
 					Game_Close(game);
+					break;
+				default:
 					break;
 			}
 			lag -= Constants::OptimalTime_;
