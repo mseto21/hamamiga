@@ -32,7 +32,7 @@ enum GameState {
 
 struct IntroState {
 	float alpha;
-	float time;
+	uint32 elapsed;
 };
 
 struct TitleState {

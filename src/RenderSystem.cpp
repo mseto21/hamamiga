@@ -76,7 +76,7 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 }
 
 // --------------------------------------------------------------------
-void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, float delta) {
+void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uint32 delta) {
 	TextureComponent* textureComponent = renderSystem->textureComponent;
  	RectangleComponent* rectangleComponent = renderSystem->rectangleComponent;
  	AnimationComponent* animationComponent = renderSystem->animationComponent;

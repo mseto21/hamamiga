@@ -41,7 +41,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]) {
 		moveValues->xAccel = 0;
 		moveValues->yAccel = 0;
 		if (keysPressed[SDLK_w] && moveValues->yVelocity == 0) {
-			moveValues->yVelocity = -Constants::Jump_*jump;
+			moveValues->yAccel = -Constants::Jump_*jump;
 		}
 		if (keysPressed[SDLK_a]) {
 		    moveValues->xAccel = -Constants::Accel_;

@@ -16,7 +16,7 @@ using std::endl;
 
 //--------------------------------------------------------------------
 void LoadIntroStateAssets(Game* game) {
-	game->introState.time = 0.f;
+	game->introState.elapsed = 0;
 	game->introState.alpha = 0.f;
 
 	TextureCache_CreateTexture(game->renderer, "assets/menu-screen.png", Constants::TitleBackground_);
@@ -183,11 +183,11 @@ bool Game_Initialize(Game* game) {
 
 
 //--------------------------------------------------------------------
-void UpdateIntro(Game* game, float delta) {
+void RenderIntro(Game* game, uint32 elapsed) {
 	// Check if the intro is done
-	game->introState.time += delta;
-	game->introState.alpha = 1 - (game->introState.time / Constants::IntroTime_);
-	if ( game->introState.time  >= Constants::IntroTime_) {
+	game->introState.elapsed += elapsed;
+	game->introState.alpha = 1 - (((float)game->introState.elapsed) / ((float)Constants::IntroTime_));
+	if ( game->introState.elapsed  >= Constants::IntroTime_) {
 		game->gameState = GameState_Title;
 	}
 
@@ -209,8 +209,8 @@ void UpdateIntro(Game* game, float delta) {
 }
 
 //--------------------------------------------------------------------
-void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
-	(void) delta;
+void UpdateTitle(Game* game, bool* keysdown, bool* keysup, uint32 elapsed) {
+	(void) elapsed;
 
 	// Update their options
 	if (keysdown[SDLK_w] && !game->titleState.w) {
@@ -289,8 +289,8 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, float delta) {
 
 
 //--------------------------------------------------------------------
-void UpdateHighScore(Game* game, bool* keysdown, float delta) {
-	(void) delta;
+void UpdateHighScore(Game* game, bool* keysdown, uint32 elapsed) {
+	(void) elapsed;
 	(void) keysdown;
 
 	// Render
@@ -310,9 +310,9 @@ void UpdateHighScore(Game* game, bool* keysdown, float delta) {
 
 
 //--------------------------------------------------------------------
-void UpdatePause(Game* game, float delta) {
+void UpdatePause(Game* game, uint32 elapsed) {
 	// TO-DO: Implement some sort of pause
-	(void) delta;
+	(void) elapsed;
 	(void) game;
 }
 
@@ -330,26 +330,41 @@ void UpdateWin(Game* game, bool* keysdown) {
 
 //-------------------------------------------------------------------
 void UpdateLose(Game* game, bool* keysdown) {
-  (void) keysdown;
-  //Render
-  Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
-  SDL_RenderClear(game->renderer);
-  RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
+	(void) keysdown;
+	//Render
+	Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
+	SDL_RenderClear(game->renderer);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	SDL_RenderPresent(game->renderer);
+}
+
+
+//-------------------------------------------------------------------
+void UpdateReturn(Game* game) {
+	if (game->playState.loaded) {
+		if (!game->playState.cBag.freed) {
+			ComponentBag_Free(&game->playState.cBag);
+		}
+		EntityCache_RemoveAll();
+		game->playState.loaded = false;
+	}
+	game->gameState = GameState_Title;
 }
 
 
 //--------------------------------------------------------------------
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	// ComponentBag_Check(&game->playState.cBag); For debugging purposes!
-	// Update systems
-	CameraSystem_Update(&game->playState.cameraSystem);
 	InputSystem_Update(&game->playState.inputSystem, keysdown);
+	PhysicsSystem_Update(&game->playState.physicsSystem, delta);
 	AISystem_Update(&game->playState.aiSystem, delta);
 	MovementSystem_Update(&game->playState.movementSystem, delta);
-	PhysicsSystem_Update(&game->playState.physicsSystem, delta);
 	StatSystem_Update(&game->playState.statSystem, delta);
-	RenderSystem_Update(&game->playState.renderSystem, game->renderer, delta);
+}
+
+void RenderPlay(Game* game, Uint32 elapsed) {
+	CameraSystem_Update(&game->playState.cameraSystem);
+	RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
 }
 
 
@@ -363,8 +378,9 @@ void Game_RunLoop(Game* game) {
 	// Time Management variables
 	SDL_Event event;
 	Uint32 currentTime = SDL_GetTicks();
-	Uint32 frameTime;
-	Uint32 lastTime;
+	Uint32 lastTime = 0;
+	Uint32 elapsed;
+	Uint32 lag = 0;
 	float delta;
 
 	// Input variables
@@ -376,13 +392,10 @@ void Game_RunLoop(Game* game) {
 	// Begin game loop
 	while (game->running) {
 		// Calculate timestep
-		lastTime = currentTime;
 		currentTime = SDL_GetTicks();
-		frameTime = currentTime - lastTime;
-		delta = frameTime / Constants::OptimalTime_;
-		if (frameTime < Constants::OptimalTime_) {
-			SDL_Delay((Constants::OptimalTime_) - frameTime);
-		}
+		elapsed = currentTime - lastTime;
+		lastTime = currentTime;
+		lag += elapsed;
 
 		// Poll for input
 		while (SDL_PollEvent(&event) != 0) {
@@ -413,42 +426,56 @@ void Game_RunLoop(Game* game) {
 
 		}
 
-		// Update appropriate game state
+		// Update game state
+		while (lag > Constants::OptimalTime_) {
+			delta = 1000.f / (lag / Constants::OptimalTime_);
+			switch(game->gameState) {
+				case GameState_Title:
+					UpdateTitle(game, keysdown, keysup, elapsed);
+					break;
+				case GameState_Play:
+					UpdatePlay(game, keysdown, delta);
+					break;
+				case GameState_HighScore:
+					UpdateHighScore(game, keysdown, elapsed);
+					break;
+				case GameState_Pause:
+					UpdatePause(game, elapsed);
+					break;
+				case GameState_Win:
+					UpdateWin(game, keysdown);
+					break;
+	      		case GameState_Lose:
+	        		UpdateLose(game, keysdown);
+					break;
+				case GameState_Returning:
+					UpdateReturn(game);
+					break;
+				case GameState_Closing:
+					game->running = false;
+					Game_Close(game);
+					break;
+			}
+			lag -= Constants::OptimalTime_;
+		}
+
+		// Render game state
 		switch(game->gameState) {
 			case GameState_Intro:
-				UpdateIntro(game, delta);
+				RenderIntro(game, elapsed);
 				break;
 			case GameState_Title:
-				UpdateTitle(game, keysdown, keysup, delta);
 				break;
 			case GameState_Play:
-				UpdatePlay(game, keysdown, delta);
+				RenderPlay(game, elapsed);
 				break;
 			case GameState_HighScore:
-				UpdateHighScore(game, keysdown, delta);
 				break;
 			case GameState_Pause:
-				UpdatePause(game, delta);
 				break;
 			case GameState_Win:
-				UpdateWin(game, keysdown);
 				break;
       		case GameState_Lose:
-        		UpdateLose(game, keysdown);
-				break;
-			case GameState_Returning:
-				if (game->playState.loaded) {
-					if (!game->playState.cBag.freed) {
-						ComponentBag_Free(&game->playState.cBag);
-					}
-					EntityCache_RemoveAll();
-					game->playState.loaded = false;
-				}
-				game->gameState = GameState_Title;
-				break;
-			case GameState_Closing:
-				game->running = false;
-				Game_Close(game);
 				break;
 			default:
 				break;

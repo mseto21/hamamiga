@@ -102,7 +102,7 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 		int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
 		int tileCenterX = floor((r1->x + (r1->w / 2)) / Constants::TileSize_);
 		int tileCenterY = floor((r1->y + (r1->h / 2)) / Constants::TileSize_);
-		moveValues->yVelocity += Constants::Gravity_ * timestep;
+		//moveValues->yVelocity += Constants::Gravity_ * timestep;
 
 		// Check down collisions only if we're not jumping
 		if (moveValues->yVelocity > 0) {

@@ -14,18 +14,19 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 	RectangleComponent* rectangleComponent = movementSystem->rectangleComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < movementComponent->count; entityIndex++) {
-		if (!Component_HasIndex(rectangleComponent, movementComponent->entityArray[entityIndex])) {
+		uint32 eid = movementComponent->entityArray[entityIndex];
+		if (!Component_HasIndex(rectangleComponent, eid)) {
 			continue;
 		}
 		
-
 		// Get movement values for the entity
-		MovementValues* moveValue = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
+		MovementValues* moveValue = &movementComponent->movementValues[eid];
 		moveValue->xVelocity      += moveValue->xAccel * timestep;
 		moveValue->yVelocity      += moveValue->yAccel * timestep;
-		float slow = 0;
-		if (movementComponent->entityArray[entityIndex] != Constants::PlayerIndex_) {
-		  slow = 15;
+		
+		float slow = 0.f;
+		if (eid != Constants::PlayerIndex_) {
+		  slow = 15.f;
 		}
 
 		if (moveValue->xVelocity >= (Constants::MaxVX_ - slow) && moveValue->xVelocity > 0) {
@@ -42,7 +43,8 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 		
 
 		// Get the entity's rectangle
-		Rectangle* rectangle = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[entityIndex]];
+		Rectangle* rectangle = &rectangleComponent->entityRectangles[eid];
+
 		// Move the rectangle appropriately
 		rectangle->x += (int)(moveValue->xVelocity);
 

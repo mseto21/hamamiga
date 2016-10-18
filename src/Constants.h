@@ -10,25 +10,25 @@ namespace Constants {
 	const uint32  	NumKeys_		=	323;
 	const uint32	MaxEntities_  	=   128;
 	const float 	TargetFps_ 		= 	60.f;
-	const float 	OptimalTime_ 	= 	1000 / TargetFps_;
+	const float 	OptimalTime_ 	= 	1000.f / TargetFps_; // Update ~16 times per second
 
 	const uint16	MaxMapWidth_	=	256; // In number of tiles
 	const uint16	MaxMapHeight_	=	256;
 	const uint16	TileSize_		=	48;
 
 	// Intro State
-	const float		IntroTime_		= 	250.f;
+	const uint32	IntroTime_		= 	3000;
 
 	// Title State
 	const uint8	 	TitleScreenSelections_	=	4;
 
 	// Play State
-	const float   	Gravity_        	=   0.75; //gravity
-    const float   	Friction_   	 	=   .15; //friction
-	const uint16  	MaxVY_          	=   30; //max y velocity
-	const uint16  	MaxVX_          	=   20; //max x velocity
-	const uint16  	Jump_           	=   15; //jump velocity
-    const float   	Accel_     	  		=   1; //acceleration
+	const uint32   	Gravity_        	=   1; //gravity
+    const float   	Friction_   	 	=   .15f; //friction
+	const uint16  	MaxVY_          	=   10; //max y velocity
+	const uint16  	MaxVX_          	=   10; //max x velocity
+	const uint16  	Jump_           	=   5; //jump velocity
+    const float   	Accel_     	  		=   0.1f; //acceleration
 	const uint16 	Damage_         	=   20; //damage
 	const uint8		PlayerIndex_		=	0;
 	const uint16    Range_              =   200;

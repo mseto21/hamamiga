@@ -3,7 +3,7 @@ zone=
 	tileset=assets/chapter_1/chapter_1_tileset.png;
 	tilemap=assets/chapter_1/chapter_1_level.csv;
 	entity=
-		animation(4,10.0,48,87,)
+		animation(4,1000.0,48,87,)
 		health(100,)
 		input()
 		movement(50.0,50.0,0,0,)
@@ -12,32 +12,4 @@ zone=
 		texture(assets/tinykev.png,player,)
 		camera()
 		hat();
-	entity=
-		animation(4,10.0,88,87,)
-		movement(50.0,50.0,0,0,)
-		physics(100,)
-		rectangle(1500,0,88,87,)
-		texture(assets/demon.png,demon,)
-		ai(100,1,);
-	entity=
-		animation(4,10.0,88,87,)
-		movement(50.0,50.0,0,0,)
-		physics(100,)
-		rectangle(1000,0,88,87,)
-		texture(assets/demon.png,demon,)
-		ai(100,1,);
-	entity=
-		animation(4,10.0,88,87,)
-		movement(50.0,50.0,0,0,)
-		physics(100,)
-		rectangle(2000,0,88,87,)
-		texture(assets/demon.png,demon,)
-		ai(200,1,);
-	entity=
-		animation(4,10.0,88,87,)
-		movement(50.0,50.0,0,0,)
-		physics(100,)
-		rectangle(2500,50,88,87,)
-		texture(assets/demon.png,demon,)
-		ai(50,1,);
 END=
