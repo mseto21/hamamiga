@@ -11,7 +11,6 @@
 #include "TileMap.h"
 #include "HatComponent.h"
 
-#include <SDL.h>
 #include <iostream>
 
 
@@ -26,9 +25,8 @@ void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, Til
 	renderSystem->map 					= tileMap;
 }
 
-
 // --------------------------------------------------------------------
-void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture) {
+void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture, SDL_RendererFlip flipType) {
 	if (!renderer) {
 		return;
 	}
@@ -42,7 +40,7 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 	rquad.w = w;
 	rquad.h = h;
 
-	SDL_RenderCopy(renderer, texture->sdltexture, clip, &rquad);
+	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, 0.0, NULL, flipType);
 }
 
 // --------------------------------------------------------------------
@@ -93,7 +91,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 		std::cerr << "Error: The game background is not available." << std::endl;
 		return;
 	}
-	RenderSystem_Render_xywh(renderer, -cameraComponent->camera.x, -cameraComponent->camera.y, background->w, background->h, NULL, background);
+	RenderSystem_Render_xywh(renderer, -cameraComponent->camera.x, -cameraComponent->camera.y, background->w, background->h, NULL, background, SDL_FLIP_NONE);
  	
  	// Render tile map
 	Texture* tileset = TextureCache_GetTexture("tileset");
@@ -106,7 +104,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 			int y = floor(tid / (tileset->w / Constants::TileSize_)) * Constants::TileSize_;
 			int x = (tid % (tileset->w / Constants::TileSize_)) * Constants::TileSize_;
 			SDL_Rect clip = {x, y, Constants::TileSize_, Constants::TileSize_};
-			RenderSystem_Render_xywh(renderer, c * Constants::TileSize_  - cameraComponent->camera.x, r * Constants::TileSize_  - cameraComponent->camera.y, Constants::TileSize_, Constants::TileSize_, &clip, tileset);
+			RenderSystem_Render_xywh(renderer, c * Constants::TileSize_  - cameraComponent->camera.x, r * Constants::TileSize_  - cameraComponent->camera.y, Constants::TileSize_, Constants::TileSize_, &clip, tileset, SDL_FLIP_NONE);
 		}
 	}
 
@@ -124,42 +122,57 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 				Animation* animation = &animationComponent->animations[eid];
 				if (Component_HasIndex(movementComponent, eid) && 
 					(int) movementComponent->movementValues[eid].xVelocity != 0){
-				if (!animation) {
+				  if (!animation) {
 					std::cerr << "Error: The entity is supposed to have an animation, but none was found" << std::endl;
 					continue;
-				}
-				animation->currentFrameTime += delta;
-				if (animation->currentFrameTime >= animation->frameTime) {
+				  }
+				  animation->currentFrameTime += delta;
+				  if (animation->currentFrameTime >= animation->frameTime) {
 					animation->currentFrame++;
 					animation->currentFrame %= animation->frames;
 					animation->currentFrameTime = 0;
-				}
-				if (Component_HasIndex(movementComponent, eid) && 
+				  }
+				  if (Component_HasIndex(movementComponent, eid) && 
 					(int) movementComponent->movementValues[eid].xVelocity < 0) {
-					// TO-DO: Flip
 					SDL_Rect clip = {animation->spriteW * animation->currentFrame, 0, animation->spriteW, animation->spriteH};
 					RenderSystem_RenderCoord(renderer, &rect, &clip, texture, SDL_FLIP_HORIZONTAL);
-					continue;
-				}
-				SDL_Rect clip = {animation->spriteW * animation->currentFrame, 0, animation->spriteW, animation->spriteH};
-				RenderSystem_RenderCoord(renderer, &rect, &clip, texture, SDL_FLIP_NONE);
-			} else {
-				SDL_Rect clip = {0, 0, animation->spriteW, animation->spriteH};//Render default
-				RenderSystem_RenderCoord(renderer, &rect, &clip, texture, SDL_FLIP_NONE);
-			}
-		} else {
-				RenderSystem_RenderCoord(renderer, &rect, NULL, texture, SDL_FLIP_NONE);
-			}
-
-			// Check for hat
-			if (Component_HasIndex(hatComponent, eid)) {
-				Hat* hat = &hatComponent->hats[eid].hat;
-				if (hat) {
-					Texture* hatTexture = TextureCache_GetTexture(hat->name);
-					if (hatTexture) {
-						RenderSystem_Render_xywh(renderer, rect.x, rect.y, hatTexture->w, hatTexture->h, NULL, hatTexture);
+					// Check for hat
+					if (Component_HasIndex(hatComponent, eid)) {
+					  Hat* hat = &hatComponent->hats[eid].hat;
+					  if (hat) {
+					    Texture* hatTexture = TextureCache_GetTexture(hat->name);
+					    if (hatTexture) {
+					      RenderSystem_Render_xywh(renderer, rect.x, rect.y, hatTexture->w, hatTexture->h, NULL, hatTexture, SDL_FLIP_HORIZONTAL);
+					    }
+					  }
 					}
+					continue;
+				  }
+				  SDL_Rect clip = {animation->spriteW * animation->currentFrame, 0, animation->spriteW, animation->spriteH};
+				  RenderSystem_RenderCoord(renderer, &rect, &clip, texture, SDL_FLIP_NONE);
+				  // Check for hat
+				  if (Component_HasIndex(hatComponent, eid)) {
+				    Hat* hat = &hatComponent->hats[eid].hat;
+				    if (hat) {
+				      Texture* hatTexture = TextureCache_GetTexture(hat->name);
+				      if (hatTexture) {
+					RenderSystem_Render_xywh(renderer, rect.x, rect.y, hatTexture->w, hatTexture->h, NULL, hatTexture, SDL_FLIP_NONE);
+				      }
+				    }
+				  }
+				} else {
+				  SDL_Rect clip = {0, 0, animation->spriteW, animation->spriteH};//Render default
+				  RenderSystem_RenderCoord(renderer, &rect, &clip, texture, SDL_FLIP_NONE);
+				  Hat* hat = &hatComponent->hats[eid].hat;
+				  if (hat) {
+				    Texture* hatTexture = TextureCache_GetTexture(hat->name);
+				    if (hatTexture) {
+				      RenderSystem_Render_xywh(renderer, rect.x, rect.y, hatTexture->w, hatTexture->h, NULL, hatTexture, SDL_FLIP_NONE);
+				    }
+				  }
 				}
+			} else {
+			  RenderSystem_RenderCoord(renderer, &rect, NULL, texture, SDL_FLIP_NONE);
 			}
 
 			continue;

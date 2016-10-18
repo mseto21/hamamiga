@@ -24,8 +24,8 @@ namespace Constants {
 
 	// Play State
 	const float   	Gravity_        	=   0.75; //gravity
-    const float   	Friction_   	 	=   .15; //friction
-	const uint16  	Jump_           	=   20; //jump velocity
+    const float   	Friction_   	 	=   .13; //friction
+	const uint16  	Jump_           	=   15; //jump velocity
 	const uint16 	Damage_         	=   20; //damage
 	const uint8		PlayerIndex_		=	0;
 	const uint16    Range_              =   200;
@@ -48,4 +48,5 @@ namespace Constants {
 	const String128 LoseBackground_ 	=   "lose_background";
 	const String128 GameBackground_ 	= 	"game_background";
 	const String128 MenuOverlay_    	= 	"menu_overlay";
+	const String128 BunnyHat_                  =      "bunny";
 }
