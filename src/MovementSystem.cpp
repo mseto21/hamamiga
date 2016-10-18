@@ -23,8 +23,8 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 
 		// Get movement values for the entity
 		MovementValues* moveValue = &movementComponent->movementValues[movementComponent->entityArray[entityIndex]];
-		moveValue->xVelocity      += moveValue->xAccel * timestep;
-		moveValue->xVelocity     -= Constants::Friction_*moveValue->xVelocity;
+		moveValue->xVelocity      += moveValue->xAccel;
+		moveValue->yVelocity      += moveValue->yAccel;
 		
 		if (moveValue->xVelocity >= moveValue->maxXVelocity*timestep && moveValue->xVelocity > 0) {
 		  moveValue->xVelocity = moveValue->maxXVelocity*timestep;

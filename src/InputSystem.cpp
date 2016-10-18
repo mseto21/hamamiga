@@ -43,13 +43,13 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], float time
 			std::cout << "initial: " << moveValues->yVelocity << std::endl;
 		}
 		if (keysPressed[SDLK_a]) {
-		    moveValues->xAccel = -moveValues->accelX;
+		    moveValues->xAccel = -moveValues->accelX*timestep;
 		}
 		if (keysPressed[SDLK_s]) {
-			moveValues->yAccel = moveValues->accelY;
+			moveValues->yAccel = moveValues->accelY*timestep;
 		}
 		if (keysPressed[SDLK_d]) {
-			moveValues->xAccel = moveValues->accelX;
+			moveValues->xAccel = moveValues->accelX*timestep;
 		}
 	}
 }
