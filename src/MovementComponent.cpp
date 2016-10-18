@@ -1,6 +1,6 @@
 #include "MovementComponent.h"
 
-void MovementComponent_Add(MovementComponent* movementComponent, uint32 eid, float xVelocity, float yVelocity, int xAccel, int yAccel) {
+void MovementComponent_Add(MovementComponent* movementComponent, uint32 eid, float xVelocity, float yVelocity, float xAccel, float yAccel) {
 	Component_Add(movementComponent, eid);
 	movementComponent->movementValues[eid].maxXVelocity 	= xVelocity;
 	movementComponent->movementValues[eid].maxYVelocity 	= yVelocity;

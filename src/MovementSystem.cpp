@@ -3,6 +3,8 @@
 #include "RectangleComponent.h"
 #include "ComponentBag.h"
 
+#include <iostream>
+
 void MovementSystem_Initialize(MovementSystem* movementSystem, ComponentBag* cBag) {
 	movementSystem->movementComponent 	=	cBag->movementComponent;
 	movementSystem->rectangleComponent  =	cBag->rectangleComponent;
@@ -22,13 +24,8 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 		// Get movement values for the entity
 		MovementValues* moveValue = &movementComponent->movementValues[eid];
 		moveValue->xVelocity      += moveValue->xAccel * timestep;
-		moveValue->yVelocity      += moveValue->yAccel * timestep;
+		moveValue->xVelocity     -= Constants::Friction_*moveValue->xVelocity;
 		
-		float slow = 0.f;
-		if (eid != Constants::PlayerIndex_) {
-		  slow = 15.f;
-		}
-
 		if (moveValue->xVelocity >= moveValue->maxXVelocity*timestep && moveValue->xVelocity > 0) {
 		  moveValue->xVelocity = moveValue->maxXVelocity*timestep;
 		} else if (moveValue->xVelocity <= -moveValue->maxXVelocity*timestep && moveValue->xVelocity < 0) {
@@ -46,7 +43,7 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 		Rectangle* rectangle = &rectangleComponent->entityRectangles[eid];
 
 		// Move the rectangle appropriately
-		rectangle->x += (int)(moveValue->xVelocity);
+		rectangle->x += moveValue->xVelocity;
 
 		if (rectangle->x <= 0) {
 			rectangle->x = 0;
@@ -54,7 +51,9 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 			moveValue->xAccel *= -1;
 		}
 
-		rectangle->y += (int)(moveValue->yVelocity);
+		rectangle->y += moveValue->yVelocity;
+		if (rectangleComponent->entityArray[entityIndex] == 0 && moveValue->yVelocity != 0)
+		  std::cout << "final: " << moveValue->yVelocity << std::endl;
 
 		if (rectangle->y >= Constants::LevelHeight_) {
 		  Component_Remove(movementComponent, movementComponent->entityArray[entityIndex]);
