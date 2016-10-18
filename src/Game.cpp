@@ -347,7 +347,9 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	InputSystem_Update(&game->playState.inputSystem, keysdown);
 	AISystem_Update(&game->playState.aiSystem, delta);
 	MovementSystem_Update(&game->playState.movementSystem, delta);
-	PhysicsSystem_Update(&game->playState.physicsSystem, delta);
+	if (PhysicsSystem_Update(&game->playState.physicsSystem, delta)) {
+	  game->gameState = GameState_Win;
+	}
 	StatSystem_Update(&game->playState.statSystem, delta);
 	RenderSystem_Update(&game->playState.renderSystem, game->renderer, delta);
 }

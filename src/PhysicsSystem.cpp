@@ -103,17 +103,17 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 		int tileCenterX = floor((r1->x + (r1->w / 2)) / Constants::TileSize_);
 		int tileCenterY = floor((r1->y + (r1->h / 2)) / Constants::TileSize_);
 
+		if (map->map[tileCenterY][tileCenterX].bunny) {
+		  if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {	    
+		    HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
+		    hats->hat = Hat(0);
+		  }
+		}
 		// Check down collisions only if we're not jumping
 		if (moveValues->yVelocity > 0) {
 			if (map->map[tileEndY][tileX].solid || map->map[tileEndY][tileEndX].solid) {
 				r1->y = tileEndY * Constants::TileSize_ - r1->h;
 				moveValues->yVelocity = 0;
-			}
-			if (map->map[tileEndY][tileX].bunny || map->map[tileEndY][tileEndX].bunny) {
-			  if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {
-			    HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
-			    hats->hat = Hat(0);
-			  }
 			}
 		}
 
@@ -122,13 +122,6 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 				moveValues->xVelocity = 0;
 			} else if (map->map[tileCenterY][tileEndX].solid && moveValues->xVelocity > 0) {
 				moveValues->xVelocity = 0;
-			}
-			if (map->map[tileCenterY][tileX].bunny || map->map[tileCenterY][tileEndX].bunny) {
-			  if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {
-			    
-			    HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
-			    hats->hat = Hat(0);
-			  }
 			}
 		}
 
