@@ -61,8 +61,8 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 
 			Rectangle* r2 = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[j]];
 			if (collision(r1, r2)) {
-				r1->x -= moveValues->xVelocity;
-				r1->y -= moveValues->yVelocity;
+			        r1->x -= (int)moveValues->xVelocity;
+				r1->y -= (int)moveValues->yVelocity;
 				moveValues->xVelocity *= -1;
 				moveValues->yVelocity *= -1;
 
@@ -77,8 +77,8 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 				}
 		      
 				MovementValues* moveValues2 = &movementComponent->movementValues[movementComponent->entityArray[j]];
-				r2->x -= moveValues2->xVelocity;
-				r2->y -= moveValues->yVelocity;
+				r2->x -= (int)moveValues2->xVelocity;
+				r2->y -= (int)moveValues->yVelocity;
 				moveValues2->xVelocity *= -1;
 				moveValues2->yVelocity *= -1;
 		      
