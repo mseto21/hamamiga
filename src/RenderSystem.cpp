@@ -46,7 +46,7 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 }
 
 // --------------------------------------------------------------------
-void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect* clip, Texture* texture) {
+void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect* clip, Texture* texture, SDL_RendererFlip flipType) {
 	if (!renderer) {
 		std::cerr << "Error: The renderer was null!" << std::endl;
 		return;
@@ -72,7 +72,7 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 		return;
 	}
 
-	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, 0.0, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, 0.0, NULL, flipType);
 }
 
 // --------------------------------------------------------------------
@@ -122,6 +122,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 			// Check for animation
 			if (Component_HasIndex(animationComponent, eid)) {
 				Animation* animation = &animationComponent->animations[eid];
+				if (Component_HasIndex(movementComponent, eid) && 
+					(int) movementComponent->movementValues[eid].xVelocity != 0){
 				if (!animation) {
 					std::cerr << "Error: The entity is supposed to have an animation, but none was found" << std::endl;
 					continue;
@@ -132,13 +134,21 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 					animation->currentFrame %= animation->frames;
 					animation->currentFrameTime = 0;
 				}
-				if (Component_HasIndex(movementComponent, eid)) {
+				if (Component_HasIndex(movementComponent, eid) && 
+					(int) movementComponent->movementValues[eid].xVelocity < 0) {
 					// TO-DO: Flip
+					SDL_Rect clip = {animation->spriteW * animation->currentFrame, 0, animation->spriteW, animation->spriteH};
+					RenderSystem_RenderCoord(renderer, &rect, &clip, texture, SDL_FLIP_HORIZONTAL);
+					continue;
 				}
 				SDL_Rect clip = {animation->spriteW * animation->currentFrame, 0, animation->spriteW, animation->spriteH};
-				RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
+				RenderSystem_RenderCoord(renderer, &rect, &clip, texture, SDL_FLIP_NONE);
 			} else {
-				RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
+				SDL_Rect clip = {0, 0, animation->spriteW, animation->spriteH};//Render default
+				RenderSystem_RenderCoord(renderer, &rect, &clip, texture, SDL_FLIP_NONE);
+			}
+		} else {
+				RenderSystem_RenderCoord(renderer, &rect, NULL, texture, SDL_FLIP_NONE);
 			}
 
 			// Check for hat
@@ -157,7 +167,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 
 		// If no rectangle, render at (0,0)
 		Rectangle rect = {0, 0, texture->w, texture->h};
-		RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
+		RenderSystem_RenderCoord(renderer, &rect, NULL, texture, SDL_FLIP_NONE);
 	}
 
 	

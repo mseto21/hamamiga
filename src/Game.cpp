@@ -383,7 +383,6 @@ void Game_RunLoop(Game* game) {
 		if (frameTime < Constants::OptimalTime_) {
 			SDL_Delay((Constants::OptimalTime_) - frameTime);
 		}
-
 		// Poll for input
 		while (SDL_PollEvent(&event) != 0) {
 

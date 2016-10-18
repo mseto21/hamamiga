@@ -94,7 +94,7 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 		}
 
 		moveValues->xVelocity -= Constants::Friction_ * moveValues->xVelocity;
-
+		moveValues->yVelocity += Constants::Gravity_*timestep;
 		// TO-DO: Make this generic for all maps.
 		int tileX = floor(r1->x / Constants::TileSize_);
 		int tileY = floor(r1->y / Constants::TileSize_);
@@ -102,7 +102,6 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 		int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
 		int tileCenterX = floor((r1->x + (r1->w / 2)) / Constants::TileSize_);
 		int tileCenterY = floor((r1->y + (r1->h / 2)) / Constants::TileSize_);
-		moveValues->yVelocity += Constants::Gravity_ * timestep;
 
 		// Check down collisions only if we're not jumping
 		if (moveValues->yVelocity > 0) {
