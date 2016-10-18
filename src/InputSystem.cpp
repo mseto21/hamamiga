@@ -17,7 +17,7 @@ void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag) {
 	inputSystem->hatComponent 		= cBag->hatComponent;
 }
 
-void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]) {
+void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], float timestep) {
 	InputComponent* inputComponent = inputSystem->inputComponent;
 	MovementComponent* movementComponent = inputSystem->movementComponent;
 	RectangleComponent* rectangleComponent = inputSystem->rectangleComponent;
@@ -41,7 +41,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]) {
 		moveValues->xAccel = 0;
 		moveValues->yAccel = 0;
 		if (keysPressed[SDLK_w] && moveValues->yVelocity == 0) {
-			moveValues->yVelocity = -Constants::Jump_*jump;
+			moveValues->yVelocity = -Constants::Jump_*jump*timestep;
 		}
 		if (keysPressed[SDLK_a]) {
 		    moveValues->xAccel = -moveValues->accelX;

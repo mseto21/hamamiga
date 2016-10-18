@@ -344,7 +344,7 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	// ComponentBag_Check(&game->playState.cBag); For debugging purposes!
 	// Update systems
 	CameraSystem_Update(&game->playState.cameraSystem);
-	InputSystem_Update(&game->playState.inputSystem, keysdown);
+	InputSystem_Update(&game->playState.inputSystem, keysdown, delta);
 	AISystem_Update(&game->playState.aiSystem, delta);
 	MovementSystem_Update(&game->playState.movementSystem, delta);
 	if (PhysicsSystem_Update(&game->playState.physicsSystem, delta)) {
