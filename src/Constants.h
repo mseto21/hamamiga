@@ -4,8 +4,8 @@
 namespace Constants {
 	const uint16 	ScreenWidth_ 	= 	1080;
 	const uint16 	ScreenHeight_ 	= 	761;
-	const uint16 	LevelWidth_ 	= 	5120;
-	const uint16 	LevelHeight_ 	= 	761;
+	const uint16 	LevelWidth_ 	= 	5040;
+	const uint16 	LevelHeight_ 	= 	1470;
 	const float   	StepSize_ 		= 	8.f;
 	const uint32  	NumKeys_		=	323;
 	const uint32	MaxEntities_  	=   128;
