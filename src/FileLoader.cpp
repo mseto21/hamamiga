@@ -155,7 +155,11 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				}
 				break;
 			case '0': // Null tile
-				tile.tid = 0;
+				if (tilepos == 0) {
+					tile.tid = 0;
+				} else {
+					tilestr[tilepos++] = t;
+				}
 				break;
 			case 0: // Null character error; needs better error checking
 				cerr << "Error: Encountered a null character in the tilemap file at line " << lineNumber << "." << endl;

@@ -103,10 +103,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 				continue;
 			}
 			int tid = map->map[r][c].tid - 1; // Minus zero to account for null tile
-			int mapWidth = Constants::LevelWidth_ / Constants::TileSize_;
-			int mapHeight = Constants::LevelHeight_ / Constants::TileSize_;
-			int x = floor(tid / mapWidth) * Constants::TileSize_;
-			int y = (tid % mapHeight) * Constants::TileSize_;
+			int y = floor(tid / (tileset->w / Constants::TileSize_)) * Constants::TileSize_;
+			int x = (tid % (tileset->w / Constants::TileSize_)) * Constants::TileSize_;
 			SDL_Rect clip = {x, y, Constants::TileSize_, Constants::TileSize_};
 			RenderSystem_Render_xywh(renderer, c * Constants::TileSize_  - cameraComponent->camera.x, r * Constants::TileSize_  - cameraComponent->camera.y, Constants::TileSize_, Constants::TileSize_, &clip, tileset);
 		}
