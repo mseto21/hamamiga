@@ -26,4 +26,18 @@ zone=
 		rectangle(1000,0,88,87,)
 		texture(assets/demon.png,demon,)
 		ai(100,1,);
+	entity=
+		animation(4,10.0,88,87,)
+		movement(50.0,50.0,0,0,)
+		physics(100,)
+		rectangle(2000,0,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(100,1,);
+	entity=
+		animation(4,10.0,88,87,)
+		movement(50.0,50.0,0,0,)
+		physics(100,)
+		rectangle(2200,0,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(100,1,);
 END=
