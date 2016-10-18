@@ -142,7 +142,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 					  if (hat) {
 					    Texture* hatTexture = TextureCache_GetTexture(hat->name);
 					    if (hatTexture) {
-					      RenderSystem_Render_xywh(renderer, rect.x, rect.y, hatTexture->w, hatTexture->h, NULL, hatTexture, SDL_FLIP_HORIZONTAL);
+					      RenderSystem_Render_xywh(renderer, rect.x-6, rect.y-18, hatTexture->w, hatTexture->h, NULL, hatTexture, SDL_FLIP_HORIZONTAL);
 					    }
 					  }
 					}
@@ -156,7 +156,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 				    if (hat) {
 				      Texture* hatTexture = TextureCache_GetTexture(hat->name);
 				      if (hatTexture) {
-					RenderSystem_Render_xywh(renderer, rect.x, rect.y, hatTexture->w, hatTexture->h, NULL, hatTexture, SDL_FLIP_NONE);
+					RenderSystem_Render_xywh(renderer, rect.x+4, rect.y-18, hatTexture->w, hatTexture->h, NULL, hatTexture, SDL_FLIP_NONE);
 				      }
 				    }
 				  }
@@ -167,7 +167,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 				  if (hat) {
 				    Texture* hatTexture = TextureCache_GetTexture(hat->name);
 				    if (hatTexture) {
-				      RenderSystem_Render_xywh(renderer, rect.x, rect.y, hatTexture->w, hatTexture->h, NULL, hatTexture, SDL_FLIP_NONE);
+				      RenderSystem_Render_xywh(renderer, rect.x+4, rect.y-18, hatTexture->w, hatTexture->h, NULL, hatTexture, SDL_FLIP_NONE);
 				    }
 				  }
 				}
