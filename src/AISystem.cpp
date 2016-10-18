@@ -46,13 +46,13 @@ void AISystem_Update(AISystem* aiSystem, float timeStep) {
     moveValues->xAccel = 0;
     if (close(&pRect, eRect)) {
       if ((pRect.x+Constants::Range_ + pRect.w/Constants::Range_)/2 < (eRect->x + eRect->w)/2) {
-  	    moveValues->xAccel = -Constants::Accel_;
+  	    moveValues->xAccel = -moveValues->accelX;
   	  } else {
-  	    moveValues->xAccel = Constants::Accel_;
+  	    moveValues->xAccel = moveValues->accelX;
   	  }
   	} else {
   	  MarchValues* marchValues = &aiComponent->marchValues[eid];
-  	  moveValues->xAccel = Constants::Accel_*marchValues->facing;
+  	  moveValues->xAccel = moveValues->accelX*marchValues->facing;
   	  marchValues->distance += moveValues->xAccel*timeStep*marchValues->facing;
   	  if (marchValues->distance >= marchValues->range) {
   	    marchValues->distance = 0;

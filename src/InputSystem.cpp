@@ -44,13 +44,13 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]) {
 			moveValues->yVelocity = -Constants::Jump_*jump;
 		}
 		if (keysPressed[SDLK_a]) {
-		    moveValues->xAccel = -Constants::Accel_;
+		    moveValues->xAccel = -moveValues->accelX;
 		}
 		if (keysPressed[SDLK_s]) {
-			moveValues->yAccel = Constants::Accel_;
+			moveValues->yAccel = moveValues->accelY;
 		}
 		if (keysPressed[SDLK_d]) {
-			moveValues->xAccel = Constants::Accel_;
+			moveValues->xAccel = moveValues->accelX;
 		}
 	}
 }
