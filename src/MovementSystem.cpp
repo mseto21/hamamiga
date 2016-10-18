@@ -54,7 +54,7 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 		  Component_Remove(movementComponent, movementComponent->entityArray[entityIndex]);
 		  Component_Remove(rectangleComponent, rectangleComponent->entityArray[entityIndex]);
 		}
-		if (rectangle->y <= 0) {
+		if (rectangle->y < 0) {
 		  rectangle->y = 0;
 		  moveValue->yVelocity = 0;
 		}
