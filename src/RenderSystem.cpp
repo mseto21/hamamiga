@@ -124,6 +124,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 			// Check for animation
 			if (Component_HasIndex(animationComponent, eid)) {
 				Animation* animation = &animationComponent->animations[eid];
+				if (Component_HasIndex(movementComponent, eid) && 
+					(int) movementComponent->movementValues[eid].xVelocity != 0){
+					std::cout << "velocity is " << movementComponent->movementValues[eid].xVelocity << std::endl;
 				if (!animation) {
 					std::cerr << "Error: The entity is supposed to have an animation, but none was found" << std::endl;
 					continue;
@@ -140,6 +143,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, flo
 				SDL_Rect clip = {animation->spriteW * animation->currentFrame, 0, animation->spriteW, animation->spriteH};
 				RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 			} else {
+				SDL_Rect clip = {0, 0, animation->spriteW, animation->spriteH};//Render default
+				RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
+			}
+		} else {
 				RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 			}
 
