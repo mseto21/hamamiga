@@ -266,10 +266,10 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					float_parameters.pop();
 					float yVelocity = float_parameters.front();
 					float_parameters.pop();
-					int xAccel = int_parameters.front();
-					int_parameters.pop();
-					int yAccel = int_parameters.front();
-					int_parameters.pop();
+					int xAccel = float_parameters.front();
+					float_parameters.pop();
+					int yAccel = float_parameters.front();
+					float_parameters.pop();
 					cout << "Adding movement to entity " << eid << ":(" << xVelocity << "," << yVelocity << "," << xAccel << "," << yAccel << ")" << endl;
 					MovementComponent_Add(cBag->movementComponent, eid, xVelocity, yVelocity, xAccel, yAccel);
 				} else if (strcmp(cmd, "physics") == 0) {

@@ -13,14 +13,12 @@
 void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag) {
 	inputSystem->inputComponent 	= cBag->inputComponent;
 	inputSystem->movementComponent 	= cBag->movementComponent;
-	inputSystem->rectangleComponent = cBag->rectangleComponent;
 	inputSystem->hatComponent 		= cBag->hatComponent;
 }
 
 void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], float timestep) {
 	InputComponent* inputComponent = inputSystem->inputComponent;
-	MovementComponent* movementComponent = inputSystem->movementComponent;
-	RectangleComponent* rectangleComponent = inputSystem->rectangleComponent;
+	MovementComponent* movementComponent = inputSystem->movementComponent;;
 	HatComponent* hatComponent = inputSystem->hatComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
@@ -42,6 +40,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], float time
 		moveValues->yAccel = 0;
 		if (keysPressed[SDLK_w] && moveValues->yVelocity == 0) {
 			moveValues->yVelocity = -Constants::Jump_*jump*timestep;
+			std::cout << "initial: " << moveValues->yVelocity << std::endl;
 		}
 		if (keysPressed[SDLK_a]) {
 		    moveValues->xAccel = -moveValues->accelX;

@@ -1,8 +1,8 @@
 #pragma once
 
 struct Rectangle {
-	int x;
-	int y;
+	float x;
+	float y;
 	int w;
 	int h;
 };

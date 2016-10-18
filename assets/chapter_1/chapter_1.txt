@@ -6,7 +6,7 @@ zone=
 		animation(4,10.0,48,87,)
 		health(100,)
 		input()
-		movement(27.0,35.0,1,1,)
+		movement(27.0,35.0,1.5,1.5,)
 		physics(100,)
 		rectangle(0,100,48,87,)
 		texture(assets/tinykev.png,player,)
@@ -14,28 +14,28 @@ zone=
 		hat();
 	entity=
 		animation(4,10.0,88,87,)
-		movement(0.0,20.0,1,1,)
+		movement(0.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1500,0,88,87,)
 		texture(assets/demon.png,demon,)
 		ai(100,1,);
 	entity=
 		animation(4,10.0,88,87,)
-		movement(0.0,20.0,1,1,)
+		movement(0.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1000,0,88,87,)
 		texture(assets/demon.png,demon,)
 		ai(100,1,);
 	entity=
 		animation(4,10.0,88,87,)
-		movement(0.0,20.0,1,1,)
+		movement(0.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(2000,0,88,87,)
 		texture(assets/demon.png,demon,)
 		ai(100,1,);
 	entity=
 		animation(4,10.0,88,87,)
-		movement(0.0,20.0,1,1,)
+		movement(0.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(2200,0,88,87,)
 		texture(assets/demon.png,demon,)
