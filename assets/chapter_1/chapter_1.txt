@@ -12,4 +12,32 @@ zone=
 		texture(assets/tinykev.png,player,)
 		camera()
 		hat();
+	entity=
+		animation(4,10.0,88,87,)
+		movement(15.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(1500,0,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(100,1,);
+	entity=
+		animation(4,10.0,88,87,)
+		movement(15.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(1000,0,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(100,1,);
+	entity=
+		animation(4,10.0,88,87,)
+		movement(15.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(2000,0,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(100,1,);
+	entity=
+		animation(4,10.0,88,87,)
+		movement(15.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(2200,0,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(100,1,);
 END=
