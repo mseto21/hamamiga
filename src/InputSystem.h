@@ -21,4 +21,4 @@ struct InputSystem {
 
 
 void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag);
-void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]);
+void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], float timestep);

@@ -29,16 +29,16 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 		  slow = 15.f;
 		}
 
-		if (moveValue->xVelocity >= (Constants::MaxVX_ - slow) && moveValue->xVelocity > 0) {
-		  moveValue->xVelocity = Constants::MaxVX_ - slow;
-		} else if (moveValue->xVelocity <= (-Constants::MaxVX_ + slow) && moveValue->xVelocity < 0) {
-		  moveValue->xVelocity = -Constants::MaxVX_ + slow;
+		if (moveValue->xVelocity >= moveValue->maxXVelocity*timestep && moveValue->xVelocity > 0) {
+		  moveValue->xVelocity = moveValue->maxXVelocity*timestep;
+		} else if (moveValue->xVelocity <= -moveValue->maxXVelocity*timestep && moveValue->xVelocity < 0) {
+		  moveValue->xVelocity = -moveValue->maxXVelocity*timestep;
 		}
 
-		if (moveValue->yVelocity >= Constants::MaxVY_ && moveValue->yVelocity > 0) {
-		  moveValue->yVelocity = Constants::MaxVY_;
-	    } else if (moveValue->yVelocity <= -Constants::MaxVY_ && moveValue->yVelocity < 0) {
-		  moveValue->yVelocity = -Constants::MaxVY_;
+		if (moveValue->yVelocity >= moveValue->maxYVelocity*timestep && moveValue->yVelocity > 0) {
+		  moveValue->yVelocity = moveValue->maxYVelocity*timestep;
+		} else if (moveValue->yVelocity <= -moveValue->maxYVelocity*timestep && moveValue->yVelocity < 0) {
+		  moveValue->yVelocity = -moveValue->maxYVelocity*timestep;
 		}
 		
 
@@ -60,10 +60,9 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 		  Component_Remove(movementComponent, movementComponent->entityArray[entityIndex]);
 		  Component_Remove(rectangleComponent, rectangleComponent->entityArray[entityIndex]);
 		}
-		if (rectangle->y <= 0) {
+		if (rectangle->y < 0) {
 		  rectangle->y = 0;
-		  moveValue->yVelocity *= -1;
-		  moveValue->yAccel *= -1;
+		  moveValue->yVelocity = 0;
 		}
 		if (rectangle->x + rectangle->w >= Constants::LevelWidth_) {
 			rectangle->x = Constants::LevelWidth_ - rectangle->w;

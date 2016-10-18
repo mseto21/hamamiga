@@ -61,8 +61,8 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 
 			Rectangle* r2 = &rectangleComponent->entityRectangles[rectangleComponent->entityArray[j]];
 			if (collision(r1, r2)) {
-				r1->x -= moveValues->xVelocity;
-				r1->y -= moveValues->yVelocity;
+			        r1->x -= (int)moveValues->xVelocity;
+				r1->y -= (int)moveValues->yVelocity;
 				moveValues->xVelocity *= -1;
 				moveValues->yVelocity *= -1;
 
@@ -77,8 +77,8 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 				}
 		      
 				MovementValues* moveValues2 = &movementComponent->movementValues[movementComponent->entityArray[j]];
-				r2->x -= moveValues2->xVelocity;
-				r2->y -= moveValues->yVelocity;
+				r2->x -= (int)moveValues2->xVelocity;
+				r2->y -= (int)moveValues->yVelocity;
 				moveValues2->xVelocity *= -1;
 				moveValues2->yVelocity *= -1;
 		      
@@ -94,7 +94,7 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 		}
 
 		moveValues->xVelocity -= Constants::Friction_ * moveValues->xVelocity;
-
+		moveValues->yVelocity += Constants::Gravity_*timestep;
 		// TO-DO: Make this generic for all maps.
 		int tileX = floor(r1->x / Constants::TileSize_);
 		int tileY = floor(r1->y / Constants::TileSize_);
@@ -104,17 +104,17 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 		int tileCenterY = floor((r1->y + (r1->h / 2)) / Constants::TileSize_);
 		//moveValues->yVelocity += Constants::Gravity_ * timestep;
 
+		if (map->map[tileCenterY][tileCenterX].bunny) {
+		  if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {	    
+		    HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
+		    hats->hat = Hat(0);
+		  }
+		}
 		// Check down collisions only if we're not jumping
 		if (moveValues->yVelocity > 0) {
 			if (map->map[tileEndY][tileX].solid || map->map[tileEndY][tileEndX].solid) {
 				r1->y = tileEndY * Constants::TileSize_ - r1->h;
 				moveValues->yVelocity = 0;
-			}
-			if (map->map[tileEndY][tileX].bunny || map->map[tileEndY][tileEndX].bunny) {
-			  if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {
-			    HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
-			    hats->hat = Hat(0);
-			  }
 			}
 		}
 
@@ -123,13 +123,6 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 				moveValues->xVelocity = 0;
 			} else if (map->map[tileCenterY][tileEndX].solid && moveValues->xVelocity > 0) {
 				moveValues->xVelocity = 0;
-			}
-			if (map->map[tileCenterY][tileX].bunny || map->map[tileCenterY][tileEndX].bunny) {
-			  if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {
-			    
-			    HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
-			    hats->hat = Hat(0);
-			  }
 			}
 		}
 
