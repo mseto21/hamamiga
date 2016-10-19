@@ -84,6 +84,21 @@ void LoadHighScoreStateAssets(Game* game) {
 }
 
 
+void LoadZoneIntroAssets(Game* game, String128 name) {
+	game->zoneIntroState.alpha = 0.f;
+	game->zoneIntroState.elapsed = 0;
+	game->zoneIntroState.font = TTF_OpenFont("assets/BadMofo.ttf", 42);
+	if (!game->zoneIntroState.font) {
+		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+		return;
+	}
+
+	SDL_Color color = {255, 255, 255, 255};
+	TextureCache_CreateFont(game->renderer, game->zoneIntroState.font, color, name, "zone_name");
+	TTF_CloseFont(game->zoneIntroState.font);
+}
+
+
 //--------------------------------------------------------------------
 bool LoadPlayStateAssets(Game* game) {
 	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
@@ -210,9 +225,7 @@ void RenderIntro(Game* game, uint32 elapsed) {
 }
 
 //--------------------------------------------------------------------
-void UpdateTitle(Game* game, bool* keysdown, bool* keysup, uint32 elapsed) {
-	(void) elapsed;
-
+void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 	// Update their options
 	if (keysdown[SDLK_w] && !game->titleState.w) {
 		if (!game->titleState.w) {
@@ -245,27 +258,30 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, uint32 elapsed) {
 	if (keysdown[SDLK_RETURN]) {
 		switch (game->titleState.selection) {
 			case 0:
-			  Mix_HaltMusic();
-			  game->playState.loaded = LoadPlayStateAssets(game);
-				SDL_Delay(1000);
-			  if (game->playState.loaded)
-			  	game->gameState = GameState_Play;
-			  else
-			  	std::cerr << "Error: Unable to load play state assets." << std::endl;
-			  break;
+				Mix_HaltMusic();
+				game->playState.loaded = LoadPlayStateAssets(game);
+				LoadZoneIntroAssets(game, game->playState.chapter.name);
+				if (game->playState.loaded)
+					game->gameState = GameState_ZoneIntro;
+				else
+					std::cerr << "Error: Unable to load play state assets." << std::endl;
+				break;
 			case 1:
-			  game->gameState = GameState_HighScore;
-			  LoadHighScoreStateAssets(game);
-			  break;
+				game->gameState = GameState_HighScore;
+				LoadHighScoreStateAssets(game);
+				break;
 			case 2:
-			  break;
+				break;
 			case 3:
-			  Mix_HaltMusic();
-			  game->gameState = GameState_Closing;
-			  break;
+				Mix_HaltMusic();
+				game->gameState = GameState_Closing;
+				break;
 		}
 	}
+}
 
+
+void RenderTitle(Game* game, uint32 elapsed) {
 	// Render
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
@@ -290,11 +306,13 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup, uint32 elapsed) {
 
 
 //--------------------------------------------------------------------
-void UpdateHighScore(Game* game, bool* keysdown, uint32 elapsed) {
-	(void) elapsed;
+void UpdateHighScore(Game* game, bool* keysdown) {
+	// TO-DO: Implement some sort of interaction with scores.
 	(void) keysdown;
+}
 
-	// Render
+
+void RenderHighScore(Game* game, uint32 elapsed) {
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
 	if (background) RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
@@ -319,9 +337,7 @@ void UpdatePause(Game* game, uint32 elapsed) {
 
 
 //--------------------------------------------------------------------
-void UpdateWin(Game* game, bool* keysdown) {
-	(void) keysdown;
-	// Render
+void RenderLose(Game* game) {
 	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
@@ -330,9 +346,7 @@ void UpdateWin(Game* game, bool* keysdown) {
 
 
 //-------------------------------------------------------------------
-void UpdateLose(Game* game, bool* keysdown) {
-	(void) keysdown;
-	//Render
+void RenderWin(Game* game) {
 	Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
@@ -354,6 +368,30 @@ void UpdateReturn(Game* game) {
 
 
 //--------------------------------------------------------------------
+void RenderZoneIntro(Game* game, uint32 elapsed) {
+	game->zoneIntroState.elapsed += elapsed;
+	if (game->zoneIntroState.elapsed > Constants::ZoneIntroTime_) {
+		game->gameState = GameState_Play;
+	}
+
+	SDL_RenderClear(game->renderer);
+	game->zoneIntroState.alpha = 1 - (((float)game->zoneIntroState.elapsed) / ((float)Constants::ZoneIntroTime_));
+	// Render intro
+	Texture* fader = TextureCache_GetTexture(Constants::TitleFader_);
+
+	SDL_RenderClear(game->renderer);
+	if (fader) { 
+		RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
+		Texture* name = TextureCache_GetTexture("zone_name");
+		int renderX = Constants::ScreenWidth_ / 2 - name->w / 2;
+		int renderY = Constants::ScreenHeight_/2 - name->h / 2;
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, name->w, name->h, NULL, name);
+		SDL_SetTextureAlphaMod(fader->sdltexture, (game->zoneIntroState.alpha * 255));
+		RenderSystem_Render_xywh(game->renderer, 0, 0, fader->w, fader->h, NULL,  fader);
+	}
+	SDL_RenderPresent(game->renderer);
+}
+
 void UpdatePlay(Game* game, bool* keysdown, float delta) {
 	// ComponentBag_Check(&game->playState.cBag); For debugging purposes!
 	InputSystem_Update(&game->playState.inputSystem, keysdown);
@@ -365,7 +403,9 @@ void UpdatePlay(Game* game, bool* keysdown, float delta) {
 
 void RenderPlay(Game* game, Uint32 elapsed) {
 	CameraSystem_Update(&game->playState.cameraSystem);
+	SDL_RenderClear(game->renderer);
 	RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
+	SDL_RenderPresent(game->renderer);
 }
 
 
@@ -431,22 +471,16 @@ void Game_RunLoop(Game* game) {
 			delta = 1000.f / (lag / Constants::OptimalTime_);
 			switch(game->gameState) {
 				case GameState_Title:
-					UpdateTitle(game, keysdown, keysup, elapsed);
+					UpdateTitle(game, keysdown, keysup);
 					break;
 				case GameState_Play:
 					UpdatePlay(game, keysdown, delta);
 					break;
 				case GameState_HighScore:
-					UpdateHighScore(game, keysdown, elapsed);
+					UpdateHighScore(game, keysdown);
 					break;
 				case GameState_Pause:
 					UpdatePause(game, elapsed);
-					break;
-				case GameState_Win:
-					UpdateWin(game, keysdown);
-					break;
-	      		case GameState_Lose:
-	        		UpdateLose(game, keysdown);
 					break;
 				case GameState_Returning:
 					UpdateReturn(game);
@@ -467,17 +501,24 @@ void Game_RunLoop(Game* game) {
 				RenderIntro(game, elapsed);
 				break;
 			case GameState_Title:
+				RenderTitle(game, elapsed);
+				break;
+			case GameState_ZoneIntro:
+				RenderZoneIntro(game, elapsed);
 				break;
 			case GameState_Play:
 				RenderPlay(game, elapsed);
 				break;
 			case GameState_HighScore:
+				RenderHighScore(game, elapsed);
 				break;
 			case GameState_Pause:
 				break;
 			case GameState_Win:
+				RenderWin(game);
 				break;
       		case GameState_Lose:
+      			RenderLose(game);
 				break;
 			default:
 				break;

@@ -84,8 +84,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	HatComponent* hatComponent = renderSystem->hatComponent;
  	TileMap* map = renderSystem->map;
 
- 	SDL_RenderClear(renderer);
-
 
  	// Render background
  	Texture* background = TextureCache_GetTexture(Constants::GameBackground_);
@@ -178,9 +176,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			}
 		}
 	}
-
-	
-	SDL_RenderPresent(renderer);
 }
 
 

@@ -22,6 +22,9 @@ namespace Constants {
 	// Title State
 	const uint8	 	TitleScreenSelections_	=	4;
 
+	// Zone Intro State Time
+	const uint32	ZoneIntroTime_	=	3000;
+
 	// Play State
 	const float   	Gravity_        	=   .15f; //gravity
     const float   	Friction_   	 	=   .13f; //friction

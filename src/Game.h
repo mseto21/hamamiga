@@ -21,6 +21,7 @@ struct _Mix_Music;
 enum GameState {
 	GameState_Intro = 0,
 	GameState_Title,
+	GameState_ZoneIntro,
 	GameState_Play,
 	GameState_HighScore,
 	GameState_Pause,
@@ -49,17 +50,23 @@ struct HighScoreState {
 	_TTF_Font* font;
 };
 
+struct ZoneIntroState {
+	float alpha;
+	uint32 elapsed;
+	_TTF_Font* font;
+};
+
 struct PlayState {
-	// Fonts
+	/* Fonts */
 	_TTF_Font* scoreFont;
 	_TTF_Font* healthFont;
 
-	bool loaded; // Check if the map is loaded
+	bool loaded; /* Ensure file loaded properly. */
 
 	Zone chapter;/* The current level, loaded by FileLoader. */
 	ComponentBag cBag;
 
-	// Systems
+	/* Systems */
 	AISystem aiSystem;
 	CameraSystem cameraSystem;
 	InputSystem inputSystem;
@@ -77,6 +84,7 @@ struct Game {
 	GameState gameState;
 
 	// State structs to keep things coupled correctly
+	ZoneIntroState zoneIntroState;
 	IntroState introState;
 	TitleState titleState;
 	HighScoreState highScoreState;
