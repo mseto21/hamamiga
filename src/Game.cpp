@@ -373,7 +373,7 @@ void RenderZoneIntro(Game* game, uint32 elapsed) {
 	if (game->zoneIntroState.elapsed > Constants::ZoneIntroTime_) {
 		game->gameState = GameState_Play;
 	}
-
+	CameraSystem_Update(&game->playState.cameraSystem);
 	SDL_RenderClear(game->renderer);
 	game->zoneIntroState.alpha = 1 - (((float)game->zoneIntroState.elapsed) / ((float)Constants::ZoneIntroTime_));
 	// Render intro
