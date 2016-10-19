@@ -27,16 +27,16 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 		moveValue->yVelocity    += moveValue->yAccel * timestep;
 		
 		// Check XVelocity Maximum
-		if (moveValue->xVelocity >= moveValue->maxXVelocity && moveValue->xVelocity > 0) {
+		if (moveValue->xVelocity >= moveValue->maxXVelocity) {
 		  moveValue->xVelocity = moveValue->maxXVelocity;
-		} else if (moveValue->xVelocity <= -moveValue->maxXVelocity && moveValue->xVelocity < 0) {
+		} else if (moveValue->xVelocity <= -moveValue->maxXVelocity) {
 		  moveValue->xVelocity = -moveValue->maxXVelocity;
 		}
 
 		// Check YVelocity Maximum
-		if (moveValue->yVelocity >= moveValue->maxYVelocity && moveValue->yVelocity > 0) {
+		if (moveValue->yVelocity >= moveValue->maxYVelocity) {
 		  moveValue->yVelocity = moveValue->maxYVelocity;
-		} else if (moveValue->yVelocity <= -moveValue->maxYVelocity && moveValue->yVelocity < 0) {
+		} else if (moveValue->yVelocity <= -moveValue->maxYVelocity) {
 		  moveValue->yVelocity = -moveValue->maxYVelocity;
 		}
 
@@ -44,21 +44,6 @@ void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
 		Rectangle* rectangle = &rectangleComponent->entityRectangles[eid];
 		rectangle->x += moveValue->xVelocity;
 		rectangle->y += moveValue->yVelocity;
-
-		if (rectangle->x <= 0) {
-			rectangle->x = 0;
-			moveValue->xVelocity *= -1;
-			moveValue->xAccel *= -1;
-		}else if (rectangle->x + rectangle->w >= Constants::LevelWidth_) {
-			rectangle->x = Constants::LevelWidth_ - rectangle->w;
-			moveValue->xVelocity *= -1;
-			moveValue->xAccel *= -1;
-		}
-
-		if (rectangle->y < 0) {
-		  rectangle->y = 0;
-		  moveValue->yVelocity = 0;
-		}
 	}
-	
 }
+

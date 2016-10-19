@@ -4,8 +4,8 @@ void MovementComponent_Add(MovementComponent* movementComponent, uint32 eid, flo
 	Component_Add(movementComponent, eid);
 	movementComponent->movementValues[eid].maxXVelocity 	= xVelocity;
 	movementComponent->movementValues[eid].maxYVelocity 	= yVelocity;
-	movementComponent->movementValues[eid].accelX 		= xAccel;
-	movementComponent->movementValues[eid].accelY 		= yAccel;
+	movementComponent->movementValues[eid].accelX 			= xAccel;
+	movementComponent->movementValues[eid].accelY 			= yAccel;
 	movementComponent->movementValues[eid].xVelocity        = 0;
 	movementComponent->movementValues[eid].yVelocity        = 0;
 	movementComponent->movementValues[eid].xAccel           = 0;
