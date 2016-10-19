@@ -68,6 +68,7 @@ bool Texture_CreateTextureFromFont(Texture* texture, SDL_Renderer* renderer, TTF
 
 	texture->w = surface->w;
 	texture->h = surface->h;
+	texture->flip = SDL_FLIP_NONE;
 	strcpy(texture->name, name);
 	SDL_FreeSurface(surface);
 
