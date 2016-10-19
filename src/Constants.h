@@ -17,7 +17,7 @@ namespace Constants {
 	const uint16	TileSize_		=	48;
 
 	// Intro State
-	const uint32	IntroTime_		= 	3000;
+	const uint32	IntroTime_		= 	5000;
 
 	// Title State
 	const uint8	 	TitleScreenSelections_	=	4;

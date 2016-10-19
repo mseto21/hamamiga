@@ -87,7 +87,7 @@ void LoadHighScoreStateAssets(Game* game) {
 void LoadZoneIntroAssets(Game* game, String128 name) {
 	game->zoneIntroState.alpha = 0.f;
 	game->zoneIntroState.elapsed = 0;
-	game->zoneIntroState.font = TTF_OpenFont("assets/BadMofo.ttf", 42);
+	game->zoneIntroState.font = TTF_OpenFont("assets/BadMofo.ttf", 50);
 	if (!game->zoneIntroState.font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
