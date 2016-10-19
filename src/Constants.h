@@ -23,12 +23,9 @@ namespace Constants {
 	const uint8	 	TitleScreenSelections_	=	4;
 
 	// Play State
-	const float   	Gravity_        	=   .15f; //gravity
+	const float   	Gravity_        	=   .5f; //gravity
     const float   	Friction_   	 	=   .13f; //friction
-	const uint16  	MaxVY_          	=   10; //max y velocity
-	const uint16  	MaxVX_          	=   10; //max x velocity
-	const uint16  	Jump_           	=   15; //jump velocity
-    const float   	Accel_     	  		=   0.1f; //acceleration
+	const uint16  	Jump_           	=   10; //jump velocity
 	const uint16 	Damage_         	=   20; //damage
 	const uint8		PlayerIndex_		=	0;
 	const uint16    Range_              =   200;

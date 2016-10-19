@@ -109,9 +109,9 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 			}
 		}
 
+		moveValues->yVelocity += Constants::Gravity_;
 		// Check down collisions only if we're not jumping
 		if (moveValues->yVelocity > 0) {
-			moveValues->yVelocity += Constants::Gravity_ * timestep;
 			if (map->map[tileEndY][tileX].solid || map->map[tileEndY][tileEndX].solid) {
 				r1->y = tileEndY * Constants::TileSize_ - r1->h;
 				moveValues->yVelocity = 0;
