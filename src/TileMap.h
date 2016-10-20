@@ -1,6 +1,7 @@
 #pragma once
 #include "Constants.h"
 #include "Types.h"
+#include "Rectangle.h"
 
 struct Tile {
 	uint16 tid;
@@ -8,6 +9,8 @@ struct Tile {
 	bool moving;
 	bool bunny;
 	bool winning;
+
+	Rectangle rectangle;
 };
 
 struct TileMap {

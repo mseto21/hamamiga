@@ -39,9 +39,9 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]) {
 		if (keysPressed[SDLK_a]) {
 		    moveValues->xAccel = -moveValues->accelX;
 		}
-		if (keysPressed[SDLK_s]) {
+		/*if (keysPressed[SDLK_s]) {
 			moveValues->yAccel = moveValues->accelY;
-		}
+		}*/
 		if (keysPressed[SDLK_d]) {
 			moveValues->xAccel = moveValues->accelX;
 		}

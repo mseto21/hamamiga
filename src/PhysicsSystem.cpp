@@ -52,6 +52,11 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 		MovementValues* moveValues = &movementComponent->movementValues[eid];
 		Rectangle* r1 = &rectangleComponent->entityRectangles[eid];
 
+		const Rectangle left 	= {r1->x, r1->y, 1, r1->h};
+		const Rectangle right 	= {r1->x + r1->w, r1->y, 1, r1->h};
+		const Rectangle up 		= {r1->x, r1->y, r1->w, 1};
+		const Rectangle down 	= {r1->x, r1->y + r1->h, r1->w, 1};
+
 		// Check collisions with entities
 		for (uint32 j = 0; j < physicsComponent->count; j++) {
 			if (eid ==  physicsComponent->entityArray[j]) {
@@ -62,10 +67,6 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 			}
 
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
-			const Rectangle left 	= {r1->x, r1->y, 1, r1->h};
-			const Rectangle right 	= {r1->x + r1->w, r1->y, 1, r1->h};
-			const Rectangle up 		= {r1->x, r1->y, r1->w, 1};
-			const Rectangle down 	= {r1->x, r1->y + r1->h, r1->w, 1};
 
 			if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
@@ -82,32 +83,7 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 		}
 
 
-		// Check for collisions with map
-		int tileX = floor(r1->x / Constants::TileSize_);
-		int tileY = floor(r1->y / Constants::TileSize_);
-		int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
-		int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
-		int tileCenterX = floor((r1->x + (r1->w / 2)) / Constants::TileSize_);
-		int tileCenterY = floor((r1->y + (r1->h / 2)) / Constants::TileSize_);
-
-		if (map->map[tileCenterY][tileCenterX].bunny) {
-			if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {	    
-				HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
-				hats->hat = Hat(0);
-			}
-		}
-
 		moveValues->yVelocity += Constants::Gravity_ * timestep;
-		
-		// Update y-movement
-		if (moveValues->yVelocity > 0) {
-			if (map->map[tileEndY][tileX].solid || map->map[tileEndY][tileEndX].solid) {
-				r1->y = tileEndY * Constants::TileSize_ - r1->h;
-				moveValues->yVelocity = 0;
-			}
-		}
-
-		// Update x-movement
 		if (moveValues->xVelocity != 0) {
 			if (moveValues->xVelocity > 0) {
 				moveValues->xVelocity -= Constants::Friction_;
@@ -121,9 +97,44 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 					moveValues->xVelocity = 0;
 				}
 			}
+		}
 
-			if (map->map[tileCenterY][tileX].solid ) {
-				moveValues->xVelocity = 0;
+		// Check for collisions with map
+		int tileX = floor(r1->x / Constants::TileSize_);
+		int tileY = floor(r1->y / Constants::TileSize_);
+		int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
+		int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
+		int tileCenterX = floor((r1->x + (r1->w / 2)) / Constants::TileSize_);
+		int tileCenterY = floor((r1->y + (r1->h / 2)) / Constants::TileSize_);
+
+
+		if (moveValues->yVelocity != 0) {
+			if (map->map[tileY][tileX].solid || map->map[tileY][tileEndX].solid) {
+				moveValues->yVelocity = Constants::Gravity_ * timestep;
+				std::cout << "Up" << std::endl;
+			}
+			if (map->map[tileEndY][tileX].solid || map->map[tileEndY][tileEndX].solid) {
+				r1->y = tileEndY * Constants::TileSize_ - r1->h;
+				moveValues->yVelocity = 0;
+				std::cout << "Down" << std::endl;
+			}
+		}
+
+		if (moveValues->xVelocity != 0) {
+			if (map->map[tileCenterY][tileX].solid || map->map[tileY][tileX].solid) {
+				r1->x = tileX * Constants::TileSize_;
+			}
+			if (map->map[tileCenterY][tileEndX].solid || map->map[tileY][tileEndX].solid) {
+				r1->x = tileEndX * Constants::TileSize_ - r1->w;
+				std::cout << "Right" << std::endl;
+			}
+		}
+
+
+		if (map->map[tileCenterY][tileCenterX].bunny) {
+			if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {	    
+				HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
+				hats->hat = Hat(0);
 			}
 		}
 

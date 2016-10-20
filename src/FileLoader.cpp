@@ -125,6 +125,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				tile.tid = 0;
 				tile.solid = false;
 				tile.moving = false;
+				tile.rectangle = {(float) xIndex * Constants::TileSize_, (float) yIndex * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_};
 				memset(&tilestr, 0, MaxBuffSize_);
 				xIndex++;
 				getParams = false;
@@ -141,6 +142,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				tile.moving = false;
 				tile.bunny = false;
 				tile.winning = false;
+				tile.rectangle = {(float) xIndex * Constants::TileSize_, (float) yIndex * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_};
 				memset(&tilestr, 0, MaxBuffSize_);
 				xIndex++;
 				getParams = false;
