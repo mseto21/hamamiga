@@ -22,7 +22,6 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->hatComponent 		= cBag->hatComponent;
 	physicsSystem->map 					= tileMap;
 }
-bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep);
 
 
 bool Collision(const Rectangle r1, const Rectangle r2) {
@@ -33,7 +32,7 @@ bool Collision(const Rectangle r1, const Rectangle r2) {
 }
 
 
-bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
+bool PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	PhysicsComponent* physicsComponent = physicsSystem->physicsComponent;
 	MovementComponent* movementComponent = physicsSystem->movementComponent;
 	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;

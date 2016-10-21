@@ -266,12 +266,12 @@ void RenderZoneIntro(Game* game, uint32 elapsed) {
 }
 
 
-void UpdatePlay(Game* game, bool* keysdown, float delta) {
+void UpdatePlay(Game* game, bool* keysdown) {
 	InputSystem_Update(&game->playState.inputSystem, keysdown);
-	AISystem_Update(&game->playState.aiSystem, delta);
-	MovementSystem_Update(&game->playState.movementSystem, delta);
-	PhysicsSystem_Update(&game->playState.physicsSystem, delta);
-	StatSystem_Update(&game->playState.statSystem, delta);
+	AISystem_Update(&game->playState.aiSystem);
+	MovementSystem_Update(&game->playState.movementSystem);
+	PhysicsSystem_Update(&game->playState.physicsSystem);
+	StatSystem_Update(&game->playState.statSystem);
 }
 
 
@@ -340,13 +340,12 @@ void Game_RunLoop(Game* game) {
 
 		// Update game state
 		while (lag > Constants::OptimalTime_) {
-			delta = 1000.f / (lag / Constants::OptimalTime_);
 			switch(game->gameState) {
 				case GameState_Title:
 					UpdateTitle(game, keysdown, keysup);
 					break;
 				case GameState_Play:
-					UpdatePlay(game, keysdown, delta);
+					UpdatePlay(game, keysdown);
 					break;
 				case GameState_HighScore:
 					UpdateHighScore(game, keysdown);

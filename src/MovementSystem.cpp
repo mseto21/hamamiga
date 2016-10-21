@@ -11,7 +11,7 @@ void MovementSystem_Initialize(MovementSystem* movementSystem, ComponentBag* cBa
 }
 
 
-void MovementSystem_Update(MovementSystem* movementSystem, float timestep) {
+void MovementSystem_Update(MovementSystem* movementSystem) {
 	MovementComponent* movementComponent = movementSystem->movementComponent;
 	RectangleComponent* rectangleComponent = movementSystem->rectangleComponent;
 

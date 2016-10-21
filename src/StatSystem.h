@@ -6,4 +6,4 @@ struct StatSystem {
 };
 
 void StatSystem_Initialize(StatSystem* statSystem, ComponentBag* cBag);
-void StatSystem_Update(StatSystem* statSystem, float delta);
+void StatSystem_Update(StatSystem* statSystem);

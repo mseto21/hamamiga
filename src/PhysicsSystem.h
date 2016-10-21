@@ -24,4 +24,4 @@ struct PhysicsSystem {
 };
 
 void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap);
-bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep);
+bool PhysicsSystem_Update(PhysicsSystem* physicsSystem);

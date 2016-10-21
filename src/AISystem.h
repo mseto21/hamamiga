@@ -13,4 +13,4 @@ struct AISystem {
 };
 
 void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag);
-void AISystem_Update(AISystem* aiSystem, float timeStep);
+void AISystem_Update(AISystem* aiSystem);

@@ -23,7 +23,7 @@ bool close(const Rectangle* r1, const Rectangle* r2) {
   return false;
 }
 
-void AISystem_Update(AISystem* aiSystem, float timeStep) {
+void AISystem_Update(AISystem* aiSystem) {
   RectangleComponent* rectangleComponent = aiSystem->rectangleComponent;
   MovementComponent* movementComponent = aiSystem->movementComponent;
   AIComponent* aiComponent = aiSystem->aiComponent;
