@@ -5,7 +5,7 @@ Hat::Hat(int type) {
   switch (type) {
     case 0: //jumping hat
       memcpy(name, "bunny", sizeof(name));
-      jump = 1.5;
+      jump = 1.41;
       dmgRed = 1;
       break;
     case 1: //army hat

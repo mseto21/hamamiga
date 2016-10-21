@@ -55,7 +55,7 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 		const Rectangle left 	= {r1->x, r1->y, 1, r1->h};
 		const Rectangle right 	= {r1->x + r1->w, r1->y, 1, r1->h};
 		const Rectangle up 		= {r1->x, r1->y, r1->w, 1};
-		const Rectangle down 	= {r1->x, r1->y + r1->h, r1->w, 1};
+		const Rectangle down 	= {r1->x+12, r1->y + r1->h, r1->w-25, 1};
 
 		// Check collisions with entities
 		for (uint32 j = 0; j < physicsComponent->count; j++) {
@@ -75,15 +75,16 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 				r1->x -= (moveValues->xVelocity);
 			}
 			if (Collision(up, r2)) {
-				moveValues->yVelocity = 0;
+			        moveValues->yVelocity = 0;
 			}
 			if (Collision(down, r2)) {
-				moveValues->yVelocity = -Constants::Gravity_*timestep;
+				moveValues->yVelocity *= -1;
 			}
 		}
 
-
-		moveValues->yVelocity += Constants::Gravity_ * timestep;
+		if (!moveValues->grounded) {
+		  moveValues->yVelocity += Constants::Gravity_;
+		}
 		if (moveValues->xVelocity != 0) {
 			if (moveValues->xVelocity > 0) {
 				moveValues->xVelocity -= Constants::Friction_;
@@ -107,15 +108,16 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem, float timestep) {
 		int tileCenterX = floor((r1->x + (r1->w / 2)) / Constants::TileSize_);
 		int tileCenterY = floor((r1->y + (r1->h / 2)) / Constants::TileSize_);
 
-
+		moveValues->grounded = false;
 		if (moveValues->yVelocity != 0) {
 			if (map->map[tileY][tileX].solid || map->map[tileY][tileEndX].solid) {
-				moveValues->yVelocity = Constants::Gravity_ * timestep;
+				moveValues->yVelocity = Constants::Gravity_;
 				std::cout << "Up" << std::endl;
 			}
 			if (map->map[tileEndY][tileX].solid || map->map[tileEndY][tileEndX].solid) {
 				r1->y = tileEndY * Constants::TileSize_ - r1->h;
 				moveValues->yVelocity = 0;
+				moveValues->grounded = true;
 				std::cout << "Down" << std::endl;
 			}
 		}

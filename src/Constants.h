@@ -26,7 +26,7 @@ namespace Constants {
 	const uint32	ZoneIntroTime_	=	3000;
 
 	// Play State
-	const float   	Gravity_        	=   .0005f; //gravity
+	const float   	Gravity_        	=   .5f; //gravity
     const float   	Friction_   	 	=   .13f; //friction
 	const uint16  	Jump_           	=   10; //jump velocity
 	const uint16 	Damage_         	=   20; //damage

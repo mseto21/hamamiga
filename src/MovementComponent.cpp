@@ -10,4 +10,5 @@ void MovementComponent_Add(MovementComponent* movementComponent, uint32 eid, flo
 	movementComponent->movementValues[eid].yVelocity        = 0;
 	movementComponent->movementValues[eid].xAccel           = 0;
 	movementComponent->movementValues[eid].yAccel           = 0;
+	movementComponent->movementValues[eid].grounded         = false;
 }
