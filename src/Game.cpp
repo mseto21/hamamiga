@@ -229,41 +229,50 @@ void RenderWin(Game* game) {
 }
 
 
-void UpdateReturn(Game* game) {
-	if (game->playState.loaded) {
-		if (!game->playState.cBag.freed) {
-			ComponentBag_Free(&game->playState.cBag);
-		}
-		EntityCache_RemoveAll();
-		game->playState.loaded = false;
-	}
-	game->gameState = GameState_Title;
-}
-
-
 void RenderZoneIntro(Game* game, uint32 elapsed) {
 	game->zoneIntroState.elapsed += elapsed;
 
-	if (game->zoneIntroState.elapsed > Constants::ZoneIntroTime_) {
+	if (game->zoneIntroState.elapsed >= (game->playState.chapter.startScene.slideCount * Constants::CutSceneSlideTime_) + Constants::ZoneIntroTime_) {
 		game->gameState = GameState_Play;
 	}
-	CameraSystem_Update(&game->playState.cameraSystem);
-	SDL_RenderClear(game->renderer);
-	game->zoneIntroState.alpha = 1 - (((float)game->zoneIntroState.elapsed) / ((float)Constants::ZoneIntroTime_));
-	
-	// Render intro
-	Texture* fader = TextureCache_GetTexture(Constants::TitleFader_);
-	SDL_RenderClear(game->renderer);
-	if (fader) { 
-		RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
-		Texture* name = TextureCache_GetTexture("zone_name");
-		int renderX = Constants::ScreenWidth_ / 2 - name->w / 2;
-		int renderY = Constants::ScreenHeight_/2 - name->h / 2;
-		RenderSystem_Render_xywh(game->renderer, renderX, renderY, name->w, name->h, NULL, name);
-		SDL_SetTextureAlphaMod(fader->sdltexture, (game->zoneIntroState.alpha * 255));
-		RenderSystem_Render_xywh(game->renderer, 0, 0, fader->w, fader->h, NULL,  fader);
+
+	// Render fade
+	if (game->zoneIntroState.elapsed >= game->playState.chapter.startScene.slideCount * Constants::CutSceneSlideTime_) {
+		CameraSystem_Update(&game->playState.cameraSystem);
+		SDL_RenderClear(game->renderer);
+		game->zoneIntroState.alpha = 1 - (((float)game->zoneIntroState.elapsed - (game->playState.chapter.startScene.slideCount * Constants::CutSceneSlideTime_)) / ((float)Constants::ZoneIntroTime_));
+		
+		// Render intro
+		Texture* fader = TextureCache_GetTexture(Constants::TitleFader_);
+		SDL_RenderClear(game->renderer);
+		if (fader) { 
+			RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
+			Texture* name = TextureCache_GetTexture("zone_name");
+			if (!name) {
+				std::cerr << "Error: Unable to load the zone's name texture" << std::endl;
+				return;
+			}
+			int renderX = Constants::ScreenWidth_ / 2 - name->w / 2;
+			int renderY = Constants::ScreenHeight_/2 - name->h / 2;
+			RenderSystem_Render_xywh(game->renderer, renderX, renderY, name->w, name->h, NULL, name);
+			SDL_SetTextureAlphaMod(fader->sdltexture, (game->zoneIntroState.alpha * 255));
+			RenderSystem_Render_xywh(game->renderer, 0, 0, fader->w, fader->h, NULL,  fader);
+		}
+		SDL_RenderPresent(game->renderer);
+	} else { // Render cut scene
+		if (game->zoneIntroState.elapsed >= Constants::CutSceneSlideTime_ * (game->playState.chapter.startScene.current + 1)) { // Go to next slide
+			game->playState.chapter.startScene.current++;
+			if (game->playState.chapter.startScene.current == game->playState.chapter.startScene.slideCount) {
+				RenderZoneIntro(game, elapsed);
+			}
+		}
+		SDL_RenderClear(game->renderer);
+		Texture* scene = game->playState.chapter.startScene.slides[game->playState.chapter.startScene.current];
+		if (scene) {
+			RenderSystem_Render_xywh(game->renderer, 0, 0, scene->w, scene->h, NULL, scene);
+			SDL_RenderPresent(game->renderer);
+		}
 	}
-	SDL_RenderPresent(game->renderer);
 }
 
 
@@ -287,6 +296,24 @@ void RenderPlay(Game* game, Uint32 elapsed) {
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
 	SDL_RenderPresent(game->renderer);
+}
+
+
+void FreePlay(Game* game) {
+	if (game->playState.loaded) {
+		if (!game->playState.cBag.freed) {
+			ComponentBag_Free(&game->playState.cBag);
+		}
+		EntityCache_RemoveAll();
+		game->playState.loaded = false;
+		Mix_FreeMusic(game->playState.chapter.music);
+	}
+}
+
+
+void ReturnFromPlay(Game* game) {
+	FreePlay(game);
+	game->gameState = GameState_Title;
 }
 
 
@@ -358,7 +385,7 @@ void Game_RunLoop(Game* game) {
 					UpdatePause(game, elapsed);
 					break;
 				case GameState_Returning:
-					UpdateReturn(game);
+					ReturnFromPlay(game);
 					break;
 				case GameState_Closing:
 					game->running = false;
@@ -403,6 +430,7 @@ void Game_RunLoop(Game* game) {
 
 
 void Game_Close(Game* game) {
+	FreePlay(game);
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);

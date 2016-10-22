@@ -5,8 +5,8 @@
 #include <iostream>
 
 void CameraSystem_Initialize(CameraSystem* cameraSystem, ComponentBag* cBag) {
-	cameraSystem->cameraComponent =	cBag->cameraComponent;
-	cameraSystem->rectangleComponent      = cBag->rectangleComponent;
+	cameraSystem->cameraComponent 		=	cBag->cameraComponent;
+	cameraSystem->rectangleComponent 	= cBag->rectangleComponent;
 }
 
 void CameraSystem_Update(CameraSystem* cameraSystem) {
@@ -21,6 +21,10 @@ void CameraSystem_Update(CameraSystem* cameraSystem) {
 
 		Rectangle rectangle = rectangleComponent->entityRectangles[eid];
 		SDL_Rect* camera = &cameraSystem->cameraComponent->camera;
+		if (!camera) {
+			std::cerr << "Error: The camera has yet to be initialized!" << std::endl;
+			continue;
+		}
 		camera->x = ( rectangle.x + rectangle.w / 2 ) - Constants::ScreenWidth_ / 2;
 		camera->y = ( rectangle.y + rectangle.h / 2 ) - Constants::ScreenWidth_ / 2;
 

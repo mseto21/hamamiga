@@ -17,14 +17,14 @@ namespace Constants {
 	const uint16	TileSize_		=	48;
 
 	// Intro State
-	const uint32	CutSceneTime_	=	5000;
 	const uint32	IntroTime_		= 	5000;
 
 	// Title State
 	const uint8	 	TitleScreenSelections_	=	4;
 
 	// Zone Intro State Time
-	const uint32	ZoneIntroTime_	=	3000;
+	const uint32	ZoneIntroTime_		=	3000;
+	const uint32	CutSceneSlideTime_	=	5000;
 
 	// Play State
 	const float   	Gravity_        	=   .5f; //gravity
@@ -48,12 +48,12 @@ namespace Constants {
 	// High Score State
 	const int     MaxHighScores_			=		5;
 
-	// String names (TO-DO: Don't have them in here!)
+	// Constant names
 	const String128	TitleBackground_	= 	"title_background";
 	const String128	TitleFader_			=	"title_fader";
 	const String128	WinBackground_		= 	"win_background";
 	const String128 LoseBackground_ 	=   "lose_background";
 	const String128 GameBackground_ 	= 	"game_background";
 	const String128 MenuOverlay_    	= 	"menu_overlay";
-	const String128 BunnyHat_                  =      "bunny";
+	const String128 BunnyHat_           =      "bunny";
 }

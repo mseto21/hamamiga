@@ -5,10 +5,12 @@
 struct _Mix_Music;
 struct Texture;
 
+const uint8 MaxSlides_ = 16;
+
 struct CutScene {
 	uint16 slideCount;
 	uint16 current;
-	Texture* slides;
+	Texture* slides[MaxSlides_];
 };
 
 struct Zone {

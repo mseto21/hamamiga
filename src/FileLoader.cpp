@@ -390,8 +390,8 @@ int ReadCutSceneStart(FILE* chapterFile, Zone* zone, SDL_Renderer* renderer) {
 		if (c == '\n') {
 			lineNumber++;
 		} else if (c == ',') {
-			zone->startScene.slides = TextureCache_CreateTexture(renderer, str, "tileset");
-			if (!zone->startScene.slides) {
+			zone->startScene.slides[zone->startScene.slideCount] = TextureCache_CreateTexture(renderer, str, str);
+			if (!zone->startScene.slides[zone->startScene.slideCount]) {
 				cerr << "Error: Unable to read cutscene " << str << "!" << endl;
 			}
 			zone->startScene.slideCount++;
