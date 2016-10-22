@@ -191,14 +191,14 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		if (Component_HasIndex(hatComponent, eid)) {
 			Hat* hat = &hatComponent->hats[eid].hat;
 			Hat* gHat = &hatComponent->hats[eid].gHat;
-			if (gHat) {
+			if (strlen(gHat->name) > 1) {
 				Texture* hatTexture = TextureCache_GetTexture(gHat->gname);
 				if (hatTexture) {
 					hatTexture->flip = texture->flip;
 				  RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);
 				}
 			} else if (hat) {
-			        Texture* hatTexture = TextureCache_GetTexture(gHat->gname);
+			        Texture* hatTexture = TextureCache_GetTexture(hat->name);
 				if (hatTexture) {
 					hatTexture->flip = texture->flip;
 				  RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);
