@@ -142,6 +142,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 		// Otherwise, render at the rectangle
 		Rectangle rect = rectangleComponent->entityRectangles[eid];
+		if (rect.x + rect.w < cameraComponent->camera.x || rect.x > cameraComponent->camera.x + cameraComponent->camera.w
+			|| rect.y + rect.h < cameraComponent->camera.y || rect.y > cameraComponent->camera.y + cameraComponent->camera.h) {
+			continue;
+		}
 		rect.x -= cameraComponent->camera.x;
 		rect.y -= cameraComponent->camera.y;
 		SDL_Rect clip = {0, 0, rect.w, rect.h};
