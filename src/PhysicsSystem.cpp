@@ -10,6 +10,7 @@
 #include "Hat.h"
 #include "ComponentBag.h"
 
+#include <stdlib.h>
 #include <SDL.h>
 #include <iostream>
 
@@ -125,6 +126,9 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		  moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
 		} else {
 		  moveValues->xVelocity -= moveValues->xVelocity*Constants::Friction_;
+		}
+		if (moveValues->xVelocity < 0.2 && moveValues->xVelocity > -0.2) {
+		  moveValues->xVelocity = 0;
 		}
 
 		// Check for collisions with map
