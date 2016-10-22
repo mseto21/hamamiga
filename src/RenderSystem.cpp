@@ -29,8 +29,8 @@ void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, Til
 	renderSystem->animationComponent 	= cBag->animationComponent;
 	renderSystem->movementComponent 	= cBag->movementComponent;
 	renderSystem->cameraComponent 		= cBag->cameraComponent;
-	renderSystem->hatComponent 			= cBag->hatComponent;
-	renderSystem->map 					= tileMap;
+	renderSystem->hatComponent 		= cBag->hatComponent;
+	renderSystem->map 			= tileMap;
 	renderSystem->healthComponent 		= cBag->healthComponent;
 }
 
@@ -190,8 +190,15 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		// Check for hat
 		if (Component_HasIndex(hatComponent, eid)) {
 			Hat* hat = &hatComponent->hats[eid].hat;
-			if (hat) {
-				Texture* hatTexture = TextureCache_GetTexture(hat->name);
+			Hat* gHat = &hatComponent->hats[eid].gHat;
+			if (gHat) {
+				Texture* hatTexture = TextureCache_GetTexture(gHat->gname);
+				if (hatTexture) {
+					hatTexture->flip = texture->flip;
+				  RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);
+				}
+			} else if (hat) {
+			        Texture* hatTexture = TextureCache_GetTexture(gHat->gname);
 				if (hatTexture) {
 					hatTexture->flip = texture->flip;
 				  RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);

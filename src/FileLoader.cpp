@@ -141,7 +141,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				tile.tid = 0;
 				tile.solid = false;
 				tile.moving = false;
-				tile.bunny = false;
+				tile.type = 0;
 				tile.winning = false;
 				tile.rectangle = {(float) xIndex * Constants::TileSize_, (float) yIndex * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_};
 				memset(&tilestr, 0, MaxBuffSize_);
@@ -181,8 +181,12 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				break;
 			case 'b':
 				if (getParams)
-					tile.bunny = true;
+					tile.type = 1;
 				break;
+		        case 't':
+			        if (getParams)
+			                tile.type = -1;
+			        break;
 			default: // Add to integer string
 				tilestr[tilepos++] = t;
 				break;
@@ -303,8 +307,9 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					CameraComponent_Add(cBag->cameraComponent, eid);
 				} else if (strcmp(cmd, "hat") == 0) {
 				        Hat hat = Hat();
+					Hat gHat = Hat();
 					cout << "Adding hat to entity " << eid << "..." << endl;
-					HatComponent_Add(cBag->hatComponent, eid, hat);
+					HatComponent_Add(cBag->hatComponent, eid, hat, gHat);
 				} else if (strcmp(cmd, "ai") == 0) {
 					int range = int_parameters.front();
 					int_parameters.pop();

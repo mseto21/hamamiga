@@ -187,11 +187,16 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				}
 			}
 
-			if (map->map[tileCenterY][tileCenterX].bunny) {
-				if (Component_HasIndex(hatComponent, eid)) {	    
-					HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
-					hats->hat = Hat(0);
-				}
+			int t = map->map[tileCenterY][tileCenterX].type;
+			if (t != 0) {
+			  if (Component_HasIndex(hatComponent, eid)) {
+			    HatCollection* hats = &hatComponent->hats[eid];
+			    if (t < 0) {
+			      hats->gHat.setHatType(t); //glamour hat
+			    } else {
+			      hats->hat.setHatType(t); //regular hat
+			    }
+			  }
 			}
 
 			// Check if the game is won

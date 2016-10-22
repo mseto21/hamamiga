@@ -7,7 +7,7 @@ struct Tile {
 	uint16 tid;
 	bool solid;
 	bool moving;
-	bool bunny;
+	int type;
 	bool winning;
 
 	Rectangle rectangle;

@@ -1,14 +1,21 @@
 #include "Hat.h"
 
+Hat::Hat() {
+  jump = 1;
+  dmgRed = 1;
+}
 
-Hat::Hat(int type) {
+void Hat::setHatType(int type) {
   switch (type) {
-    case 0: //jumping hat
+    case -1:
+      memcpy(gname, "strobe", sizeof(gname));
+      break;
+    case 1: //jumping hat
       memcpy(name, "bunny", sizeof(name));
       jump = 1.41;
       dmgRed = 1;
       break;
-    case 1: //army hat
+    case 2: //construction hat
       memcpy(name, "construction", sizeof(name));
       dmgRed = 2;
       jump = 1;
@@ -16,11 +23,6 @@ Hat::Hat(int type) {
     default:
       break;
   }
-}
-
-Hat::Hat() {
-  jump = 1;
-  dmgRed = 1;
 }
 
 float Hat::getJump() {

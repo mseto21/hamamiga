@@ -9,14 +9,15 @@ class Hat {
 
  public:
  	String128 name;
+	String128 gname;
 
   /**methods*/
+  void setHatType(int type);
   float getJump();
   int getDmgRed();
   
   /** Constructors */
   Hat();
-  Hat(int type);
 
 };
 
