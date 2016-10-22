@@ -187,45 +187,44 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				}
 			}
 
-		if (map->map[tileCenterY][tileCenterX].bunny) {
-			if (Component_HasIndex(hatComponent, eid)) {	    
-				HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
-				hats->hat = Hat(0);
+			if (map->map[tileCenterY][tileCenterX].bunny) {
+				if (Component_HasIndex(hatComponent, eid)) {	    
+					HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
+					hats->hat = Hat(0);
+				}
+			}
+
+			// Check if the game is won
+			if (physicsComponent->entityArray[entityIndex] == 0 && map->map[tileCenterY][tileCenterX].winning) {
+				return 1;
+			}
+			//finish map collisions
+
+			// Check world boundaries
+			if (r1->x <= 0) {
+				r1->x = 0;
+				moveValues->xVelocity = 0;
+			} else if (r1->x + r1->w >= Constants::LevelWidth_) {
+				r1->x = Constants::LevelWidth_ - r1->w;
+				moveValues->xVelocity = 0;
+			}
+			if (r1->y < 0) {
+			  r1->y = 0;
+			  moveValues->yVelocity = 0;
+			}
+
+			if (r1->y > Constants::LevelHeight_) {
+			  //REMOVE ENTITY
+			  if (eid == Constants::PlayerIndex_) {
+			    return -1;
+			  }
+			}
+
+			// Continue on static object
+			if (moveValues->xVelocity == 0 || moveValues->yVelocity == 0) {
+				continue;
 			}
 		}
-
-		// Check if the game is won
-		if (physicsComponent->entityArray[entityIndex] == 0 && map->map[tileCenterY][tileCenterX].winning) {
-			return 1;
-		}
-		//finish map collisions
-
-		// Check world boundaries
-		if (r1->x <= 0) {
-			r1->x = 0;
-			moveValues->xVelocity = 0;
-		} else if (r1->x + r1->w >= Constants::LevelWidth_) {
-			r1->x = Constants::LevelWidth_ - r1->w;
-			moveValues->xVelocity = 0;
-		}
-		if (r1->y < 0) {
-		  r1->y = 0;
-		  moveValues->yVelocity = 0;
-		}
-
-		if (r1->y > Constants::LevelHeight_) {
-		  //REMOVE ENTITY
-		  if (eid == Constants::PlayerIndex_) {
-		    return -1;
-		  }
-		}
-
-		// Continue on static object
-		if (moveValues->xVelocity == 0 || moveValues->yVelocity == 0) {
-			continue;
-		}
-
-		}
-	return 0;
 	}
+	return 0;
 }
