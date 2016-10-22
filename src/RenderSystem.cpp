@@ -71,8 +71,8 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 	SDL_Rect rquad;
 	rquad.x = rect->x;
 	rquad.y = rect->y;
-	rquad.w = rect->w;
-	rquad.h = rect->h;
+	rquad.w = texture->w;
+	rquad.h = texture->h;
 
 	if (clip) {
 		rquad.w = clip->w;

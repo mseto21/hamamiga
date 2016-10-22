@@ -77,7 +77,7 @@ bool Game_Initialize(Game* game) {
 	return true;
 }
 
-//--------------------------------------------------------------------
+
 void RenderIntro(Game* game, uint32 elapsed) {
 	// Check if the intro is done
 	game->introState.elapsed += elapsed;
@@ -91,7 +91,6 @@ void RenderIntro(Game* game, uint32 elapsed) {
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	Texture* menuOverlay = TextureCache_GetTexture(Constants::MenuOverlay_);
 
-	SDL_RenderClear(game->renderer);
 	if (background) {
 	  RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	}
@@ -162,7 +161,6 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 
 
 void RenderTitle(Game* game, uint32 elapsed) {
-	// Render
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
@@ -187,10 +185,12 @@ void RenderTitle(Game* game, uint32 elapsed) {
 
 void UpdateHighScore(Game* game, bool* keysdown) {
 	(void) keysdown;
+	(void) game;
 }
 
 
 void RenderHighScore(Game* game, uint32 elapsed) {
+	(void) elapsed;
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
 	if (background) RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
@@ -243,15 +243,16 @@ void UpdateReturn(Game* game) {
 
 void RenderZoneIntro(Game* game, uint32 elapsed) {
 	game->zoneIntroState.elapsed += elapsed;
+
 	if (game->zoneIntroState.elapsed > Constants::ZoneIntroTime_) {
 		game->gameState = GameState_Play;
 	}
 	CameraSystem_Update(&game->playState.cameraSystem);
 	SDL_RenderClear(game->renderer);
 	game->zoneIntroState.alpha = 1 - (((float)game->zoneIntroState.elapsed) / ((float)Constants::ZoneIntroTime_));
+	
 	// Render intro
 	Texture* fader = TextureCache_GetTexture(Constants::TitleFader_);
-
 	SDL_RenderClear(game->renderer);
 	if (fader) { 
 		RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
@@ -282,6 +283,7 @@ void UpdatePlay(Game* game, bool* keysdown) {
 
 void RenderPlay(Game* game, Uint32 elapsed) {
 	CameraSystem_Update(&game->playState.cameraSystem);
+	SoundSystem_Update(&game->playState.soundSystem, elapsed);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
 	SDL_RenderPresent(game->renderer);
@@ -308,9 +310,7 @@ void Game_RunLoop(Game* game) {
 	bool keysup[Constants::NumKeys_];
 	memset(&keysup, 0, sizeof(keysup));
 
-	// Begin game loop
 	while (game->running) {
-		// Calculate timestep
 		currentTime = SDL_GetTicks();
 		elapsed = currentTime - lastTime;
 		lastTime = currentTime;
@@ -327,7 +327,7 @@ void Game_RunLoop(Game* game) {
 				return;
 			}
 			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_m) {
-				if (game->gameState == GameState_Play || game->gameState == GameState_Lose)
+				if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win)
 					game->gameState = GameState_Returning;
 				else
 					game->gameState = GameState_Title;
@@ -340,7 +340,6 @@ void Game_RunLoop(Game* game) {
 				keysdown[event.key.keysym.sym % Constants::NumKeys_] = false;
 				keysup[event.key.keysym.sym % Constants::NumKeys_] = true;
 			}
-
 		}
 
 		// Update game state
@@ -393,8 +392,8 @@ void Game_RunLoop(Game* game) {
 			case GameState_Win:
 				RenderWin(game);
 				break;
-  		case GameState_Lose:
-  			RenderLose(game);
+  			case GameState_Lose:
+  				RenderLose(game);
 				break;
 			default:
 				break;
@@ -402,7 +401,7 @@ void Game_RunLoop(Game* game) {
 	}
 }
 
-//--------------------------------------------------------------------
+
 void Game_Close(Game* game) {
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);

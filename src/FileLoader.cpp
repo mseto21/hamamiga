@@ -350,6 +350,7 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 }
 
 
+/* Read a music file into the zone. */
 int ReadMusic(FILE* chapterFile, Zone* zone) {
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
@@ -376,6 +377,36 @@ int ReadMusic(FILE* chapterFile, Zone* zone) {
 }
 
 
+/* Read a cut scene in the beginning of the level. */
+int ReadCutSceneStart(FILE* chapterFile, Zone* zone, SDL_Renderer* renderer) {
+	char str[MaxBuffSize_];
+	memset(&str, 0, MaxBuffSize_);
+	uint8 pos = 0;
+	int lineNumber = 0;
+
+	int c;
+	// Loop until we reach an end of line.
+	while ((c=fgetc(chapterFile)) != ';') {
+		if (c == '\n') {
+			lineNumber++;
+		} else if (c == ',') {
+			zone->startScene.slides = TextureCache_CreateTexture(renderer, str, "tileset");
+			if (!zone->startScene.slides) {
+				cerr << "Error: Unable to read cutscene " << str << "!" << endl;
+			}
+			zone->startScene.slideCount++;
+			memset(&str, 0, MaxBuffSize_);
+			pos = 0;
+		} else {
+			if (c != '\t')
+				str[pos++] = c;
+		}
+	}
+	cout << "SUCCESS: Starting Cut Scene successfully loaded!" << endl;
+	return lineNumber;
+}
+
+
 /* Read in a zone and its parts. */
 int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 	int c;
@@ -396,6 +427,8 @@ int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* re
 				lineNumber += ReadEntity(chapterFile, cBag, renderer);
 			} else if (strcmp(str, "music") == 0) {
 				lineNumber += ReadMusic(chapterFile, zone);
+			} else if (strcmp(str, "cutstart") == 0) {
+				lineNumber += ReadCutSceneStart(chapterFile, zone, renderer);
 			} else if (strcmp(str, "zone") == 0) {
 				// Embedded zone, won't worry about that right now.
 			} else if (strcmp(str, "END") == 0) {
@@ -416,7 +449,6 @@ int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* re
 			}
 		}
 	}
-	cerr << "Error: Missing END tag. Why you no read syntax?" << endl;
 	return lineNumber;
 }
 

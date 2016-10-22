@@ -3,6 +3,7 @@ zone=
 	tileset=assets/chapter_1/chapter_1_tileset.png;
 	tilemap=assets/chapter_1/chapter_1_level.csv;
 	music=assets/chapter_1/chapter_1.ogg;
+	cutstart=cutscene-1.png,cutscene-2.png,cutscene-3.png,;
 	entity=
 		animation(4,150.0,48,87,)
 		health(100,)
