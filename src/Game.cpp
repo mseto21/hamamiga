@@ -213,7 +213,7 @@ void UpdatePause(Game* game, uint32 elapsed) {
 }
 
 
-void RenderLose(Game* game) {
+void RenderWin(Game* game) {
 	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
@@ -221,7 +221,7 @@ void RenderLose(Game* game) {
 }
 
 
-void RenderWin(Game* game) {
+void RenderLose(Game* game) {
 	Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
@@ -270,7 +270,9 @@ void UpdatePlay(Game* game, bool* keysdown) {
 	InputSystem_Update(&game->playState.inputSystem, keysdown);
 	AISystem_Update(&game->playState.aiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
-	PhysicsSystem_Update(&game->playState.physicsSystem);
+	if (PhysicsSystem_Update(&game->playState.physicsSystem)) {
+		game->gameState = GameState_Win;
+	}
 	StatSystem_Update(&game->playState.statSystem);
 }
 

@@ -13,7 +13,6 @@
 #include <SDL.h>
 #include <iostream>
 
-
 void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap) {
 	physicsSystem->physicsComponent 	= cBag->physicsComponent;
 	physicsSystem->movementComponent 	= cBag->movementComponent;
@@ -69,14 +68,12 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 			if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
-			}
-			if (Collision(right, r2)) {
+			} else if (Collision(right, r2)) {
 				r1->x -= (moveValues->xVelocity);
 			}
 			if (Collision(up, r2)) {
 			        moveValues->yVelocity = 0;
-			}
-			if (Collision(down, r2)) {
+			} else if (Collision(down, r2)) {
 				moveValues->yVelocity *= -1;
 			}
 		}
@@ -100,49 +97,66 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		}
 
 		// Check for collisions with map
-		int tileX = floor(r1->x / Constants::TileSize_);
-		int tileY = floor(r1->y / Constants::TileSize_);
-		int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
-		int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
-		int tileCenterX = floor((r1->x + (r1->w / 2)) / Constants::TileSize_);
-		int tileCenterY = floor((r1->y + (r1->h / 2)) / Constants::TileSize_);
+		{
+			int tileX = floor(r1->x / Constants::TileSize_);
+			int tileCenterX = ((r1->x + (r1->w / 2)) / Constants::TileSize_);
+			int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
+			int tileY = floor((r1->y) / Constants::TileSize_);
+			int tileCenterY = ((r1->y + (r1->h / 2)) / Constants::TileSize_);
+			int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
 
-		moveValues->grounded = false;
-		if (moveValues->yVelocity != 0) {
-			if (map->map[tileY][tileX].solid || map->map[tileY][tileEndX].solid) {
-				moveValues->yVelocity = Constants::Gravity_;
-				std::cout << "Up" << std::endl;
+			moveValues->grounded = false;
+			if (moveValues->yVelocity < 0) {
+				if (map->map[tileY][tileX].solid || map->map[tileY][tileEndX].solid) {
+					r1->y = tileY * Constants::TileSize_ + Constants::TileSize_;
+					moveValues->yVelocity = 0;
+				} 
+			} else if (moveValues->yVelocity >= 0) {
+				if (map->map[tileEndY][tileX].solid || map->map[tileEndY][tileEndX].solid) {
+					r1->y = tileEndY * Constants::TileSize_ - r1->h;
+					moveValues->yVelocity = 0;
+					moveValues->grounded = true;
+				}
 			}
-			if (map->map[tileEndY][tileX].solid || map->map[tileEndY][tileEndX].solid) {
-				r1->y = tileEndY * Constants::TileSize_ - r1->h;
-				moveValues->yVelocity = 0;
-				moveValues->grounded = true;
-				std::cout << "Down" << std::endl;
-			}
-		}
 
-		if (moveValues->xVelocity != 0) {
-			if (map->map[tileCenterY][tileX].solid || map->map[tileY][tileX].solid) {
-				r1->x = tileX * Constants::TileSize_;
+			if (moveValues->xVelocity < 0) {
+				if (moveValues->grounded) {
+					if (map->map[tileY][tileX].solid || map->map[tileCenterY][tileX].solid) {
+						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
+						moveValues->xVelocity = 0;
+					}
+				} else {
+					if (map->map[tileY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
+						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
+						moveValues->xVelocity = 0;
+					}
+				}
+			} else if (moveValues->xVelocity > 0) {
+				if (moveValues->grounded) {
+					if (map->map[tileY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid) {
+						r1->x = tileEndX * Constants::TileSize_ - r1->w;
+						moveValues->xVelocity = 0;
+					}
+				} else {
+					if (map->map[tileY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileX].solid) {
+						r1->x = tileEndX * Constants::TileSize_ - r1->w;
+						moveValues->xVelocity = 0;
+					}
+				}
 			}
-			if (map->map[tileCenterY][tileEndX].solid || map->map[tileY][tileEndX].solid) {
-				r1->x = tileEndX * Constants::TileSize_ - r1->w;
-				std::cout << "Right" << std::endl;
+
+			if (map->map[tileCenterY][tileCenterX].bunny) {
+				if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {	    
+					HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
+					hats->hat = Hat(0);
+				}
 			}
-		}
 
-
-		if (map->map[tileCenterY][tileCenterX].bunny) {
-			if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {	    
-				HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
-				hats->hat = Hat(0);
+			// Check if the game is won
+			if (physicsComponent->entityArray[entityIndex] == 0 && map->map[tileCenterY][tileCenterX].winning) {
+				return true;
 			}
-		}
-
-		// Check if the game is won
-		if (physicsComponent->entityArray[entityIndex] == 0 && map->map[tileCenterY][tileCenterX].winning) {
-			return true;
-		}
+		} // Finish map collisions.
 
 
 		// Check world boundaries
