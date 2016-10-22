@@ -105,9 +105,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
  	// Render tile map
 	Texture* tileset = TextureCache_GetTexture("tileset");
+	int tileStartX = floor(cameraComponent->camera.x / Constants::TileSize_);
+	int tileEndX = ceil((cameraComponent->camera.x + cameraComponent->camera.w) / Constants::TileSize_);
+	int tileStartY = floor(cameraComponent->camera.y / Constants::TileSize_);
+	int tileEndY = ceil((cameraComponent->camera.y + cameraComponent->camera.h) / Constants::TileSize_);
 	if (tileset) {
-		for (int r = 0; r <= map->h; r++) {
-			for (int c = 0; c <= map->w; c++) {
+		for (int r = tileStartY; r <= tileEndY; r++) {
+			for (int c = tileStartX; c <= tileEndX; c++) {
 				if (map->map[r][c].tid == 0) {
 					continue;
 				}
