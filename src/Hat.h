@@ -10,6 +10,8 @@ class Hat {
  public:
  	String128 name;
 	String128 gname;
+	String128 effect;
+	String128 gEffect;
 
   /**methods*/
   void setHatType(int type);

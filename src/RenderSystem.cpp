@@ -197,11 +197,20 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		if (Component_HasIndex(hatComponent, eid)) {
 			Hat* hat = &hatComponent->hats[eid].hat;
 			Hat* gHat = &hatComponent->hats[eid].gHat;
+			Texture* gHatTexture = TextureCache_GetTexture(gHat->gname);
+		        Texture* hatTexture = TextureCache_GetTexture(hat->name);
+			//display hats you have
+			if (gHatTexture) {
+			  RenderSystem_Render_xywh(renderer, XHealth_ + gHatTexture->w + 10, YHealth_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
+			}
+			if (hatTexture) {
+			  RenderSystem_Render_xywh(renderer, XHealth_, YHealth_ + HHealth_ + 10, hatTexture->w, hatTexture->h, NULL, hatTexture);
+			}
+			
 			if (strlen(gHat->gname) > 1) {
-				Texture* hatTexture = TextureCache_GetTexture(gHat->gname);
-				if (hatTexture) {
-					hatTexture->flip = texture->flip;
-					RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - hatTexture->h, hatTexture->w, hatTexture->h, NULL, hatTexture);
+				if (gHatTexture) {
+					gHatTexture->flip = texture->flip;
+					RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - gHatTexture->h, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
 				}
 				if (strcmp(gHat->gname, Constants::DiscoHat_) == 0) {
 				  const SDL_Rect bigRect = {0, 0, Constants::ScreenWidth_, Constants::ScreenHeight_};
@@ -218,10 +227,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				  count++;
 				}
 			} else if (hat) {
-			        Texture* hatTexture = TextureCache_GetTexture(hat->name);
 				if (hatTexture) {
 					hatTexture->flip = texture->flip;
-				  RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);
+					RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);
 				}
 			}
 		}
