@@ -15,6 +15,7 @@ General Controls:
 
 'ESC' at any time will exit the game.
 'M' to return to the Main menu, or to skip the fade in intro
+'P' to skip the cut scene
 'WASD' to move, 'W' to jump
 'Enter' to select menu options 
 
@@ -39,8 +40,20 @@ and reach the magical crown (located at the very top right of the screen). The c
 reached in this level after the bunny hat is obtained. At the moment, running into the bunny
 hat will grant Kevin SUPER JUMP POWERS! This allows Kevin to jump to skies and reach the crown.
 
-Bunny hat is located on the ground floor near the middle left of the level.
+Bunny hat is located on the ground floor near right side of the level.
 
 Note: Bunny hat is still displayed after colliding with it, but don't worry, the jumping
 power has been granted!
 
+Now there is additional glamour hat hiding on the level which will cause a super cool rainbow strobe to appear on the screen. You will keep the powers of the bunny hat but you will see the disco hat on your head.
+
+Bunny hat is located on the far right of the level.
+
+
+
+Breakdown of what each member achieved:
+
+Harry: Designed the first level, fixed small bug with collision with enemies and added kickback when an enemy bumps into you, changed the tile collision slightly so now you being next to a tile is different from being on it, implemented the disco hat abilities. 
+Matt:
+Mindy:
+Gavi:
