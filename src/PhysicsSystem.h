@@ -11,6 +11,7 @@ struct MovementComponent;
 struct RectangleComponent;
 struct HealthComponent;
 struct HatComponent;
+struct AIComponent;
 struct TileMap;
 struct ComponentBag;
 
@@ -19,7 +20,8 @@ struct PhysicsSystem {
 	MovementComponent* movementComponent; 
 	RectangleComponent* rectangleComponent; 
 	HealthComponent* healthComponent; 
-	HatComponent* hatComponent; 
+	HatComponent* hatComponent;
+	AIComponent* aiComponent; 
 	TileMap* map;
 };
 
