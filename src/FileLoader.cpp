@@ -22,6 +22,7 @@
 #include <cstring>
 #include <iostream>
 #include <queue>
+#include <SDL_mixer.h>
 
 using namespace std;
 
@@ -349,6 +350,32 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 }
 
 
+int ReadMusic(FILE* chapterFile, Zone* zone) {
+	char str[MaxBuffSize_];
+	memset(&str, 0, MaxBuffSize_);
+	uint8 pos = 0;
+	int lineNumber = 0;
+
+	int c;
+	// Loop until we reach an end of line.
+	while ((c=fgetc(chapterFile)) != ';') {
+		if (c == '\n') {
+			lineNumber++;
+		} else {
+			if (c != '\t')
+				str[pos++] = c;
+		}
+	}
+	zone->music = Mix_LoadMUS(str);
+	if (zone->music == NULL) {
+		cerr << "Unable to initialize titlescreen music! SDL_Error: " << Mix_GetError() << endl;
+	} else {
+		cout << "SUCCESS: Music file " << str << "successfully loaded!" << endl;
+	}
+	return lineNumber;
+}
+
+
 /* Read in a zone and its parts. */
 int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 	int c;
@@ -367,6 +394,8 @@ int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* re
 				lineNumber += ReadTileMap(chapterFile, zone);
 			} else if (strcmp(str, "entity") == 0) {
 				lineNumber += ReadEntity(chapterFile, cBag, renderer);
+			} else if (strcmp(str, "music") == 0) {
+				lineNumber += ReadMusic(chapterFile, zone);
 			} else if (strcmp(str, "zone") == 0) {
 				// Embedded zone, won't worry about that right now.
 			} else if (strcmp(str, "END") == 0) {

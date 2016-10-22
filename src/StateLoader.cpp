@@ -117,7 +117,7 @@ bool LoadPlayStateAssets(Game* game) {
 
 	// TO-DO: Hardcoded fro now, but its coolio!
 	FileLoader_Load(&game->playState.chapter, "assets/chapter_1/chapter_1.txt", &game->playState.cBag, game->renderer); // Hardcoded for now, but easily an array.
-	
+
 	AISystem_Initialize(&game->playState.aiSystem, &game->playState.cBag);
 	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag);
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
