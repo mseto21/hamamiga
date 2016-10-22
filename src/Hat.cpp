@@ -3,12 +3,14 @@
 Hat::Hat() {
   jump = 1;
   dmgRed = 1;
+  memcpy(gname,"", sizeof(gname));
+  memcpy(name,"", sizeof(name));
 }
 
 void Hat::setHatType(int type) {
   switch (type) {
     case -1:
-      memcpy(gname, "strobe", sizeof(gname));
+      memcpy(gname, "disco", sizeof(gname));
       break;
     case 1: //jumping hat
       memcpy(name, "bunny", sizeof(name));
