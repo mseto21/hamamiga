@@ -69,9 +69,21 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
+				if (eid == Constants::PlayerIndex_) {
+				  moveValues->xVelocity = 15;
+				  moveValues->yVelocity = -5;
+				  r1->x += moveValues->xVelocity;
+				  r1->y += moveValues->yVelocity;
+				}
 			} else if (Collision(right, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
+				if (eid == Constants::PlayerIndex_) {
+				  moveValues->xVelocity = -15;
+				  moveValues->yVelocity = -5;
+				  r1->x += moveValues->xVelocity;
+				  r1->y += moveValues->yVelocity;
+				}
 			}
 			if (Collision(up, r2)) {
 			        moveValues->yVelocity = 0;
