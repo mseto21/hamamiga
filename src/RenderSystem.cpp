@@ -10,9 +10,16 @@
 #include "CameraComponent.h"
 #include "TileMap.h"
 #include "HatComponent.h"
+#include "HealthComponent.h"
 
 #include <SDL.h>
 #include <iostream>
+
+// Render constants
+const int XHealth_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4;
+const int YHealth_ = Constants::ScreenHeight_ / 16;
+const int WHealth_ = Constants::ScreenWidth_/ 5;
+const int HHealth_ = Constants::ScreenHeight_ / 16;
 
 
 // --------------------------------------------------------------------
@@ -22,8 +29,9 @@ void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, Til
 	renderSystem->animationComponent 	= cBag->animationComponent;
 	renderSystem->movementComponent 	= cBag->movementComponent;
 	renderSystem->cameraComponent 		= cBag->cameraComponent;
-	renderSystem->hatComponent 				= cBag->hatComponent;
-	renderSystem->map 								= tileMap;
+	renderSystem->hatComponent 			= cBag->hatComponent;
+	renderSystem->map 					= tileMap;
+	renderSystem->healthComponent 		= cBag->healthComponent;
 }
 
 // --------------------------------------------------------------------
@@ -83,6 +91,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	CameraComponent* cameraComponent = renderSystem->cameraComponent;
  	HatComponent* hatComponent = renderSystem->hatComponent;
  	TileMap* map = renderSystem->map;
+ 	HealthComponent* healthComponent = renderSystem->healthComponent;
 
 
  	// Render background
@@ -178,6 +187,19 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	}
 
 	// Render HUD
+	if (!Component_HasIndex(healthComponent, Constants::PlayerIndex_)) {
+		std::cerr << "Error: The player has no renderable health component" << std::endl;
+		return;
+	}
+
+	int max = healthComponent->maxHealth[Constants::PlayerIndex_];
+	int current = healthComponent->health[Constants::PlayerIndex_];
+	const SDL_Rect maxRect = {XHealth_, YHealth_, WHealth_, HHealth_};
+	const SDL_Rect currentRect = {XHealth_, YHealth_, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
+	SDL_RenderFillRect(renderer, &maxRect);
+	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 1);
+	SDL_RenderFillRect(renderer, &currentRect);
 }
 
 

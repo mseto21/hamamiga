@@ -14,6 +14,7 @@ struct MovementComponent;
 struct CameraComponent;
 struct HatComponent;
 struct TileMap;
+struct HealthComponent;
 struct ComponentBag;
 
 struct RenderSystem {
@@ -24,6 +25,7 @@ struct RenderSystem {
 	CameraComponent* cameraComponent;
 	HatComponent* hatComponent;
 	TileMap* map;
+	HealthComponent* healthComponent;
 };
 
 void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, TileMap* tileMap);
