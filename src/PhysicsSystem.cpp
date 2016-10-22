@@ -53,7 +53,7 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		const Rectangle left 	= {r1->x, r1->y, 1, r1->h};
 		const Rectangle right 	= {r1->x + r1->w, r1->y, 1, r1->h};
 		const Rectangle up 		= {r1->x, r1->y, r1->w, 1};
-		const Rectangle down 	= {r1->x+12, r1->y + r1->h, r1->w-25, 1};
+		const Rectangle down 	= {r1->x+12, r1->y + r1->h, r1->w-13, 1};
 
 		// Check collisions with entities
 		for (uint32 j = 0; j < physicsComponent->count; j++) {
@@ -66,30 +66,43 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			bool cllsn = false;
+			//early collision down check
+			bool cllsnD = false;
 			if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
+				//kickback for player
 				if (eid == Constants::PlayerIndex_) {
 				  moveValues->xVelocity = 15;
-				  moveValues->yVelocity = -5;
+				  if (!Collision(down, r2)) {
+				      moveValues->yVelocity = -5;
+				      r1->y += moveValues->yVelocity;
+				  } else {
+				    cllsnD = true;
+				  }
 				  r1->x += moveValues->xVelocity;
-				  r1->y += moveValues->yVelocity;
 				}
 			} else if (Collision(right, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
+				//kickback for player
 				if (eid == Constants::PlayerIndex_) {
 				  moveValues->xVelocity = -15;
-				  moveValues->yVelocity = -5;
 				  r1->x += moveValues->xVelocity;
-				  r1->y += moveValues->yVelocity;
+				  if (!Collision(down, r2)) {
+				    moveValues->yVelocity = -5;
+				    r1->y += moveValues->yVelocity;
+				  } else {
+				    cllsnD = true;
+				  }
 				}
 			}
 			if (Collision(up, r2)) {
 			        moveValues->yVelocity = 0;
 				cllsn = true;
-			} else if (Collision(down, r2)) {
-				moveValues->yVelocity *= -1;
+			} else if (cllsnD || Collision(down, r2)) {
+			        moveValues->yVelocity *= -1;
+			        r1->y += moveValues->yVelocity;
 				cllsn = true;
 			}
 			if (cllsn) {
@@ -99,7 +112,6 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						Hat* hat = &hatComponent->hats[eid].hat;
 						dmgRed = hat->getDmgRed();
 					}
-					std::cout << healthComponent->health[eid] << " :health" << std::endl;
 					healthComponent->health[eid] -= Constants::Damage_/dmgRed;
 					if (healthComponent->health[eid] <= 0) {
 					  return -1;
