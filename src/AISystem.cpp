@@ -17,7 +17,8 @@ void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag) {
 }
 
 bool close(const Rectangle* r1, const Rectangle* r2) {
-  if (abs((r1->x+r1->w)/2 - (r2->x+r2->w)/2) < Constants::Range_) {
+  if (abs((r1->x+(r1->w)/2) - (r2->x+(r2->w)/2)) < Constants::XRange_
+      && abs((r1->y + (r1->h)/2) - (r2->y+(r2->h)/2)) < Constants::YRange_) {
     return true;
   }
   return false;
@@ -29,10 +30,6 @@ void AISystem_Update(AISystem* aiSystem) {
   AIComponent* aiComponent = aiSystem->aiComponent;
 
   Rectangle pRect = rectangleComponent->entityRectangles[rectangleComponent->entityArray[Constants::PlayerIndex_]];
-  pRect.x -= Constants::Range_;
-  pRect.y += Constants::Range_;
-  pRect.w += 2*Constants::Range_;
-  pRect.h += 2*Constants::Range_;
   for (uint32 entityIndex = 0; entityIndex < aiComponent->count; entityIndex++) {
     uint32 eid = aiComponent->entityArray[entityIndex];
     if (!Component_HasIndex(movementComponent, eid)) {
@@ -45,7 +42,7 @@ void AISystem_Update(AISystem* aiSystem) {
     Rectangle* eRect = &aiSystem->rectangleComponent->entityRectangles[eid];
     moveValues->xAccel = 0;
     if (close(&pRect, eRect)) {
-      if ((pRect.x+Constants::Range_ + pRect.w/Constants::Range_)/2 < (eRect->x + eRect->w)/2) {
+      if (pRect.x + (pRect.w)/2 < eRect->x + (eRect->w)/2) {
   	    moveValues->xAccel = -moveValues->accelX;
   	  } else {
   	    moveValues->xAccel = moveValues->accelX;

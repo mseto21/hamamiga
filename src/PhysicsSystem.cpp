@@ -31,7 +31,7 @@ bool Collision(const Rectangle r1, const Rectangle r2) {
 }
 
 
-bool PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
+int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	PhysicsComponent* physicsComponent = physicsSystem->physicsComponent;
 	MovementComponent* movementComponent = physicsSystem->movementComponent;
 	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;
@@ -53,7 +53,7 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		const Rectangle left 	= {r1->x, r1->y, 1, r1->h};
 		const Rectangle right 	= {r1->x + r1->w, r1->y, 1, r1->h};
 		const Rectangle up 		= {r1->x, r1->y, r1->w, 1};
-		const Rectangle down 	= {r1->x+12, r1->y + r1->h, r1->w-25, 1};
+		const Rectangle down 	= {r1->x+12, r1->y + r1->h, r1->w-13, 1};
 
 		// Check collisions with entities
 		for (uint32 j = 0; j < physicsComponent->count; j++) {
@@ -65,16 +65,58 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			}
 
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
-
+			bool cllsn = false;
+			//early collision down check
+			bool cllsnD = false;
 			if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
+				cllsn = true;
+				//kickback for player
+				if (eid == Constants::PlayerIndex_) {
+				  moveValues->xVelocity = 15;
+				  if (!Collision(down, r2)) {
+				      moveValues->yVelocity = -5;
+				      r1->y += moveValues->yVelocity;
+				  } else {
+				    cllsnD = true;
+				  }
+				  r1->x += moveValues->xVelocity;
+				}
 			} else if (Collision(right, r2)) {
 				r1->x -= (moveValues->xVelocity);
+				cllsn = true;
+				//kickback for player
+				if (eid == Constants::PlayerIndex_) {
+				  moveValues->xVelocity = -15;
+				  r1->x += moveValues->xVelocity;
+				  if (!Collision(down, r2)) {
+				    moveValues->yVelocity = -5;
+				    r1->y += moveValues->yVelocity;
+				  } else {
+				    cllsnD = true;
+				  }
+				}
 			}
 			if (Collision(up, r2)) {
 			        moveValues->yVelocity = 0;
-			} else if (Collision(down, r2)) {
-				moveValues->yVelocity *= -1;
+				cllsn = true;
+			} else if (cllsnD || Collision(down, r2)) {
+			        moveValues->yVelocity *= -1;
+			        r1->y += moveValues->yVelocity;
+				cllsn = true;
+			}
+			if (cllsn) {
+			  if (Component_HasIndex(healthComponent, eid)) {
+					int dmgRed = 1;
+					if (Component_HasIndex(hatComponent, eid)) {
+						Hat* hat = &hatComponent->hats[eid].hat;
+						dmgRed = hat->getDmgRed();
+					}
+					healthComponent->health[eid] -= Constants::Damage_/dmgRed;
+					if (healthComponent->health[eid] <= 0) {
+					  return -1;
+					}
+				}
 			}
 		}
 
@@ -145,19 +187,18 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				}
 			}
 
-			if (map->map[tileCenterY][tileCenterX].bunny) {
-				if (Component_HasIndex(hatComponent, hatComponent->entityArray[entityIndex])) {	    
-					HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
-					hats->hat = Hat(0);
-				}
+		if (map->map[tileCenterY][tileCenterX].bunny) {
+			if (Component_HasIndex(hatComponent, eid)) {	    
+				HatCollection* hats = &hatComponent->hats[hatComponent->entityArray[entityIndex]];
+				hats->hat = Hat(0);
 			}
+		}
 
-			// Check if the game is won
-			if (physicsComponent->entityArray[entityIndex] == 0 && map->map[tileCenterY][tileCenterX].winning) {
-				return true;
-			}
-		} // Finish map collisions.
-
+		// Check if the game is won
+		if (physicsComponent->entityArray[entityIndex] == 0 && map->map[tileCenterY][tileCenterX].winning) {
+			return 1;
+		}
+		//finish map collisions
 
 		// Check world boundaries
 		if (r1->x <= 0) {
@@ -172,43 +213,19 @@ bool PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		  moveValues->yVelocity = 0;
 		}
 
+		if (r1->y > Constants::LevelHeight_) {
+		  //REMOVE ENTITY
+		  if (eid == Constants::PlayerIndex_) {
+		    return -1;
+		  }
+		}
+
 		// Continue on static object
 		if (moveValues->xVelocity == 0 || moveValues->yVelocity == 0) {
 			continue;
 		}
 
+		}
+	return 0;
 	}
-	return false;
 }
-
-/*
-			if (Collision(r1, r2)) {
-				r1->x -= (moveValues->xVelocity * timestep) * -1;
-				r1->y -= (moveValues->yVelocity * timestep) * -1;
-
-				// Get damage if necessary
-				if (Component_HasIndex(healthComponent, physicsComponent->entityArray[entityIndex])) {
-					int dmgRed = 1;
-					if (Component_HasIndex(hatComponent, physicsComponent->entityArray[entityIndex])) {
-						Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
-						dmgRed = hat->getDmgRed();
-					}
-					healthComponent->health[entityIndex] -= Constants::Damage_/dmgRed;
-				}
-		      
-		      	if (!Component_HasIndex(movementComponent, physicsComponent->entityArray[j])) {
-					continue;
-				}
-				MovementValues* moveValues2 = &movementComponent->movementValues[movementComponent->entityArray[j]];
-				r2->x -= (moveValues->xVelocity * timestep) * -1;
-				r2->y -= (moveValues->yVelocity * timestep) * -1;
-		      
-				if (Component_HasIndex(healthComponent, physicsComponent->entityArray[j])) {
-					int dmgRed = 1;
-					if (Component_HasIndex(hatComponent, physicsComponent->entityArray[j])) {
-						Hat* hat = &hatComponent->hats[hatComponent->entityArray[entityIndex]].hat;
-						dmgRed = hat->getDmgRed();
-					}
-					healthComponent->health[j] -= Constants::Damage_/dmgRed;
-				}
-			}*/

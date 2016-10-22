@@ -31,7 +31,8 @@ namespace Constants {
 	const uint16  	Jump_           	=   10; //jump velocity
 	const uint16 	Damage_         	=   20; //damage
 	const uint8		PlayerIndex_		=	0;
-	const uint16    Range_              =   200;
+	const uint16    XRange_              =   300;
+	const uint16    YRange_           =    168;
 
 	// Hats sizes
 	const uint16  	BunnyHatH_          	=   52; 
