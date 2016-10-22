@@ -49,6 +49,11 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 	rquad.w = w;
 	rquad.h = h;
 
+	if (clip) {
+		rquad.w = clip->w;
+		rquad.h = clip->h;
+	}
+
 	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, 0.0, NULL, (SDL_RendererFlip)texture->flip);
 }
 
@@ -100,7 +105,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		std::cerr << "Error: The game background is not available." << std::endl;
 		return;
 	}
-	RenderSystem_Render_xywh(renderer, -cameraComponent->camera.x, -cameraComponent->camera.y, background->w, background->h, NULL, background);
+	SDL_Rect backgroundClip = {cameraComponent->camera.x, cameraComponent->camera.y, Constants::ScreenWidth_, Constants::ScreenHeight_};
+	RenderSystem_Render_xywh(renderer, 0, 0, background->w, background->h, &backgroundClip, background);
  	
 
  	// Render tile map
