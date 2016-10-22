@@ -4,4 +4,5 @@ void HealthComponent_Add(HealthComponent* healthComponent, uint32 eid, int start
 	Component_Add(healthComponent, eid);
 	healthComponent->health[eid] = startHealth;
 	healthComponent->maxHealth[eid] = startHealth;
+	healthComponent->invincible[eid] = false;
 }

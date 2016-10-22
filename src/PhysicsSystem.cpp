@@ -118,7 +118,9 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						Hat* hat = &hatComponent->hats[eid].hat;
 						dmgRed = hat->getDmgRed();
 					}
-					healthComponent->health[eid] -= Constants::Damage_/dmgRed;
+					if (!healthComponent->invincible[eid]) {
+					  healthComponent->health[eid] -= Constants::Damage_/dmgRed;
+					}
 					if (healthComponent->health[eid] <= 0) {
 					  return -1;
 					}

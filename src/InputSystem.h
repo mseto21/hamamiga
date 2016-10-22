@@ -9,12 +9,14 @@ accept basic input controls from the user.
 struct MovementComponent;
 struct InputComponent;
 struct HatComponent;
+struct HealthComponent;
 struct ComponentBag;
 
 struct InputSystem {
 	InputComponent* inputComponent;
 	MovementComponent* movementComponent; 
 	HatComponent* hatComponent;
+	HealthComponent* healthComponent;
 };
 
 
