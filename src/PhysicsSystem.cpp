@@ -122,20 +122,9 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 		if (!moveValues->grounded) {
 		  moveValues->yVelocity += Constants::Gravity_;
-		}
-		if (moveValues->xVelocity != 0) {
-			if (moveValues->xVelocity > 0) {
-				moveValues->xVelocity -= Constants::Friction_;
-				if (moveValues->xVelocity < 0) {
-					moveValues->xVelocity = 0;
-				}
-			}
-			else {
-				moveValues->xVelocity += Constants::Friction_;
-				if (moveValues->xVelocity > 0) {
-					moveValues->xVelocity = 0;
-				}
-			}
+		  moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
+		} else {
+		  moveValues->xVelocity -= moveValues->xVelocity*Constants::Friction_;
 		}
 
 		// Check for collisions with map
