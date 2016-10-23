@@ -14,7 +14,7 @@ class Hat {
 	String128 gEffect;
 
   /**methods*/
-  void setHatType(int type);
+  void setHatType(int type, String128 currentHat);
   float getJump();
   int getDmgRed();
   

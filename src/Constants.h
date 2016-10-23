@@ -15,6 +15,7 @@ namespace Constants {
 	const uint16	MaxMapWidth_	=	256; // In number of tiles
 	const uint16	MaxMapHeight_	=	256;
 	const uint16	TileSize_			=	48;
+	const uint16	SoundChannel_ = 8;//arbitrary channel for all sounds
 
 	// Intro State
 	const uint32	IntroTime_		= 	5000;

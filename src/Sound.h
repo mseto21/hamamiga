@@ -9,5 +9,5 @@ struct Sound {
 };
 
 bool Sound_LoadSound(Sound* sound, const char* path, const char* name);
-bool Sound_Play(Sound* sound);
+bool Sound_Play(Sound* sound, int loops);
 void Sound_Free(Sound* sound);

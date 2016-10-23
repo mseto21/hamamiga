@@ -237,7 +237,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 	// Render HUD
 	if (!Component_HasIndex(healthComponent, Constants::PlayerIndex_)) {
-		std::cerr << "no render" << std::endl;
+		std::cerr << "Error: The player has no renderable health component" << std::endl;
 		return;
 	}
 

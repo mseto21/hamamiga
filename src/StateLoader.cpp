@@ -114,9 +114,10 @@ bool LoadPlayStateAssets(Game* game) {
 	    std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 	    return false;
 	}
-	//Creating all the sounds for the play state
+	//Creating all sounds for the play state
 	SoundCache_CreateSound("assets/sounds/footsteps.ogg", "walking");
 	SoundCache_CreateSound("assets/sounds/hatpickup.ogg", "hatpickup");
+	SoundCache_CreateSound("assets/sounds/disco.ogg", "disco");
 	
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);

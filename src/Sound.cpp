@@ -12,8 +12,8 @@ bool Sound_LoadSound(Sound* sound, const char* path, const char* name) {
 	return true;
 }
 
-bool Sound_Play(Sound* sound) {
-	if (Mix_PlayChannel(-1, sound->chunk, 0) == -1) {
+bool Sound_Play(Sound* sound, int loops) {
+	if (Mix_PlayChannel(-1, sound->chunk, loops) == -1) {
 		std::cerr << "Unable to play music: " << sound->name << ". Error: " << Mix_GetError() << std::endl;
 		return false;
 	}

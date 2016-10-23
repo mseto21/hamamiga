@@ -17,7 +17,6 @@ SoundCache* SoundCache_GetCache() {
 
 /* Returns a newly created sound. */
 Sound* SoundCache_CreateSound(const char* path, const char* name) {
-	//return &Sound_LoadSound(&scache->sounds[scache->index], path, name);
 	// Check if we already have the sound
 	for (int soundIndex = 0; soundIndex < scache->index; soundIndex++) {
 		if (strcmp(scache->sounds[soundIndex].name, name) == 0) {
@@ -27,7 +26,6 @@ Sound* SoundCache_CreateSound(const char* path, const char* name) {
 
 	// Load sound if not loaded.
 	Sound_LoadSound(&scache->sounds[scache->index], path, name);
-	//SDL_SetTextureBlendMode(tcache->textures[tcache->index].sdltexture , SDL_BLENDMODE_BLEND );
 	return &scache->sounds[scache->index++];
 }
 

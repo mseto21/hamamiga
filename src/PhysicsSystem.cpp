@@ -114,7 +114,6 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			  if (Component_HasIndex(healthComponent, eid)) {
 					int dmgRed = 1;
 					if (Component_HasIndex(hatComponent, eid)) {
-						Sound_Play(SoundCache_GetSound("hatpickup"));
 						Hat* hat = &hatComponent->hats[eid].hat;
 						dmgRed = hat->getDmgRed();
 					}
@@ -197,9 +196,9 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			  if (Component_HasIndex(hatComponent, eid)) {
 			    HatCollection* hats = &hatComponent->hats[eid];
 			    if (t < 0) {
-			      hats->gHat.setHatType(t); //glamour hat
+			      hats->gHat.setHatType(t, hats->gHat.gname); //glamour hat
 			    } else {
-			      hats->hat.setHatType(t); //regular hat
+			      hats->hat.setHatType(t, hats->hat.name); //regular hat
 			    }
 			  }
 			}
