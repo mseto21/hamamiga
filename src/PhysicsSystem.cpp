@@ -9,6 +9,7 @@
 #include "TileMap.h"
 #include "Hat.h"
 #include "ComponentBag.h"
+#include "SoundCache.h"
 
 #include <stdlib.h>
 #include <SDL.h>
@@ -110,6 +111,7 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			  if (Component_HasIndex(healthComponent, eid)) {
 					int dmgRed = 1;
 					if (Component_HasIndex(hatComponent, eid)) {
+						Sound_Play(SoundCache_GetSound("hatpickup"));
 						Hat* hat = &hatComponent->hats[eid].hat;
 						dmgRed = hat->getDmgRed();
 					}
@@ -139,6 +141,7 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			int tileY = floor((r1->y) / Constants::TileSize_);
 			int tileCenterY = ((r1->y + (r1->h / 2)) / Constants::TileSize_);
 			int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
+			int tileHeadY = floor((r1->y + 4) / Constants::TileSize_);
 			int tileFootX = floor((r1->x + 12) / Constants::TileSize_);
 			int tileEndFootX = floor((r1->x + r1->w - 12) / Constants::TileSize_);
 			int tileHeadX = floor((r1->x + 4) / Constants::TileSize_);
@@ -160,24 +163,24 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 			if (moveValues->xVelocity < 0) {
 				if (moveValues->grounded) {
-					if (map->map[tileY][tileX].solid || map->map[tileCenterY][tileX].solid) {
+					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid) {
 						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
 						moveValues->xVelocity = 0;
 					}
 				} else {
-					if (map->map[tileY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
+					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
 						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
 						moveValues->xVelocity = 0;
 					}
 				}
 			} else if (moveValues->xVelocity > 0) {
 				if (moveValues->grounded) {
-					if (map->map[tileY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid) {
+					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid) {
 						r1->x = tileEndX * Constants::TileSize_ - r1->w;
 						moveValues->xVelocity = 0;
 					}
 				} else {
-					if (map->map[tileY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
+					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
 						r1->x = tileEndX * Constants::TileSize_ - r1->w;
 						moveValues->xVelocity = 0;
 					}
