@@ -102,6 +102,7 @@ bool LoadPlayStateAssets(Game* game) {
 	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	TextureCache_CreateTexture(game->renderer, "assets/bunny-hat.png", Constants::BunnyHat_);
+	TextureCache_CreateTexture(game->renderer, "assets/disco-hat.png", Constants::DiscoHat_);
 	if (!game->playState.scoreFont) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return false;
