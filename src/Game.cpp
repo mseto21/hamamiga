@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "TextureCache.h"
 #include "EntityCache.h"
+#include "SoundCache.h"
 #include "StateLoader.h"
 
 #include <iostream>
@@ -61,6 +62,12 @@ bool Game_Initialize(Game* game) {
 	// Initialize entity cache
 	if (EntityCache_GetCache() == NULL) {
 		std::cerr << "Error: The entity cache failed to initialize!" << std::endl;
+		return false;
+	}
+
+	// Initialize sound cache
+	if (SoundCache_GetCache() == NULL) {
+		std::cerr << "Error: The sound cache failed to initialize!" << std::endl;
 		return false;
 	}
 
@@ -277,6 +284,7 @@ void UpdatePlay(Game* game, bool* keysdown) {
 	AISystem_Update(&game->playState.aiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
 	int st = PhysicsSystem_Update(&game->playState.physicsSystem);
+	//SOUNDSYSTEM UPDATE to do a sound check after checking physics system...check time 
 	if (st == 1) {
 	  game->gameState = GameState_Win;
 	} else if (st == -1) {
