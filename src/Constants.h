@@ -28,12 +28,12 @@ namespace Constants {
 
 	// Play State
 	const float   	Gravity_        	=   .5f; //gravity
-        const float   	Friction_   	 	=   .13f; //friction
-    	const float 	AirRes_		=   .05; //air resistance
+    const float   	Friction_   	 	=   .13f; //friction
+    const float 	AirRes_				=   .05; //air resistance
 	const uint16 	Damage_         	=   20; //damage
-	const uint8	PlayerIndex_	=   0;
-	const uint16    XRange_            =   300;
-	const uint16    YRange_            =   168;
+	const uint8		PlayerIndex_		=   0;
+	const uint16    XRange_            	=   300;
+	const uint16    YRange_            	=   168;
 
 	// Hats sizes
 	const uint16  	BunnyHatH_          	=   52; 

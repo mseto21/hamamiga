@@ -231,7 +231,7 @@ void RenderWin(Game* game) {
 
 void RenderZoneIntro(Game* game, uint32 elapsed) {
 	game->zoneIntroState.elapsed += elapsed;
-	game->playState.chapter.startScene.current = 0; //temp fix
+
 	if (game->zoneIntroState.elapsed >= (game->playState.chapter.startScene.slideCount * Constants::CutSceneSlideTime_) + Constants::ZoneIntroTime_) {
 		game->gameState = GameState_Play;
 	}
@@ -259,17 +259,14 @@ void RenderZoneIntro(Game* game, uint32 elapsed) {
 		}
 		SDL_RenderPresent(game->renderer);
 	} else { // Render cut scene
-		if (game->zoneIntroState.elapsed >= Constants::CutSceneSlideTime_ * (game->playState.chapter.startScene.current + 1)) { // Go to next slide
-			game->playState.chapter.startScene.current++;
-			if (game->playState.chapter.startScene.current == game->playState.chapter.startScene.slideCount) {
-				RenderZoneIntro(game, elapsed);
-			}
-		}
 		SDL_RenderClear(game->renderer);
 		Texture* scene = game->playState.chapter.startScene.slides[game->playState.chapter.startScene.current];
 		if (scene) {
 			RenderSystem_Render_xywh(game->renderer, 0, 0, scene->w, scene->h, NULL, scene);
 			SDL_RenderPresent(game->renderer);
+		}
+		if (game->zoneIntroState.elapsed >= Constants::CutSceneSlideTime_ * (game->playState.chapter.startScene.current + 1)) { // Go to next slide
+			game->playState.chapter.startScene.current++;
 		}
 	}
 }
