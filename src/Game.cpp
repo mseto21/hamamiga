@@ -300,10 +300,10 @@ void FreePlay(Game* game) {
 		if (!game->playState.cBag.freed) {
 			ComponentBag_Free(&game->playState.cBag);
 		}
-		EntityCache_RemoveAll();
 		game->playState.loaded = false;
 		Mix_FreeMusic(game->playState.chapter.music);
 	}
+	EntityCache_RemoveAll();
 }
 
 
@@ -426,8 +426,8 @@ void Game_RunLoop(Game* game) {
 			case GameState_Win:
 				RenderWin(game);
 				break;
-  			case GameState_Lose:
-  				RenderLose(game);
+  		case GameState_Lose:
+  			RenderLose(game);
 				break;
 			default:
 				break;

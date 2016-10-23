@@ -4,6 +4,7 @@
 void Component_Initialize(Component* component) {
 	component->count = 0;
 	memset(component->usedEntities, 0, sizeof(component->usedEntities));
+	memset(component->entityArray, 0, sizeof(component->entityArray));
 }
 
 bool Component_HasIndex(Component* component, uint32 eid) {

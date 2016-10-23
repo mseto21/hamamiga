@@ -11,6 +11,7 @@ EntityCache* EntityCache_GetCache() {
 	if (eCache == nullptr) {
 		eCache = (EntityCache*)malloc(sizeof(EntityCache));
 		eCache->index = 0;
+		memset(&eCache->entities, 0, sizeof(eCache->entities));
 	}
 	return eCache;
 }
@@ -44,6 +45,7 @@ Entity* EntityCache_GetNewEntityAtIndex(uint32 eid) {
 /* Resets the entity array. */
 void EntityCache_RemoveAll() {
 	eCache->index = 0;
+	memset(&eCache->entities, 0, sizeof(eCache->entities));
 }
 
 /* Frees the ecache. */
