@@ -56,4 +56,5 @@ Breakdown of what each member achieved:
 Harry: Designed the first level, fixed small bug with collision with enemies and added kickback when an enemy bumps into you, changed the tile collision slightly so now you being next to a tile is different from being on it, implemented the disco hat abilities, made it so enemies are removed when they fall off the screen, and added button to get rid of damage. 
 Matt:
 Mindy:
-Gavi:
+Gavi: Designed cut scenes, strobe hat, textured platforms, and updated the background graphic. 
+
