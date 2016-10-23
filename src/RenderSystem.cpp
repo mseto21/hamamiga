@@ -191,8 +191,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		if (Component_HasIndex(hatComponent, eid)) {
 			Hat* hat = &hatComponent->hats[eid].hat;
 			Hat* gHat = &hatComponent->hats[eid].gHat;
-			std::cout << gHat->gname << " :name " << std::endl;
-			std::cout << hat->name << " :name2 " << std::endl;
 			if (strlen(gHat->gname) > 1) {
 				Texture* hatTexture = TextureCache_GetTexture(gHat->gname);
 				if (hatTexture) {

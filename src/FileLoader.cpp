@@ -390,8 +390,11 @@ int ReadCutSceneStart(FILE* chapterFile, Zone* zone, SDL_Renderer* renderer) {
 	int lineNumber = 0;
 
 	int c;
+	int count = 1;
+	zone->startScene.slideCount = 0;
 	// Loop until we reach an end of line.
 	while ((c=fgetc(chapterFile)) != ';') {
+	  count++;
 		if (c == '\n') {
 			lineNumber++;
 		} else if (c == ',') {

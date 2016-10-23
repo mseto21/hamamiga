@@ -231,11 +231,10 @@ void RenderWin(Game* game) {
 
 void RenderZoneIntro(Game* game, uint32 elapsed) {
 	game->zoneIntroState.elapsed += elapsed;
-
+	game->playState.chapter.startScene.current = 0; //temp fix
 	if (game->zoneIntroState.elapsed >= (game->playState.chapter.startScene.slideCount * Constants::CutSceneSlideTime_) + Constants::ZoneIntroTime_) {
 		game->gameState = GameState_Play;
 	}
-
 	// Render fade
 	if (game->zoneIntroState.elapsed >= game->playState.chapter.startScene.slideCount * Constants::CutSceneSlideTime_) {
 		CameraSystem_Update(&game->playState.cameraSystem);
