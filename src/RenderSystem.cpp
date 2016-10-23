@@ -12,6 +12,7 @@
 #include "HatComponent.h"
 #include "HealthComponent.h"
 
+#include <math.h>
 #include <SDL.h>
 #include <iostream>
 
@@ -21,6 +22,7 @@ const int YHealth_ = Constants::ScreenHeight_ / 16;
 const int WHealth_ = Constants::ScreenWidth_/ 5;
 const int HHealth_ = Constants::ScreenHeight_ / 16;
 
+int count = 0;
 
 // --------------------------------------------------------------------
 void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, TileMap* tileMap) {
@@ -195,7 +197,21 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				Texture* hatTexture = TextureCache_GetTexture(gHat->gname);
 				if (hatTexture) {
 					hatTexture->flip = texture->flip;
-				  RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);
+					RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - hatTexture->h, hatTexture->w, hatTexture->h, NULL, hatTexture);
+				}
+				if (strcmp(gHat->gname, Constants::DiscoHat_) == 0) {
+				  const SDL_Rect bigRect = {0, 0, Constants::ScreenWidth_, Constants::ScreenHeight_};
+				  //making rainbow strobe
+				  float freq = 0.3;
+				  int max = 32;
+				  int r = sin(freq*(count%max))*127 + 128;
+				  int g = sin(freq*(count%max) + 2)*127 + 128;
+				  int b = sin(freq*(count%max) + 4)*127 + 128;
+				  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+				  SDL_SetRenderDrawColor(renderer, r, g, b, 60);
+	                          SDL_RenderFillRect(renderer, &bigRect);
+				  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
+				  count++;
 				}
 			} else if (hat) {
 			        Texture* hatTexture = TextureCache_GetTexture(hat->name);
