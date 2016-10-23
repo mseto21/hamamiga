@@ -3,6 +3,7 @@
 #include "FileLoader.h"
 #include "TextureCache.h"
 #include "SoundCache.h"
+#include "HealthComponent.h"
 
 #include <iostream>
 #include <cstdio>
@@ -114,15 +115,19 @@ bool LoadPlayStateAssets(Game* game) {
 	    return false;
 	}
 	//Creating all the sounds for the play state
-	SoundCache_CreateSound("assets/sounds/footsteps.ogg", "collision");
+	SoundCache_CreateSound("assets/sounds/footsteps.ogg", "walking");
 	SoundCache_CreateSound("assets/sounds/hatpickup.ogg", "hatpickup");
 	
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 	ComponentBag_Malloc(&game->playState.cBag);
 
-	// TO-DO: Hardcoded fro now, but its coolio!
+	// TO-DO: Hardcoded for now, but its coolio!
 	FileLoader_Load(&game->playState.chapter, "assets/chapter_1/chapter_1.txt", &game->playState.cBag, game->renderer); // Hardcoded for now, but easily an array.
+	if (!Component_HasIndex(game->playState.cBag.healthComponent, Constants::PlayerIndex_)) {
+		std::cerr << "Error: The player has no renderable health component" << std::endl;
+		//return;
+	}
 
 	AISystem_Initialize(&game->playState.aiSystem, &game->playState.cBag);
 	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag);

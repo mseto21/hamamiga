@@ -9,6 +9,7 @@
 #include "TileMap.h"
 #include "Hat.h"
 #include "ComponentBag.h"
+#include "SoundCache.h"
 
 #include <stdlib.h>
 #include <SDL.h>
@@ -110,6 +111,7 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			  if (Component_HasIndex(healthComponent, eid)) {
 					int dmgRed = 1;
 					if (Component_HasIndex(hatComponent, eid)) {
+						Sound_Play(SoundCache_GetSound("hatpickup"));
 						Hat* hat = &hatComponent->hats[eid].hat;
 						dmgRed = hat->getDmgRed();
 					}

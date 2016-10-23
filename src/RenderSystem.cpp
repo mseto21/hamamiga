@@ -1,5 +1,6 @@
 #include "RenderSystem.h"
 #include "TextureCache.h"
+#include "SoundCache.h"
 #include "Types.h"
 #include "ComponentBag.h"
 
@@ -181,6 +182,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 					clip = {0, 0, animation->spriteW, animation->spriteH};
 				} else if (movementComponent->movementValues[eid].xVelocity > 0) {
 					texture->flip = SDL_FLIP_NONE;
+					if (eid == 0){
+				//	Sound_Play(SoundCache_GetSound("walking"));
+					} //ad check for only kevin
 				} else {
 					texture->flip = SDL_FLIP_HORIZONTAL;
 				}
@@ -225,7 +229,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 	// Render HUD
 	if (!Component_HasIndex(healthComponent, Constants::PlayerIndex_)) {
-		std::cerr << "Error: The player has no renderable health component" << std::endl;
+		std::cerr << "no render" << std::endl;
 		return;
 	}
 

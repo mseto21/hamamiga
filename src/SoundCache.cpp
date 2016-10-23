@@ -3,6 +3,8 @@
 #include <cstring>
 #include <iostream>
 
+struct SoundCache* scache; // Global texture cache that works as a singleton
+
 /* Returns the texture cache. */
 SoundCache* SoundCache_GetCache() {
 	if (scache == nullptr) {
@@ -14,28 +16,28 @@ SoundCache* SoundCache_GetCache() {
 
 
 /* Returns a newly created sound. */
-Mix_Music* SoundCache_CreateSound(const char* path, const char* name) {
+Sound* SoundCache_CreateSound(const char* path, const char* name) {
 	//return &Sound_LoadSound(&scache->sounds[scache->index], path, name);
 	// Check if we already have the sound
 	for (int soundIndex = 0; soundIndex < scache->index; soundIndex++) {
 		if (strcmp(scache->sounds[soundIndex].name, name) == 0) {
-			return (Mix_Music*) &scache->sounds[soundIndex];
+			return &scache->sounds[soundIndex];
 		}
 	}
 
 	// Load sound if not loaded.
 	Sound_LoadSound(&scache->sounds[scache->index], path, name);
 	//SDL_SetTextureBlendMode(tcache->textures[tcache->index].sdltexture , SDL_BLENDMODE_BLEND );
-	return (Mix_Music*) &scache->sounds[scache->index++];
+	return &scache->sounds[scache->index++];
 }
 
 
 /* Returns the sound if present. */
-Mix_Music* SoundCache_GetSound(const char* path) {
+Sound* SoundCache_GetSound(const char* path) {
 	for (int i = 0; i < scache->index; i++) {
 		Sound* sound = &scache->sounds[i];
 		if (strcmp(path, sound->name) == 0) {
-			return (Mix_Music*)sound;
+			return sound;
 		}
 	}
 	return NULL;

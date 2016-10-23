@@ -366,6 +366,7 @@ void Game_RunLoop(Game* game) {
 								game->gameState = GameState_Title;
 							break;
 						case SDLK_p:
+							FreePlay(game);
 							LoadPlayStateAssets(game);
 							game->gameState = GameState_Play;
 							break;
