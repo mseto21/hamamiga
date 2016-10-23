@@ -139,15 +139,19 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			int tileY = floor((r1->y) / Constants::TileSize_);
 			int tileCenterY = ((r1->y + (r1->h / 2)) / Constants::TileSize_);
 			int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
-
+			int tileFootX = floor((r1->x + 12) / Constants::TileSize_);
+			int tileEndFootX = floor((r1->x + r1->w - 12) / Constants::TileSize_);
+			int tileHeadX = floor((r1->x + 4) / Constants::TileSize_);
+			int tileEndHeadX = floor((r1->x + r1->w - 4) / Constants::TileSize_);
+			
 			moveValues->grounded = false;
 			if (moveValues->yVelocity < 0) {
-				if (map->map[tileY][tileX].solid || map->map[tileY][tileEndX].solid) {
+				if (map->map[tileY][tileHeadX].solid || map->map[tileY][tileEndHeadX].solid) {
 					r1->y = tileY * Constants::TileSize_ + Constants::TileSize_;
 					moveValues->yVelocity = 0;
 				} 
 			} else if (moveValues->yVelocity >= 0) {
-				if (map->map[tileEndY][tileX].solid || map->map[tileEndY][tileEndX].solid) {
+				if (map->map[tileEndY][tileFootX].solid || map->map[tileEndY][tileEndFootX].solid) {
 					r1->y = tileEndY * Constants::TileSize_ - r1->h;
 					moveValues->yVelocity = 0;
 					moveValues->grounded = true;
@@ -173,7 +177,7 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						moveValues->xVelocity = 0;
 					}
 				} else {
-					if (map->map[tileY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileX].solid) {
+					if (map->map[tileY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
 						r1->x = tileEndX * Constants::TileSize_ - r1->w;
 						moveValues->xVelocity = 0;
 					}
