@@ -197,7 +197,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				Texture* hatTexture = TextureCache_GetTexture(gHat->gname);
 				if (hatTexture) {
 					hatTexture->flip = texture->flip;
-				  RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);
+					RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - hatTexture->h, hatTexture->w, hatTexture->h, NULL, hatTexture);
 				}
 				if (strcmp(gHat->gname, Constants::DiscoHat_) == 0) {
 				  const SDL_Rect bigRect = {0, 0, Constants::ScreenWidth_, Constants::ScreenHeight_};
