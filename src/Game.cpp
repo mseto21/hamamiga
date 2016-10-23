@@ -341,27 +341,38 @@ void Game_RunLoop(Game* game) {
 
 		// Poll for input
 		while (SDL_PollEvent(&event) != 0) {
-			if (event.type == SDL_QUIT) {
-				game->gameState = GameState_Closing;
-				return;
-			}
-			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
-				game->gameState = GameState_Closing;
-				return;
-			}
-			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_m) {
-				if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win)
-					game->gameState = GameState_Returning;
-				else
-					game->gameState = GameState_Title;
-			}
-			if (event.type == SDL_KEYDOWN) {
-				keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
-				keysup[event.key.keysym.sym % Constants::NumKeys_] = false;
-			}
-			if (event.type == SDL_KEYUP) {
-				keysdown[event.key.keysym.sym % Constants::NumKeys_] = false;
-				keysup[event.key.keysym.sym % Constants::NumKeys_] = true;
+
+			switch (event.type) {
+				case SDL_QUIT:
+					game->gameState = GameState_Closing;
+					break;
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+						case SDLK_ESCAPE:
+							game->gameState = GameState_Closing;
+							break;
+						case SDLK_m:
+							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win)
+								game->gameState = GameState_Returning;
+							else
+								game->gameState = GameState_Title;
+							break;
+						case SDLK_p:
+							LoadPlayStateAssets(game);
+							game->gameState = GameState_Play;
+							break;
+						default:
+							keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
+							keysup[event.key.keysym.sym % Constants::NumKeys_] = false;
+							break;
+					}
+					break;
+				case SDL_KEYUP:
+					keysdown[event.key.keysym.sym % Constants::NumKeys_] = false;
+					keysup[event.key.keysym.sym % Constants::NumKeys_] = true;
+					break;
+				default:
+					break;
 			}
 		}
 
