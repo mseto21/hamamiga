@@ -286,6 +286,8 @@ void UpdatePlay(Game* game, bool* keysdown) {
 	int st = PhysicsSystem_Update(&game->playState.physicsSystem);
 	if (st == 1) {
 	  game->gameState = GameState_Win;
+	  Mix_VolumeMusic(MIX_MAX_VOLUME/4);
+	  Sound_Play(SoundCache_GetSound("nj"), 0);
 	} else if (st == -1) {
 	  game->gameState = GameState_Lose;
 	}
@@ -350,7 +352,6 @@ void Game_RunLoop(Game* game) {
 
 		// Poll for input
 		while (SDL_PollEvent(&event) != 0) {
-
 			switch (event.type) {
 				case SDL_QUIT:
 					game->gameState = GameState_Closing;
@@ -371,9 +372,12 @@ void Game_RunLoop(Game* game) {
 							}
 							break;
 						case SDLK_p:
-							FreePlay(game);
-							LoadPlayStateAssets(game);
-							game->gameState = GameState_Play;
+							if (game->gameState != GameState_Title && game->gameState != GameState_HighScore &&
+								game->gameState != GameState_Intro){
+								FreePlay(game);
+								LoadPlayStateAssets(game);
+								game->gameState = GameState_Play;
+							}
 							break;
 						default:
 							keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
