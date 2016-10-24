@@ -167,7 +167,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 }
 
 
-void RenderTitle(Game* game, uint32 elapsed) {
+void RenderTitle(Game* game) {
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
@@ -336,7 +336,6 @@ void Game_RunLoop(Game* game) {
 	Uint32 lastTime = 0;
 	Uint32 elapsed;
 	Uint32 lag = 0;
-	float delta;
 
 	// Input variables
 	bool keysdown[Constants::NumKeys_];
@@ -428,7 +427,7 @@ void Game_RunLoop(Game* game) {
 				RenderIntro(game, elapsed);
 				break;
 			case GameState_Title:
-				RenderTitle(game, elapsed);
+				RenderTitle(game);
 				break;
 			case GameState_ZoneIntro:
 				RenderZoneIntro(game, elapsed);
