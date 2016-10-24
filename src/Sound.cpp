@@ -5,11 +5,11 @@
 
 bool Sound_LoadSound(Sound* sound, const char* path, const char* name) {
 	sound->chunk = Mix_LoadWAV(path);
+	strcpy(sound->name, name);
 	if (!sound->chunk) {
 		std::cerr << "Unable to load music from path " << path << ". Error: " << Mix_GetError() << std::endl;
 		return false;
 	}
-	strcpy(sound->name, name);
 	return true;
 }
 
@@ -19,7 +19,7 @@ bool Sound_Play(Sound* sound, int loops) {
 			std::cerr << "Unable to play music: " << sound->name << ". Error: " << Mix_GetError() << std::endl;
 			return false;
 		}
-	}else if (Mix_PlayChannel(Constants::SoundChannel_, sound->chunk, loops) == -1) {
+	} else if (Mix_PlayChannel(Constants::SoundChannel_, sound->chunk, loops) == -1) {
 		std::cerr << "Unable to play music: " << sound->name << ". Error: " << Mix_GetError() << std::endl;
 		return false;
 	}
