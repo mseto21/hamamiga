@@ -16,6 +16,7 @@
 #include "CameraComponent.h"
 #include "HatComponent.h"
 #include "AIComponent.h"
+#include "AliveComponent.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -317,6 +318,8 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					int_parameters.pop();
 					cout << "Adding AI to entity " << eid << ":(" << range << ", " << facing << ")" << endl;
 					AIComponent_Add(cBag->aiComponent, eid, range, facing);
+				} else if (strcmp(cmd, "alive") == 0) {
+					AliveComponent_Add(cBag->aliveComponent, eid);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}

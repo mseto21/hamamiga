@@ -292,6 +292,7 @@ void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
 	  game->gameState = GameState_Lose;
 	}
 	StatSystem_Update(&game->playState.statSystem);
+	KillSystem_Update(&game->playState.killSystem);
 }
 
 

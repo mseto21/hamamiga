@@ -142,5 +142,6 @@ bool LoadPlayStateAssets(Game* game) {
 	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap);
 	StatSystem_Initialize(&game->playState.statSystem, &game->playState.cBag);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
+	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
 	return true;
 }

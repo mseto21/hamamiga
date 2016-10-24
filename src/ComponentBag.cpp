@@ -9,6 +9,7 @@
 #include "CameraComponent.h"
 #include "HatComponent.h"
 #include "AIComponent.h"
+#include "AliveComponent.h"
 #include <iostream>
 
 void ComponentBag_Malloc(ComponentBag* bag) {
@@ -22,6 +23,7 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->cameraComponent 		= (CameraComponent*)malloc(sizeof(*bag->cameraComponent));
 	bag->hatComponent 			= (HatComponent*)malloc(sizeof(*bag->hatComponent));
 	bag->aiComponent 			= (AIComponent*)malloc(sizeof(*bag->aiComponent));
+	bag->aliveComponent 		= (AliveComponent*)malloc(sizeof(*bag->aliveComponent));
 	ComponentBag_Reset(bag);
 	bag->freed = false;
 }
@@ -37,6 +39,7 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->cameraComponent);
 	Component_Initialize(bag->hatComponent);
 	Component_Initialize(bag->aiComponent);
+	Component_Initialize(bag->aliveComponent);
 }
 
 void ComponentBag_Check(ComponentBag* bag) {
@@ -70,6 +73,9 @@ void ComponentBag_Check(ComponentBag* bag) {
 	if (!bag->aiComponent) {
 	  std::cout << "Error: Uninitialized aiComponent" << std::endl;
 	}
+	if (!bag->aliveComponent) {
+	  std::cout << "Error: Uninitialized aliveComponent" << std::endl;
+	}
 }
 
 void ComponentBag_Free(ComponentBag* bag) {
@@ -83,5 +89,46 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->cameraComponent);
 	free(bag->hatComponent);
 	free(bag->aiComponent);
-       	bag->freed = true;
+	free(bag->aliveComponent);
+    bag->freed = true;
 }
+
+void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
+	if (Component_HasIndex(bag->rectangleComponent, eid)) {
+		Component_Remove(bag->rectangleComponent, eid);
+	}
+	if (Component_HasIndex(bag->movementComponent, eid)) {
+		Component_Remove(bag->movementComponent, eid);
+	}
+	if (Component_HasIndex(bag->physicsComponent, eid)) {
+		Component_Remove(bag->physicsComponent, eid);
+	}	
+	if (Component_HasIndex(bag->textureComponent, eid)) {
+		Component_Remove(bag->textureComponent, eid);
+	}
+	if (Component_HasIndex(bag->inputComponent, eid)) {
+		Component_Remove(bag->inputComponent, eid);
+	}
+	if (Component_HasIndex(bag->animationComponent, eid)) {
+		Component_Remove(bag->animationComponent, eid);
+	}	
+	if (Component_HasIndex(bag->healthComponent, eid)) {
+		Component_Remove(bag->healthComponent, eid);
+	}
+	if (Component_HasIndex(bag->cameraComponent, eid)) {
+		Component_Remove(bag->cameraComponent, eid);
+	}
+	if (Component_HasIndex(bag->hatComponent, eid)) {
+		Component_Remove(bag->hatComponent, eid);
+	}
+	if (Component_HasIndex(bag->aiComponent, eid)) {
+		Component_Remove(bag->aiComponent, eid);
+	}
+	if (Component_HasIndex(bag->aliveComponent, eid)) {
+		Component_Remove(bag->aliveComponent, eid);
+	}
+}
+
+
+
+

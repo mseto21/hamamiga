@@ -11,6 +11,7 @@ struct HealthComponent;
 struct CameraComponent;
 struct HatComponent;
 struct AIComponent;
+struct AliveComponent;
 
 struct ComponentBag {
 	RectangleComponent* rectangleComponent;
@@ -21,9 +22,10 @@ struct ComponentBag {
 	PhysicsComponent* 	physicsComponent;
 	HealthComponent* 	healthComponent;
 	CameraComponent*	cameraComponent;
-    HatComponent*           hatComponent;
+    HatComponent*       hatComponent;
 	AIComponent* 		aiComponent;
-        bool freed;
+	AliveComponent* 	aliveComponent;
+    bool freed;
 
 };
 
@@ -31,3 +33,4 @@ void ComponentBag_Malloc(ComponentBag* bag);
 void ComponentBag_Check(ComponentBag* bag);
 void ComponentBag_Reset(ComponentBag* bag);
 void ComponentBag_Free(ComponentBag* bag);
+void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid);
