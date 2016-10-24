@@ -8,5 +8,6 @@ void SoundSystem_Initialize(SoundSystem* soundSystem, ComponentBag* cBag, _Mix_M
 void SoundSystem_Update(SoundSystem* soundSystem, int elapsed) {
 	if (Mix_PlayingMusic() == 0) {
 		Mix_PlayMusic(soundSystem->music, -1);
+		Mix_VolumeMusic(MIX_MAX_VOLUME);
 	}
 }

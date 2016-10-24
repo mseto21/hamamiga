@@ -118,6 +118,8 @@ bool LoadPlayStateAssets(Game* game) {
 	SoundCache_CreateSound("assets/sounds/footsteps.ogg", "walking");
 	SoundCache_CreateSound("assets/sounds/hatpickup.ogg", "hatpickup");
 	SoundCache_CreateSound("assets/sounds/disco.ogg", "disco");
+
+	std::cout<< "Created disco" << std::endl;
 	
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);

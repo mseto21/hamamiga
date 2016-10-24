@@ -21,13 +21,14 @@ void Hat::setHatType(int type, String128 currentHat) {
       memcpy(gname, "disco", sizeof(gname));
       memcpy(gEffect, "Strobe Lights!", sizeof(gEffect));
       Mix_VolumeMusic(MIX_MAX_VOLUME/4);
-        Sound_Play(SoundCache_GetSound("disco"), -1);//later add different sounds for diff hats?
+      Sound_Play(SoundCache_GetSound("disco"), -1);//later add different sounds for diff hats?
       }
       break;
     case 1: //jumping hat
-    if (strcmp(currentHat, "disco") != 0){
+    if (strcmp(currentHat, "bunny") != 0){
       memcpy(name, "bunny", sizeof(name));
       memcpy(effect, "2x Jump!", sizeof(effect));
+      Sound_Play(SoundCache_GetSound("hatpickup"), 0);
       jump = 1.41;
       dmgRed = 1;
     }

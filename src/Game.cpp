@@ -284,7 +284,6 @@ void UpdatePlay(Game* game, bool* keysdown) {
 	AISystem_Update(&game->playState.aiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
 	int st = PhysicsSystem_Update(&game->playState.physicsSystem);
-	//SOUNDSYSTEM UPDATE to do a sound check after checking physics system...check time 
 	if (st == 1) {
 	  game->gameState = GameState_Win;
 	} else if (st == -1) {
@@ -310,6 +309,8 @@ void FreePlay(Game* game) {
 		}
 		game->playState.loaded = false;
 		Mix_FreeMusic(game->playState.chapter.music);
+		Mix_HaltChannel(2);
+		std::cout << "freed disco..." << std::endl;
 	}
 	EntityCache_RemoveAll();
 }
@@ -360,10 +361,14 @@ void Game_RunLoop(Game* game) {
 							game->gameState = GameState_Closing;
 							break;
 						case SDLK_m:
-							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win)
+							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win){
 								game->gameState = GameState_Returning;
-							else
+								Mix_HaltChannel(2);
+								Mix_FreeMusic(game->playState.chapter.music);
+							}
+							else{
 								game->gameState = GameState_Title;
+							}
 							break;
 						case SDLK_p:
 							FreePlay(game);
@@ -452,6 +457,7 @@ void Game_Close(Game* game) {
 	Mix_FreeMusic(game->titleState.titleMusic);
 	TextureCache_Free();
 	EntityCache_Free();
+	SoundCache_Free();
 	Mix_CloseAudio();
 	TTF_Quit();
 	SDL_DestroyRenderer(game->renderer);

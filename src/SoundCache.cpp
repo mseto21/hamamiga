@@ -41,6 +41,16 @@ Sound* SoundCache_GetSound(const char* path) {
 	return NULL;
 }
 
+/* Frees the sound if present. */
+void SoundCache_FreeSound(const char* path) {
+	for (int i = 0; i < scache->index; i++) {
+		Sound* sound = &scache->sounds[i];
+		if (strcmp(path, sound->name) == 0) {
+			Sound_Free(&scache->sounds[i]);
+		}
+	};
+}
+
 
 /* Frees the sound cache. */
 void SoundCache_Free() {
