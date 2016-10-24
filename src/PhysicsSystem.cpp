@@ -116,6 +116,7 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					if (Component_HasIndex(hatComponent, eid)) {
 						Hat* hat = &hatComponent->hats[eid].hat;
 						dmgRed = hat->getDmgRed();
+						Sound_Play(SoundCache_GetSound("ow"), 0);
 					}
 					if (!healthComponent->invincible[eid]) {
 					  healthComponent->health[eid] -= Constants::Damage_/dmgRed;

@@ -309,7 +309,7 @@ void FreePlay(Game* game) {
 		}
 		game->playState.loaded = false;
 		Mix_FreeMusic(game->playState.chapter.music);
-		Mix_HaltChannel(2);
+		Mix_HaltChannel(Constants::DiscoChannel_);
 		std::cout << "freed disco..." << std::endl;
 	}
 	EntityCache_RemoveAll();

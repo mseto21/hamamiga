@@ -1,4 +1,5 @@
 #include "Sound.h"
+#include "Constants.h"
 #include <cstring>
 #include <iostream>
 
@@ -13,7 +14,12 @@ bool Sound_LoadSound(Sound* sound, const char* path, const char* name) {
 }
 
 bool Sound_Play(Sound* sound, int loops) {
-	if (Mix_PlayChannel(2, sound->chunk, loops) == -1) {
+	if (strcmp(sound->name, "disco") == 0){
+		if (Mix_PlayChannel(Constants::DiscoChannel_, sound->chunk, loops) == -1) {
+			std::cerr << "Unable to play music: " << sound->name << ". Error: " << Mix_GetError() << std::endl;
+			return false;
+		}
+	}else if (Mix_PlayChannel(Constants::SoundChannel_, sound->chunk, loops) == -1) {
 		std::cerr << "Unable to play music: " << sound->name << ". Error: " << Mix_GetError() << std::endl;
 		return false;
 	}

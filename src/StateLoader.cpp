@@ -118,6 +118,7 @@ bool LoadPlayStateAssets(Game* game) {
 	SoundCache_CreateSound("assets/sounds/footsteps.ogg", "walking");
 	SoundCache_CreateSound("assets/sounds/hatpickup.ogg", "hatpickup");
 	SoundCache_CreateSound("assets/sounds/disco.ogg", "disco");
+	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
 
 	std::cout<< "Created disco" << std::endl;
 	
