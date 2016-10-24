@@ -7,6 +7,7 @@
 #include "HealthComponent.h"
 #include "HatComponent.h"
 #include "AIComponent.h"
+#include "InputComponent.h"
 #include "TileMap.h"
 #include "Hat.h"
 #include "ComponentBag.h"
@@ -22,8 +23,9 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->rectangleComponent  	= cBag->rectangleComponent;
 	physicsSystem->healthComponent 		= cBag->healthComponent;
 	physicsSystem->hatComponent 		= cBag->hatComponent;
-	physicsSystem->aiComponent              = cBag->aiComponent;
+	physicsSystem->aiComponent          = cBag->aiComponent;
 	physicsSystem->map 					= tileMap;
+	physicsSystem->inputComponent		= cBag->inputComponent;
 }
 
 
@@ -43,6 +45,7 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	HatComponent* hatComponent = physicsSystem->hatComponent;
 	AIComponent* aiComponent = physicsSystem->aiComponent;
 	TileMap* map = physicsSystem->map;
+	InputComponent* inputComponent = physicsSystem->inputComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
 		uint32 eid = physicsComponent->entityArray[entityIndex];
@@ -195,12 +198,19 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			int t = map->map[tileCenterY][tileCenterX].type;
 			if (t != 0) {
 			  if (Component_HasIndex(hatComponent, eid)) {
-			    HatCollection* hats = &hatComponent->hats[eid];
-			    if (t < 0) {
-			      hats->gHat.setHatType(t, hats->gHat.gname); //glamour hat
-			    } else {
-			      hats->hat.setHatType(t, hats->hat.name); //regular hat
-			    }
+			  	bool getHat = true;
+			  	if (Component_HasIndex(inputComponent, eid)) {
+			  		getHat = inputComponent->interact[eid];
+			  	}
+
+			  	if (getHat) {
+				    HatCollection* hats = &hatComponent->hats[eid];
+				    if (t < 0) {
+				      hats->gHat.setHatType(t, hats->gHat.gname); //glamour hat
+				    } else {
+				      hats->hat.setHatType(t, hats->hat.name); //regular hat
+				    }
+				}
 			  }
 			}
 

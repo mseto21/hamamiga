@@ -18,7 +18,7 @@ void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag) {
 	inputSystem->healthComponent    = cBag->healthComponent;
 }
 
-void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]) {
+void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[]) {
 	InputComponent* inputComponent = inputSystem->inputComponent;
 	MovementComponent* movementComponent = inputSystem->movementComponent;;
 	HatComponent* hatComponent = inputSystem->hatComponent;
@@ -52,6 +52,11 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[]) {
 		}
 		if (keysPressed[SDLK_d]) {
 			moveValues->xAccel = moveValues->accelX;
+		}
+		else if (keysPressed[SDLK_e]) {
+			inputComponent->interact[eid] = true;
+		} else if (keysUp[SDLK_e]) {
+			inputComponent->interact[eid] = false;
 		}
 	}
 }

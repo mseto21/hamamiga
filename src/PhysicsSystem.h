@@ -12,6 +12,7 @@ struct RectangleComponent;
 struct HealthComponent;
 struct HatComponent;
 struct AIComponent;
+struct InputComponent;
 struct TileMap;
 struct ComponentBag;
 
@@ -23,6 +24,7 @@ struct PhysicsSystem {
 	HatComponent* hatComponent;
 	AIComponent* aiComponent; 
 	TileMap* map;
+	InputComponent* inputComponent;
 };
 
 void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap);

@@ -279,8 +279,8 @@ void RenderZoneIntro(Game* game, uint32 elapsed) {
 }
 
 
-void UpdatePlay(Game* game, bool* keysdown) {
-	InputSystem_Update(&game->playState.inputSystem, keysdown);
+void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
+	InputSystem_Update(&game->playState.inputSystem, keysdown, keysup);
 	AISystem_Update(&game->playState.aiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
 	int st = PhysicsSystem_Update(&game->playState.physicsSystem);
@@ -400,20 +400,13 @@ void Game_RunLoop(Game* game) {
 					UpdateTitle(game, keysdown, keysup);
 					break;
 				case GameState_Play:
-					UpdatePlay(game, keysdown);
+					UpdatePlay(game, keysdown, keysup);
 					break;
 				case GameState_HighScore:
 					UpdateHighScore(game, keysdown);
 					break;
 				case GameState_Pause:
 					UpdatePause(game, elapsed);
-					break;
-				case GameState_Returning:
-					ReturnFromPlay(game);
-					break;
-				case GameState_Closing:
-					game->running = false;
-					Game_Close(game);
 					break;
 				default:
 					break;
@@ -443,8 +436,15 @@ void Game_RunLoop(Game* game) {
 			case GameState_Win:
 				RenderWin(game);
 				break;
-  		case GameState_Lose:
-  			RenderLose(game);
+	  		case GameState_Lose:
+	  			RenderLose(game);
+				break;
+			case GameState_Returning:
+				ReturnFromPlay(game);
+				break;
+			case GameState_Closing:
+				game->running = false;
+				Game_Close(game);
 				break;
 			default:
 				break;
