@@ -12,6 +12,7 @@ struct CameraComponent;
 struct HatComponent;
 struct AIComponent;
 struct AliveComponent;
+struct GoalComponent;
 
 struct ComponentBag {
 	RectangleComponent* rectangleComponent;
@@ -25,6 +26,7 @@ struct ComponentBag {
     HatComponent*       hatComponent;
 	AIComponent* 		aiComponent;
 	AliveComponent* 	aliveComponent;
+	GoalComponent* 		goalComponent;
     bool freed;
 
 };

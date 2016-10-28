@@ -8,6 +8,7 @@
 #include "HatComponent.h"
 #include "InputComponent.h"
 #include "AliveComponent.h"
+#include "GoalComponent.h"
 #include "TileMap.h"
 #include "Hat.h"
 #include "ComponentBag.h"
@@ -20,12 +21,12 @@
 void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap) {
 	physicsSystem->physicsComponent 	= cBag->physicsComponent;
 	physicsSystem->movementComponent 	= cBag->movementComponent;
-	physicsSystem->rectangleComponent  	= cBag->rectangleComponent;
+	physicsSystem->rectangleComponent = cBag->rectangleComponent;
 	physicsSystem->healthComponent 		= cBag->healthComponent;
-	physicsSystem->hatComponent 		= cBag->hatComponent;
-	physicsSystem->map 					= tileMap;
-	physicsSystem->inputComponent		= cBag->inputComponent;
-	physicsSystem->aliveComponent 		= cBag->aliveComponent;
+	physicsSystem->hatComponent 			= cBag->hatComponent;
+	physicsSystem->map 								= tileMap;
+	physicsSystem->inputComponent			= cBag->inputComponent;
+	physicsSystem->goalComponent 			= cBag->goalComponent;
 }
 
 
@@ -37,7 +38,7 @@ bool Collision(const Rectangle r1, const Rectangle r2) {
 }
 
 
-int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
+void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	PhysicsComponent* physicsComponent = physicsSystem->physicsComponent;
 	MovementComponent* movementComponent = physicsSystem->movementComponent;
 	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;
@@ -45,7 +46,7 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	HatComponent* hatComponent = physicsSystem->hatComponent;
 	TileMap* map = physicsSystem->map;
 	InputComponent* inputComponent = physicsSystem->inputComponent;
-	AliveComponent* aliveComponent = physicsSystem->aliveComponent;
+	GoalComponent* goalComponent = physicsSystem->goalComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
 		uint32 eid = physicsComponent->entityArray[entityIndex];
@@ -123,9 +124,6 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					}
 					if (!healthComponent->invincible[eid]) {
 					  healthComponent->health[eid] -= Constants::Damage_/dmgRed;
-					}
-					if (healthComponent->health[eid] <= 0) {
-					  return -1;
 					}
 				}
 			}
@@ -210,13 +208,15 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				    } else {
 				      hats->hat.setHatType(t, hats->hat.name); //regular hat
 				    }
+					}
 				}
-			  }
 			}
 
 			// Check if the game is won
-			if (eid == Constants::PlayerIndex_ && map->map[tileCenterY][tileCenterX].winning) {
-				return 1;
+			if (map->map[tileCenterY][tileCenterX].winning) {
+				if (Component_HasIndex(goalComponent, eid)) {
+					goalComponent->winGoal[eid] = true;
+				}
 			}
 		}
 
@@ -232,15 +232,5 @@ int PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			r1->y = 0;
 			moveValues->yVelocity = 0;
 		}
-
-		if (r1->y > Constants::LevelHeight_) {
-			if (eid == Constants::PlayerIndex_) {
-				return -1;
-			}
-			if (Component_HasIndex(aliveComponent, eid)) {
-				aliveComponent->alive[eid] = false;
-			}
-		}
 	}
-	return 0;
 }

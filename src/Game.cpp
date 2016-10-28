@@ -283,16 +283,22 @@ void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
 	InputSystem_Update(&game->playState.inputSystem, keysdown, keysup);
 	AISystem_Update(&game->playState.aiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
-	int st = PhysicsSystem_Update(&game->playState.physicsSystem);
-	if (st == 1) {
-	  game->gameState = GameState_Win;
-	  Mix_VolumeMusic(MIX_MAX_VOLUME/4);
-	  Sound_Play(SoundCache_GetSound("nj"), 0);
-	} else if (st == -1) {
-	  game->gameState = GameState_Lose;
-	}
-	StatSystem_Update(&game->playState.statSystem);
+	PhysicsSystem_Update(&game->playState.physicsSystem);
 	KillSystem_Update(&game->playState.killSystem);
+	switch (GoalSystem_Update(&game->playState.goalSystem)) {
+		case GameResult_Fell:
+			// Trigger some different animation, noise, etc.
+		case GameResult_Killed:
+			game->gameState = GameState_Lose;
+			break;
+		case GameResult_Won:
+			game->gameState = GameState_Win;
+			Mix_VolumeMusic(MIX_MAX_VOLUME/4);
+			Sound_Play(SoundCache_GetSound("nj"), 0);
+			game->gameState = GameState_Win;
+		default:
+			break;
+	}
 }
 
 
@@ -313,7 +319,6 @@ void FreePlay(Game* game) {
 		game->playState.loaded = false;
 		Mix_FreeMusic(game->playState.chapter.music);
 		Mix_HaltChannel(Constants::DiscoChannel_);
-		std::cout << "freed disco..." << std::endl;
 	}
 	EntityCache_RemoveAll();
 }

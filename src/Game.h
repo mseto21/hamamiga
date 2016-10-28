@@ -9,7 +9,7 @@
 #include "MovementSystem.h"
 #include "PhysicsSystem.h"
 #include "RenderSystem.h"
-#include "StatSystem.h"
+#include "GoalSystem.h"
 #include "SoundSystem.h"
 #include "KillSystem.h"
 
@@ -75,7 +75,7 @@ struct PlayState {
 	MovementSystem movementSystem;
 	PhysicsSystem physicsSystem;
 	RenderSystem renderSystem;
-	StatSystem statSystem;
+	GoalSystem goalSystem;
 	SoundSystem soundSystem;
 	KillSystem killSystem;
 };

@@ -10,6 +10,7 @@
 #include "HatComponent.h"
 #include "AIComponent.h"
 #include "AliveComponent.h"
+#include "GoalComponent.h"
 #include <iostream>
 
 void ComponentBag_Malloc(ComponentBag* bag) {
@@ -24,6 +25,7 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->hatComponent 			= (HatComponent*)malloc(sizeof(*bag->hatComponent));
 	bag->aiComponent 			= (AIComponent*)malloc(sizeof(*bag->aiComponent));
 	bag->aliveComponent 		= (AliveComponent*)malloc(sizeof(*bag->aliveComponent));
+	bag->goalComponent 			= (GoalComponent*)malloc(sizeof(*bag->goalComponent));
 	ComponentBag_Reset(bag);
 	bag->freed = false;
 }
@@ -40,6 +42,7 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->hatComponent);
 	Component_Initialize(bag->aiComponent);
 	Component_Initialize(bag->aliveComponent);
+	Component_Initialize(bag->goalComponent);
 }
 
 void ComponentBag_Check(ComponentBag* bag) {
@@ -76,6 +79,9 @@ void ComponentBag_Check(ComponentBag* bag) {
 	if (!bag->aliveComponent) {
 	  std::cout << "Error: Uninitialized aliveComponent" << std::endl;
 	}
+	if (!bag->goalComponent) {
+	  std::cout << "Error: Uninitialized aliveComponent" << std::endl;
+	}
 }
 
 void ComponentBag_Free(ComponentBag* bag) {
@@ -90,6 +96,7 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->hatComponent);
 	free(bag->aiComponent);
 	free(bag->aliveComponent);
+	free(bag->goalComponent);
     bag->freed = true;
 }
 
@@ -114,6 +121,7 @@ void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
 	}	
 	if (Component_HasIndex(bag->healthComponent, eid)) {
 		Component_Remove(bag->healthComponent, eid);
+		bag->healthComponent->health[eid] = 0;
 	}
 	if (Component_HasIndex(bag->cameraComponent, eid)) {
 		Component_Remove(bag->cameraComponent, eid);
@@ -126,6 +134,9 @@ void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HasIndex(bag->aliveComponent, eid)) {
 		Component_Remove(bag->aliveComponent, eid);
+	}
+	if (Component_HasIndex(bag->goalComponent, eid)) {
+		Component_Remove(bag->goalComponent, eid);
 	}
 }
 

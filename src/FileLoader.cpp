@@ -17,6 +17,7 @@
 #include "HatComponent.h"
 #include "AIComponent.h"
 #include "AliveComponent.h"
+#include "GoalComponent.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -320,6 +321,8 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					AIComponent_Add(cBag->aiComponent, eid, range, facing);
 				} else if (strcmp(cmd, "alive") == 0) {
 					AliveComponent_Add(cBag->aliveComponent, eid);
+				} else if (strcmp(cmd, "goal") == 0) {
+					GoalComponent_Add(cBag->goalComponent, eid);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}

@@ -14,7 +14,7 @@ struct HatComponent;
 struct InputComponent;
 struct TileMap;
 struct ComponentBag;
-struct AliveComponent;
+struct GoalComponent;
 
 struct PhysicsSystem {
 	PhysicsComponent* physicsComponent; 
@@ -24,8 +24,8 @@ struct PhysicsSystem {
 	HatComponent* hatComponent;
 	TileMap* map;
 	InputComponent* inputComponent;
-	AliveComponent* aliveComponent;
+	GoalComponent* goalComponent;
 };
 
 void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap);
-int PhysicsSystem_Update(PhysicsSystem* physicsSystem);
+void PhysicsSystem_Update(PhysicsSystem* physicsSystem);
