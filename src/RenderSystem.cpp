@@ -231,7 +231,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				  int b = sin(freq*(count%max) + 4)*127 + 128;
 				  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 				  SDL_SetRenderDrawColor(renderer, r, g, b, 60);
-	                          SDL_RenderFillRect(renderer, &bigRect);
+	              SDL_RenderFillRect(renderer, &bigRect);
 				  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 				  count++;
 				}
