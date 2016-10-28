@@ -207,13 +207,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			Hat* hat = &hatComponent->hats[eid].hat;
 			Hat* gHat = &hatComponent->hats[eid].gHat;
 			Texture* gHatTexture = TextureCache_GetTexture(gHat->gname);
-		        Texture* hatTexture = TextureCache_GetTexture(hat->name);
+		    Texture* hatTexture = TextureCache_GetTexture(hat->name);
 			//display hats you have
 			if (gHatTexture) {
 			  RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
 			}
 			if (hatTexture) {
-			  RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, NULL, hatTexture);
+			  RenderSystem_Render_xywh(renderer, XRightRender_, hatTexture->w + HHealth_ + 10, hatTexture->w, hatTexture->h, NULL, hatTexture);
 			}
 			
 			if (strlen(gHat->gname) > 1) {
