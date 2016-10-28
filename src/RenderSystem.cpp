@@ -256,13 +256,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		SDL_RenderFillRect(renderer, &currentRect);
 	}
 
-	if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
+	/*if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
 		Texture scoreTexture;
 		int score = goalComponent->points[Constants::PlayerIndex_];
 		std::string scoreStr = std::to_string(score / Constants::Second_);
 		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.substr(0, 4).c_str(), "score_string");
 		RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
-	}
+	}*/
 }
 
 
