@@ -64,6 +64,7 @@ struct PlayState {
 	_TTF_Font* healthFont;
 
 	bool loaded; /* Ensure file loaded properly. */
+	uint8 currentLevel; /* Keeps track of player progress. TO-DO: Read from file! */
 
 	Zone chapter;/* The current level, loaded by FileLoader. */
 	ComponentBag cBag;

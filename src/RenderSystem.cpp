@@ -12,29 +12,37 @@
 #include "TileMap.h"
 #include "HatComponent.h"
 #include "HealthComponent.h"
+#include "GoalComponent.h"
 
+#include <cstring>
 #include <math.h>
 #include <SDL.h>
 #include <iostream>
 
 // Render constants
-const int XHealth_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4;
-const int YHealth_ = Constants::ScreenHeight_ / 16;
+const int XLeftRender_ = Constants::ScreenWidth_ / 16;
+const int XRightRender_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4;
+const int YTopRender_ = Constants::ScreenHeight_ / 16;
 const int WHealth_ = Constants::ScreenWidth_/ 5;
 const int HHealth_ = Constants::ScreenHeight_ / 16;
 
+const SDL_Color scoreColor = {255, 255, 255, 1};
+
+// Meow
 int count = 0;
 
 // --------------------------------------------------------------------
-void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, TileMap* tileMap) {
+void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, TileMap* tileMap, _TTF_Font* defaultFont) {
 	renderSystem->textureComponent 		= cBag->textureComponent;
 	renderSystem->rectangleComponent 	= cBag->rectangleComponent;
 	renderSystem->animationComponent 	= cBag->animationComponent;
 	renderSystem->movementComponent 	= cBag->movementComponent;
 	renderSystem->cameraComponent 		= cBag->cameraComponent;
-	renderSystem->hatComponent 		= cBag->hatComponent;
-	renderSystem->map 			= tileMap;
+	renderSystem->hatComponent 			= cBag->hatComponent;
 	renderSystem->healthComponent 		= cBag->healthComponent;
+	renderSystem->goalComponent 		= cBag->goalComponent;
+	renderSystem->defaultFont 		 	= defaultFont;
+	renderSystem->map 					= tileMap;
 }
 
 // --------------------------------------------------------------------
@@ -98,8 +106,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	MovementComponent* movementComponent = renderSystem->movementComponent;
  	CameraComponent* cameraComponent = renderSystem->cameraComponent;
  	HatComponent* hatComponent = renderSystem->hatComponent;
- 	TileMap* map = renderSystem->map;
  	HealthComponent* healthComponent = renderSystem->healthComponent;
+ 	GoalComponent* goalComponent = renderSystem->goalComponent;
+ 	TileMap* map = renderSystem->map;
 
 
  	// Render background
@@ -201,10 +210,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		        Texture* hatTexture = TextureCache_GetTexture(hat->name);
 			//display hats you have
 			if (gHatTexture) {
-			  RenderSystem_Render_xywh(renderer, XHealth_ + gHatTexture->w + 10, YHealth_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
+			  RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
 			}
 			if (hatTexture) {
-			  RenderSystem_Render_xywh(renderer, XHealth_, YHealth_ + HHealth_ + 10, hatTexture->w, hatTexture->h, NULL, hatTexture);
+			  RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, NULL, hatTexture);
 			}
 			
 			if (strlen(gHat->gname) > 1) {
@@ -236,19 +245,25 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	}
 
 	// Render HUD
-	if (!Component_HasIndex(healthComponent, Constants::PlayerIndex_)) {
-		std::cerr << "Error: The player has no renderable health component" << std::endl;
-		return;
+	if (Component_HasIndex(healthComponent, Constants::PlayerIndex_)) {
+		int max = healthComponent->maxHealth[Constants::PlayerIndex_];
+		int current = healthComponent->health[Constants::PlayerIndex_];
+		const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
+		const SDL_Rect currentRect = {XRightRender_, YTopRender_, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
+		SDL_RenderFillRect(renderer, &maxRect);
+		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 1);
+		SDL_RenderFillRect(renderer, &currentRect);
 	}
 
-	int max = healthComponent->maxHealth[Constants::PlayerIndex_];
-	int current = healthComponent->health[Constants::PlayerIndex_];
-	const SDL_Rect maxRect = {XHealth_, YHealth_, WHealth_, HHealth_};
-	const SDL_Rect currentRect = {XHealth_, YHealth_, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
-	SDL_RenderFillRect(renderer, &maxRect);
-	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 1);
-	SDL_RenderFillRect(renderer, &currentRect);
+	if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
+		// We're going to have to make a new texture everytime because it's constantly updated.
+		Texture scoreTexture;
+		int score = goalComponent->points[Constants::PlayerIndex_];
+		std::string scoreStr = std::to_string(score / Constants::Second_);
+		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.substr(0, 4).c_str(), "score_string");
+		RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
+	}
 }
 
 

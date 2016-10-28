@@ -285,7 +285,7 @@ void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
 	MovementSystem_Update(&game->playState.movementSystem);
 	PhysicsSystem_Update(&game->playState.physicsSystem);
 	KillSystem_Update(&game->playState.killSystem);
-	switch (GoalSystem_Update(&game->playState.goalSystem)) {
+	switch (GoalSystem_Update(&game->playState.goalSystem, Constants::OptimalTime_)) {
 		case GameResult_Fell:
 			// Trigger some different animation, noise, etc.
 		case GameResult_Killed:

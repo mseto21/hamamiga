@@ -15,7 +15,7 @@ void GoalSystem_Initialize(GoalSystem* goalSystem, ComponentBag* cBag) {
 }
 
 
-GameResult GoalSystem_Update(GoalSystem* goalSystem) {
+GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
 		GoalComponent* goalComponent = goalSystem->goalComponent;
     HealthComponent* healthComponent = goalSystem->healthComponent;
     AliveComponent* aliveComponent = goalSystem->aliveComponent;
@@ -50,7 +50,10 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem) {
     	if (goalComponent->winGoal[eid]) {
     		return GameResult_Won;
     	}
-		}	
+
+    	goalComponent->points[eid] += elapsed;
+    	
+	}	
 
 	return GameResult_Running;
 }

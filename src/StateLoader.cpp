@@ -114,24 +114,22 @@ bool LoadPlayStateAssets(Game* game) {
 	    std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 	    return false;
 	}
+
 	//Creating all sounds for the play state
 	SoundCache_CreateSound("assets/sounds/hatpickup.ogg", "hatpickup");
 	SoundCache_CreateSound("assets/sounds/disco.ogg", "disco");
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
 	SoundCache_CreateSound("assets/sounds/nj.ogg", "nj");
-
-
-	std::cout<< "Created disco" << std::endl;
 	
+
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 	ComponentBag_Malloc(&game->playState.cBag);
 
-	// TO-DO: Hardcoded for now, but its coolio!
 	FileLoader_Load(&game->playState.chapter, "assets/chapter_1/chapter_1.txt", &game->playState.cBag, game->renderer); // Hardcoded for now, but easily an array.
 	if (!Component_HasIndex(game->playState.cBag.healthComponent, Constants::PlayerIndex_)) {
 		std::cerr << "Error: The player has no renderable health component" << std::endl;
-		//return;
+		return false;
 	}
 
 	AISystem_Initialize(&game->playState.aiSystem, &game->playState.cBag);
@@ -139,7 +137,7 @@ bool LoadPlayStateAssets(Game* game) {
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
 	MovementSystem_Initialize(&game->playState.movementSystem, &game->playState.cBag);
 	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap);
-	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap);
+	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.scoreFont);
 	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
