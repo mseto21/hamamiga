@@ -257,7 +257,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	}
 
 	if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
-		// We're going to have to make a new texture everytime because it's constantly updated.
 		Texture scoreTexture;
 		int score = goalComponent->points[Constants::PlayerIndex_];
 		std::string scoreStr = std::to_string(score / Constants::Second_);

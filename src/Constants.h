@@ -54,12 +54,12 @@ namespace Constants {
 
 	// Constant names
 	const String128	TitleBackground_	= 	"title_background";
-	const String128	TitleFader_			=		"title_fader";
+	const String128	TitleFader_			=	"title_fader";
 	const String128	WinBackground_		= 	"win_background";
 	const String128 LoseBackground_ 	=   "lose_background";
 	const String128 GameBackground_ 	= 	"game_background";
 	const String128 MenuOverlay_    	= 	"menu_overlay";
-	const String128 BunnyHat_           =      "bunny";
-	const String128 DiscoHat_           =       "disco";
+	const String128 BunnyHat_           =	"bunny";
+	const String128 DiscoHat_           =	"disco";
 
 }

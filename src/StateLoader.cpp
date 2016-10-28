@@ -101,7 +101,21 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 
 
 
-bool LoadPlayStateAssets(Game* game) {
+bool LoadPlayStateAssets(Game* game, int chapter) {
+	ComponentBag_Malloc(&game->playState.cBag);
+
+	std::string chapterPath = "assets/chapter_" + std::to_string(chapter) + "/chapter_" + std::to_string(chapter)  + ".txt";
+	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer)) {
+		ComponentBag_Free(&game->playState.cBag);
+		std::cerr << "Error: Unable to load from path " << chapterPath << std::endl;
+		return false;
+	}
+	
+	if (!Component_HasIndex(game->playState.cBag.healthComponent, Constants::PlayerIndex_)) {
+		std::cerr << "Error: The player has no renderable health component" << std::endl;
+		return false;
+	}
+
 	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	TextureCache_CreateTexture(game->renderer, "assets/bunny-hat.png", Constants::BunnyHat_);
@@ -124,13 +138,6 @@ bool LoadPlayStateAssets(Game* game) {
 
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
-	ComponentBag_Malloc(&game->playState.cBag);
-
-	FileLoader_Load(&game->playState.chapter, "assets/chapter_1/chapter_1.txt", &game->playState.cBag, game->renderer); // Hardcoded for now, but easily an array.
-	if (!Component_HasIndex(game->playState.cBag.healthComponent, Constants::PlayerIndex_)) {
-		std::cerr << "Error: The player has no renderable health component" << std::endl;
-		return false;
-	}
 
 	AISystem_Initialize(&game->playState.aiSystem, &game->playState.cBag);
 	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag);

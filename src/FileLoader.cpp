@@ -468,16 +468,16 @@ int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* re
 
 
 /* Begin reading a chapter file. */
-void FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Renderer* renderer) {
+bool FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Renderer* renderer) {
 	if (!zone) {
 		std::cerr << "Error: The given zone was uninitialized." << std::endl;
-		return;
+		return false;
 	}
 
 	FILE* chapterFile = fopen(path, "r");
 	if (chapterFile == NULL) {
 		std::cerr << "Error: The chapter file " << path << " was NULL" << std::endl;
-		return;
+		return false;
 	}
 
 	int c;
@@ -494,7 +494,7 @@ void FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Rende
 				memset(&str, 0, MaxBuffSize_);
 			} else {
 				std::cerr << "Error: A \'Zone\' tag was not found initially" << std::endl;
-				return;
+				return false;
 			}
 		} else {
 			if (c == '\n') {
@@ -507,6 +507,7 @@ void FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Rende
 	}
 	cout << "SUCCESS: File successfully loaded!" << endl;
 	fclose (chapterFile);
+	return true;
 }
 
 

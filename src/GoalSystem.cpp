@@ -39,8 +39,8 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
     	if (Component_HasIndex(rectangleComponent, eid)) {
     		if (rectangleComponent->entityRectangles[eid].y >= Constants::LevelHeight_) {
     			if (Component_HasIndex(aliveComponent, eid)) {
-					 	aliveComponent->alive[eid] = false;
-					}
+				 	aliveComponent->alive[eid] = false;
+				}
     			if (eid == Constants::PlayerIndex_) {
 	    			return GameResult_Fell;
 	    		}
@@ -48,7 +48,8 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
     	}
 
     	if (goalComponent->winGoal[eid]) {
-    		return GameResult_Won;
+    		if (eid == Constants::PlayerIndex_)
+    			return GameResult_Won;
     	}
 
     	goalComponent->points[eid] += elapsed;

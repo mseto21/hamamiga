@@ -77,6 +77,7 @@ bool Game_Initialize(Game* game) {
 	memset(&game->highScoreState.scores, 0, sizeof(game->highScoreState.scores));
 	game->playState.cBag.freed = true;
 	game->playState.loaded = false;
+	game->playState.currentLevel = 1;
 
 	// Enter title state
 	game->gameState = GameState_Intro;
@@ -144,12 +145,16 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 		switch (game->titleState.selection) {
 			case 0:
 				Mix_HaltMusic();
-				game->playState.loaded = LoadPlayStateAssets(game);
+				game->playState.loaded = LoadPlayStateAssets(game, game->playState.currentLevel);
+				if (!game->playState.loaded) {
+					std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
+					game->gameState = GameState_Title;
+					break;
+				} else {
+					game->gameState = GameState_Play;
+				}
 				LoadZoneIntroAssets(game, game->playState.chapter.name);
-				if (game->playState.loaded)
-					game->gameState = GameState_ZoneIntro;
-				else
-					std::cerr << "Error: Unable to load play state assets." << std::endl;
+				game->gameState = GameState_ZoneIntro;
 				break;
 			case 1:
 				game->gameState = GameState_HighScore;
@@ -280,7 +285,6 @@ void RenderZoneIntro(Game* game, uint32 elapsed) {
 
 
 void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
-	InputSystem_Update(&game->playState.inputSystem, keysdown, keysup);
 	AISystem_Update(&game->playState.aiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
 	PhysicsSystem_Update(&game->playState.physicsSystem);
@@ -292,6 +296,7 @@ void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
 			game->gameState = GameState_Lose;
 			break;
 		case GameResult_Won:
+			game->playState.currentLevel++;
 			game->gameState = GameState_Win;
 			Mix_VolumeMusic(MIX_MAX_VOLUME/4);
 			Sound_Play(SoundCache_GetSound("nj"), 0);
@@ -380,8 +385,18 @@ void Game_RunLoop(Game* game) {
 							if (game->gameState != GameState_Title && game->gameState != GameState_HighScore &&
 								game->gameState != GameState_Intro){
 								FreePlay(game);
-								LoadPlayStateAssets(game);
-								game->gameState = GameState_Play;
+								if (!LoadPlayStateAssets(game, game->playState.currentLevel)) {
+									std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
+									game->gameState = GameState_Title;
+								} else {
+									game->gameState = GameState_Play;
+								}
+							}
+							break;
+						case SDLK_u:
+							if (game->gameState == GameState_Play) {
+								game->gameState = GameState_Win;
+								game->playState.currentLevel++;
 							}
 							break;
 						default:
@@ -397,6 +412,11 @@ void Game_RunLoop(Game* game) {
 				default:
 					break;
 			}
+		}
+
+		// TO-DO: I'm sad about this.
+		if (game->gameState == GameState_Play) {
+				InputSystem_Update(&game->playState.inputSystem, keysdown, keysup);
 		}
 
 		// Update game state
