@@ -535,6 +535,9 @@ void Game_RunLoop(Game* game) {
 				game->gameState = GameState_Title;
 				break;
 			case GameState_Closing:
+				if (game->gameState == GameState_Win || game->gameState == GameState_Lose || game->gameState == GameState_Play) {
+					FreePlay(game);
+				}
 				game->running = false;
 				Game_Close(game);
 				break;
@@ -546,7 +549,6 @@ void Game_RunLoop(Game* game) {
 
 
 void Game_Close(Game* game) {
-	FreePlay(game);
 	Mix_FreeMusic(game->titleState.titleMusic);
 	TextureCache_Free();
 	EntityCache_Free();
