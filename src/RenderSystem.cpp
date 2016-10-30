@@ -7,6 +7,7 @@
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
 #include "AnimationComponent.h"
+#include "BulletComponent.h"
 #include "MovementComponent.h"
 #include "CameraComponent.h"
 #include "TileMap.h"

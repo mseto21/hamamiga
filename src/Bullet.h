@@ -2,11 +2,11 @@
 #include "Rectangle.h"
 #include "TextureCache.h"
 
-//struct Vector2
-//{
- // float x;
- // float y;
-//};
+struct Vector2
+{
+  float x;
+  float y;
+};
 
 class Bullet {
  private:

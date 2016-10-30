@@ -11,6 +11,7 @@
 #include "TextureComponent.h"
 #include "InputComponent.h"
 #include "AnimationComponent.h"
+#include "BulletComponent.h"
 #include "PhysicsComponent.h"
 #include "HealthComponent.h"
 #include "CameraComponent.h"
@@ -296,10 +297,14 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					cout << "Adding camera to entity " << eid << "..." << endl;
 					CameraComponent_Add(cBag->cameraComponent, eid);
 				} else if (strcmp(cmd, "hat") == 0) {
-				        Hat hat = Hat();
+				  Hat hat = Hat();
 					Hat gHat = Hat();
 					cout << "Adding hat to entity " << eid << "..." << endl;
 					HatComponent_Add(cBag->hatComponent, eid, hat, gHat);
+				} else if (strcmp(cmd, "bullet") == 0){
+					Bullet bullet = Bullet();
+					cout << "Adding bullets to entity" << eid << "..." << endl;
+					BulletComponent_Add(cBag->bulletComponent, eid, bullet);
 				} else if (strcmp(cmd, "ai") == 0) {
 					int range = int_parameters.front();
 					int_parameters.pop();
