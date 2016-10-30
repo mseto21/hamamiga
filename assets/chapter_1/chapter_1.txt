@@ -10,7 +10,7 @@ zone=
 		input()
 		movement(5.0,20.0,1.5,14.0,)
 		physics(100,)
-		rectangle(0,0,48,87,)
+		rectangle(0,1353,48,87,)
 		texture(assets/tinykev.png,player,)
 		hat()
 		camera()
