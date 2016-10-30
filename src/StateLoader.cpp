@@ -159,8 +159,10 @@ void FreePlay(Game* game) {
 bool LoadPlayStateAssets(Game* game, int chapter) {
 	ComponentBag_Malloc(&game->playState.cBag);
 	std::string chapterPath = "assets/chapter_" + std::to_string(chapter) + "/chapter_" + std::to_string(chapter)  + ".txt";
+
 	std::string backgroundPath = "assets/chapter_" + std::to_string(chapter) + "/background.png";
 	TextureCache_ReplaceTexture(game->renderer, backgroundPath.c_str(), Constants::GameBackground_);
+	
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer)) {
 		ComponentBag_Free(&game->playState.cBag);
 		std::cerr << "Error: Unable to load from path " << chapterPath << std::endl;
@@ -189,7 +191,12 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
 	SoundCache_CreateSound("assets/sounds/nj.ogg", "nj");
 	TextureCache_CreateTexture(game->renderer, "assets/bullet.png", "bullet");
+<<<<<<< c99c16cd0b89f9b167fe6868e8cc402bd26c93c0
 
+=======
+	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/minder-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_ADD);
+	
+>>>>>>> working on shader
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 

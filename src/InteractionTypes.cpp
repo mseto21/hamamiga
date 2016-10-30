@@ -58,7 +58,7 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			break;
 		case HatTypes_Miner:
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "miner", sizeof(cBag->hatComponent->hats[eid].gHat.name));
-			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Miner's hat!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
+			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Let there be light!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_Miner;
 			break;
 		default:
