@@ -19,15 +19,17 @@ TextureCache* TextureCache_GetCache() {
 /* Creates and returns a new texture from the given path. */
 Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, const char* name) {
 	// Check if we already have that texture.
-	for (int textureIndex = 0; textureIndex < tcache->index; textureIndex++) {
+	int textureIndex = 0;
+	for (; textureIndex < tcache->index; textureIndex++) {
 		if (strcmp(tcache->textures[textureIndex].name, name) == 0) {
-			return &tcache->textures[textureIndex];
+			TextureCache_Remove(name);
+			break;
 		}
 	}
 
 	// Load texture if not loaded.
-	Texture_LoadTexture(&tcache->textures[tcache->index], renderer, path, name);
-	SDL_SetTextureBlendMode(tcache->textures[tcache->index].sdltexture , SDL_BLENDMODE_BLEND );
+	Texture_LoadTexture(&tcache->textures[textureIndex], renderer, path, name);
+	SDL_SetTextureBlendMode(tcache->textures[textureIndex].sdltexture , SDL_BLENDMODE_BLEND );
 	return &tcache->textures[tcache->index++];
 }
 
