@@ -115,8 +115,8 @@ void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed) {
 			break;
 		case GlamourHatId_None:
 			break;
-	        case GlamourHatId_Miner:
-		        break;
+        case GlamourHatId_Miner:
+	        break;
 		default:
 			std::cerr << "Error: The glamour hat with id " << hatId << " does not exist" << std::endl;
 			break;
@@ -216,14 +216,11 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 					clip = {0, 0, animation->spriteW, animation->spriteH};
 				} else if (movementComponent->movementValues[eid].xVelocity > 0) {
 					texture->flip = SDL_FLIP_NONE;
-					if (eid == Constants::PlayerIndex_){
-						//	Sound_Play(SoundCache_GetSound("walking"));
-					} //and check for only kevin
 				} else {
 					texture->flip = SDL_FLIP_HORIZONTAL;
 				}
 				if (!movementComponent->movementValues[eid].grounded){
-					clip = {animation->spriteW * 3, 0, animation->spriteW, animation->spriteH};//CHANGE TO JUMPING ANIM
+					clip = {animation->spriteW * 4, 0, animation->spriteW, animation->spriteH};
 				}
 			}	  
 		}

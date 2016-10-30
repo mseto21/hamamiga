@@ -1,0 +1,17 @@
+zone=
+	name=Chapter 2: Into the Vents!;
+	tileset=assets/chapter_2/chapter_2_tileset.png;
+	tilemap=assets/chapter_2/chapter_2_level.csv;
+	music=assets/chapter_1/chapter_1.ogg;
+	entity=
+		animation(4,150.0,48,87,)
+		health(100,)
+		input()
+		movement(5.0,20.0,1.5,14.0,)
+		physics(100,)
+		rectangle(0,1353,48,87,)
+		texture(assets/tinykev.png,player,)
+		hat()
+		camera()
+		goal();
+END=

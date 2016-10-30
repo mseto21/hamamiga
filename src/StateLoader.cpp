@@ -25,6 +25,7 @@ void LoadIntroStateAssets(Game* game) {
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/lose-screen.png", Constants::LoseBackground_);
 	//TextureCache_CreateTexture(game->renderer, "assets/shader.png", Constants::Shader_);
+
 }
 
 
@@ -131,9 +132,8 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 void FreePlay(Game* game) {
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);
-	if (!game->playState.cBag.freed) {
+	if (!game->playState.cBag.freed)
 		ComponentBag_Free(&game->playState.cBag);
-	}
 	Mix_FreeMusic(game->playState.chapter.music);
 	Mix_HaltChannel(Constants::DiscoChannel_);
 	TextureCache_Remove(Constants::ZoneName_);
@@ -152,6 +152,7 @@ void FreePlay(Game* game) {
 	}
 	game->playState.chapter.endScene.slideCount = 0;
 	game->playState.chapter.endScene.current = 0;
+	game->playState.loaded = false;
 }
 
 

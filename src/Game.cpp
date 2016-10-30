@@ -150,10 +150,9 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 					game->gameState = GameState_Title;
 					break;
 				} else {
-					game->gameState = GameState_Play;
+					LoadZoneIntroAssets(game, game->playState.chapter.name);
+					game->gameState = GameState_ZoneIntro;
 				}
-				LoadZoneIntroAssets(game, game->playState.chapter.name);
-				game->gameState = GameState_ZoneIntro;
 				break;
 			case 1:
 				game->gameState = GameState_HighScore;

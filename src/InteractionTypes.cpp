@@ -54,6 +54,7 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "cowboy", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "powpow", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			cBag->bulletComponent->activated = true;
 			break;
 		case HatTypes_Crown:
 			cBag->goalComponent->winGoal[eid] = true;

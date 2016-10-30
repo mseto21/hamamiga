@@ -9,20 +9,12 @@ struct Vector2
 };
 
 class Bullet {
- private:
-  //Vector2 position; //figure out how to use this with movement system?
-  //Vector2 speed;
-  uint16 x;
-  uint16 y;
-  uint16 w;
-  uint16 h;
-
- public:
- 	//Rectangle bullet;
+  Vector2 position; //figure out how to use this with movement system?
+  Vector2 velocity;
   bool alive; //alive or dead bullet?
   Texture* texture;
-	//uint16 width; //bullet width
-  //uint16 height; //bullet height
+  uint32 bullet_life; //time until bullet dies
+  Rectangle bullet;
 
   /**methods*/
 
@@ -31,6 +23,7 @@ class Bullet {
   void initialize(Rectangle);
   void display();
   /** Constructor */
+public:
   Bullet();
 
 };
