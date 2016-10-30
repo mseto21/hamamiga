@@ -43,7 +43,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		if (keysPressed[SDLK_a]) {
 		    moveValues->xAccel = -moveValues->accelX;
 		}
-		if (keysPressed[SDLK_s]) {
+		if (keysPressed[SDLK_i]) {
 		    healthComponent->invincible[eid] = !(healthComponent->invincible[eid]);
 		}
 		if (keysPressed[SDLK_d]) {
