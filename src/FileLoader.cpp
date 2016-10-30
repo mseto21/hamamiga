@@ -185,10 +185,10 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				if (getParams)
 					tile.type = 1;
 				break;
-	        case 't':
-		        if (getParams)
-		            tile.type = -1;
-		        break;
+	                case 't':
+		                if (getParams)
+		                        tile.type = -1;
+		                break;
 			default: // Add to integer string
 				tilestr[tilepos++] = t;
 				break;

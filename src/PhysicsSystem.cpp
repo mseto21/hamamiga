@@ -212,12 +212,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				}
 			}
 
-			// Check if the game is won
-			if (map->map[tileCenterY][tileCenterX].winning) {
-				if (Component_HasIndex(goalComponent, eid)) {
-					goalComponent->winGoal[eid] = true;
-				}
-			}
+
 		}
 
 		// Check world boundaries
