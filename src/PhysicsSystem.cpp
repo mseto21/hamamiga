@@ -9,10 +9,11 @@
 #include "InputComponent.h"
 #include "AliveComponent.h"
 #include "GoalComponent.h"
+#include "InteractableComponent.h"
 #include "TileMap.h"
-#include "Hat.h"
 #include "ComponentBag.h"
 #include "SoundCache.h"
+#include "InteractionTypes.h"
 
 #include <stdlib.h>
 #include <SDL.h>
@@ -21,12 +22,15 @@
 void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap) {
 	physicsSystem->physicsComponent 	= cBag->physicsComponent;
 	physicsSystem->movementComponent 	= cBag->movementComponent;
-	physicsSystem->rectangleComponent = cBag->rectangleComponent;
+	physicsSystem->rectangleComponent 	= cBag->rectangleComponent;
 	physicsSystem->healthComponent 		= cBag->healthComponent;
-	physicsSystem->hatComponent 			= cBag->hatComponent;
-	physicsSystem->map 								= tileMap;
-	physicsSystem->inputComponent			= cBag->inputComponent;
-	physicsSystem->goalComponent 			= cBag->goalComponent;
+	physicsSystem->hatComponent 		= cBag->hatComponent;
+	physicsSystem->inputComponent		= cBag->inputComponent;
+	physicsSystem->goalComponent 		= cBag->goalComponent;
+	physicsSystem->interactableComponent = cBag->interactableComponent;
+	physicsSystem->aliveComponent 		= cBag->aliveComponent;
+	physicsSystem->map 					= tileMap;
+	physicsSystem->componentBag 		= cBag;
 }
 
 
@@ -44,9 +48,11 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;
 	HealthComponent* healthComponent = physicsSystem->healthComponent;
 	HatComponent* hatComponent = physicsSystem->hatComponent;
-	TileMap* map = physicsSystem->map;
 	InputComponent* inputComponent = physicsSystem->inputComponent;
 	GoalComponent* goalComponent = physicsSystem->goalComponent;
+	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
+	AliveComponent * aliveComponent = physicsSystem->aliveComponent;
+	TileMap* map = physicsSystem->map;
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
 		uint32 eid = physicsComponent->entityArray[entityIndex];
@@ -66,21 +72,49 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 		// Check collisions with entities
 		for (uint32 j = 0; j < physicsComponent->count; j++) {
-			if (eid ==  physicsComponent->entityArray[j]) {
+			uint32 otherEid = physicsComponent->entityArray[j];
+			if (eid ==  otherEid) {
 				continue;
 			}
-			if (!Component_HasIndex(rectangleComponent, physicsComponent->entityArray[j])) {
+			if (!Component_HasIndex(rectangleComponent, otherEid)) {
 				continue;
 			}
 
+			// Interaction collisions
+			if (Component_HasIndex(interactableComponent, otherEid)) {
+				if (!Collision(*r1, rectangleComponent->entityRectangles[otherEid])) {
+					continue;
+				}
+				if (Component_HasIndex(inputComponent, eid)) {
+			  		if(!inputComponent->interact[eid]) {
+			  			continue;
+			  		}
+			  	}
+
+				int type = interactableComponent->types[otherEid];
+				if (type == InteractionType_Hat) {
+					int hattype = interactableComponent->hattypes[otherEid];
+					if (Component_HasIndex(hatComponent, eid)){
+						if (!interactableComponent->interacted[otherEid]) {
+							ApplyHatInteraction(hattype, eid, physicsSystem->componentBag);
+							interactableComponent->interacted[otherEid] = true;
+						}
+						if (Component_HasIndex(aliveComponent, otherEid)) {
+				  		aliveComponent->alive[otherEid] = false;
+				  	}
+					}
+				}
+				continue;
+			}
+
+			// Enemy collisions
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			bool cllsn = false;
-			//early collision down check
 			bool cllsnD = false;
 			if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
-				//kickback for player
+
 				if (eid == Constants::PlayerIndex_) {
 				  moveValues->xVelocity = 15;
 				  if (!Collision(down, r2)) {
@@ -107,23 +141,17 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				}
 			}
 			if (Collision(up, r2)) {
-			        moveValues->yVelocity = 0;
+			  moveValues->yVelocity = 0;
 				cllsn = true;
 			} else if (cllsnD || Collision(down, r2)) {
-			        moveValues->yVelocity *= -1;
-			        r1->y += moveValues->yVelocity;
+		        moveValues->yVelocity *= -1;
+		        r1->y += moveValues->yVelocity;
 				cllsn = true;
 			}
 			if (cllsn) {
 			  if (Component_HasIndex(healthComponent, eid)) {
-					int dmgRed = 1;
-					if (Component_HasIndex(hatComponent, eid)) {
-						Hat* hat = &hatComponent->hats[eid].hat;
-						dmgRed = hat->getDmgRed();
-						Sound_Play(SoundCache_GetSound("ow"), 0);
-					}
 					if (!healthComponent->invincible[eid]) {
-					  healthComponent->health[eid] -= Constants::Damage_/dmgRed;
+					  healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
 					}
 				}
 			}
@@ -139,7 +167,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		  moveValues->xVelocity = 0;
 		}
 
-		// Check for collisions with map
+		// Tiilemap collisions
 		{
 			int tileX = floor(r1->x / Constants::TileSize_);
 			int tileCenterX = ((r1->x + (r1->w / 2)) / Constants::TileSize_);
@@ -192,35 +220,9 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					}
 				}
 			}
-
-			int t = map->map[tileCenterY][tileCenterX].type;
-			if (t != 0) {
-			  if (Component_HasIndex(hatComponent, eid)) {
-			  	bool getHat = true;
-			  	if (Component_HasIndex(inputComponent, eid)) {
-			  		getHat = inputComponent->interact[eid];
-			  	}
-
-			  	if (getHat) {
-				    HatCollection* hats = &hatComponent->hats[eid];
-				    if (t < 0) {
-				      hats->gHat.setHatType(t, hats->gHat.gname); //glamour hat
-				    } else {
-				      hats->hat.setHatType(t, hats->hat.name); //regular hat
-				    }
-					}
-				}
-			}
-
-			// Check if the game is won
-			if (map->map[tileCenterY][tileCenterX].winning) {
-				if (Component_HasIndex(goalComponent, eid)) {
-					goalComponent->winGoal[eid] = true;
-				}
-			}
 		}
 
-		// Check world boundaries
+		// World boundary collisions
 		if (r1->x <= 0) {
 			r1->x = 0;
 			moveValues->xVelocity = 0;

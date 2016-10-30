@@ -18,6 +18,7 @@
 #include "AIComponent.h"
 #include "AliveComponent.h"
 #include "GoalComponent.h"
+#include "InteractableComponent.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -143,7 +144,6 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				tile.tid = 0;
 				tile.solid = false;
 				tile.moving = false;
-				tile.type = 0;
 				tile.winning = false;
 				tile.rectangle = {(float) xIndex * Constants::TileSize_, (float) yIndex * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_};
 				memset(&tilestr, 0, MaxBuffSize_);
@@ -177,18 +177,6 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				if (getParams)
 					tile.moving = true;// TO-DO: Make this not temporary.
 				break;
-			case 'w':
-				if (getParams)
-					tile.winning = true;
-				break;
-			case 'b':
-				if (getParams)
-					tile.type = 1;
-				break;
-	        case 't':
-		        if (getParams)
-		            tile.type = -1;
-		        break;
 			default: // Add to integer string
 				tilestr[tilepos++] = t;
 				break;
@@ -320,9 +308,20 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					cout << "Adding AI to entity " << eid << ":(" << range << ", " << facing << ")" << endl;
 					AIComponent_Add(cBag->aiComponent, eid, range, facing);
 				} else if (strcmp(cmd, "alive") == 0) {
+					cout << "Adding AliveComponent to entity " << eid << std::endl;
 					AliveComponent_Add(cBag->aliveComponent, eid);
 				} else if (strcmp(cmd, "goal") == 0) {
+					cout << "Adding GoalComponent to entity " << eid << std::endl;
 					GoalComponent_Add(cBag->goalComponent, eid);
+				} else if (strcmp(cmd, "interactable") == 0) {
+					string message = str_parameters.front();
+					str_parameters.pop();
+					int type = int_parameters.front();
+					int_parameters.pop();
+					int hattype = int_parameters.front();
+					int_parameters.pop();
+					cout << "Adding InteractableComponent to entity " << eid << ":(" << message << ", " << type << ", " << hattype << ")" << endl;
+					InteractableComponent_Add(cBag->interactableComponent, eid, message.c_str(), type, hattype) ;
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}

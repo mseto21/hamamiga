@@ -1,9 +1,4 @@
 #pragma once
-/* 
-Relies on: MovementComponent.
-Usage: If the PhysicsComponent is attached to an entity, the etity will 
-be affected by gravity controls from the user.
-*/
 
 // Forward Declarations
 struct PhysicsComponent;
@@ -15,6 +10,9 @@ struct InputComponent;
 struct TileMap;
 struct ComponentBag;
 struct GoalComponent;
+struct ComponentBag;
+struct InteractableComponent;
+struct AliveComponent;
 
 struct PhysicsSystem {
 	PhysicsComponent* physicsComponent; 
@@ -22,9 +20,12 @@ struct PhysicsSystem {
 	RectangleComponent* rectangleComponent; 
 	HealthComponent* healthComponent; 
 	HatComponent* hatComponent;
-	TileMap* map;
 	InputComponent* inputComponent;
 	GoalComponent* goalComponent;
+	InteractableComponent* interactableComponent;
+	AliveComponent* aliveComponent;
+	TileMap* map;
+	ComponentBag* componentBag;
 };
 
 void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap);

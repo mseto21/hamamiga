@@ -12,6 +12,7 @@
 #include "TileMap.h"
 #include "HatComponent.h"
 #include "HealthComponent.h"
+#include "GlamourHatEnum.h"
 #include "GoalComponent.h"
 
 #include <cstring>
@@ -27,9 +28,6 @@ const int WHealth_ = Constants::ScreenWidth_/ 5;
 const int HHealth_ = Constants::ScreenHeight_ / 16;
 
 const SDL_Color scoreColor = {255, 255, 255, 1};
-
-// Meow
-int count = 0;
 
 // --------------------------------------------------------------------
 void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, TileMap* tileMap, _TTF_Font* defaultFont) {
@@ -96,6 +94,28 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 	}
 
 	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, 0.0, NULL, (SDL_RendererFlip)texture->flip);
+}
+
+// --------------------------------------------------------------------
+void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed) {
+	switch (hatId) {
+		case GlamourHatId_Disco:
+			/*
+			const SDL_Rect bigRect = {0, 0, Constants::ScreenWidth_, Constants::ScreenHeight_};
+			float freq = 0.3;
+			int max = 32;
+			int r = sin(freq*(count%max))*127 + 128;
+			int g = sin(freq*(count%max) + 2)*127 + 128;
+			int b = sin(freq*(count%max) + 4)*127 + 128;
+			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+			SDL_SetRenderDrawColor(renderer, r, g, b, 60);
+			SDL_RenderFillRect(renderer, &bigRect);
+			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);*/
+			break;
+		default:
+			std::cerr << "Error: The glamout har with id " << hatId << " does not exist" << std::endl;
+			break;
+	}
 }
 
 // --------------------------------------------------------------------
@@ -191,57 +211,42 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 					clip = {0, 0, animation->spriteW, animation->spriteH};
 				} else if (movementComponent->movementValues[eid].xVelocity > 0) {
 					texture->flip = SDL_FLIP_NONE;
-					if (eid == 0){
-				//	Sound_Play(SoundCache_GetSound("walking"));
+					if (eid == Constants::PlayerIndex_){
+						//	Sound_Play(SoundCache_GetSound("walking"));
 					} //ad check for only kevin
 				} else {
 					texture->flip = SDL_FLIP_HORIZONTAL;
 				}
 			}	  
 		}
-
 		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
+	}
 
-		// Check for hat
-		if (Component_HasIndex(hatComponent, eid)) {
-			Hat* hat = &hatComponent->hats[eid].hat;
-			Hat* gHat = &hatComponent->hats[eid].gHat;
-			Texture* gHatTexture = TextureCache_GetTexture(gHat->gname);
-		    Texture* hatTexture = TextureCache_GetTexture(hat->name);
-			//display hats you have
-			if (gHatTexture) {
-			  RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
-			}
+	// Render hats on HUD
+	if (Component_HasIndex(hatComponent, Constants::PlayerIndex_)) {
+		Hat* hat = &hatComponent->hats[Constants::PlayerIndex_].hat;
+		Hat* gHat = &hatComponent->hats[Constants::PlayerIndex_].gHat;
+		Texture* gHatTexture = TextureCache_GetTexture(gHat->name);
+	  Texture* hatTexture = TextureCache_GetTexture(hat->name);
+
+    if (Component_HasIndex(rectangleComponent, Constants::PlayerIndex_)) {
+    	Rectangle rect = rectangleComponent->entityRectangles[Constants::PlayerIndex_];
+    	rect.x -= cameraComponent->camera.x;
+			rect.y -= cameraComponent->camera.y;
 			if (hatTexture) {
+				hatTexture->flip = SDL_FLIP_NONE;
 			  RenderSystem_Render_xywh(renderer, XRightRender_, hatTexture->w + HHealth_ + 10, hatTexture->w, hatTexture->h, NULL, hatTexture);
+				hatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
+				RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);
 			}
-			
-			if (strlen(gHat->gname) > 1) {
-				if (gHatTexture) {
-					gHatTexture->flip = texture->flip;
-					RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - gHatTexture->h, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
-				}
-				if (strcmp(gHat->gname, Constants::DiscoHat_) == 0) {
-				  const SDL_Rect bigRect = {0, 0, Constants::ScreenWidth_, Constants::ScreenHeight_};
-				  //making rainbow strobe
-				  float freq = 0.3;
-				  int max = 32;
-				  int r = sin(freq*(count%max))*127 + 128;
-				  int g = sin(freq*(count%max) + 2)*127 + 128;
-				  int b = sin(freq*(count%max) + 4)*127 + 128;
-				  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-				  SDL_SetRenderDrawColor(renderer, r, g, b, 60);
-	              SDL_RenderFillRect(renderer, &bigRect);
-				  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
-				  count++;
-				}
-			} else if (hat) {
-				if (hatTexture) {
-					hatTexture->flip = texture->flip;
-					RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);
-				}
+			if (gHatTexture) {
+				gHatTexture->flip = SDL_FLIP_NONE;
+				RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - gHatTexture->h, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
+				gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
+			  RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
+			  RenderGlamourEffect(renderer, gHat->id, delta);
 			}
-		}
+    }
 	}
 
 	// Render HUD

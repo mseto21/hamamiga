@@ -7,7 +7,7 @@ struct HatCollection {
 };
 
 struct HatComponent : public Component {
-  HatCollection hats[Constants::MaxEntities_]; //Saved by id rather than index
+	HatCollection hats[Constants::MaxEntities_];
 };
 
 void HatComponent_Add(HatComponent* hatComponent, uint32 eid, Hat hat, Hat gHat);

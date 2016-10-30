@@ -112,7 +112,6 @@ void RenderIntro(Game* game, uint32 elapsed) {
 
 
 void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
-	// Update their options
 	if (keysdown[SDLK_w] && !game->titleState.w) {
 		if (!game->titleState.w) {
 			game->titleState.w = true;
@@ -322,6 +321,7 @@ void FreePlay(Game* game) {
 			ComponentBag_Free(&game->playState.cBag);
 		}
 		game->playState.loaded = false;
+		memset(&game->playState.chapter, 0, sizeof(game->playState.chapter));
 		Mix_FreeMusic(game->playState.chapter.music);
 		Mix_HaltChannel(Constants::DiscoChannel_);
 	}

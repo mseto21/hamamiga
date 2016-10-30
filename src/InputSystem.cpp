@@ -35,14 +35,10 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 			std::cerr << "Error: No movement values for the input system to use." << std::endl;
 			continue;
 		}
-		float jump = 1;
-		if (Component_HasIndex(hatComponent, eid)) {
-		  jump = (&hatComponent->hats[eid].hat)->getJump();
-		}
 		moveValues->xAccel = 0;
 		moveValues->yAccel = 0;
 		if (keysPressed[SDLK_w] && moveValues->grounded) {
-			moveValues->yAccel = -moveValues->accelY*jump;
+			moveValues->yAccel = -moveValues->accelY;
 		}
 		if (keysPressed[SDLK_a]) {
 		    moveValues->xAccel = -moveValues->accelX;

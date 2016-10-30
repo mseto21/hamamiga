@@ -10,7 +10,7 @@ zone=
 		input()
 		movement(5.0,20.0,1.5,14.0,)
 		physics(100,)
-		rectangle(0,1353,48,87,)
+		rectangle(0,0,48,87,)
 		texture(assets/tinykev.png,player,)
 		hat()
 		camera()
@@ -54,5 +54,17 @@ zone=
 		rectangle(3980,1353,88,87,)
 		texture(assets/demon.png,demon,)
 		ai(30,1,)
+		alive();
+	entity=
+		texture(assets/bunny-hat.png,bunny,)
+		physics(0,)
+		interactable(Press E to Pick Up,0,0,)
+		rectangle(3980,1353,48,48,)
+		alive();
+	entity=
+		texture(assets/crown.png,crown,)
+		physics(0,)
+		interactable(Press E to Pick Up,0,2,)
+		rectangle(48,216,49,24,)
 		alive();
 END=

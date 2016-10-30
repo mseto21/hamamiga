@@ -11,6 +11,7 @@
 #include "AIComponent.h"
 #include "AliveComponent.h"
 #include "GoalComponent.h"
+#include "InteractableComponent.h"
 #include <iostream>
 
 void ComponentBag_Malloc(ComponentBag* bag) {
@@ -26,6 +27,7 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->aiComponent 			= (AIComponent*)malloc(sizeof(*bag->aiComponent));
 	bag->aliveComponent 		= (AliveComponent*)malloc(sizeof(*bag->aliveComponent));
 	bag->goalComponent 			= (GoalComponent*)malloc(sizeof(*bag->goalComponent));
+	bag->interactableComponent 	= (InteractableComponent*)malloc(sizeof(*bag->interactableComponent));
 	ComponentBag_Reset(bag);
 	bag->freed = false;
 }
@@ -43,6 +45,7 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->aiComponent);
 	Component_Initialize(bag->aliveComponent);
 	Component_Initialize(bag->goalComponent);
+	Component_Initialize(bag->interactableComponent);
 }
 
 void ComponentBag_Check(ComponentBag* bag) {
@@ -82,6 +85,9 @@ void ComponentBag_Check(ComponentBag* bag) {
 	if (!bag->goalComponent) {
 	  std::cout << "Error: Uninitialized aliveComponent" << std::endl;
 	}
+	if (!bag->interactableComponent) {
+	  std::cout << "Error: Uninitialized aliveComponent" << std::endl;
+	}
 }
 
 void ComponentBag_Free(ComponentBag* bag) {
@@ -97,6 +103,7 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->aiComponent);
 	free(bag->aliveComponent);
 	free(bag->goalComponent);
+	free(bag->interactableComponent);
     bag->freed = true;
 }
 
@@ -137,6 +144,9 @@ void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HasIndex(bag->goalComponent, eid)) {
 		Component_Remove(bag->goalComponent, eid);
+	}
+	if (Component_HasIndex(bag->interactableComponent, eid)) {
+		Component_Remove(bag->interactableComponent, eid);
 	}
 }
 
