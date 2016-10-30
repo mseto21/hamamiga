@@ -146,6 +146,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 				Mix_HaltMusic();
 				game->playState.loaded = LoadPlayStateAssets(game, game->playState.currentLevel);
 				if (!game->playState.loaded) {
+					FreePlay(game);
 					std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
 					game->gameState = GameState_Title;
 					break;
@@ -433,6 +434,8 @@ void Game_RunLoop(Game* game) {
 							break;
 						case SDLK_m:
 							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win) {
+								if (game->playState.loaded)
+									FreePlay(game);
 								game->gameState = GameState_Returning;
 								Mix_HaltChannel(2);
 								Mix_FreeMusic(game->playState.chapter.music);
@@ -443,9 +446,9 @@ void Game_RunLoop(Game* game) {
 							break;
 						case SDLK_p:
 							if (game->gameState != GameState_Title && game->gameState != GameState_HighScore && game->gameState != GameState_Intro) {
-								FreePlay(game);
-								if (!LoadPlayStateAssets(game, game->playState.currentLevel)) {
+								if (!game->playState.loaded) {
 									std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
+									FreePlay(game);
 									game->gameState = GameState_Title;
 								} else {
 									game->gameState = GameState_Play;
@@ -535,6 +538,9 @@ void Game_RunLoop(Game* game) {
 				game->gameState = GameState_Title;
 				break;
 			case GameState_Closing:
+				if (game->gameState == GameState_Win || game->gameState == GameState_Lose || game->gameState == GameState_Play) {
+					FreePlay(game);
+				}
 				game->running = false;
 				Game_Close(game);
 				break;
@@ -546,7 +552,8 @@ void Game_RunLoop(Game* game) {
 
 
 void Game_Close(Game* game) {
-	FreePlay(game);
+	TTF_CloseFont(game->playState.scoreFont);
+	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);
 	TextureCache_Free();
 	EntityCache_Free();

@@ -30,7 +30,9 @@ Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, co
 	// Load texture if not loaded.
 	Texture_LoadTexture(&tcache->textures[textureIndex], renderer, path, name);
 	SDL_SetTextureBlendMode(tcache->textures[textureIndex].sdltexture , SDL_BLENDMODE_BLEND );
-	return &tcache->textures[tcache->index++];
+	if (textureIndex == tcache->index)
+		tcache->index++;
+	return &tcache->textures[textureIndex];
 }
 
 
@@ -92,8 +94,7 @@ void TextureCache_Remove(const char* path) {
 	int textureIndex = 0;
 	for (; textureIndex < tcache->index; textureIndex++) {
 		if (strcmp(tcache->textures[textureIndex].name, path) == 0) {
-			tcache->textures[textureIndex] = tcache->textures[tcache->index];
-			memset(&tcache->textures[tcache->index], 0, sizeof(tcache->textures[tcache->index]));
+			memcpy(&tcache->textures[textureIndex], &tcache->textures[tcache->index - 1], sizeof(Texture));
 			tcache->index--;
 			return;
 		}
