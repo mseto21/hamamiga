@@ -98,7 +98,7 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 }
 
 // --------------------------------------------------------------------
-void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Texture* mShader, Rectangle* rect) {
+void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Rectangle* rect) {
 	switch (hatId) {
 		case GlamourHatId_Disco:
 			/*
@@ -115,12 +115,12 @@ void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Te
 			break;
 		case GlamourHatId_None:
 			break;
-                case GlamourHatId_Miner:
-		  RenderSystem_Render_xywh(renderer, rect->x + (rect->w - mShader->w)/2, rect->y - mShader->h / 2, mShader->w, mShader->h, NULL, mShader);
+        case GlamourHatId_Miner:
+        	Texture* mShader = TextureCache_GetTexture("miner-shader");
+        	mShader->flip = TextureCache_GetTexture("miner")->flip;
+		  	RenderSystem_Render_xywh(renderer, rect->x + (rect->w - mShader->w)/2, rect->y - mShader->h / 2, mShader->w, mShader->h, NULL, mShader);
 	        break;
-		default:
-			std::cerr << "Error: The glamour hat with id " << hatId << " does not exist" << std::endl;
-			break;
+		
 	}
 }
 
@@ -133,7 +133,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	CameraComponent* cameraComponent = renderSystem->cameraComponent;
  	HatComponent* hatComponent = renderSystem->hatComponent;
  	HealthComponent* healthComponent = renderSystem->healthComponent;
- 	GoalComponent* goalComponent = renderSystem->goalComponent;
+ 	//GoalComponent* goalComponent = renderSystem->goalComponent;
  	TileMap* map = renderSystem->map;
 
 
@@ -246,14 +246,11 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				RenderSystem_Render_xywh(renderer, rect.x, rect.y - hatTexture->w / 2, hatTexture->w, hatTexture->h, NULL, hatTexture);
 			}
 			if (gHatTexture) {
-			    Texture* mShader = TextureCache_GetTexture("miner-shader");
-				mShader->flip = SDL_FLIP_NONE;
-				mShader->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
 				gHatTexture->flip = SDL_FLIP_NONE;
-				RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - gHatTexture->h, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
+				RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
 				gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
-			  	RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
-			  	RenderGlamourEffect(renderer, gHat->id, delta, mShader, &rect);
+			  	RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - gHatTexture->h, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
+			  	RenderGlamourEffect(renderer, gHat->id, delta, &rect);
 			}
     	}
 	}
