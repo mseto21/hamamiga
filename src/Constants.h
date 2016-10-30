@@ -46,20 +46,8 @@ namespace Constants {
 	const uint16    XRange_            	=   300;
 	const uint16    YRange_            	=   168;
 
-
-	// Hats sizes
-	const uint16  	BunnyHatH_			=   52; 
-	const uint16  	BunnyHatW_ 			=   48;
-	const uint16  	ConstructionHatH_ 	=   24; 
-	const uint16  	ConstructionHatW_	=   48;
-	const uint16  	CrownH_				=   23; 
-	const uint16  	CrownW_				=   48;
-  const uint16  	DiscoHatH_			=   40;
-  const uint16  	DiscoHatW_ 			=   48;
-
 	// High Score State
 	const int     MaxHighScores_		=		5;
-
 
 	// Constant names
 	const String128	TitleBackground_	= 	"title_background";

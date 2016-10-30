@@ -114,8 +114,8 @@ void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed) {
 			break;
 		case GlamourHatId_None:
 			break;
-	        case GlamourHatId_Miner:
-		        break;
+        case GlamourHatId_Miner:
+	        break;
 		default:
 			std::cerr << "Error: The glamour hat with id " << hatId << " does not exist" << std::endl;
 			break;
