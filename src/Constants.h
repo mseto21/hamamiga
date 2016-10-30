@@ -18,7 +18,7 @@ namespace Constants {
 	const uint16	TileSize_		=	48;
 	const uint16	DiscoChannel_	= 2;//channel for disco/overlay sounds
 	const uint16  	SoundChannel_	= 3; //arbitrary channel for rest of sounds
-	const uint16	NumBullets_ = 5; //max number of alive bullets at a time
+	const uint16	MaxBullets_ = 5; //max number of alive bullets at a time
 
 	// Intro State
 	const uint32	IntroTime_		= 	5000;

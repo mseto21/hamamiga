@@ -1,8 +1,6 @@
 #include "Animation.h"
 #include "Component.h"
 
-//struct Animation;
-
 struct AnimationComponent : public Component {
 	Animation animations[Constants::MaxEntities_];
 };

@@ -6,6 +6,7 @@ struct MovementComponent;
 struct TextureComponent;
 struct InputComponent;
 struct AnimationComponent;
+struct BulletComponent;
 struct PhysicsComponent;
 struct HealthComponent;
 struct CameraComponent;
@@ -21,15 +22,16 @@ struct ComponentBag {
 	TextureComponent*   textureComponent;
 	InputComponent* 	inputComponent;
 	AnimationComponent* animationComponent;
+	BulletComponent* bulletComponent;
 	PhysicsComponent* 	physicsComponent;
 	HealthComponent* 	healthComponent;
 	CameraComponent*	cameraComponent;
-    HatComponent*       hatComponent;
+  	HatComponent*       hatComponent;
 	AIComponent* 		aiComponent;
 	AliveComponent* 	aliveComponent;
 	GoalComponent* 		goalComponent;
 	InteractableComponent * interactableComponent;
-    bool freed;
+  	bool freed;
 
 };
 

@@ -24,6 +24,8 @@ void LoadIntroStateAssets(Game* game) {
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/lose-screen.png", Constants::LoseBackground_);
+	//TextureCache_CreateTexture(game->renderer, "assets/shader.png", Constants::Shader_);
+
 }
 
 
@@ -146,6 +148,7 @@ void FreePlay(Game* game) {
 	}
 	game->playState.chapter.endScene.slideCount = 0;
 	game->playState.chapter.endScene.current = 0;
+	ComponentBag_Reset(&game->playState.cBag);
 	game->playState.loaded = false;
 }
 
@@ -156,7 +159,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	std::string chapterPath = "assets/chapter_" + std::to_string(chapter) + "/chapter_" + std::to_string(chapter)  + ".txt";
 
 	std::string backgroundPath = "assets/chapter_" + std::to_string(chapter) + "/background.png";
-	TextureCache_ReplaceTexture(game->renderer, backgroundPath.c_str(), Constants::GameBackground_);
+	TextureCache_CreateTexture(game->renderer, backgroundPath.c_str(), Constants::GameBackground_);
 	
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer)) {
 		ComponentBag_Free(&game->playState.cBag);

@@ -2,11 +2,12 @@ zone=
 	name=Chapter 1: The Mysterious, Murderous Memo;
 	tileset=assets/chapter_1/chapter_1_tileset.png;
 	tilemap=assets/chapter_1/chapter_1_level.csv;
-	music=themesong.ogg;
+	music=assets/sounds/chapter_1.ogg;
 	cutstart=assets/chapter_1/cutscene-1.png,assets/chapter_1/cutscene-2.png,assets/chapter_1/cutscene-3.png,;
 	entity=
 		animation(4,150.0,48,87,)
 		health(100,)
+		bullet()
 		input()
 		movement(5.0,20.0,1.5,14.0,)
 		physics(100,)

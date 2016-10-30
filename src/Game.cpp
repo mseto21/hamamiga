@@ -146,7 +146,6 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 				Mix_HaltMusic();
 				game->playState.loaded = LoadPlayStateAssets(game, game->playState.currentLevel);
 				if (!game->playState.loaded) {
-					FreePlay(game);
 					std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
 					game->gameState = GameState_Title;
 					break;
