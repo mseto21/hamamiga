@@ -74,7 +74,7 @@ int ReadTileset(FILE* chapterFile, SDL_Renderer* renderer) {
 				str[pos++] = c;
 		}
 	}
-	TextureCache_CreateTexture(renderer, str, "tileset");
+	TextureCache_ReplaceTexture(renderer, str, Constants::TilesetName_);
 	cout << "SUCCESS: tileset successfully loaded!" << endl;
 	return lineNumber;
 }

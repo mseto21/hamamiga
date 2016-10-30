@@ -6,3 +6,4 @@ void LoadTitleStateAssets(Game* game);
 void LoadHighScoreStateAssets(Game* game);
 void LoadZoneIntroAssets(Game* game, String128 name);
 bool LoadPlayStateAssets(Game* game, int chapter);
+void FreePlay(Game* game);

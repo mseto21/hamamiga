@@ -68,21 +68,34 @@ Texture* TextureCache_GetOrCreateTexture(SDL_Renderer* renderer, const char* pat
 
 
 /* Replaces the first texture with the given string. */
-Texture* TextureCache_ReplaceTexture(SDL_Renderer* renderer, const String128 path, Texture* replacement) {
+Texture* TextureCache_ReplaceTexture(SDL_Renderer* renderer, const String128 path, const String128 name) {
 	(void) renderer;
 	int textureIndex = 0;
 	for (; textureIndex < tcache->index; textureIndex++) {
-		if (strcmp(tcache->textures[textureIndex].name, path) == 0) {
+		if (strcmp(tcache->textures[textureIndex].name, name) == 0) {
 			break;
 		}
 	}
 	if (textureIndex == tcache->index) {
-		std::cerr << "Error: Unable to replace texture " << path << "." << std::endl;
-		return nullptr;
+		TextureCache_CreateTexture(renderer, path, name);
 	}
 	Texture* old = TextureCache_GetTexture(textureIndex);
-	memcpy(old, &replacement, sizeof(Texture));
+	memcpy(old, TextureCache_CreateTexture(renderer, path, name), sizeof(Texture));
 	return old;
+}
+
+
+/* Removes the texture with path from the cache. */
+void TextureCache_Remove(const char* path) {
+	int textureIndex = 0;
+	for (; textureIndex < tcache->index; textureIndex++) {
+		if (strcmp(tcache->textures[textureIndex].name, path) == 0) {
+			tcache->textures[textureIndex] = tcache->textures[tcache->index];
+			memset(&tcache->textures[tcache->index], 0, sizeof(tcache->textures[tcache->index]));
+			tcache->index--;
+			return;
+		}
+	}
 }
 
 

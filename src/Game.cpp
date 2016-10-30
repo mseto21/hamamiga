@@ -257,7 +257,7 @@ void RenderZoneIntro(Game* game, uint32 elapsed) {
 		SDL_RenderClear(game->renderer);
 		if (fader) { 
 			RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
-			Texture* name = TextureCache_GetTexture("zone_name");
+			Texture* name = TextureCache_GetTexture(Constants::ZoneName_);
 			if (!name) {
 				std::cerr << "Error: Unable to load the zone's name texture" << std::endl;
 				return;
@@ -315,26 +315,6 @@ void RenderPlay(Game* game, Uint32 elapsed) {
 }
 
 
-void FreePlay(Game* game) {
-	if (game->playState.loaded) {
-		if (!game->playState.cBag.freed) {
-			ComponentBag_Free(&game->playState.cBag);
-		}
-		game->playState.loaded = false;
-		memset(&game->playState.chapter, 0, sizeof(game->playState.chapter));
-		Mix_FreeMusic(game->playState.chapter.music);
-		Mix_HaltChannel(Constants::DiscoChannel_);
-	}
-	EntityCache_RemoveAll();
-}
-
-
-void ReturnFromPlay(Game* game) {
-	FreePlay(game);
-	game->gameState = GameState_Title;
-}
-
-
 void Game_RunLoop(Game* game) {
 	if (!game) {
 		std::cerr << "The game instance was not initialized!" << std::endl;
@@ -372,18 +352,17 @@ void Game_RunLoop(Game* game) {
 							game->gameState = GameState_Closing;
 							break;
 						case SDLK_m:
-							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win){
+							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win) {
 								game->gameState = GameState_Returning;
 								Mix_HaltChannel(2);
 								Mix_FreeMusic(game->playState.chapter.music);
 							}
-							else{
+							else {
 								game->gameState = GameState_Title;
 							}
 							break;
 						case SDLK_p:
-							if (game->gameState != GameState_Title && game->gameState != GameState_HighScore &&
-								game->gameState != GameState_Intro){
+							if (game->gameState != GameState_Title && game->gameState != GameState_HighScore && game->gameState != GameState_Intro) {
 								FreePlay(game);
 								if (!LoadPlayStateAssets(game, game->playState.currentLevel)) {
 									std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
@@ -416,7 +395,7 @@ void Game_RunLoop(Game* game) {
 
 		// TO-DO: I'm sad about this.
 		if (game->gameState == GameState_Play) {
-				InputSystem_Update(&game->playState.inputSystem, keysdown, keysup);
+			InputSystem_Update(&game->playState.inputSystem, keysdown, keysup);
 		}
 
 		// Update game state
@@ -462,11 +441,12 @@ void Game_RunLoop(Game* game) {
 			case GameState_Win:
 				RenderWin(game);
 				break;
-	  		case GameState_Lose:
-	  			RenderLose(game);
+	  	case GameState_Lose:
+	  		RenderLose(game);
 				break;
 			case GameState_Returning:
-				ReturnFromPlay(game);
+				FreePlay(game);
+				game->gameState = GameState_Title;
 				break;
 			case GameState_Closing:
 				game->running = false;
@@ -481,8 +461,6 @@ void Game_RunLoop(Game* game) {
 
 void Game_Close(Game* game) {
 	FreePlay(game);
-	TTF_CloseFont(game->playState.scoreFont);
-	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);
 	TextureCache_Free();
 	EntityCache_Free();

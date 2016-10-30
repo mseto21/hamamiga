@@ -98,10 +98,10 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						if (!interactableComponent->interacted[otherEid]) {
 							ApplyHatInteraction(hattype, eid, physicsSystem->componentBag);
 							interactableComponent->interacted[otherEid] = true;
+							if (Component_HasIndex(aliveComponent, otherEid)) {
+						  		aliveComponent->alive[otherEid] = false;
+						  	}
 						}
-						if (Component_HasIndex(aliveComponent, otherEid)) {
-				  		aliveComponent->alive[otherEid] = false;
-				  	}
 					}
 				}
 				continue;

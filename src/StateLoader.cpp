@@ -4,6 +4,7 @@
 #include "TextureCache.h"
 #include "SoundCache.h"
 #include "HealthComponent.h"
+#include "EntityCache.h"
 
 #include <iostream>
 #include <cstdio>
@@ -21,10 +22,8 @@ void LoadIntroStateAssets(Game* game) {
 	TextureCache_CreateTexture(game->renderer, "assets/menu-screen.png", Constants::TitleBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/menu-screen-overlay.png", Constants::MenuOverlay_);
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
-	//TextureCache_CreateTexture(game->renderer, "assets/background.png", Constants::GameBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/lose-screen.png", Constants::LoseBackground_);
-	TextureCache_CreateTexture(game->renderer, "assets/background-chap2.png", Constants::GameBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/shader.png", Constants::Shader_);
 }
 
@@ -97,16 +96,44 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 	}
 
 	SDL_Color color = {255, 255, 255, 255};
-	TextureCache_CreateFont(game->renderer, game->zoneIntroState.font, color, name, "zone_name");
+	TextureCache_CreateFont(game->renderer, game->zoneIntroState.font, color, name, Constants::ZoneName_);
 	TTF_CloseFont(game->zoneIntroState.font);
+}
+
+
+void FreePlay(Game* game) {
+	TTF_CloseFont(game->playState.scoreFont);
+	TTF_CloseFont(game->playState.healthFont);
+	if (!game->playState.cBag.freed) {
+		ComponentBag_Free(&game->playState.cBag);
+	}
+	Mix_FreeMusic(game->playState.chapter.music);
+	Mix_HaltChannel(Constants::DiscoChannel_);
+	TextureCache_Remove(Constants::ZoneName_);
+	TextureCache_Remove(Constants::TilesetName_);
+	TextureCache_Remove(Constants::GameBackground_);
+	EntityCache_RemoveAll();
+	strcpy(game->playState.chapter.name, "");
+	for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
+		game->playState.chapter.startScene.slides[i] = nullptr;
+	}
+	game->playState.chapter.startScene.slideCount = 0;
+	game->playState.chapter.startScene.current = 0;
+
+	for (int i = 0; i < game->playState.chapter.endScene.slideCount; i++) {
+		game->playState.chapter.endScene.slides[i] = nullptr;
+	}
+	game->playState.chapter.endScene.slideCount = 0;
+	game->playState.chapter.endScene.current = 0;
 }
 
 
 
 bool LoadPlayStateAssets(Game* game, int chapter) {
 	ComponentBag_Malloc(&game->playState.cBag);
-
 	std::string chapterPath = "assets/chapter_" + std::to_string(chapter) + "/chapter_" + std::to_string(chapter)  + ".txt";
+	std::string backgroundPath = "assets/chapter_" + std::to_string(chapter) + "/background.png";
+	TextureCache_ReplaceTexture(game->renderer, backgroundPath.c_str(), Constants::GameBackground_);
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer)) {
 		ComponentBag_Free(&game->playState.cBag);
 		std::cerr << "Error: Unable to load from path " << chapterPath << std::endl;
@@ -134,7 +161,6 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/disco.ogg", "disco");
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
 	SoundCache_CreateSound("assets/sounds/nj.ogg", "nj");
-	
 
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);

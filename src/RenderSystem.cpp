@@ -112,8 +112,10 @@ void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed) {
 			SDL_RenderFillRect(renderer, &bigRect);
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);*/
 			break;
+		case GlamourHatId_None:
+			break;
 		default:
-			std::cerr << "Error: The glamout har with id " << hatId << " does not exist" << std::endl;
+			std::cerr << "Error: The glamour hat with id " << hatId << " does not exist" << std::endl;
 			break;
 	}
 }
@@ -142,7 +144,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	
 
  	// Render tile map
-	Texture* tileset = TextureCache_GetTexture("tileset");
+	Texture* tileset = TextureCache_GetTexture(Constants::TilesetName_);
 	int tileStartX = floor(cameraComponent->camera.x / Constants::TileSize_);
 	int tileEndX = ceil((cameraComponent->camera.x + cameraComponent->camera.w) / Constants::TileSize_);
 	int tileStartY = floor(cameraComponent->camera.y / Constants::TileSize_);
