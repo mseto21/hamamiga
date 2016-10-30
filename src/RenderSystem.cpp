@@ -116,6 +116,7 @@ void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Te
 		case GlamourHatId_None:
 			break;
                 case GlamourHatId_Miner:
+		  std::cout << "in here" << std::endl;
 		  RenderSystem_Render_xywh(renderer, rect->x + (rect->w - mShader->w)/2, rect->y - mShader->h / 2, mShader->w, mShader->h, NULL, mShader);
 	        break;
 		default:
