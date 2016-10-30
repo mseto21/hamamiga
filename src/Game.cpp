@@ -267,7 +267,6 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 						game->optionState.windowBrightness = 0;
 					}
 				}
-				//std::cout << "window brightness" << game->optionState.windowBrightness << std::endl;
 				SDL_SetWindowBrightness(game->window, game->optionState.windowBrightness);
 				SDL_UpdateWindowSurface(game->window);
 				break;
