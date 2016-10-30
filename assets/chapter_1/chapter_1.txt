@@ -1,6 +1,6 @@
 zone=
 	name=Chapter 1: The Mysterious, Murderous Memo;
-	tileset=assets/chapter_1/chapter_1_tileset.png;
+	tileset=assets/chapter_2/chapter_2_tileset.png;
 	tilemap=assets/chapter_1/chapter_1_level.csv;
 	music=assets/chapter_1/chapter_1.ogg;
 	cutstart=assets/chapter_1/cutscene-1.png,assets/chapter_1/cutscene-2.png,assets/chapter_1/cutscene-3.png,;
