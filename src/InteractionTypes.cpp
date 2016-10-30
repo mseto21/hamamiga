@@ -71,7 +71,7 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "miner", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Let there be light!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
-			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_Miner;
+			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Miner;
 			break;
 		default:
 			std::cerr << "Error: Unknown hat type given." << std::endl;

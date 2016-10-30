@@ -446,7 +446,6 @@ void Game_RunLoop(Game* game) {
 							if (game->gameState != GameState_Title && game->gameState != GameState_HighScore && game->gameState != GameState_Intro) {
 								if (!game->playState.loaded) {
 									std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
-									FreePlay(game);
 									game->gameState = GameState_Title;
 								} else {
 									game->gameState = GameState_Play;
