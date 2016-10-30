@@ -128,15 +128,11 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 
 
 void FreePlay(Game* game) {
-	TTF_CloseFont(game->playState.scoreFont);
-	TTF_CloseFont(game->playState.healthFont);
 	if (!game->playState.cBag.freed)
 		ComponentBag_Free(&game->playState.cBag);
-	Mix_FreeMusic(game->playState.chapter.music);
+	//Mix_FreeMusic(game->playState.chapter.music);
 	Mix_HaltChannel(Constants::DiscoChannel_);
-	TextureCache_Remove(Constants::ZoneName_);
-	TextureCache_Remove(Constants::TilesetName_);
-	TextureCache_Remove(Constants::GameBackground_);
+	
 	EntityCache_RemoveAll();
 	strcpy(game->playState.chapter.name, "");
 	for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
