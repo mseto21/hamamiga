@@ -144,7 +144,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			int tileX = floor(r1->x / Constants::TileSize_);
 			int tileCenterX = ((r1->x + (r1->w / 2)) / Constants::TileSize_);
 			int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
-			int tileY = floor((r1->y) / Constants::TileSize_);
+			int tileY = floor((r1->y + moveValues->yVelocity) / Constants::TileSize_);
 			int tileCenterY = ((r1->y + (r1->h / 2)) / Constants::TileSize_);
 			int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
 			int tileHeadY = floor((r1->y + 4) / Constants::TileSize_);

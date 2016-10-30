@@ -25,6 +25,7 @@ void LoadIntroStateAssets(Game* game) {
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/lose-screen.png", Constants::LoseBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/background-chap2.png", Constants::GameBackground_);
+	TextureCache_CreateTexture(game->renderer, "assets/shader.png", Constants::Shader_);
 }
 
 

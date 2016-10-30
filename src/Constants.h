@@ -62,6 +62,7 @@ namespace Constants {
 	const String128 MenuOverlay_    	= 	"menu_overlay";
 	const String128 BunnyHat_           =	"bunny";
 	const String128 DiscoHat_           =	"disco";
+	const String128 Shader_    		= 	"shader";
 
 
 }
