@@ -27,7 +27,7 @@ namespace Constants {
 	const uint8	 	TitleScreenSelections_	=	4;
 	
 	// Option State
-	const uint8	 	OptionScreenSelections_	=	2;
+	const uint8	 	OptionScreenSelections_	=	1;
 	const uint8		VolumeUnit_							= 4;
 	const uint8		MaxVolume_							= 128;
 	const float		BrightnessUnit_					= 0.1f;

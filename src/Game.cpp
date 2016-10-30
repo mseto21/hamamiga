@@ -254,7 +254,7 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 				}
 				Mix_VolumeMusic(game->optionState.musicVolume);
 				break;
-			case 1:
+			/*case 1:
 				if (keysdown[SDLK_d]){
 					if (game->optionState.windowBrightness < Constants::MaxBrightness_) {
 						game->optionState.windowBrightness += Constants::BrightnessUnit_;
@@ -266,7 +266,7 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 					}
 				}
 				SDL_SetWindowBrightness(game->window, game->optionState.windowBrightness);
-				SDL_UpdateWindowSurface(game->window);
+				SDL_UpdateWindowSurface(game->window);*/
 				break;
 		}
 }
