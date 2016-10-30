@@ -7,6 +7,7 @@
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
 #include "AnimationComponent.h"
+#include "BulletComponent.h"
 #include "MovementComponent.h"
 #include "CameraComponent.h"
 #include "TileMap.h"
@@ -216,14 +217,11 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 					clip = {0, 0, animation->spriteW, animation->spriteH};
 				} else if (movementComponent->movementValues[eid].xVelocity > 0) {
 					texture->flip = SDL_FLIP_NONE;
-					if (eid == Constants::PlayerIndex_){
-						//	Sound_Play(SoundCache_GetSound("walking"));
-					} //and check for only kevin
 				} else {
 					texture->flip = SDL_FLIP_HORIZONTAL;
 				}
 				if (!movementComponent->movementValues[eid].grounded){
-					clip = {animation->spriteW * 3, 0, animation->spriteW, animation->spriteH};//CHANGE TO JUMPING ANIM
+					clip = {animation->spriteW * 4, 0, animation->spriteW, animation->spriteH};
 				}
 			}	  
 		}

@@ -4,6 +4,7 @@
 #include "TextureComponent.h"
 #include "InputComponent.h"
 #include "AnimationComponent.h"
+#include "BulletComponent.h"
 #include "PhysicsComponent.h"
 #include "HealthComponent.h"
 #include "CameraComponent.h"
@@ -20,6 +21,7 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->textureComponent 		= (TextureComponent*)malloc(sizeof(*bag->textureComponent));
 	bag->inputComponent 		= (InputComponent*)malloc(sizeof(*bag->inputComponent));
 	bag->animationComponent 	= (AnimationComponent*)malloc(sizeof(*bag->animationComponent));
+	bag->bulletComponent 	= (BulletComponent*)malloc(sizeof(*bag->bulletComponent));
 	bag->physicsComponent 		= (PhysicsComponent*)malloc(sizeof(*bag->physicsComponent));
 	bag->healthComponent 		= (HealthComponent*)malloc(sizeof(*bag->healthComponent));
 	bag->cameraComponent 		= (CameraComponent*)malloc(sizeof(*bag->cameraComponent));
@@ -39,6 +41,7 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->textureComponent);
 	Component_Initialize(bag->inputComponent);
 	Component_Initialize(bag->animationComponent);
+	Component_Initialize(bag->bulletComponent);
 	Component_Initialize(bag->healthComponent);
 	Component_Initialize(bag->cameraComponent);
 	Component_Initialize(bag->hatComponent);
@@ -63,6 +66,9 @@ void ComponentBag_Check(ComponentBag* bag) {
 	}
 	if (!bag->animationComponent) {
 		std::cout << "Error: Uninitialized animationComponent" << std::endl;
+	}
+	if (!bag->bulletComponent) {
+		std::cout << "Error: Uninitialized bulletComponent" << std::endl;
 	}
 	if (!bag->physicsComponent) {
 		std::cout << "Error: Uninitialized physicsComponent" << std::endl;
@@ -96,6 +102,7 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->textureComponent);
 	free(bag->inputComponent);
 	free(bag->animationComponent);
+	free(bag->bulletComponent);
 	free(bag->physicsComponent);
 	free(bag->healthComponent);
 	free(bag->cameraComponent);
@@ -104,7 +111,7 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->aliveComponent);
 	free(bag->goalComponent);
 	free(bag->interactableComponent);
-    bag->freed = true;
+  bag->freed = true;
 }
 
 void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
@@ -125,7 +132,10 @@ void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HasIndex(bag->animationComponent, eid)) {
 		Component_Remove(bag->animationComponent, eid);
-	}	
+	}
+	if (Component_HasIndex(bag->bulletComponent, eid)) {
+		Component_Remove(bag->bulletComponent, eid);
+	}
 	if (Component_HasIndex(bag->healthComponent, eid)) {
 		Component_Remove(bag->healthComponent, eid);
 		bag->healthComponent->health[eid] = 0;

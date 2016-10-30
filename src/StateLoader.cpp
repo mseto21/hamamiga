@@ -24,6 +24,8 @@ void LoadIntroStateAssets(Game* game) {
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/lose-screen.png", Constants::LoseBackground_);
+	//TextureCache_CreateTexture(game->renderer, "assets/shader.png", Constants::Shader_);
+
 }
 
 

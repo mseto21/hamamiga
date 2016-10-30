@@ -5,6 +5,7 @@
 #include "TextureComponent.h"
 #include "InputComponent.h"
 #include "AnimationComponent.h"
+#include "BulletComponent.h"
 #include "PhysicsComponent.h"
 #include "HealthComponent.h"
 #include "CameraComponent.h"
@@ -26,30 +27,40 @@ const float JumpEnchancement_ = 1.41;
 enum HatTypes {
 	HatTypes_BunnyHat = 0,
 	HatTypes_HardHat,
+	HatTypes_Cowboy,
 	HatTypes_Crown,
 	HatTypes_Disco,
 	HatTypes_Miner,
 };
 
 void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
-	Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 	switch (hatType)  {
 		case HatTypes_BunnyHat:
+			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "bunny", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "2x jump", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->movementComponent->movementValues[eid].accelY *= JumpEnchancement_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			break;
 		case HatTypes_HardHat:
+			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "construction", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "1/2 Damage!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->healthComponent->damageReduction[eid] = DamageReduction_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			break;
+		case HatTypes_Cowboy:
+			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
+			memcpy(&cBag->hatComponent->hats[eid].hat.name, "cowboy", sizeof(cBag->hatComponent->hats[eid].hat.name));
+			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "powpow", sizeof(cBag->hatComponent->hats[eid].hat.effect));
+			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			cBag->bulletComponent->activated = true;
+			break;
 		case HatTypes_Crown:
 			cBag->goalComponent->winGoal[eid] = true;
 			break;
 		case HatTypes_Disco:
+			Sound_Play(SoundCache_GetSound("disco"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "disco", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Strobe Lights!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Disco;
@@ -57,6 +68,7 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
       		Sound_Play(SoundCache_GetSound("disco"), -1);
 			break;
 		case HatTypes_Miner:
+			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "miner", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Let there be light!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_Miner;
