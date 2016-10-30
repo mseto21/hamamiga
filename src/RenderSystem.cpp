@@ -234,11 +234,11 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		Hat* hat = &hatComponent->hats[Constants::PlayerIndex_].hat;
 		Hat* gHat = &hatComponent->hats[Constants::PlayerIndex_].gHat;
 		Texture* gHatTexture = TextureCache_GetTexture(gHat->name);
-	  Texture* hatTexture = TextureCache_GetTexture(hat->name);
+	  	Texture* hatTexture = TextureCache_GetTexture(hat->name);
 
-    if (Component_HasIndex(rectangleComponent, Constants::PlayerIndex_)) {
-    	Rectangle rect = rectangleComponent->entityRectangles[Constants::PlayerIndex_];
-    	rect.x -= cameraComponent->camera.x;
+    	if (Component_HasIndex(rectangleComponent, Constants::PlayerIndex_)) {
+	    	Rectangle rect = rectangleComponent->entityRectangles[Constants::PlayerIndex_];
+	    	rect.x -= cameraComponent->camera.x;
 			rect.y -= cameraComponent->camera.y;
 			if (hatTexture) {
 				hatTexture->flip = SDL_FLIP_NONE;
@@ -250,10 +250,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				gHatTexture->flip = SDL_FLIP_NONE;
 				RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - gHatTexture->h, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
 				gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
-			  RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
-			  RenderGlamourEffect(renderer, gHat->id, delta);
+				RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
+				RenderGlamourEffect(renderer, gHat->id, delta);
 			}
-    }
+    	}
 	}
 
 	// Render HUD

@@ -160,7 +160,6 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 				LoadHighScoreStateAssets(game);
 				break;
 			case 2:
-				// Change to option game state
 				game->gameState = GameState_Options;
 				LoadOptionStateAssets(game);
 				break;
