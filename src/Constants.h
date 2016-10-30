@@ -18,12 +18,20 @@ namespace Constants {
 	const uint16	TileSize_		=	48;
 	const uint16	DiscoChannel_	= 2;//channel for disco/overlay sounds
 	const uint16  	SoundChannel_	= 3; //arbitrary channel for rest of sounds
+	const uint16	NumBullets_ = 5; //max number of alive bullets at a time
 
 	// Intro State
 	const uint32	IntroTime_		= 	5000;
 
 	// Title State
 	const uint8	 	TitleScreenSelections_	=	4;
+	
+	// Option State
+	const uint8	 	OptionScreenSelections_	=	2;
+	const uint8		VolumeUnit_							= 4;
+	const uint8		MaxVolume_							= 128;
+	const float		BrightnessUnit_					= 0.1f;
+	const float 	MaxBrightness_					= 1.0f;
 
 	// Zone Intro State Time
 	const uint32	ZoneIntroTime_		=	3000;
@@ -46,8 +54,8 @@ namespace Constants {
 	const uint16  	ConstructionHatW_	=   48;
 	const uint16  	CrownH_				=   23; 
 	const uint16  	CrownW_				=   48;
-    const uint16  	DiscoHatH_			=   40;
-    const uint16  	DiscoHatW_ 			=   48;
+  const uint16  	DiscoHatH_			=   40;
+  const uint16  	DiscoHatW_ 			=   48;
 
 	// High Score State
 	const int     MaxHighScores_		=		5;

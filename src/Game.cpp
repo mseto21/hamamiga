@@ -161,6 +161,8 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 				break;
 			case 2:
 				// Change to option game state
+				game->gameState = GameState_Options;
+				LoadOptionStateAssets(game);
 				break;
 			case 3:
 				Mix_HaltMusic();
@@ -216,6 +218,85 @@ void RenderHighScore(Game* game, uint32 elapsed) {
 	SDL_RenderPresent(game->renderer);
 }
 
+void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
+	// Update their options
+	if (keysdown[SDLK_w] && !game->optionState.w) {
+		if (!game->titleState.w) {
+			game->optionState.w = true;
+			game->optionState.s = false;
+			game->optionState.selection--;
+			game->optionState.selection %= Constants::OptionScreenSelections_;
+		}
+	}
+	if (keysup[SDLK_w]) {
+		game->optionState.w = false;
+	}
+
+	if (keysdown[SDLK_s] && !game->optionState.s) {
+		game->optionState.w = false;
+		game->optionState.s = true;
+		game->optionState.selection++;
+		game->optionState.selection %= Constants::OptionScreenSelections_;
+	}
+	if (keysup[SDLK_s]) {
+		game->optionState.s = false;
+	}
+
+	// Set the next state
+		switch (game->optionState.selection) {
+			case 0:
+				if (keysdown[SDLK_d]){
+					if (game->optionState.musicVolume < Constants::MaxVolume_) {
+						game->optionState.musicVolume += Constants::VolumeUnit_;
+					}
+				} else if (keysdown[SDLK_a]){
+					if (game->optionState.musicVolume > 0){
+						game->optionState.musicVolume -= Constants::VolumeUnit_;
+					}
+				}
+				Mix_VolumeMusic(game->optionState.musicVolume);
+				break;
+			case 1:
+				if (keysdown[SDLK_d]){
+					if (game->optionState.windowBrightness < Constants::MaxBrightness_) {
+						game->optionState.windowBrightness += Constants::BrightnessUnit_;
+					}
+				} else if (keysdown[SDLK_a]){
+					game->optionState.windowBrightness -= Constants::BrightnessUnit_;
+					if (game->optionState.windowBrightness < 0){
+						game->optionState.windowBrightness = 0;
+					}
+				}
+				SDL_SetWindowBrightness(game->window, game->optionState.windowBrightness);
+				SDL_UpdateWindowSurface(game->window);
+				break;
+		}
+}
+
+void RenderOptions(Game* game, uint32 elapsed) {
+	(void) elapsed;
+Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
+	SDL_RenderClear(game->renderer);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
+	for (int selectionIndex = 0; selectionIndex < Constants::OptionScreenSelections_; selectionIndex++) {
+		Texture* selection;
+		if (selectionIndex == game->optionState.selection) {
+			std::string base = game->optionState.selectionStrings[selectionIndex];
+			base.append("_base");
+			selection = TextureCache_GetTexture(base.c_str());
+		} else {
+			std::string select = game->optionState.selectionStrings[selectionIndex];
+			select.append("_select");
+			selection = TextureCache_GetTexture(select.c_str());
+		}
+		int renderX = Constants::ScreenWidth_ / 2 - selection->w / 2;
+		int renderY = selectionIndex * (Constants::ScreenHeight_ / Constants::OptionScreenSelections_);
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, NULL, selection);
+	}
+	SDL_RenderPresent(game->renderer);
+
+
+}
 
 void UpdatePause(Game* game, uint32 elapsed) {
 	// TO-DO: Implement some sort of pause
@@ -410,6 +491,9 @@ void Game_RunLoop(Game* game) {
 				case GameState_HighScore:
 					UpdateHighScore(game, keysdown);
 					break;
+				case GameState_Options:
+					UpdateOptions(game, keysdown, keysup);
+					break;
 				case GameState_Pause:
 					UpdatePause(game, elapsed);
 					break;
@@ -435,6 +519,9 @@ void Game_RunLoop(Game* game) {
 				break;
 			case GameState_HighScore:
 				RenderHighScore(game, elapsed);
+				break;
+			case GameState_Options:
+				RenderOptions(game, elapsed);
 				break;
 			case GameState_Pause:
 				break;

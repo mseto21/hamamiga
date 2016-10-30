@@ -26,6 +26,7 @@ enum GameState {
 	GameState_ZoneIntro,
 	GameState_Play,
 	GameState_HighScore,
+	GameState_Options,
 	GameState_Pause,
 	GameState_Win,
 	GameState_Lose,
@@ -50,6 +51,16 @@ struct TitleState {
 struct HighScoreState {
 	int scores[Constants::MaxHighScores_];
 	_TTF_Font* font;
+};
+
+struct OptionState {
+	uint16 musicVolume = 128;
+	float windowBrightness = 1.0f;
+	const char* selectionStrings[Constants::TitleScreenSelections_];
+	uint8 selection;
+	_TTF_Font* font;
+	bool w;
+	bool s;
 };
 
 struct ZoneIntroState {
@@ -94,6 +105,7 @@ struct Game {
 	TitleState titleState;
 	HighScoreState highScoreState;
 	PlayState playState;
+	OptionState optionState;
 };
 
 bool Game_Initialize(Game* game);

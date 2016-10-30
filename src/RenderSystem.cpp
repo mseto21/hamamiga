@@ -215,9 +215,12 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 					texture->flip = SDL_FLIP_NONE;
 					if (eid == Constants::PlayerIndex_){
 						//	Sound_Play(SoundCache_GetSound("walking"));
-					} //ad check for only kevin
+					} //and check for only kevin
 				} else {
 					texture->flip = SDL_FLIP_HORIZONTAL;
+				}
+				if (!movementComponent->movementValues[eid].grounded){
+					clip = {animation->spriteW * 3, 0, animation->spriteW, animation->spriteH};//CHANGE TO JUMPING ANIM
 				}
 			}	  
 		}
@@ -271,7 +274,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
 	}*/
 }
-
 
 
 
