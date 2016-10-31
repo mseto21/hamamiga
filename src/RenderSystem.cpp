@@ -213,7 +213,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			  RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
 			}
 			if (hatTexture) {
-			  RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, NULL, hatTexture);
+			  RenderSystem_Render_xywh(renderer, XRightRender_, hatTexture->h + HHealth_ + 10, hatTexture->w, hatTexture->h, NULL, hatTexture);
 			}
 			
 			if (strlen(gHat->gname) > 1) {
