@@ -50,5 +50,6 @@ void EntityCache_RemoveAll() {
 
 /* Frees the ecache. */
 void EntityCache_Free() {
+	std::cout << "Freeing entity cache" << std::endl;
 	free(eCache);
 }

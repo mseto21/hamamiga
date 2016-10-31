@@ -59,12 +59,6 @@ bool Game_Initialize(Game* game) {
 		return false;
 	}
 
-	// Initialize entity cache
-	if (EntityCache_GetCache() == NULL) {
-		std::cerr << "Error: The entity cache failed to initialize!" << std::endl;
-		return false;
-	}
-
 	// Initialize sound cache
 	if (SoundCache_GetCache() == NULL) {
 		std::cerr << "Error: The sound cache failed to initialize!" << std::endl;
@@ -550,7 +544,6 @@ void Game_Close(Game* game) {
 	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);
 	TextureCache_Free();
-	EntityCache_Free();
 	SoundCache_Free();
 	Mix_CloseAudio();
 	TTF_Quit();

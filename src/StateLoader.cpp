@@ -130,8 +130,8 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 
 void FreePlay(Game* game) {
 	Mix_FreeMusic(game->playState.chapter.music);
+	EntityCache_Free();
 	ComponentBag_Free(&game->playState.cBag);
-	EntityCache_RemoveAll();
 
 	Mix_HaltChannel(Constants::DiscoChannel_);
 	strcpy(game->playState.chapter.name, "");
@@ -160,13 +160,20 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	std::string shaderPath = "assets/chapter_" + std::to_string(chapter) + "/shader.png";
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, shaderPath.c_str(), Constants::Shader_)->sdltexture, SDL_BLENDMODE_MOD);
 
+	if (EntityCache_GetCache() == NULL) {
+		std::cerr << "Error: The entity cache failed to initialize!" << std::endl;
+		return false;
+	}
+
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer)) {
+		EntityCache_Free();
 		ComponentBag_Free(&game->playState.cBag);
 		std::cerr << "Error: Unable to load from path " << chapterPath << std::endl;
 		return false;
 	}
 	
 	if (!Component_HasIndex(game->playState.cBag.healthComponent, Constants::PlayerIndex_)) {
+		EntityCache_Free();
 		ComponentBag_Free(&game->playState.cBag);
 		std::cerr << "Error: The player has no renderable health component" << std::endl;
 		return false;
