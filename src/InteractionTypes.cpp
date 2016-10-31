@@ -42,7 +42,6 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "2x jump", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->movementComponent->movementValues[eid].accelY *= JumpEnchancement_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
-			cBag->bulletComponent->activated = true;
 			break;
 		case HatTypes_HardHat:
 			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
@@ -50,7 +49,6 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "1/2 Damage!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->healthComponent->damageReduction[eid] = DamageReduction_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
-			cBag->bulletComponent->activated = true;
 			break;
 		case HatTypes_Cowboy:
 			Sound_Play(SoundCache_GetSound("hatpickup"), 0);

@@ -14,7 +14,7 @@ zone=
 		hat()
 		camera()
 		goal();
-entity=
+	entity=
 		animation(4,150.0,88,87,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)

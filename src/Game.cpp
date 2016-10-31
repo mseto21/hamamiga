@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "TextureCache.h"
-#include "EntityCache.h"
 #include "SoundCache.h"
 #include "StateLoader.h"
 
@@ -56,12 +55,6 @@ bool Game_Initialize(Game* game) {
 	// Initialize texture cache
 	if (TextureCache_GetCache() == NULL) {
 		std::cerr << "Error: The texture cache failed to initialize!" << std::endl;
-		return false;
-	}
-
-	// Initialize entity cache
-	if (EntityCache_GetCache() == NULL) {
-		std::cerr << "Error: The entity cache failed to initialize!" << std::endl;
 		return false;
 	}
 
@@ -550,7 +543,6 @@ void Game_Close(Game* game) {
 	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);
 	TextureCache_Free();
-	EntityCache_Free();
 	SoundCache_Free();
 	Mix_CloseAudio();
 	TTF_Quit();

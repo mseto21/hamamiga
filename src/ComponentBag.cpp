@@ -97,19 +97,33 @@ void ComponentBag_Check(ComponentBag* bag) {
 
 void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->rectangleComponent);
+	bag->rectangleComponent = nullptr;
 	free(bag->movementComponent);
+	bag->movementComponent = nullptr;
 	free(bag->textureComponent);
+	bag->textureComponent = nullptr;
 	free(bag->inputComponent);
+	bag->inputComponent = nullptr;
 	free(bag->animationComponent);
+	bag->animationComponent = nullptr;
 	free(bag->bulletComponent);
+	bag->bulletComponent = nullptr;
 	free(bag->physicsComponent);
+	bag->physicsComponent = nullptr;
 	free(bag->healthComponent);
+	bag->healthComponent = nullptr;
 	free(bag->cameraComponent);
+	bag->cameraComponent = nullptr;
 	free(bag->hatComponent);
+	bag->hatComponent = nullptr;
 	free(bag->aiComponent);
+	bag->aiComponent = nullptr;
 	free(bag->aliveComponent);
+	bag->aliveComponent = nullptr;
 	free(bag->goalComponent);
+	bag->goalComponent = nullptr;
 	free(bag->interactableComponent);
+	bag->interactableComponent = nullptr;
 }
 
 void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
