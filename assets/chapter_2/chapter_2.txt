@@ -57,7 +57,7 @@ entity=
 	entity=
 		texture(assets/miner-hat.png,miner,)
 		physics(0,)
-		interactable(Press E to Pick Up,0,5,)
+		interactable(Press E to Pick Up,0,4,)
 		rectangle(150,1353,88,61,)
 		alive();
 	entity=

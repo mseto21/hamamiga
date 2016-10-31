@@ -432,13 +432,9 @@ void Game_RunLoop(Game* game) {
 							break;
 						case SDLK_m:
 							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win) {
-								if (game->playState.loaded)
-									FreePlay(game);
 								game->gameState = GameState_Returning;
 								Mix_HaltChannel(2);
-								Mix_FreeMusic(game->playState.chapter.music);
-							}
-							else {
+							} else {
 								game->gameState = GameState_Title;
 							}
 							break;

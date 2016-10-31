@@ -27,10 +27,10 @@ const float JumpEnchancement_ = 1.41;
 enum HatTypes {
 	HatTypes_BunnyHat = 0,
 	HatTypes_HardHat,
-	HatTypes_Cowboy,
 	HatTypes_Crown,
 	HatTypes_Disco,
 	HatTypes_Miner,
+	HatTypes_Cowboy,
 };
 
 void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
