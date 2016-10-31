@@ -129,12 +129,11 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 
 
 void FreePlay(Game* game) {
-	//Mix_FreeMusic(game->playState.chapter.music);
-	Mix_HaltChannel(Constants::DiscoChannel_);
-	if (!game->playState.cBag.freed)
-		ComponentBag_Free(&game->playState.cBag);
-	
+	Mix_FreeMusic(game->playState.chapter.music);
+	ComponentBag_Free(&game->playState.cBag);
 	EntityCache_RemoveAll();
+
+	Mix_HaltChannel(Constants::DiscoChannel_);
 	strcpy(game->playState.chapter.name, "");
 	for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
 		game->playState.chapter.startScene.slides[i] = nullptr;
@@ -147,7 +146,6 @@ void FreePlay(Game* game) {
 	}
 	game->playState.chapter.endScene.slideCount = 0;
 	game->playState.chapter.endScene.current = 0;
-	ComponentBag_Reset(&game->playState.cBag);
 	game->playState.loaded = false;
 }
 

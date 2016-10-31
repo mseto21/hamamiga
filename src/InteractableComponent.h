@@ -1,16 +1,12 @@
 #pragma once
 #include "Component.h"
 
-struct InteractionValues {
-	String128 messages;
-	int types;
-	int hattypes;
-	bool canBeInteractedWith;
-	bool interacted;
-};
-
 struct InteractableComponent : public Component {
-	InteractionValues interactionValues[Constants::MaxEntities_];
+	String128 messages[Constants::MaxEntities_];
+ 	int types[Constants::MaxEntities_];
+ 	int hattypes[Constants::MaxEntities_];
+ 	bool canBeInteractedWith[Constants::MaxEntities_];
+ 	bool interacted[Constants::MaxEntities_];
 };
 
 void InteractableComponent_Add(InteractableComponent* interactableComponent, uint32 eid, const char* message, int type, int hattype);

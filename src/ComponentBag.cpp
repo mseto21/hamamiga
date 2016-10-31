@@ -31,7 +31,6 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->goalComponent 			= (GoalComponent*)malloc(sizeof(*bag->goalComponent));
 	bag->interactableComponent 	= (InteractableComponent*)malloc(sizeof(*bag->interactableComponent));
 	ComponentBag_Reset(bag);
-	bag->freed = false;
 }
 
 void ComponentBag_Reset(ComponentBag* bag) {
@@ -111,7 +110,6 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->aliveComponent);
 	free(bag->goalComponent);
 	free(bag->interactableComponent);
-  	bag->freed = true;
 }
 
 void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
@@ -159,7 +157,5 @@ void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
 		Component_Remove(bag->interactableComponent, eid);
 	}
 }
-
-
 
 
