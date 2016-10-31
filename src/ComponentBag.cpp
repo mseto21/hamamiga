@@ -121,7 +121,6 @@ void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
 	}	
 	if (Component_HasIndex(bag->healthComponent, eid)) {
 		Component_Remove(bag->healthComponent, eid);
-		bag->healthComponent->health[eid] = 0;
 	}
 	if (Component_HasIndex(bag->cameraComponent, eid)) {
 		Component_Remove(bag->cameraComponent, eid);

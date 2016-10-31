@@ -21,12 +21,12 @@
 void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap) {
 	physicsSystem->physicsComponent 	= cBag->physicsComponent;
 	physicsSystem->movementComponent 	= cBag->movementComponent;
-	physicsSystem->rectangleComponent = cBag->rectangleComponent;
+	physicsSystem->rectangleComponent       = cBag->rectangleComponent;
 	physicsSystem->healthComponent 		= cBag->healthComponent;
-	physicsSystem->hatComponent 			= cBag->hatComponent;
-	physicsSystem->map 								= tileMap;
-	physicsSystem->inputComponent			= cBag->inputComponent;
-	physicsSystem->goalComponent 			= cBag->goalComponent;
+	physicsSystem->hatComponent 		= cBag->hatComponent;
+	physicsSystem->map 			= tileMap;
+	physicsSystem->inputComponent		= cBag->inputComponent;
+	physicsSystem->goalComponent 		= cBag->goalComponent;
 }
 
 
