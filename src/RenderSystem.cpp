@@ -266,7 +266,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	if (shader) {
 	  RenderSystem_Render_xywh(renderer, 0, 0, shader->w, shader->h, NULL, shader);
 	}
-
 	// Render hats on HUD
 	if (Component_HasIndex(hatComponent, Constants::PlayerIndex_)) {
 		Hat* hat = &hatComponent->hats[Constants::PlayerIndex_].hat;
