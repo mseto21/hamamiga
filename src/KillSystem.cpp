@@ -15,7 +15,6 @@ void KillSystem_Update(KillSystem* killSystem) {
 	for (uint32 entityIndex = 0; entityIndex < aliveComponent->count; entityIndex++) {
 		uint32 eid = aliveComponent->entityArray[entityIndex];
 		if (aliveComponent->alive[eid] == false) {
-			std::cout << "Killed entity " << eid << std::endl;
 			ComponentBag_RemoveEntity(cBag, eid);
 		}
 	}
