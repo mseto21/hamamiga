@@ -59,6 +59,9 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
 		uint32 eid = physicsComponent->entityArray[entityIndex];
+		if (!Component_HasIndex(physicsComponent, eid)) {
+			continue;
+		}
 		if (!Component_HasIndex(movementComponent, eid)) {
 			continue;
 		}
@@ -85,21 +88,23 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			
 			// Interaction collisions
 			if (Component_HasIndex(interactableComponent, otherEid)) {
-			        if (eid != Constants::PlayerIndex_) {
-				        continue;
+		        if (eid != Constants::PlayerIndex_) {
+			        continue;
 				}
-				if (!Collision(*r1, rectangleComponent->entityRectangles[otherEid])) {
-					if (eid == Constants::PlayerIndex_)
-						interactableComponent->canBeInteractedWith[otherEid] = false;
-					continue;
-				}
-				if (eid == Constants::PlayerIndex_)
-					interactableComponent->canBeInteractedWith[otherEid] = true;
-				if (Component_HasIndex(inputComponent, eid)) {
-		  		if(!inputComponent->interact[eid]) {
-		  			continue;
-		  		}
-		  	}
+ 				if (!Collision(*r1, rectangleComponent->entityRectangles[otherEid])) {
+ 					if (eid == Constants::PlayerIndex_)
+ 						interactableComponent->canBeInteractedWith[otherEid] = false;
+ 					continue;
+ 				}
+
+ 				if (eid == Constants::PlayerIndex_)
+ 					interactableComponent->canBeInteractedWith[otherEid] = true;
+
+ 				if (Component_HasIndex(inputComponent, eid)) {
+	 		  		if(!inputComponent->interact[eid]) {
+	 		  			continue;
+	 		  		}
+	 		  	}
 
 				int type = interactableComponent->types[otherEid];
 				if (type == InteractionType_Hat) {
@@ -113,6 +118,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						  	}
 						}
 					}
+					continue;
 				}
 				continue;
 			}

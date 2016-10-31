@@ -17,6 +17,9 @@ void MovementSystem_Update(MovementSystem* movementSystem) {
 
 	for (uint32 entityIndex = 0; entityIndex < movementComponent->count; entityIndex++) {
 		uint32 eid = movementComponent->entityArray[entityIndex];
+		if (!Component_HasIndex(movementComponent, eid)) {
+			continue;
+		}
 		if (!Component_HasIndex(rectangleComponent, eid)) {
 			continue;
 		}

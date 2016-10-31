@@ -15,6 +15,9 @@ void CameraSystem_Update(CameraSystem* cameraSystem) {
 
 	for (uint32 entityIndex = 0; entityIndex < cameraComponent->count; entityIndex++) {
 		uint32 eid = cameraComponent->entityArray[entityIndex];
+		if (!Component_HasIndex(cameraComponent, eid)) {
+			continue;
+		}
 		if (!Component_HasIndex(rectangleComponent, eid)) {
 			continue;
 		}

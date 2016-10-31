@@ -75,7 +75,6 @@ bool Game_Initialize(Game* game) {
 	LoadIntroStateAssets(game);
 	LoadTitleStateAssets(game);
 	memset(&game->highScoreState.scores, 0, sizeof(game->highScoreState.scores));
-	game->playState.cBag.freed = true;
 	game->playState.loaded = false;
 	game->playState.currentLevel = 1;
 
@@ -430,7 +429,7 @@ void Game_RunLoop(Game* game) {
 							}
 							break;
 						case SDLK_p:
-							if (game->gameState != GameState_Title && game->gameState != GameState_HighScore && game->gameState != GameState_Intro) {
+							if (game->gameState == GameState_ZoneIntro) {
 								if (!game->playState.loaded) {
 									std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
 									game->gameState = GameState_Title;

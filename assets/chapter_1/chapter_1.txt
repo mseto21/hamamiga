@@ -23,7 +23,8 @@ zone=
 		rectangle(1000,1353,88,87,)
 		texture(assets/demon.png,demon,)
 		ai(200,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		animation(4,150.0,88,87,)
 		movement(3.0,20.0,1.0,1.0,)
@@ -60,7 +61,7 @@ zone=
 		texture(assets/bunny-hat.png,bunny,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,0,)
-		rectangle(4076,1353,48,48,)
+		rectangle(3980,1353,48,48,)
 		alive();
 	entity=
 		texture(assets/crown.png,crown,)

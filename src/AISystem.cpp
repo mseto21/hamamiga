@@ -32,6 +32,9 @@ void AISystem_Update(AISystem* aiSystem) {
   Rectangle pRect = rectangleComponent->entityRectangles[rectangleComponent->entityArray[Constants::PlayerIndex_]];
   for (uint32 entityIndex = 0; entityIndex < aiComponent->count; entityIndex++) {
     uint32 eid = aiComponent->entityArray[entityIndex];
+    if (!Component_HasIndex(aiComponent, eid)) {
+      continue;
+    }
     if (!Component_HasIndex(movementComponent, eid)) {
       continue;
     }

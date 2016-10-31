@@ -180,6 +180,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	// Render entities
 	for (uint32 texIndex = 0; texIndex < textureComponent->count; texIndex++) {
 		uint32 eid = textureComponent->entityArray[texIndex];
+		if (!Component_HasIndex(textureComponent, eid)) {
+			continue;
+		}
 		Texture* texture = textureComponent->textures[eid];
 
 		// If no rectangle, render at (0,0)
@@ -191,10 +194,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 		// Otherwise, render at the rectangle
 		Rectangle rect = rectangleComponent->entityRectangles[eid];
-		if (rect.x + rect.w < cameraComponent->camera.x || rect.x > cameraComponent->camera.x + cameraComponent->camera.w
-			|| rect.y + rect.h < cameraComponent->camera.y || rect.y > cameraComponent->camera.y + cameraComponent->camera.h) {
+		/*if (rect.x + rect.w < cameraComponent->camera.x || rect.x > cameraComponent->camera.x + cameraComponent->camera.w
+			|| rect.y + rect.h > cameraComponent->camera.y + cameraComponent->camera.h || rect.y < cameraComponent->camera.y) {
 			continue;
-		}
+		}*/
 		rect.x -= cameraComponent->camera.x;
 		rect.y -= cameraComponent->camera.y;
 		SDL_Rect clip = {0, 0, rect.w, rect.h};

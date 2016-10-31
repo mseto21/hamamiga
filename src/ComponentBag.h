@@ -31,8 +31,6 @@ struct ComponentBag {
 	AliveComponent* 	aliveComponent;
 	GoalComponent* 		goalComponent;
 	InteractableComponent * interactableComponent;
-  	bool freed;
-
 };
 
 void ComponentBag_Malloc(ComponentBag* bag);

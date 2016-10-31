@@ -16,14 +16,16 @@ void GoalSystem_Initialize(GoalSystem* goalSystem, ComponentBag* cBag) {
 
 
 GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
-		GoalComponent* goalComponent = goalSystem->goalComponent;
+	GoalComponent* goalComponent = goalSystem->goalComponent;
     HealthComponent* healthComponent = goalSystem->healthComponent;
     AliveComponent* aliveComponent = goalSystem->aliveComponent;
     RectangleComponent* rectangleComponent = goalSystem->rectangleComponent;
 
     for (uint32 entityIndex = 0; entityIndex < goalComponent->count; entityIndex++) {
     	uint32 eid = goalComponent->entityArray[entityIndex];
-
+        if (!Component_HasIndex(goalComponent, eid)) {
+            continue;
+        }
     	if (Component_HasIndex(healthComponent, eid)) {
     		int health = healthComponent->health[eid];
 				if (health <= 0) {
