@@ -246,15 +246,19 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 			SDL_Rect clip5 = {0, 0, 10, 10};
 	//Bullets
-		if (Component_HasIndex(bulletComponent, eid) && bulletComponent->activated == true){
-			std::cout << "bul comp is " << bulletComponent->activated << std::endl;
-			std::cout << "bull compo found for eid: " << eid << std::endl;
-			Bullet bullet;// = Bullet();
-			bullet.initialize(rect, delta);
-			bullet.load(TextureCache_GetTexture("bullet"));
-			bullet.update(delta);
-			RenderSystem_RenderCoord(renderer, &rect, &clip5, bullet.texture);
+		/*if (Component_HasIndex(bulletComponent, eid) && bulletComponent->activated == true){
+			std::cout<< "found a bullet entity for eid " << eid << std::endl;
+			Bullet* bullet = &bulletComponent->bullets[eid];
+				if (bullet->init != true){
+				bullet->initialize(rect, delta);
+				std::cout << "ini after is: " << bullet->init << std::endl;
+				}
+				bullet->load(TextureCache_GetTexture("bullet"));
+				bullet->update(delta);
+				if (bullet->age < 1000){
+			RenderSystem_RenderCoord(renderer, &bullet->rect, &clip5, bullet->texture);
 		}
+		}*/
 	}
 	
 	// Render given shader over entire scene

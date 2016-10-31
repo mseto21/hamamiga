@@ -302,9 +302,9 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					cout << "Adding hat to entity " << eid << "..." << endl;
 					HatComponent_Add(cBag->hatComponent, eid, hat, gHat);
 				} else if (strcmp(cmd, "bullet") == 0){
-					Bullet bullet = Bullet();
-					cout << "Adding bullets to entity" << eid << "..." << endl;
-					BulletComponent_Add(cBag->bulletComponent, eid, bullet);
+				//	Bullet bullet = Bullet();
+					//cout << "Adding bullets to entity" << eid << "..." << endl;
+					//BulletComponent_Add(cBag->bulletComponent, eid, bullet);
 				} else if (strcmp(cmd, "ai") == 0) {
 					int range = int_parameters.front();
 					int_parameters.pop();

@@ -5,6 +5,7 @@
 #include "PhysicsComponent.h"
 #include "RectangleComponent.h"
 #include "HealthComponent.h"
+#include "BulletComponent.h"
 #include "HatComponent.h"
 #include "InputComponent.h"
 #include "AliveComponent.h"
@@ -24,6 +25,7 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->movementComponent 	= cBag->movementComponent;
 	physicsSystem->rectangleComponent 	= cBag->rectangleComponent;
 	physicsSystem->healthComponent 		= cBag->healthComponent;
+	physicsSystem->bulletComponent  = cBag->bulletComponent;
 	physicsSystem->hatComponent 		= cBag->hatComponent;
 	physicsSystem->inputComponent		= cBag->inputComponent;
 	physicsSystem->goalComponent 		= cBag->goalComponent;
@@ -48,6 +50,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;
 	HealthComponent* healthComponent = physicsSystem->healthComponent;
 	HatComponent* hatComponent = physicsSystem->hatComponent;
+	BulletComponent* bulletComponent = physicsSystem->bulletComponent;
 	InputComponent* inputComponent = physicsSystem->inputComponent;
 	GoalComponent* goalComponent = physicsSystem->goalComponent;
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
@@ -124,6 +127,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			bool cllsn = false;
 			bool cllsnD = false;
+			bool cllsnB = false; //bullet collision
 			if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
@@ -165,7 +169,18 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			  if (Component_HasIndex(healthComponent, eid)) {
 					if (!healthComponent->invincible[eid]) {
 					  healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
+						std::cout<< "collided with eid " << eid << std::endl;
 					}
+				}
+			}
+			if (bulletComponent->activated == true){
+				Bullet* bullet = &bulletComponent->bullets[eid];
+				//std::cout << "checking bull collsiio" << std::endl;
+				//std::cout << "x " << bullet->rect.x << " y " << bullet->rect.y << std::endl;
+				if (Collision(left, bullet->rect) || Collision(right, bullet->rect) ||
+					Collision(up, bullet->rect) || Collision(down, bullet->rect)){
+					cllsnB = true;
+				std::cout << "collided with bullet!" << std::endl;
 				}
 			}
 		}
