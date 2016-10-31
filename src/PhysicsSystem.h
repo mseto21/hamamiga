@@ -13,6 +13,7 @@ struct GoalComponent;
 struct ComponentBag;
 struct InteractableComponent;
 struct AliveComponent;
+struct BulletComponent;
 
 struct PhysicsSystem {
 	PhysicsComponent* physicsComponent; 
@@ -20,6 +21,7 @@ struct PhysicsSystem {
 	RectangleComponent* rectangleComponent; 
 	HealthComponent* healthComponent; 
 	HatComponent* hatComponent;
+	BulletComponent* bulletComponent;
 	InputComponent* inputComponent;
 	GoalComponent* goalComponent;
 	InteractableComponent* interactableComponent;

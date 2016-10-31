@@ -61,7 +61,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		if (Component_HasIndex(bulletComponent, eid) && eid == Constants::PlayerIndex_){
 			if (keysPressed[SDLK_SPACE]) {
 				bulletComponent->activated = true;//bullets[eid].activated = true;
-				std::cout << "activated bullets with eid: " << eid  << " count is "<< inputComponent->count<< std::endl;
+				//bulletComponent->bullets[0].alive = true;
 			}
 		}
 	}
