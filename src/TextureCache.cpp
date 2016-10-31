@@ -108,4 +108,5 @@ void TextureCache_Free() {
 		Texture_Free(&tcache->textures[i]);
 	}
 	free(tcache);
+	tcache = nullptr;
 }

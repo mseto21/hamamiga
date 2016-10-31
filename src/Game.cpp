@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "TextureCache.h"
-#include "EntityCache.h"
 #include "SoundCache.h"
 #include "StateLoader.h"
 

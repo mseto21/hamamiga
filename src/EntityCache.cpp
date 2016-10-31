@@ -25,7 +25,7 @@ Entity* EntityCache_GetNewEntity() {
 		eCache->index++;
 	}
 	if (!result) {
-		std::cerr << "Error: The player could not be initialized." << std::endl;
+		std::cerr << "Error: The entity could not be initialized." << std::endl;
 	}
 	return result;
 }
@@ -52,4 +52,5 @@ void EntityCache_RemoveAll() {
 void EntityCache_Free() {
 	std::cout << "Freeing entity cache" << std::endl;
 	free(eCache);
+	eCache = nullptr;
 }

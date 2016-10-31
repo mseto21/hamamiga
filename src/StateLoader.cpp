@@ -130,6 +130,7 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 
 void FreePlay(Game* game) {
 	Mix_FreeMusic(game->playState.chapter.music);
+	game->playState.chapter.music = nullptr;
 	EntityCache_Free();
 	ComponentBag_Free(&game->playState.cBag);
 
@@ -152,6 +153,10 @@ void FreePlay(Game* game) {
 
 
 bool LoadPlayStateAssets(Game* game, int chapter) {
+	if (EntityCache_GetCache() == NULL) {
+		std::cerr << "Error: The entity cache was already loaded!" << std::endl;
+		exit(0);
+	}
 	ComponentBag_Malloc(&game->playState.cBag);
 	std::string chapterPath = "assets/chapter_" + std::to_string(chapter) + "/chapter_" + std::to_string(chapter)  + ".txt";
 
@@ -159,11 +164,6 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	TextureCache_CreateTexture(game->renderer, backgroundPath.c_str(), Constants::GameBackground_);
 	std::string shaderPath = "assets/chapter_" + std::to_string(chapter) + "/shader.png";
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, shaderPath.c_str(), Constants::Shader_)->sdltexture, SDL_BLENDMODE_MOD);
-
-	if (EntityCache_GetCache() == NULL) {
-		std::cerr << "Error: The entity cache failed to initialize!" << std::endl;
-		return false;
-	}
 
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer)) {
 		EntityCache_Free();
