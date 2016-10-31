@@ -5,6 +5,7 @@ struct InteractableComponent : public Component {
 	String128 messages[Constants::MaxEntities_];
 	int types[Constants::MaxEntities_];
 	int hattypes[Constants::MaxEntities_];
+	bool canBeInteractedWith[Constants::MaxEntities_];
 	bool interacted[Constants::MaxEntities_];
 };
 

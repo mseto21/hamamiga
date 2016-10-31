@@ -17,6 +17,7 @@ struct HatComponent;
 struct TileMap;
 struct HealthComponent;
 struct GoalComponent;
+struct InteractableComponent;
 struct ComponentBag;
 struct _TTF_Font;
 
@@ -30,6 +31,7 @@ struct RenderSystem {
 	HatComponent* hatComponent;
 	HealthComponent* healthComponent;
 	GoalComponent* goalComponent;
+	InteractableComponent* interactableComponent;
 	TileMap* map;
 	_TTF_Font* defaultFont;
 };

@@ -15,6 +15,7 @@
 #include "HealthComponent.h"
 #include "GlamourHatEnum.h"
 #include "GoalComponent.h"
+#include "InteractableComponent.h"
 
 #include <cstring>
 #include <math.h>
@@ -37,11 +38,12 @@ void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, Til
 	renderSystem->animationComponent 	= cBag->animationComponent;
 	renderSystem->movementComponent 	= cBag->movementComponent;
 	renderSystem->cameraComponent 		= cBag->cameraComponent;
-	renderSystem->hatComponent 			= cBag->hatComponent;
+	renderSystem->hatComponent 				= cBag->hatComponent;
 	renderSystem->healthComponent 		= cBag->healthComponent;
-	renderSystem->goalComponent 		= cBag->goalComponent;
-	renderSystem->defaultFont 		 	= defaultFont;
-	renderSystem->map 					= tileMap;
+	renderSystem->goalComponent 			= cBag->goalComponent;
+	renderSystem->interactableComponent = cBag->interactableComponent;
+	renderSystem->defaultFont 		 		= defaultFont;
+	renderSystem->map 								= tileMap;
 }
 
 // --------------------------------------------------------------------
@@ -133,6 +135,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	CameraComponent* cameraComponent = renderSystem->cameraComponent;
  	HatComponent* hatComponent = renderSystem->hatComponent;
  	HealthComponent* healthComponent = renderSystem->healthComponent;
+ 	InteractableComponent* interactableComponent = renderSystem->interactableComponent;
  	//GoalComponent* goalComponent = renderSystem->goalComponent;
  	TileMap* map = renderSystem->map;
 
@@ -225,13 +228,24 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				}
 			}	  
 		}
+
+		// Display interaction message
+		if (Component_HasIndex(interactableComponent, eid)) {
+			if (interactableComponent->canBeInteractedWith[eid]) {
+				// Display message interactableComponent->messages[eid]
+				
+			}
+		}
+
 		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 	}
 	
+	// Render given shader over entire scene
 	Texture* shader = TextureCache_GetTexture(Constants::Shader_);
 	if (shader) {
-	        RenderSystem_Render_xywh(renderer, 0, 0, shader->w, shader->h, NULL, shader);
+	  RenderSystem_Render_xywh(renderer, 0, 0, shader->w, shader->h, NULL, shader);
 	}
+
 	// Render hats on HUD
 	if (Component_HasIndex(hatComponent, Constants::PlayerIndex_)) {
 		Hat* hat = &hatComponent->hats[Constants::PlayerIndex_].hat;
