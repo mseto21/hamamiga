@@ -13,6 +13,7 @@ struct HealthComponent;
 struct BulletComponent;
 struct PhysicsComponent;
 struct AliveComponent;
+struct TextureComponent;
 struct ComponentBag;
 
 struct InputSystem {
@@ -23,6 +24,7 @@ struct InputSystem {
 	BulletComponent* bulletComponent;
 	PhysicsComponent* physicsComponent;
 	AliveComponent* aliveComponent;
+	TextureComponent* textureComponent;
 };
 
 

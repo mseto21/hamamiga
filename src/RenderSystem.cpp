@@ -247,6 +247,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			SDL_Rect clip5 = {0, 0, 10, 10};
 	//Bullets
 		if (Component_HasIndex(bulletComponent, eid) && bulletComponent->activated == true){
+			std::cout<< "found a bullet entity for eid " << eid << std::endl;
 			Bullet* bullet = &bulletComponent->bullets[eid];
 				if (bullet->init != true){
 				bullet->initialize(rect, delta);

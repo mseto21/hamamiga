@@ -3,6 +3,7 @@
 
 struct PhysicsComponent;
 struct AliveComponent;
+struct TextureComponent;
 
 struct BulletComponent : public Component {
 	Bullet bullets[Constants::MaxBullets_];
@@ -10,4 +11,4 @@ struct BulletComponent : public Component {
 };
 
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent*,
-	AliveComponent*, uint32 eid, Bullet bullet);
+	AliveComponent*, TextureComponent*, uint32 eid, Bullet bullet);
