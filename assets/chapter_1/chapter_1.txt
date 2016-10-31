@@ -60,7 +60,7 @@ zone=
 		texture(assets/bunny-hat.png,bunny,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,0,)
-		rectangle(4076,1353,48,48,)
+		rectangle(3980,1353,48,48,)
 		alive();
 	entity=
 		texture(assets/crown.png,crown,)

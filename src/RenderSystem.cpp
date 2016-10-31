@@ -233,7 +233,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 		// Display interaction message
 		if (Component_HasIndex(interactableComponent, eid)) {
-			if (interactableComponent->canBeInteractedWith[eid]) {
+			if (interactableComponent->interactionValues[eid].canBeInteractedWith) {
 				// Display message interactableComponent->messages[eid]
 				
 			}
