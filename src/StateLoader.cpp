@@ -189,7 +189,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
 	SoundCache_CreateSound("assets/sounds/nj.ogg", "nj");
 	TextureCache_CreateTexture(game->renderer, "assets/bullet.png", "bullet");
-	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_ADD);
+	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_MOD);
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 
