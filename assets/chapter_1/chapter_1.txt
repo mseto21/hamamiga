@@ -63,12 +63,6 @@ zone=
 		rectangle(3980,1353,48,48,)
 		alive();
 	entity=
-		texture(assets/miner-hat.png,miner,)
-		physics(0,)
-		interactable(Press E to Pick Up,0,5,)
-		rectangle(150,1353,88,61,)
-		alive();
-	entity=
 		texture(assets/crown.png,crown,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,2,)

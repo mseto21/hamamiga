@@ -14,4 +14,56 @@ zone=
 		hat()
 		camera()
 		goal();
+entity=
+		animation(4,150.0,88,87,)
+		movement(3.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(1000,1353,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(200,1,)
+		alive();
+	entity=
+		animation(4,150.0,88,87,)
+		movement(3.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(1500,1353,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(500,1,)
+		alive();
+	entity=
+		animation(4,150.0,88,87,)
+		movement(3.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(2200,1353,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(500,1,)
+		alive();
+	entity=
+		animation(4,150.0,88,87,)
+		movement(3.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(1970,210,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(120,1,)
+		alive();
+	entity=
+		animation(4,150.0,88,87,)
+		movement(3.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(3980,1353,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(30,1,)
+		alive();
+	entity=
+		texture(assets/miner-hat.png,miner,)
+		physics(0,)
+		interactable(Press E to Pick Up,0,5,)
+		rectangle(150,1353,88,61,)
+		alive();
+	entity=
+		texture(assets/crown.png,crown,)
+		physics(0,)
+		interactable(Press E to Pick Up,0,2,)
+		rectangle(4850,216,49,24,)
+		alive();
 END=

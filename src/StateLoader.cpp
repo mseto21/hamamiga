@@ -24,7 +24,6 @@ void LoadIntroStateAssets(Game* game) {
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/lose-screen.png", Constants::LoseBackground_);
-	//TextureCache_CreateTexture(game->renderer, "assets/shader.png", Constants::Shader_);
 
 }
 
@@ -160,7 +159,9 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 
 	std::string backgroundPath = "assets/chapter_" + std::to_string(chapter) + "/background.png";
 	TextureCache_CreateTexture(game->renderer, backgroundPath.c_str(), Constants::GameBackground_);
-	
+	std::string shaderPath = "assets/chapter_" + std::to_string(chapter) + "/shader.png";
+	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, shaderPath.c_str(), Constants::Shader_)->sdltexture, SDL_BLENDMODE_MOD);
+
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer)) {
 		ComponentBag_Free(&game->playState.cBag);
 		std::cerr << "Error: Unable to load from path " << chapterPath << std::endl;
@@ -190,7 +191,6 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/nj.ogg", "nj");
 	TextureCache_CreateTexture(game->renderer, "assets/bullet.png", "bullet");
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_ADD);
-       
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 
