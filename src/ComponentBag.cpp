@@ -111,7 +111,7 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->aliveComponent);
 	free(bag->goalComponent);
 	free(bag->interactableComponent);
-  bag->freed = true;
+  	bag->freed = true;
 }
 
 void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {

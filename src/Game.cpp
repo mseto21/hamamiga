@@ -143,16 +143,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 	if (keysdown[SDLK_RETURN]) {
 		switch (game->titleState.selection) {
 			case 0:
-				Mix_HaltMusic();
-				game->playState.loaded = LoadPlayStateAssets(game, game->playState.currentLevel);
-				if (!game->playState.loaded) {
-					std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
-					game->gameState = GameState_Title;
-					break;
-				} else {
-					LoadZoneIntroAssets(game, game->playState.chapter.name);
-					game->gameState = GameState_ZoneIntro;
-				}
+				game->gameState = GameState_LoadPlay;
 				break;
 			case 1:
 				game->gameState = GameState_HighScore;
@@ -377,7 +368,7 @@ void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
 		case GameResult_Won:
 			game->playState.currentLevel++;
 			game->gameState = GameState_Win;
-			Mix_VolumeMusic(MIX_MAX_VOLUME/4);
+			Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
 			Sound_Play(SoundCache_GetSound("nj"), 0);
 			game->gameState = GameState_Win;
 		default:
@@ -434,7 +425,6 @@ void Game_RunLoop(Game* game) {
 						case SDLK_m:
 							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win) {
 								game->gameState = GameState_Returning;
-								Mix_HaltChannel(2);
 							} else {
 								game->gameState = GameState_Title;
 							}
@@ -509,6 +499,17 @@ void Game_RunLoop(Game* game) {
 				break;
 			case GameState_ZoneIntro:
 				RenderZoneIntro(game, elapsed);
+				break;
+			case GameState_LoadPlay:
+				Mix_HaltMusic();
+				game->playState.loaded = LoadPlayStateAssets(game, game->playState.currentLevel);
+				if (!game->playState.loaded) {
+					std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
+					game->gameState = GameState_Title;
+				} else {
+					LoadZoneIntroAssets(game, game->playState.chapter.name);
+					game->gameState = GameState_ZoneIntro;
+				}
 				break;
 			case GameState_Play:
 				RenderPlay(game, elapsed);

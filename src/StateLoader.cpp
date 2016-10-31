@@ -129,10 +129,10 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 
 
 void FreePlay(Game* game) {
-	if (!game->playState.cBag.freed)
-		ComponentBag_Free(&game->playState.cBag);
 	//Mix_FreeMusic(game->playState.chapter.music);
 	Mix_HaltChannel(Constants::DiscoChannel_);
+	if (!game->playState.cBag.freed)
+		ComponentBag_Free(&game->playState.cBag);
 	
 	EntityCache_RemoveAll();
 	strcpy(game->playState.chapter.name, "");
@@ -169,6 +169,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	}
 	
 	if (!Component_HasIndex(game->playState.cBag.healthComponent, Constants::PlayerIndex_)) {
+		ComponentBag_Free(&game->playState.cBag);
 		std::cerr << "Error: The player has no renderable health component" << std::endl;
 		return false;
 	}
@@ -177,11 +178,9 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	if (!game->playState.scoreFont) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
-		return false;
 	}
 	if (!game->playState.healthFont) {
 	    std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
-	    return false;
 	}
 
 	//Creating all sounds for the play state
@@ -190,7 +189,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
 	SoundCache_CreateSound("assets/sounds/nj.ogg", "nj");
 	TextureCache_CreateTexture(game->renderer, "assets/bullet.png", "bullet");
-	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_ADD);
+	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_MOD);
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 

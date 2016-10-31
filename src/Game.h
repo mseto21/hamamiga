@@ -24,6 +24,7 @@ enum GameState {
 	GameState_Intro = 0,
 	GameState_Title,
 	GameState_ZoneIntro,
+	GameState_LoadPlay,
 	GameState_Play,
 	GameState_HighScore,
 	GameState_Options,

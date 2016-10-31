@@ -83,13 +83,17 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			// Interaction collisions
 			if (Component_HasIndex(interactableComponent, otherEid)) {
 				if (!Collision(*r1, rectangleComponent->entityRectangles[otherEid])) {
+					if (eid == Constants::PlayerIndex_)
+						interactableComponent->canBeInteractedWith[otherEid] = false;
 					continue;
 				}
+				if (eid == Constants::PlayerIndex_)
+					interactableComponent->canBeInteractedWith[otherEid] = true;
 				if (Component_HasIndex(inputComponent, eid)) {
-			  		if(!inputComponent->interact[eid]) {
-			  			continue;
-			  		}
-			  	}
+		  		if(!inputComponent->interact[eid]) {
+		  			continue;
+		  		}
+		  	}
 
 				int type = interactableComponent->types[otherEid];
 				if (type == InteractionType_Hat) {

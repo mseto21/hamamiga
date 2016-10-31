@@ -5,5 +5,6 @@ void InteractableComponent_Add(InteractableComponent* interactableComponent, uin
 	memcpy(&interactableComponent->messages[eid], message, sizeof(interactableComponent->messages[eid]));
 	interactableComponent->types[eid] = type;
 	interactableComponent->hattypes[eid] = hattype;
+	interactableComponent->canBeInteractedWith[eid] = false;
 	interactableComponent->interacted[eid] = false;
 }
