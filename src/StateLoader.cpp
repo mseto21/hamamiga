@@ -156,7 +156,10 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	if (EntityCache_GetCache() == NULL) {
 		std::cerr << "Error: The entity cache was already loaded!" << std::endl;
 		exit(0);
+	} else {
+		std::cout << "Meow" << std::endl;
 	}
+
 	ComponentBag_Malloc(&game->playState.cBag);
 	std::string chapterPath = "assets/chapter_" + std::to_string(chapter) + "/chapter_" + std::to_string(chapter)  + ".txt";
 
@@ -207,5 +210,6 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
+	game->playState.loaded = true;
 	return true;
 }
