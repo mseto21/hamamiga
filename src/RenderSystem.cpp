@@ -197,6 +197,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				} else {
 					texture->flip = SDL_FLIP_HORIZONTAL;
 				}
+				if (!movementComponent->movementValues[eid].grounded) {
+				  clip = {animation->spriteW * 3, 0, animation->spriteW, animation->spriteH};
+				}
 			}	  
 		}
 
