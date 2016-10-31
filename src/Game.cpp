@@ -494,7 +494,7 @@ void Game_RunLoop(Game* game) {
 				break;
 			case GameState_LoadPlay:
 				Mix_HaltMusic();
-				game->playState.loaded = LoadPlayStateAssets(game, game->playState.currentLevel);
+				LoadPlayStateAssets(game, game->playState.currentLevel);
 				if (!game->playState.loaded) {
 					std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
 					game->gameState = GameState_Title;
@@ -517,8 +517,8 @@ void Game_RunLoop(Game* game) {
 			case GameState_Win:
 				RenderWin(game);
 				break;
-	  	case GameState_Lose:
-	  		RenderLose(game);
+		  	case GameState_Lose:
+		  		RenderLose(game);
 				break;
 			case GameState_Returning:
 				FreePlay(game);

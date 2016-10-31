@@ -58,4 +58,5 @@ void SoundCache_Free() {
 		Sound_Free(&scache->sounds[soundIndex]);
 	}
 	free(scache);
+	scache = nullptr;
 }
