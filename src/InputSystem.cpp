@@ -74,12 +74,12 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		//Checking bullet activation
 		//if (Component_HasIndex(bulletComponent, eid) && eid == Constants::PlayerIndex_){
 			if (keysPressed[SDLK_SPACE]) {
-				bulletComponent->activated = true;//bullets[eid].activated = true;
-				Entity* newBullet = EntityCache_GetNewEntity();
-				Bullet bullet = Bullet();
-				BulletComponent_Add(inputSystem->bulletComponent, inputSystem->physicsComponent,
-				inputSystem->aliveComponent, inputSystem->textureComponent, newBullet->eid, bullet);
-				std::cout << "created bullet entity!" <<std::endl;
+				//bulletComponent->activated = true;//bullets[eid].activated = true;
+				//Entity* newBullet = EntityCache_GetNewEntity();
+				//Bullet bullet = Bullet();
+				//BulletComponent_Add(inputSystem->bulletComponent, inputSystem->physicsComponent,
+				//inputSystem->aliveComponent, inputSystem->textureComponent, newBullet->eid, bullet);
+				//std::cout << "created bullet entity!" <<std::endl;
 
 				//bulletComponent->bullets[0].alive = true;
 			}
