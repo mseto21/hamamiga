@@ -56,6 +56,9 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
 		uint32 eid = physicsComponent->entityArray[entityIndex];
+		if (!Component_HasIndex(physicsComponent, eid)) {
+			continue;
+		}
 		if (!Component_HasIndex(movementComponent, eid)) {
 			continue;
 		}
@@ -93,7 +96,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
  				if (eid == Constants::PlayerIndex_)
  					interactableComponent->canBeInteractedWith[otherEid] = true;
- 				
+
  				if (Component_HasIndex(inputComponent, eid)) {
 	 		  		if(!inputComponent->interact[eid]) {
 	 		  			continue;
@@ -114,6 +117,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					}
 					continue;
 				}
+				continue;
 			}
 
 			// Enemy collisions

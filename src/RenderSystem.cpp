@@ -180,6 +180,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	// Render entities
 	for (uint32 texIndex = 0; texIndex < textureComponent->count; texIndex++) {
 		uint32 eid = textureComponent->entityArray[texIndex];
+		if (!Component_HasIndex(textureComponent, eid)) {
+			continue;
+		}
 		Texture* texture = textureComponent->textures[eid];
 
 		// If no rectangle, render at (0,0)

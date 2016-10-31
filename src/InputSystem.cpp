@@ -28,6 +28,9 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 	BulletComponent* bulletComponent = inputSystem->bulletComponent;
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
 		uint32 eid = inputComponent->entityArray[entityIndex];
+		if (!Component_HasIndex(inputComponent, eid)) {
+			continue;
+		}
 		if (!Component_HasIndex(movementComponent, eid)) {
 			continue;
 		}
