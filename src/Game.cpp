@@ -284,7 +284,7 @@ void RenderZoneIntro(Game* game, uint32 elapsed) {
 }
 
 
-void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
+void UpdatePlay(Game* game) {
 	AISystem_Update(&game->playState.aiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
 	PhysicsSystem_Update(&game->playState.physicsSystem);
@@ -426,7 +426,7 @@ void Game_RunLoop(Game* game) {
 					UpdateTitle(game, keysdown, keysup);
 					break;
 				case GameState_Play:
-					UpdatePlay(game, keysdown, keysup);
+					UpdatePlay(game);
 					break;
 				case GameState_HighScore:
 					UpdateHighScore(game, keysdown);
