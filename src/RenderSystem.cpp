@@ -228,7 +228,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				} else {
 					texture->flip = SDL_FLIP_HORIZONTAL;
 				}
-				if (!movementComponent->movementValues[eid].grounded){
+				if (!movementComponent->movementValues[eid].grounded && eid == Constants::PlayerIndex_){
 					clip = {animation->spriteW * 4, 0, animation->spriteW, animation->spriteH};
 				}
 			}	  
@@ -244,7 +244,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 
-			SDL_Rect clip5 = {0, 0, 10, 10};
+		//	SDL_Rect clip5 = {0, 0, 10, 10};
 	//Bullets
 		/*if (Component_HasIndex(bulletComponent, eid) && bulletComponent->activated == true){
 			std::cout<< "found a bullet entity for eid " << eid << std::endl;
