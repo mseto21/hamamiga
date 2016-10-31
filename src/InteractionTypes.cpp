@@ -22,7 +22,7 @@
 
 // Some constants for hats
 const int DamageReduction_ = 5;
-const float JumpEnchancement_ = 1.41;
+const float JumpEnhancement_ = 1.41;
 
 // ADD HATS AT END OF ENUM, DO NOT INSERT NO BAD!
 enum HatTypes {
@@ -40,7 +40,7 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "bunny", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "2x jump", sizeof(cBag->hatComponent->hats[eid].hat.effect));
-			cBag->movementComponent->movementValues[eid].accelY *= JumpEnchancement_;
+			cBag->movementComponent->movementValues[eid].accelY *= JumpEnhancement_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			break;
 		case HatTypes_HardHat:
