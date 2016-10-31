@@ -263,6 +263,7 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 }
 
 void RenderOptions(Game* game, uint32 elapsed) {
+	//std::cout<< "in redner options" << std::endl;
 	(void) elapsed;
 Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);

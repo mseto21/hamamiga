@@ -36,6 +36,7 @@ void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, Til
 	renderSystem->textureComponent 		= cBag->textureComponent;
 	renderSystem->rectangleComponent 	= cBag->rectangleComponent;
 	renderSystem->animationComponent 	= cBag->animationComponent;
+	renderSystem->bulletComponent = cBag->bulletComponent;
 	renderSystem->movementComponent 	= cBag->movementComponent;
 	renderSystem->cameraComponent 		= cBag->cameraComponent;
 	renderSystem->hatComponent 				= cBag->hatComponent;
@@ -131,6 +132,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	TextureComponent* textureComponent = renderSystem->textureComponent;
  	RectangleComponent* rectangleComponent = renderSystem->rectangleComponent;
  	AnimationComponent* animationComponent = renderSystem->animationComponent;
+ 	BulletComponent* bulletComponent = renderSystem->bulletComponent;
  	MovementComponent* movementComponent = renderSystem->movementComponent;
  	CameraComponent* cameraComponent = renderSystem->cameraComponent;
  	HatComponent* hatComponent = renderSystem->hatComponent;
@@ -231,13 +233,25 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 		// Display interaction message
 		if (Component_HasIndex(interactableComponent, eid)) {
-			if (interactableComponent->canBeInteractedWith[eid]) {
+			if (interactableComponent->interactionValues[eid].canBeInteractedWith) {
 				// Display message interactableComponent->messages[eid]
 				
 			}
 		}
 
 		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
+
+			SDL_Rect clip5 = {0, 0, 10, 10};
+	//Bullets
+		if (Component_HasIndex(bulletComponent, eid) && bulletComponent->activated == true){
+			std::cout << "bul comp is " << bulletComponent->activated << std::endl;
+			std::cout << "bull compo found for eid: " << eid << std::endl;
+			Bullet bullet;// = Bullet();
+			bullet.initialize(rect, delta);
+			bullet.load(TextureCache_GetTexture("bullet"));
+			bullet.update(delta);
+			RenderSystem_RenderCoord(renderer, &rect, &clip5, bullet.texture);
+		}
 	}
 	
 	// Render given shader over entire scene

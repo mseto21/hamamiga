@@ -6,6 +6,7 @@
 #include "RectangleComponent.h"
 #include "HatComponent.h"
 #include "HealthComponent.h"
+#include "BulletComponent.h"
 #include "ComponentBag.h"
 
 #include <SDL.h>
@@ -16,6 +17,7 @@ void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag) {
 	inputSystem->movementComponent 	= cBag->movementComponent;
 	inputSystem->hatComponent       = cBag->hatComponent;
 	inputSystem->healthComponent    = cBag->healthComponent;
+	inputSystem->bulletComponent  	= cBag->bulletComponent;
 }
 
 void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[]) {
@@ -23,6 +25,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 	MovementComponent* movementComponent = inputSystem->movementComponent;;
 	HatComponent* hatComponent = inputSystem->hatComponent;
 	HealthComponent* healthComponent = inputSystem->healthComponent;
+	BulletComponent* bulletComponent = inputSystem->bulletComponent;
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
 		uint32 eid = inputComponent->entityArray[entityIndex];
 		if (!Component_HasIndex(movementComponent, eid)) {
@@ -54,5 +57,15 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		} else if (keysUp[SDLK_e]) {
 			inputComponent->interact[eid] = false;
 		}
+		//Checking bullet activation
+		if (Component_HasIndex(bulletComponent, eid) && eid == Constants::PlayerIndex_){
+			if (keysPressed[SDLK_SPACE]) {
+				bulletComponent->activated = true;//bullets[eid].activated = true;
+				std::cout << "activated bullets with eid: " << eid  << " count is "<< inputComponent->count<< std::endl;
+			}
+		}
 	}
+
+
+
 }

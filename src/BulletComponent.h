@@ -3,7 +3,7 @@
 
 struct BulletComponent : public Component {
 	Bullet bullets[Constants::MaxBullets_];
-	bool activated = false;
+	bool activated;
 };
 
 void BulletComponent_Add(BulletComponent* bulletComponent, uint32 eid, Bullet bullet);

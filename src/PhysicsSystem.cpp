@@ -79,36 +79,41 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			if (!Component_HasIndex(rectangleComponent, otherEid)) {
 				continue;
 			}
-
+			
 			// Interaction collisions
 			if (Component_HasIndex(interactableComponent, otherEid)) {
-				if (!Collision(*r1, rectangleComponent->entityRectangles[otherEid])) {
-					if (eid == Constants::PlayerIndex_)
-						interactableComponent->canBeInteractedWith[otherEid] = false;
-					continue;
-				}
-				if (eid == Constants::PlayerIndex_)
-					interactableComponent->canBeInteractedWith[otherEid] = true;
-				if (Component_HasIndex(inputComponent, eid)) {
-		  		if(!inputComponent->interact[eid]) {
-		  			continue;
-		  		}
-		  	}
-
-				int type = interactableComponent->types[otherEid];
-				if (type == InteractionType_Hat) {
-					int hattype = interactableComponent->hattypes[otherEid];
-					if (Component_HasIndex(hatComponent, eid)){
-						if (!interactableComponent->interacted[otherEid]) {
-							ApplyHatInteraction(hattype, eid, physicsSystem->componentBag);
-							interactableComponent->interacted[otherEid] = true;
-							if (Component_HasIndex(aliveComponent, otherEid)) {
-						  		aliveComponent->alive[otherEid] = false;
-						  	}
-						}
+			        if (eid != Constants::PlayerIndex_) {
+				  continue;
+				} else {
+				  
+				  InteractionValues* iValues = &interactableComponent->interactionValues[eid];
+				  if (!Collision(*r1, rectangleComponent->entityRectangles[otherEid])) {
+				    iValues->canBeInteractedWith = false;
+				    continue;
+				  }
+				  std::cout << "PhsyicsSytem.cpp collision with interactable" << std::endl;
+				  iValues->canBeInteractedWith = true;
+				  if (Component_HasIndex(inputComponent, eid)) {
+				    if(!inputComponent->interact[eid]) {
+				      continue;
+				    }
+				  }
+				  
+				  int type = iValues->types;
+				  if (type == InteractionType_Hat) {
+				    int hattype = iValues->hattypes;
+				    if (Component_HasIndex(hatComponent, eid)){
+				      if (!iValues->interacted) {
+					ApplyHatInteraction(hattype, eid, physicsSystem->componentBag);
+					iValues->interacted = true;
+					if (Component_HasIndex(aliveComponent, otherEid)) {
+					  aliveComponent->alive[otherEid] = false;
 					}
+				      }
+				    }
+				  }
+				  continue;
 				}
-				continue;
 			}
 
 			// Enemy collisions

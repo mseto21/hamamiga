@@ -10,6 +10,7 @@ struct MovementComponent;
 struct InputComponent;
 struct HatComponent;
 struct HealthComponent;
+struct BulletComponent;
 struct ComponentBag;
 
 struct InputSystem {
@@ -17,6 +18,7 @@ struct InputSystem {
 	MovementComponent* movementComponent; 
 	HatComponent* hatComponent;
 	HealthComponent* healthComponent;
+	BulletComponent* bulletComponent;
 };
 
 
