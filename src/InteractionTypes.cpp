@@ -24,6 +24,7 @@
 const int DamageReduction_ = 5;
 const float JumpEnchancement_ = 1.41;
 
+// ADD HATS AT END OF ENUM, DO NOT INSERT NO BAD!
 enum HatTypes {
 	HatTypes_BunnyHat = 0,
 	HatTypes_HardHat,
