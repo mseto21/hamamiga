@@ -24,7 +24,6 @@ void LoadIntroStateAssets(Game* game) {
 	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
 	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/lose-screen.png", Constants::LoseBackground_);
-
 }
 
 
@@ -128,36 +127,14 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 }
 
 
-void FreePlay(Game* game) {
-	Mix_FreeMusic(game->playState.chapter.music);
-	game->playState.chapter.music = nullptr;
-	EntityCache_Free();
-	ComponentBag_Free(&game->playState.cBag);
-
-	Mix_HaltChannel(Constants::DiscoChannel_);
-	strcpy(game->playState.chapter.name, "");
-	for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
-		game->playState.chapter.startScene.slides[i] = nullptr;
-	}
-	game->playState.chapter.startScene.slideCount = 0;
-	game->playState.chapter.startScene.current = 0;
-
-	for (int i = 0; i < game->playState.chapter.endScene.slideCount; i++) {
-		game->playState.chapter.endScene.slides[i] = nullptr;
-	}
-	game->playState.chapter.endScene.slideCount = 0;
-	game->playState.chapter.endScene.current = 0;
-	game->playState.loaded = false;
-}
-
-
 
 bool LoadPlayStateAssets(Game* game, int chapter) {
+	TextureCache* tcache = TextureCache_GetCache();
+	tcache->levelIndex = tcache->index;
+
 	if (EntityCache_GetCache() == NULL) {
 		std::cerr << "Error: The entity cache was already loaded!" << std::endl;
 		exit(0);
-	} else {
-		std::cout << "Meow" << std::endl;
 	}
 
 	ComponentBag_Malloc(&game->playState.cBag);
@@ -213,3 +190,31 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	game->playState.loaded = true;
 	return true;
 }
+
+
+void FreePlay(Game* game) {
+	Mix_FreeMusic(game->playState.chapter.music);
+	game->playState.chapter.music = nullptr;
+	EntityCache_Free();
+	ComponentBag_Free(&game->playState.cBag);
+	TextureCache_FreeLevel();
+
+	Mix_HaltChannel(Constants::DiscoChannel_);
+	strcpy(game->playState.chapter.name, "");
+	for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
+		game->playState.chapter.startScene.slides[i] = nullptr;
+	}
+	game->playState.chapter.startScene.slideCount = 0;
+	game->playState.chapter.startScene.current = 0;
+
+	for (int i = 0; i < game->playState.chapter.endScene.slideCount; i++) {
+		game->playState.chapter.endScene.slides[i] = nullptr;
+	}
+	game->playState.chapter.endScene.slideCount = 0;
+	game->playState.chapter.endScene.current = 0;
+	game->playState.loaded = false;
+}
+
+
+
+

@@ -11,6 +11,7 @@ TextureCache* TextureCache_GetCache() {
 	if (tcache == nullptr) {
 		tcache = (TextureCache*)malloc(sizeof(TextureCache));
 		tcache->index = 0;
+		tcache->levelIndex = 0;
 	}
 	return tcache;
 }
@@ -99,6 +100,17 @@ void TextureCache_Remove(const char* path) {
 			return;
 		}
 	}
+}
+
+/* Removes all of the textures from when the level was loaded.*/
+void TextureCache_FreeLevel() {
+	int index = tcache->levelIndex;
+	std::cout << index << ", " << tcache->index << std::endl;
+	for (; index < tcache->index; index++) {
+		memset(&tcache->textures[index], 0, sizeof(struct Texture));
+	}
+	tcache->index = tcache->levelIndex;
+	tcache->levelIndex = 0;
 }
 
 

@@ -8,6 +8,7 @@ const int MaxTextures_ = 100;
 struct TextureCache {
 	Texture textures[MaxTextures_];
 	int index; /* keep track of current asset index */
+	int levelIndex;
 };
 
 TextureCache* TextureCache_GetCache();
@@ -18,4 +19,5 @@ Texture* TextureCache_GetTexture(int index);
 Texture* TextureCache_GetOrCreateTexture(SDL_Renderer* renderer, const char* path, const char* name);
 Texture* TextureCache_ReplaceTexture(SDL_Renderer* renderer, const char* path, const char* name);
 void TextureCache_Remove(const char* path);
+void TextureCache_FreeLevel();
 void TextureCache_Free();

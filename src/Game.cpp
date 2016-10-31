@@ -525,9 +525,8 @@ void Game_RunLoop(Game* game) {
 				game->gameState = GameState_Title;
 				break;
 			case GameState_Closing:
-				if (game->gameState == GameState_Win || game->gameState == GameState_Lose || game->gameState == GameState_Play) {
+				if (game->gameState == GameState_Win || game->gameState == GameState_Lose || game->gameState == GameState_Play)
 					FreePlay(game);
-				}
 				game->running = false;
 				Game_Close(game);
 				break;
