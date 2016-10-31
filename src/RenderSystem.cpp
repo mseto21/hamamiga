@@ -230,7 +230,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	
 	Texture* shader = TextureCache_GetTexture(Constants::Shader_);
 	if (shader) {
-	  std::cout << "in here: " << std::endl;
 	        RenderSystem_Render_xywh(renderer, 0, 0, shader->w, shader->h, NULL, shader);
 	}
 	// Render hats on HUD
