@@ -60,3 +60,10 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
 
 	return GameResult_Running;
 }
+
+void GoalSystem_Free(GoalSystem* goalSystem) {
+    goalSystem->healthComponent = nullptr;
+    goalSystem->aliveComponent = nullptr;
+    goalSystem->goalComponent = nullptr;
+    goalSystem->rectangleComponent = nullptr;
+}

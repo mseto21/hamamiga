@@ -32,3 +32,4 @@ struct PhysicsSystem {
 
 void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap);
 void PhysicsSystem_Update(PhysicsSystem* physicsSystem);
+void PhysicsSystem_Free(PhysicsSystem* physicsSystem);

@@ -49,3 +49,8 @@ void CameraSystem_Update(CameraSystem* cameraSystem) {
 		}
 	}
 }
+
+void CameraSystem_Free(CameraSystem* cameraSystem) {
+	cameraSystem->cameraComponent = nullptr;
+	cameraSystem->rectangleComponent = nullptr;
+}

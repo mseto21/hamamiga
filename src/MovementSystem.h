@@ -14,3 +14,4 @@ struct MovementSystem {
 
 void MovementSystem_Initialize(MovementSystem* movementSystem, ComponentBag* cBag);
 void MovementSystem_Update(MovementSystem* movementSystem);
+void MovementSystem_Free(MovementSystem* movementSystem);

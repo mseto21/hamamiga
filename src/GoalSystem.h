@@ -23,3 +23,4 @@ struct GoalSystem {
 
 void GoalSystem_Initialize(GoalSystem* goalSystem, ComponentBag* cBag);
 GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed);
+void GoalSystem_Free(GoalSystem* goalSystem);

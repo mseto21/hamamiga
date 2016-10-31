@@ -129,22 +129,24 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 
 
 bool LoadPlayStateAssets(Game* game, int chapter) {
+	// Initialize caches
 	TextureCache* tcache = TextureCache_GetCache();
 	tcache->levelIndex = tcache->index;
-
 	if (EntityCache_GetCache() == NULL) {
+		EntityCache_Free();
 		std::cerr << "Error: The entity cache was already loaded!" << std::endl;
-		exit(0);
+		return false;
 	}
-
 	ComponentBag_Malloc(&game->playState.cBag);
-	std::string chapterPath = "assets/chapter_" + std::to_string(chapter) + "/chapter_" + std::to_string(chapter)  + ".txt";
 
+	// Initialize file
+	std::string chapterPath = "assets/chapter_" + std::to_string(chapter) + "/chapter_" + std::to_string(chapter)  + ".txt";
 	std::string backgroundPath = "assets/chapter_" + std::to_string(chapter) + "/background.png";
 	TextureCache_CreateTexture(game->renderer, backgroundPath.c_str(), Constants::GameBackground_);
 	std::string shaderPath = "assets/chapter_" + std::to_string(chapter) + "/shader.png";
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, shaderPath.c_str(), Constants::Shader_)->sdltexture, SDL_BLENDMODE_MOD);
 
+	// Load file
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer)) {
 		EntityCache_Free();
 		ComponentBag_Free(&game->playState.cBag);
@@ -152,6 +154,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 		return false;
 	}
 	
+	// Ensure health component is present
 	if (!Component_HasIndex(game->playState.cBag.healthComponent, Constants::PlayerIndex_)) {
 		EntityCache_Free();
 		ComponentBag_Free(&game->playState.cBag);
@@ -159,6 +162,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 		return false;
 	}
 
+	// Initialize fonts
 	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	if (!game->playState.scoreFont) {
@@ -168,7 +172,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	    std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 	}
 
-	//Creating all sounds for the play state
+	//Create Sounds
 	SoundCache_CreateSound("assets/sounds/hatpickup.ogg", "hatpickup");
 	SoundCache_CreateSound("assets/sounds/disco.ogg", "disco");
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
@@ -178,6 +182,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 
+	// Initialize systems
 	AISystem_Initialize(&game->playState.aiSystem, &game->playState.cBag);
 	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag);
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
@@ -187,19 +192,26 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
+
+	// Set loaded variable
 	game->playState.loaded = true;
+
 	return true;
 }
 
 
 void FreePlay(Game* game) {
+	// Free sounds
 	Mix_FreeMusic(game->playState.chapter.music);
 	game->playState.chapter.music = nullptr;
+	Mix_HaltChannel(Constants::DiscoChannel_);
+
+	// Free caches
 	EntityCache_Free();
 	ComponentBag_Free(&game->playState.cBag);
 	TextureCache_FreeLevel();
 
-	Mix_HaltChannel(Constants::DiscoChannel_);
+	// Free cutscenes
 	strcpy(game->playState.chapter.name, "");
 	for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
 		game->playState.chapter.startScene.slides[i] = nullptr;
@@ -212,6 +224,29 @@ void FreePlay(Game* game) {
 	}
 	game->playState.chapter.endScene.slideCount = 0;
 	game->playState.chapter.endScene.current = 0;
+
+	// Free fonts
+	TTF_CloseFont(game->playState.scoreFont);
+	TTF_CloseFont(game->playState.healthFont);
+
+	// Free sounds
+	SoundCache_FreeSound("hatpickup");
+	SoundCache_FreeSound("disco");
+	SoundCache_FreeSound("ow");
+	SoundCache_FreeSound("nj");
+
+	// Delete all pointers in ai system
+	AISystem_Free(&game->playState.aiSystem);
+	CameraSystem_Free(&game->playState.cameraSystem);
+	InputSystem_Free(&game->playState.inputSystem);
+	MovementSystem_Free(&game->playState.movementSystem);
+	PhysicsSystem_Free(&game->playState.physicsSystem);
+	RenderSystem_Free(&game->playState.renderSystem);
+	GoalSystem_Free(&game->playState.goalSystem);
+	SoundSystem_Free(&game->playState.soundSystem);
+	KillSystem_Free(&game->playState.killSystem);
+
+	// Set loaded variable.
 	game->playState.loaded = false;
 }
 

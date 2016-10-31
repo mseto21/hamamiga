@@ -13,3 +13,4 @@ struct CameraSystem {
 
 void CameraSystem_Initialize(CameraSystem* cameraSystem, ComponentBag* cBag);
 void CameraSystem_Update(CameraSystem* cameraSystem);
+void CameraSystem_Free(CameraSystem* cameraSystem);

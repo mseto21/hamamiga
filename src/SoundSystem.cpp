@@ -13,3 +13,7 @@ void SoundSystem_Update(SoundSystem* soundSystem, int elapsed) {
 		Mix_VolumeMusic(MIX_MAX_VOLUME);
 	}
 }
+
+void SoundSystem_Free(SoundSystem* soundSystem) {
+	soundSystem->music = nullptr;
+}

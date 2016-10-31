@@ -41,3 +41,4 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect* clip, Texture* texture);
 void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uint32 delta);
 void RenderSystem_CompleteRender(SDL_Renderer* renderer);
+void RenderSystem_Free(RenderSystem* renderSystem);

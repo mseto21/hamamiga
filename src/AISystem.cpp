@@ -63,4 +63,9 @@ void AISystem_Update(AISystem* aiSystem) {
   }
 }
 
+void AISystem_Free(AISystem* aiSystem) {
+  aiSystem->movementComponent = nullptr;
+  aiSystem->rectangleComponent = nullptr;
+  aiSystem->aiComponent = nullptr;
+}
 

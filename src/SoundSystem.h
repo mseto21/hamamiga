@@ -15,3 +15,4 @@ struct SoundSystem {
 
 void SoundSystem_Initialize(SoundSystem* soundSystem, ComponentBag* cBag, _Mix_Music* music);
 void SoundSystem_Update(SoundSystem* soundSystem, int elapsed);
+void SoundSystem_Free(SoundSystem* soundSystem);

@@ -315,5 +315,21 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	}*/
 }
 
+void RenderSystem_Free(RenderSystem* renderSystem) {
+	renderSystem->textureComponent = nullptr;
+	renderSystem->rectangleComponent = nullptr;
+	renderSystem->animationComponent = nullptr;
+	renderSystem->bulletComponent = nullptr;
+	renderSystem->movementComponent = nullptr;
+	renderSystem->cameraComponent = nullptr;
+	renderSystem->hatComponent = nullptr;
+	renderSystem->healthComponent = nullptr;
+	renderSystem->goalComponent = nullptr;
+	renderSystem->interactableComponent = nullptr;
+	renderSystem->map = nullptr;
+	renderSystem->defaultFont = nullptr;
+}
+
+
 
 

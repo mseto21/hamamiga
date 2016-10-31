@@ -8,3 +8,4 @@ struct KillSystem {
 
 void KillSystem_Initialize(KillSystem* killSystem, ComponentBag* cBag);
 void KillSystem_Update(KillSystem* killSystem);
+void KillSystem_Free(KillSystem* killSystem);

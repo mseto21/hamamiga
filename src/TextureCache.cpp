@@ -105,7 +105,6 @@ void TextureCache_Remove(const char* path) {
 /* Removes all of the textures from when the level was loaded.*/
 void TextureCache_FreeLevel() {
 	int index = tcache->levelIndex;
-	std::cout << index << ", " << tcache->index << std::endl;
 	for (; index < tcache->index; index++) {
 		memset(&tcache->textures[index], 0, sizeof(struct Texture));
 	}

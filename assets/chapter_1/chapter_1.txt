@@ -7,7 +7,6 @@ zone=
 	entity=
 		animation(4,150.0,48,87,)
 		health(100,)
-		bullet()
 		input()
 		movement(5.0,20.0,1.5,14.0,)
 		physics(100,)

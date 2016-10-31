@@ -19,3 +19,8 @@ void KillSystem_Update(KillSystem* killSystem) {
 		}
 	}
 }
+
+void KillSystem_Free(KillSystem* killSystem) {
+	killSystem->cBag = nullptr;
+	killSystem->aliveComponent = nullptr;
+}

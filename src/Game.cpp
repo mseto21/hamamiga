@@ -415,7 +415,7 @@ void Game_RunLoop(Game* game) {
 							game->gameState = GameState_Closing;
 							break;
 						case SDLK_m:
-							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win) {
+							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win || game->gameState == GameState_ZoneIntro) {
 								game->gameState = GameState_Returning;
 							} else {
 								game->gameState = GameState_Title;
@@ -538,8 +538,6 @@ void Game_RunLoop(Game* game) {
 
 
 void Game_Close(Game* game) {
-	TTF_CloseFont(game->playState.scoreFont);
-	TTF_CloseFont(game->playState.healthFont);
 	Mix_FreeMusic(game->titleState.titleMusic);
 	TextureCache_Free();
 	SoundCache_Free();

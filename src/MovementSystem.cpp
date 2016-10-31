@@ -56,3 +56,9 @@ void MovementSystem_Update(MovementSystem* movementSystem) {
 	}
 }
 
+void MovementSystem_Free(MovementSystem* movementSystem) {
+	movementSystem->movementComponent = nullptr;
+	movementSystem->rectangleComponent = nullptr;
+	movementSystem->hatComponent = nullptr;
+}
+

@@ -85,7 +85,15 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 			}
 		//}
 	}
+}
 
-
-
+void InputSystem_Free(InputSystem* inputSystem) {
+	inputSystem->inputComponent = nullptr;
+	inputSystem->movementComponent = nullptr;
+	inputSystem->hatComponent = nullptr;
+	inputSystem->healthComponent = nullptr;
+	inputSystem->bulletComponent = nullptr;
+	inputSystem->physicsComponent = nullptr;
+	inputSystem->aliveComponent = nullptr;
+	inputSystem->textureComponent = nullptr;
 }

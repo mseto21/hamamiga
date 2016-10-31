@@ -14,3 +14,4 @@ struct AISystem {
 
 void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag);
 void AISystem_Update(AISystem* aiSystem);
+void AISystem_Free(AISystem* aiSystem);
