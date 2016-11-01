@@ -101,22 +101,20 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 }
 
 // --------------------------------------------------------------------
-void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Rectangle* rect) {
+void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Rectangle* rect, int camX) {
+	// TO-DO: Change this!
+	const SDL_Rect bigRect = {0, 0, Constants::ScreenWidth_, Constants::ScreenHeight_};
+	const float freq = 0.3;
+	const int max = 32;
+	const int r = sin(freq*(((int)rect->x + camX)%max))*127 + 128;
+	const int g = sin(freq*(((int)rect->x + camX)%max) + 2)*127 + 128;
+	const int b = sin(freq*(((int)rect->x + camX)%max) + 4)*127 + 128;
 	switch (hatId) {
 		case GlamourHatId_Disco:
-			/*
-			const SDL_Rect bigRect = {0, 0, Constants::ScreenWidth_, Constants::ScreenHeight_};
-			float freq = 0.3;
-			int max = 32;
-			int r = sin(freq*(count%max))*127 + 128;
-			int g = sin(freq*(count%max) + 2)*127 + 128;
-			int b = sin(freq*(count%max) + 4)*127 + 128;
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 			SDL_SetRenderDrawColor(renderer, r, g, b, 60);
 			SDL_RenderFillRect(renderer, &bigRect);
-			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);*/
-			break;
-		case GlamourHatId_None:
+			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 			break;
         case GlamourHatId_Miner:
         	Texture* mShader = TextureCache_GetTexture("miner-shader");
@@ -288,7 +286,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
 		      gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
 		      RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - gHatTexture->h, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
-		      RenderGlamourEffect(renderer, gHat->id, delta, &rect);
+		      RenderGlamourEffect(renderer, gHat->id, delta, &rect, cameraComponent->camera.x);
 		    }
 		}
 	}

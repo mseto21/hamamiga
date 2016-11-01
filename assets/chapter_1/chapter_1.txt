@@ -68,4 +68,10 @@ zone=
 		interactable(Press E to Pick Up,0,2,)
 		rectangle(48,216,49,24,)
 		alive();
+	entity=
+		texture(assets/disco-hat.png,disco,)
+		physics(0,)
+		interactable(Press E to Pick Up,0,3,)
+		rectangle(4848,1350,48,48,)
+		alive();
 END=
