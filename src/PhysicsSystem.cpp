@@ -175,18 +175,73 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			  if (Component_HasIndex(healthComponent, eid)) {
 					if (!healthComponent->invincible[eid]) {
 					  healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
-						std::cout<< "collided with eid " << eid << std::endl;
 					}
 				}
 			}
-			if (bulletComponent->activated == true){
-				Bullet* bullet = &bulletComponent->bullets[eid];
-				//std::cout << "checking bull collsiio" << std::endl;
-				//std::cout << "x " << bullet->rect.x << " y " << bullet->rect.y << std::endl;
-				if (Collision(left, bullet->rect) || Collision(right, bullet->rect) ||
-					Collision(up, bullet->rect) || Collision(down, bullet->rect)){
-					cllsnB = true;
-				std::cout << "collided with bullet!" << std::endl;
+		}
+
+		// Move player based on physics
+		if (!moveValues->grounded) {
+		  moveValues->yVelocity += Constants::Gravity_;
+		  moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
+		} else {
+		  moveValues->xVelocity -= moveValues->xVelocity*Constants::Friction_;
+		}
+		if (moveValues->xVelocity < 0.2 && moveValues->xVelocity > -0.2) {
+		  moveValues->xVelocity = 0;
+		}
+
+		// Tiilemap collisions
+		{
+			int tileX = floor(r1->x / Constants::TileSize_);
+			int tileCenterX = ((r1->x + (r1->w / 2)) / Constants::TileSize_);
+			int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
+			int tileY = floor((r1->y + moveValues->yVelocity) / Constants::TileSize_);
+			int tileCenterY = ((r1->y + (r1->h / 2)) / Constants::TileSize_);
+			int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
+			int tileHeadY = floor((r1->y + 4) / Constants::TileSize_);
+			int tileFootX = floor((r1->x + 12) / Constants::TileSize_);
+			int tileEndFootX = floor((r1->x + r1->w - 12) / Constants::TileSize_);
+			int tileHeadX = floor((r1->x + 4) / Constants::TileSize_);
+			int tileEndHeadX = floor((r1->x + r1->w - 4) / Constants::TileSize_);
+			
+			moveValues->grounded = false;
+			if (moveValues->yVelocity < 0) {
+				if (map->map[tileY][tileHeadX].solid || map->map[tileY][tileEndHeadX].solid) {
+					r1->y = tileY * Constants::TileSize_ + Constants::TileSize_;
+					moveValues->yVelocity = 0;
+				} 
+			} else if (moveValues->yVelocity >= 0) {
+				if (map->map[tileEndY][tileFootX].solid || map->map[tileEndY][tileEndFootX].solid) {
+					r1->y = tileEndY * Constants::TileSize_ - r1->h;
+					moveValues->yVelocity = 0;
+					moveValues->grounded = true;
+				}
+			}
+
+			if (moveValues->xVelocity < 0) {
+				if (moveValues->grounded) {
+					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid) {
+						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
+						moveValues->xVelocity = 0;
+					}
+				} else {
+					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
+						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
+						moveValues->xVelocity = 0;
+					}
+				}
+			} else if (moveValues->xVelocity > 0) {
+				if (moveValues->grounded) {
+					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid) {
+						r1->x = tileEndX * Constants::TileSize_ - r1->w;
+						moveValues->xVelocity = 0;
+					}
+				} else {
+					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
+						r1->x = tileEndX * Constants::TileSize_ - r1->w;
+						moveValues->xVelocity = 0;
+					}
 				}
 			}
 		}
