@@ -58,7 +58,7 @@ zone=
 		texture(assets/miner-hat.png,miner,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,4,)
-		rectangle(440,1198,88,61,)
+		rectangle(440,1198,49,61,)
 		alive();
 	entity=
 		texture(assets/bunny-hat.png,bunny,)
