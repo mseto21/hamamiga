@@ -1,10 +1,10 @@
 #include a bit of happiness
 
 #HaMaMiGa
-Harry Cohen hcohen23
-Matt Kosarek mkosare1
-Mindy Seto mSeto2
-Gavi Rawson grawson
+Harry Cohen (hcohen23)
+Matt Kosarek (mkosare1)
+Mindy Seto (mSeto2)
+Gavi Rawson (grawson)
 
 The Fat Hactory Game! Yay!
 
@@ -12,47 +12,70 @@ To run just make clean && make then ./fathactory and you may enjoy the
 splendor that is our game.
 
 General Controls:
-
 'ESC' at any time will exit the game.
 'M' to return to the Main menu, or to skip the fade in intro (go to Main screen anytime)
-'P' to skip the intro cut scene in game
-'S' to make Kevin INVINCIBLE (so you don't die)
-'WASD' to move, 'W' to jump
+'P' to skip the game backstory/intro cut scene
 'Enter' to select menu options 
 
-Options:
+
+Game Controls:
+'I' to make Kevin INVINCIBLE (so you don't die)
+'U' to cheat and Auto-Win the level
+'E' to pick up hat and wear it
+'WASD' to move, 'W' to jump
+
+
+Notes:
 ---------------
 Pressing the "M" key at any time will return to Main menu. This is useful
 for returning to the menu after dying or winning the game.
+
+Options:
+---------------
+Selecting 'Options" from the menu leads to options screen. Currently there is one option "Background Music". When selected (use W/D to scroll through options) pressing the "A" key makes the background music quieter. Pressing "D" key increases the background music volume.
 
 Play
 -----
 Use 'WASD' to jump and move. 'W' to jump. Colliding with enemies will lead to Kevin losing
 health, when Kevin loses all his health he dies. :(
 
-However, if you want to make Kevin invincible, press the 'S' key to ensure ease
+However, if you want to make Kevin invincible, press the 'I' key to ensure ease
 of testing. :)
 
 Platforms can be jumped on by pressing 'W' and jumping on top of them. You cannot jump on the platform
 from underneath- you will collide with the bottom of the platform.
 
+---------
+CHAPTER 1
+---------
 In order to win and escape this factory, you have to dodge the demons
 and reach the magical crown (located at the very top left of the screen). The crown can only be
 reached in this level after the bunny hat is obtained. After obtaining the bunny hat, it will be displayed in
-the top right hand of the screen (underneat the health bar), and Kevin will be granted SUPER JUMP POWERS!
+the top right hand of the screen (underneatH the health bar), and Kevin will be granted SUPER JUMP POWERS!
 This allows Kevin to jump to the skies and reach the crown.
 
-Bunny hat is located on the far right of the level.
+Bunny hat is located on the far right of the level. Press 'E' to pick the hat up to wear and gain super jump powers.
 
 Now there is additional glamour hat hiding on the level which will cause a super cool rainbow strobe to appear on the screen.
-You will keep the powers of the bunny hat but you will see the disco hat on your head.
+You will keep the powers of the bunny hat but you will see the disco hat on your head. Press 'E' to pick up the disco hat.
 
+--------
+CHAPTER 2
+--------
+After winning Chapter 1 (by completing the level, or by pressing 'U' to auto-win), selecting "Play" again will load the second chapter.
 
+Here we have a dark level where you need the "Miner Hat" in order to win. The "Miner Hat" is located at the very beginning of the level. Press 'E' to pick up the miner hat and light up the level!
+
+This level is very tough so it will probably be easiest to press 'U' to win. However, if you want to challenge yourself and navigate through Chapter 2, the crown is located in the bottom right corner of the second level.
+
+---------------
 Breakdown of what each member achieved:
+---------------
+Harry: Designed the second level, added lighting/shaders for the miner hat.
 
-Harry: Designed the first level, fixed small bug with collision with enemies and added kickback when an enemy bumps into you, changed the tile collision slightly so now you being next to a tile is different from being on it, implemented the disco hat abilities, made it so enemies are removed when they fall off the screen, and added button to get rid of damage. 
-Matt: Added more collision logic, made entire rendering system more efficient, added the logic for the intro
-cut scenes.
-Mindy: Fixed shortcuts to skip scenes, added soundsystem, added sounds for the game.
-Gavi: Designed cut scenes, strobe hat, textured platforms, and updated the background graphic. 
+Matt: Added interactable logic (picking up hats), Chapter loading, improving hat components, bug fixes.
+
+Mindy: Jumping animation, bug fixing, future base for projectile system (not yet implemented).
+ 
+Gavi: Designed artwork for second level (tile set, new hats, background, jumping animation, etc.). 
 
