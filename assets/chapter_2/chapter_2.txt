@@ -61,9 +61,15 @@ zone=
 		rectangle(150,1353,88,61,)
 		alive();
 	entity=
+		texture(assets/bunny-hat.png,bunny,)
+		physics(0,)
+		interactable(Press E to Pick Up,0,0,)
+		rectangle(3980,1350,48,48,)
+		alive();
+	entity=
 		texture(assets/crown.png,crown,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,2,)
-		rectangle(4850,216,49,24,)
+		rectangle(4850,1350,49,24,)
 		alive();
 END=
