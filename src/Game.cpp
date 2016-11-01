@@ -359,6 +359,9 @@ void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
 			break;
 		case GameResult_Won:
 			game->playState.currentLevel++;
+			if (game->playState.currentLevel > Constants::MaximumLevels_) {
+				game->playState.currentLevel = 1;
+			}
 			game->gameState = GameState_Win;
 			//Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
 			//Sound_Play(SoundCache_GetSound("nj"), 0);
@@ -427,7 +430,9 @@ void Game_RunLoop(Game* game) {
 						case SDLK_u:
 							if (game->gameState == GameState_Play) {
 								game->gameState = GameState_Win;
-								game->playState.currentLevel++;
+								if (game->playState.currentLevel > Constants::MaximumLevels_) {
+									game->playState.currentLevel = 1;
+								}
 							}
 							break;
 						default:
