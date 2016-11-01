@@ -430,6 +430,7 @@ void Game_RunLoop(Game* game) {
 						case SDLK_u:
 							if (game->gameState == GameState_Play) {
 								game->gameState = GameState_Win;
+								game->playState.currentLevel++;
 								if (game->playState.currentLevel > Constants::MaximumLevels_) {
 									game->playState.currentLevel = 1;
 								}
