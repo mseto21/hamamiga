@@ -259,11 +259,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		}*/
 	}
 	
-	// Render given shader over entire scene
-	Texture* shader = TextureCache_GetTexture(Constants::Shader_);
-	if (shader) {
-	  RenderSystem_Render_xywh(renderer, 0, 0, shader->w, shader->h, NULL, shader);
-	}
 	// Render hats on HUD
 	if (Component_HasIndex(hatComponent, Constants::PlayerIndex_)) {
 		Hat* hat = &hatComponent->hats[Constants::PlayerIndex_].hat;
@@ -286,8 +281,17 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
 		      gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
 		      RenderSystem_Render_xywh(renderer, rect.x, rect.y + rect.h - 50 - gHatTexture->h, gHatTexture->w, gHatTexture->h, NULL, gHatTexture);
+		    }
+		    // Render given shader over entire scene
+		    Texture* shader = TextureCache_GetTexture(Constants::Shader_);
+		    if (shader) {
+		      RenderSystem_Render_xywh(renderer, 0, 0, shader->w, shader->h, NULL, shader);
+		    }
+
+		    if (gHat) {
 		      RenderGlamourEffect(renderer, gHat->id, delta, &rect, cameraComponent->camera.x);
 		    }
+		      
 		}
 	}
 	
