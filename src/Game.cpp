@@ -257,7 +257,7 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 void RenderOptions(Game* game, uint32 elapsed) {
 	//std::cout<< "in redner options" << std::endl;
 	(void) elapsed;
-Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
+	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	for (int selectionIndex = 0; selectionIndex < Constants::OptionScreenSelections_; selectionIndex++) {
@@ -415,8 +415,6 @@ void Game_RunLoop(Game* game) {
 						case SDLK_m:
 							if (game->gameState == GameState_Win || game->gameState == GameState_Lose) {
 								game->gameState = GameState_Returning;
-							} else {
-								game->gameState = GameState_Title;
 							}
 							break;
 						case SDLK_u:
