@@ -203,9 +203,9 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 
 void FreePlay(Game* game) {
 	// Free sounds
-	Mix_FreeMusic(game->playState.chapter.music);
-	game->playState.chapter.music = nullptr;
-	Mix_HaltChannel(Constants::DiscoChannel_);
+	//Mix_FreeMusic(game->playState.chapter.music);
+	//game->playState.chapter.music = nullptr;
+	//Mix_HaltChannel(Constants::DiscoChannel_);
 
 	// Free caches
 	EntityCache_Free();
@@ -214,15 +214,15 @@ void FreePlay(Game* game) {
 
 	// Free cutscenes
 	strcpy(game->playState.chapter.name, "");
-	for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
-		game->playState.chapter.startScene.slides[i] = nullptr;
-	}
+	//for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
+	//	game->playState.chapter.startScene.slides[i] = nullptr;
+	//}
 	game->playState.chapter.startScene.slideCount = 0;
 	game->playState.chapter.startScene.current = 0;
 
-	for (int i = 0; i < game->playState.chapter.endScene.slideCount; i++) {
-		game->playState.chapter.endScene.slides[i] = nullptr;
-	}
+	//for (int i = 0; i < game->playState.chapter.endScene.slideCount; i++) {
+	//	game->playState.chapter.endScene.slides[i] = nullptr;
+	//}
 	game->playState.chapter.endScene.slideCount = 0;
 	game->playState.chapter.endScene.current = 0;
 
@@ -231,10 +231,10 @@ void FreePlay(Game* game) {
 	TTF_CloseFont(game->playState.healthFont);
 
 	// Free sounds
-	SoundCache_FreeSound("hatpickup");
-	SoundCache_FreeSound("disco");
-	SoundCache_FreeSound("ow");
-	SoundCache_FreeSound("nj");
+	//SoundCache_FreeSound("hatpickup");
+	////SoundCache_FreeSound("disco");
+	//SoundCache_FreeSound("ow");
+	//SoundCache_FreeSound("nj");
 
 	// Delete all pointers in ai system
 	AISystem_Free(&game->playState.aiSystem);
@@ -244,7 +244,7 @@ void FreePlay(Game* game) {
 	PhysicsSystem_Free(&game->playState.physicsSystem);
 	RenderSystem_Free(&game->playState.renderSystem);
 	GoalSystem_Free(&game->playState.goalSystem);
-	SoundSystem_Free(&game->playState.soundSystem);
+//	SoundSystem_Free(&game->playState.soundSystem);
 	KillSystem_Free(&game->playState.killSystem);
 
 	// Set loaded variable.
