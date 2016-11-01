@@ -45,8 +45,8 @@ void MovementSystem_Update(MovementSystem* movementSystem) {
 		// Check YVelocity Maximum
 		if (moveValue->yVelocity >= moveValue->maxYVelocity) {
 		  moveValue->yVelocity = moveValue->maxYVelocity;
-		} else if (moveValue->yVelocity <= -moveValue->maxYVelocity) {
-		  moveValue->yVelocity = -moveValue->maxYVelocity;
+		} else if (moveValue->yVelocity <= -14*jump) {
+		  moveValue->yVelocity = -14*jump;
 		}
 
 		// Get the entity's rectangle
