@@ -27,5 +27,6 @@ bool Sound_Play(Sound* sound, int loops) {
 }
 
 void Sound_Free(Sound* sound) {
-	Mix_FreeChunk(sound->chunk);
+	if (sound->chunk)
+		Mix_FreeChunk(sound->chunk);
 }

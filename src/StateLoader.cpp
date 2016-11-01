@@ -82,6 +82,7 @@ void LoadHighScoreStateAssets(Game* game) {
 	TTF_CloseFont(game->highScoreState.font);
 }
 
+
 void LoadOptionStateAssets(Game* game) {
 	// Load font
 	game->optionState.font = TTF_OpenFont("assets/minnie\'shat.ttf", 75);

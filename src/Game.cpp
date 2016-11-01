@@ -392,10 +392,8 @@ void Game_RunLoop(Game* game) {
 	Uint32 lag = 0;
 
 	// Input variables
-	bool keysdown[Constants::NumKeys_];
-	memset(&keysdown, 0, sizeof(keysdown));
-	bool keysup[Constants::NumKeys_];
-	memset(&keysup, 0, sizeof(keysup));
+	bool keysdown[Constants::NumKeys_] = {false};
+	bool keysup[Constants::NumKeys_] = {true};
 
 	while (game->running) {
 		currentTime = SDL_GetTicks();
@@ -415,20 +413,10 @@ void Game_RunLoop(Game* game) {
 							game->gameState = GameState_Closing;
 							break;
 						case SDLK_m:
-							if (game->gameState == GameState_Play || game->gameState == GameState_Lose || game->gameState == GameState_Win || game->gameState == GameState_ZoneIntro) {
+							if (game->gameState == GameState_Win || game->gameState == GameState_Lose) {
 								game->gameState = GameState_Returning;
 							} else {
 								game->gameState = GameState_Title;
-							}
-							break;
-						case SDLK_p:
-							if (game->gameState == GameState_ZoneIntro) {
-								if (!game->playState.loaded) {
-									std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
-									game->gameState = GameState_Title;
-								} else {
-									game->gameState = GameState_Play;
-								}
 							}
 							break;
 						case SDLK_u:
@@ -517,8 +505,8 @@ void Game_RunLoop(Game* game) {
 			case GameState_Win:
 				RenderWin(game);
 				break;
-		  	case GameState_Lose:
-		  		RenderLose(game);
+	  	case GameState_Lose:
+	  		RenderLose(game);
 				break;
 			case GameState_Returning:
 				FreePlay(game);

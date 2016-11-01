@@ -47,8 +47,9 @@ void SoundCache_FreeSound(const char* path) {
 		Sound* sound = &scache->sounds[i];
 		if (strcmp(path, sound->name) == 0) {
 			Sound_Free(&scache->sounds[i]);
+			return;
 		}
-	};
+	}
 }
 
 
