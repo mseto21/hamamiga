@@ -360,8 +360,8 @@ void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
 		case GameResult_Won:
 			game->playState.currentLevel++;
 			game->gameState = GameState_Win;
-			Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
-			Sound_Play(SoundCache_GetSound("nj"), 0);
+			//Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
+			//Sound_Play(SoundCache_GetSound("nj"), 0);
 			game->gameState = GameState_Win;
 		default:
 			break;
