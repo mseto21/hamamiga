@@ -413,9 +413,16 @@ void Game_RunLoop(Game* game) {
 							game->gameState = GameState_Closing;
 							break;
 						case SDLK_m:
-							if (game->gameState == GameState_Win || game->gameState == GameState_Lose) {
+							if (game->gameState == GameState_Win || game->gameState == GameState_Lose 
+								|| game->gameState == GameState_Play || game->gameState == GameState_ZoneIntro) {
 								game->gameState = GameState_Returning;
+							} else {
+								game->gameState = GameState_Title;
 							}
+							break;
+						case SDLK_p:
+							if (game->gameState == GameState_ZoneIntro)
+								game->gameState = GameState_Play;
 							break;
 						case SDLK_u:
 							if (game->gameState == GameState_Play) {
@@ -462,6 +469,7 @@ void Game_RunLoop(Game* game) {
 					UpdatePause(game, elapsed);
 					break;
 				default:
+					lag = Constants::OptimalTime_;
 					break;
 			}
 			lag -= Constants::OptimalTime_;

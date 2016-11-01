@@ -3,6 +3,10 @@
 
 void Component_Initialize(Component* component) {
 	component->count = 0;
+	for (int i = 0; i < Constants::MaxEntities_; i++) {
+		component->usedEntities[i] = false;
+		component->usedEntities[i] = 0;
+	}
 }
 
 bool Component_HasIndex(Component* component, uint32 eid) {
