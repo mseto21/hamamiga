@@ -95,7 +95,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 			// Interaction collisions
 			if (Component_HasIndex(interactableComponent, otherEid)) {
-				std::cout << otherEid << std::endl;
  				if (!Collision(*r1, rectangleComponent->entityRectangles[otherEid])) {
  					if (eid == Constants::PlayerIndex_)
  						interactableComponent->canBeInteractedWith[otherEid] = false;
