@@ -288,6 +288,11 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		      RenderSystem_Render_xywh(renderer, 0, 0, shader->w, shader->h, NULL, shader);
 		    }
 
+		    Texture* pShader = TextureCache_GetTexture(Constants::PShader_);
+		    if (pShader) {
+		      RenderSystem_Render_xywh(renderer, rect.x + (rect.w - pShader->w)/2, rect.y + (rect.h - pShader->h)/2, pShader->w, pShader->h, NULL, pShader);
+		    }
+
 		    if (gHat) {
 		      RenderGlamourEffect(renderer, gHat->id, delta, &rect, cameraComponent->camera.x);
 		    }

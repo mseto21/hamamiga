@@ -56,6 +56,7 @@ namespace Constants {
 	const String128 LoseBackground_ 	=   "lose_background";
 	const String128 MenuOverlay_    	= 	"menu_overlay";
 	const String128 Shader_    			= 	"shader";
+	const String128 PShader_			=	"pShader";
 	const String128 GameBackground_ 	= 	"game_background";
 	const String128 TilesetName_ 		= 	"tileset";
 	const String128 ZoneName_ 			=	"zone_name";

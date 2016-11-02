@@ -146,7 +146,8 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	TextureCache_CreateTexture(game->renderer, backgroundPath.c_str(), Constants::GameBackground_);
 	std::string shaderPath = "assets/chapter_" + std::to_string(chapter) + "/shader.png";
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, shaderPath.c_str(), Constants::Shader_)->sdltexture, SDL_BLENDMODE_MOD);
-
+	std::string pShaderPath = "assets/chapter_" + std::to_string(chapter) + "/player-shader.png";
+	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, pShaderPath.c_str(), Constants::PShader_)->sdltexture, SDL_BLENDMODE_ADD);
 	// Load file
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer)) {
 		EntityCache_Free();
