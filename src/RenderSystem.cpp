@@ -176,7 +176,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			continue;
 		}
 		Texture* texture = textureComponent->textures[eid];
-		std::cout << "texture with eid " << eid  << std::endl;
 		// If no rectangle, render at (0,0)
 		if (!Component_HasIndex(rectangleComponent, eid)) {
 			//std::cout << "textureW " << texture->w << " textureH " << texture->h << std::endl;
@@ -232,15 +231,17 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			}	  
 		}
 
+		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
+
 		// Display interaction message
 		if (Component_HasIndex(interactableComponent, eid)) {
+			Texture* messageTexture;
 			if (interactableComponent->canBeInteractedWith[eid]) {
-				// Display message interactableComponent->messages[eid]
-				
+				messageTexture = interactableComponent->msgs[eid];
+				rect.y -= messageTexture->h;
+				RenderSystem_RenderCoord(renderer, &rect, NULL, messageTexture);
 			}
 		}
-
-		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 
 		//	SDL_Rect clip5 = {0, 0, 10, 10};
 		//Bullets

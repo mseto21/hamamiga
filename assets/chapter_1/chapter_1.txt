@@ -16,6 +16,12 @@ zone=
 		camera()
 		goal();
 	entity=
+		texture(assets/disco-hat.png,disco,)
+		physics(0,)
+		interactable(Press E to Pick Up,0,3,)
+		rectangle(300,1350,48,48,)
+		alive();
+	entity=
 		animation(4,150.0,88,87,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)

@@ -15,6 +15,7 @@
 #include "InteractableComponent.h"
 #include <iostream>
 
+
 void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->rectangleComponent 	= (RectangleComponent*)malloc(sizeof(*bag->rectangleComponent));
 	bag->movementComponent 		= (MovementComponent*)malloc(sizeof(*bag->movementComponent));
@@ -47,7 +48,7 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->aiComponent);
 	Component_Initialize(bag->aliveComponent);
 	Component_Initialize(bag->goalComponent);
-	Component_Initialize(bag->interactableComponent);
+	InteractableComponent_Initialize(bag->interactableComponent);
 }
 
 void ComponentBag_Check(ComponentBag* bag) {
@@ -122,6 +123,8 @@ void ComponentBag_Free(ComponentBag* bag) {
 	bag->aliveComponent = nullptr;
 	free(bag->goalComponent);
 	bag->goalComponent = nullptr;
+	// TO-DO: Make this less unfortunate (probably never).
+	InteractableComponent_Free(bag->interactableComponent);
 	free(bag->interactableComponent);
 	bag->interactableComponent = nullptr;
 }
