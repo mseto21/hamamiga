@@ -13,12 +13,12 @@ public:
   Vector2 position; //figure out how to use this with movement system?
   Vector2 velocity;
   bool alive; //alive or dead bullet?
-  bool init;
-  Texture* texture;
-  float frameTime;    /* Time for frame to update */
-  float currentFrameTime; /* Current time for frame */
+ // bool init;
+  //Texture* texture;
+  //float frameTime;    /* Time for frame to update */
+  //float currentFrameTime; /* Current time for frame */
   Rectangle rect;
-  uint32 age;
+  //uint32 age;
 
   /**methods*/
 public:

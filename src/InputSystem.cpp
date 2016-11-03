@@ -10,6 +10,7 @@
 #include "PhysicsComponent.h"
 #include "AliveComponent.h"
 #include "TextureComponent.h"
+//#include "RectangleComponent.h"
 #include "EntityCache.h"
 #include "ComponentBag.h"
 
@@ -25,6 +26,7 @@ void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag) {
 	inputSystem->aliveComponent  		= cBag->aliveComponent;
 	inputSystem->physicsComponent  	= cBag->physicsComponent;
 	inputSystem->textureComponent  	= cBag->textureComponent;
+	inputSystem->rectangleComponent = cBag->rectangleComponent;
 }
 
 void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[]) {
@@ -36,6 +38,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 	PhysicsComponent* physicsComponent = inputSystem->physicsComponent;
 	AliveComponent* aliveComponent = inputSystem->aliveComponent;
 	TextureComponent* textureComponent = inputSystem->textureComponent;
+	RectangleComponent* rectangleComponent = inputSystem->rectangleComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
 		uint32 eid = inputComponent->entityArray[entityIndex];
@@ -73,16 +76,20 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		}
 		//Checking bullet activation
 		//if (Component_HasIndex(bulletComponent, eid) && eid == Constants::PlayerIndex_){
-			//if (keysPressed[SDLK_SPACE]) {
+		//fix to if entity has a hat with bullet effect
+		if (eid == Constants::PlayerIndex_ && Component_HasIndex(rectangleComponent, eid)){
+			if (keysPressed[SDLK_SPACE]) {
 				//bulletComponent->activated = true;//bullets[eid].activated = true;
-				//Entity* newBullet = EntityCache_GetNewEntity();
-				//Bullet bullet = Bullet();
-				//BulletComponent_Add(inputSystem->bulletComponent, inputSystem->physicsComponent,
-				//inputSystem->aliveComponent, inputSystem->textureComponent, newBullet->eid, bullet);
-				//std::cout << "created bullet entity!" <<std::endl;
-
-				//bulletComponent->bullets[0].alive = true;
-			//}
+				//caster's position
+				Rectangle rect = rectangleComponent->entityRectangles[eid];
+				Entity* newBullet = EntityCache_GetNewEntity();
+				Bullet bullet = Bullet();
+				BulletComponent_Add(inputSystem->bulletComponent, inputSystem->physicsComponent,
+				inputSystem->aliveComponent, inputSystem->textureComponent, inputSystem->rectangleComponent,
+				rect, newBullet->eid, bullet);
+				std::cout << "created bullet entity! with eid " << newBullet->eid <<std::endl;
+			}
+		}
 		//}
 	}
 }

@@ -26,7 +26,7 @@ struct ComponentBag {
 	PhysicsComponent* 	physicsComponent;
 	HealthComponent* 	healthComponent;
 	CameraComponent*	cameraComponent;
-  	HatComponent*       hatComponent;
+  HatComponent*       hatComponent;
 	AIComponent* 		aiComponent;
 	AliveComponent* 	aliveComponent;
 	GoalComponent* 		goalComponent;
