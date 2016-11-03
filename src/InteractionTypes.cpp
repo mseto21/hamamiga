@@ -27,11 +27,11 @@ const float JumpEnhancement_ = 1.41;
 // ADD HATS AT END OF ENUM, DO NOT INSERT NO BAD!
 enum HatTypes {
 	HatTypes_BunnyHat = 0,
-	HatTypes_HardHat,
-	HatTypes_Crown,
-	HatTypes_Disco,
-	HatTypes_Miner,
-	HatTypes_Cowboy,
+	HatTypes_HardHat, //1
+	HatTypes_Crown, //2
+	HatTypes_Disco, //3
+	HatTypes_Miner, //4
+	HatTypes_Cowboy, //5
 };
 
 void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {

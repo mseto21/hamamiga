@@ -176,14 +176,14 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			continue;
 		}
 		Texture* texture = textureComponent->textures[eid];
-		std::cout << "texture with eid " << eid  << std::endl;
+		//std::cout << "texture with eid " << eid  << std::endl;
 		// If no rectangle, render at (0,0)
 		if (!Component_HasIndex(rectangleComponent, eid)) {
 			//std::cout << "textureW " << texture->w << " textureH " << texture->h << std::endl;
-			std::cout << "no rect component for entity with eid " << eid << std::endl;
+			//std::cout << "no rect component for entity with eid " << eid << std::endl;
 			Rectangle rect = {0, 0, texture->w, texture->h};
 			//std::cout << "printing out texture" << std::endl;
-			std::cout << "textureW " << texture->w << " textureH " << texture->h << std::endl;
+			//std::cout << "textureW " << texture->w << " textureH " << texture->h << std::endl;
 			RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 			//std::cout << "after rendercoord with eid " << eid << std::endl;
 			continue;

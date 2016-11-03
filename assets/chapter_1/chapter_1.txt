@@ -74,4 +74,10 @@ zone=
 		interactable(Press E to Pick Up,0,3,)
 		rectangle(4848,1350,48,48,)
 		alive();
+	entity=
+		texture(assets/cowboy-hat.png,cowboy,)
+		physics(0,)
+		interactable(Press E to Pick Up,0,5,)
+		rectangle(300,1350,48,48,)
+		alive();
 END=

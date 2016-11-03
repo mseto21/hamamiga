@@ -1,4 +1,5 @@
 #pragma once
+#include "Types.h"
 /* 
 Relies on: MovementComponent.
 Usage: If the InputComponent is attached to an entity, the etity will 
@@ -31,5 +32,5 @@ struct InputSystem {
 
 
 void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag);
-void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[]);
+void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[], uint16 numPressed[]);
 void InputSystem_Free(InputSystem* inputSystem);

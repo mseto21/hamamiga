@@ -15,5 +15,5 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	//Texture
 	Texture* texture = TextureCache_GetTexture("bullet");
 	TextureComponent_Add(textureComponent, eid, texture); //default bullet texture
-	RectangleComponent_Add(rect, eid, rectPos.x, rectPos.y, texture->w, texture->h);
+	RectangleComponent_Add(rect, eid, rectPos.x + 150, rectPos.y + 40, texture->w, texture->h);
 }

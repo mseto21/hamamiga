@@ -397,6 +397,7 @@ void Game_RunLoop(Game* game) {
 	// Input variables
 	bool keysdown[Constants::NumKeys_] = {false};
 	bool keysup[Constants::NumKeys_] = {true};
+	uint16 numpressed[Constants::NumKeys_] = {0};
 
 	while (game->running) {
 		currentTime = SDL_GetTicks();
@@ -439,6 +440,7 @@ void Game_RunLoop(Game* game) {
 						default:
 							keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
 							keysup[event.key.keysym.sym % Constants::NumKeys_] = false;
+							numpressed[event.key.keysym.sym % Constants::NumKeys_]++;
 							break;
 					}
 					break;
@@ -453,7 +455,7 @@ void Game_RunLoop(Game* game) {
 
 		// TO-DO: I'm sad about this.
 		if (game->gameState == GameState_Play) {
-			InputSystem_Update(&game->playState.inputSystem, keysdown, keysup);
+			InputSystem_Update(&game->playState.inputSystem, keysdown, keysup, numpressed);
 		}
 
 		// Update game state
