@@ -3,20 +3,20 @@
 
 Bullet::Bullet() {
 	alive = false;
-	init = false;
+	//init = false;
 	position.x = 0;
   position.y = 0;
-  currentFrameTime = 0.f;
-  frameTime = 0.f;
-  age = 0;
+  //currentFrameTime = 0.f;
+  //frameTime = 0.f;
+  //age = 0;
 }
 
 void Bullet::initialize(Rectangle playerPos, float frameTime){
-	this->init = true;
+	//this->init = true;
 	this->rect.x = playerPos.x + 100 ;
 	this->rect.y = playerPos.y;
 	//this->currentFrameTime = 0.f;
-	this->frameTime =  frameTime;
+	//this->frameTime =  frameTime;
 }
 
 void Bullet::update(uint32 delta){
@@ -24,13 +24,13 @@ void Bullet::update(uint32 delta){
 	if (this->rect.x  < Constants::ScreenWidth_){
 		this->rect.x += .05;
 	}
-	age++;
+	//age++;
 		//this->bullet.y += this->velocity.y * delta;
 	//}
 }
 
 void Bullet::load(Texture* texture){
-	this->texture = texture;
+	//this->texture = texture;
 }
 
 void Bullet::display(){
