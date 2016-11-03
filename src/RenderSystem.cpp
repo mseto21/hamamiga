@@ -101,26 +101,20 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 }
 
 // --------------------------------------------------------------------
-void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Rectangle* rect, int camX) {
-	// TO-DO: Change this!
-	const SDL_Rect bigRect = {0, 0, Constants::ScreenWidth_, Constants::ScreenHeight_};
-	const float freq = 0.3;
-	const int max = 32;
-	const int r = sin(freq*(((int)rect->x + camX)%max))*127 + 128;
-	const int g = sin(freq*(((int)rect->x + camX)%max) + 2)*127 + 128;
-	const int b = sin(freq*(((int)rect->x + camX)%max) + 4)*127 + 128;
+void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Rectangle* rect) {
 	switch (hatId) {
 		case GlamourHatId_Disco:
+			DiscoHatUpdate(elapsed);
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-			SDL_SetRenderDrawColor(renderer, r, g, b, 60);
-			SDL_RenderFillRect(renderer, &bigRect);
+			SDL_SetRenderDrawColor(renderer, DiscoHat::r, DiscoHat::g, DiscoHat::b, DiscoHat::a);
+			SDL_RenderFillRect(renderer, &DiscoHat::Rectangle);
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 			break;
-        case GlamourHatId_Miner:
-        	Texture* mShader = TextureCache_GetTexture("miner-shader");
-        	mShader->flip = TextureCache_GetTexture("miner")->flip;
-		  	RenderSystem_Render_xywh(renderer, rect->x + (rect->w - mShader->w)/2, rect->y - mShader->h / 2, mShader->w, mShader->h, NULL, mShader);
-	        break;
+	    case GlamourHatId_Miner:
+	    	Texture* mShader = TextureCache_GetTexture("miner-shader");
+	    	mShader->flip = TextureCache_GetTexture("miner")->flip;
+	  		RenderSystem_Render_xywh(renderer, rect->x + (rect->w - mShader->w)/2, rect->y - mShader->h / 2, mShader->w, mShader->h, NULL, mShader);
+      break;
 		
 	}
 }
@@ -192,10 +186,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 		// Otherwise, render at the rectangle
 		Rectangle rect = rectangleComponent->entityRectangles[eid];
-		/*if (rect.x + rect.w < cameraComponent->camera.x || rect.x > cameraComponent->camera.x + cameraComponent->camera.w
-			|| rect.y + rect.h > cameraComponent->camera.y + cameraComponent->camera.h || rect.y < cameraComponent->camera.y) {
+		if (rect.x + rect.w < cameraComponent->camera.x || rect.x > cameraComponent->camera.x + cameraComponent->camera.w
+			|| rect.y > cameraComponent->camera.y + cameraComponent->camera.h || rect.y < cameraComponent->camera.y) {
 			continue;
-		}*/
+		}
 		rect.x -= cameraComponent->camera.x;
 		rect.y -= cameraComponent->camera.y;
 		SDL_Rect clip = {0, 0, rect.w, rect.h};
@@ -243,7 +237,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 
 		//	SDL_Rect clip5 = {0, 0, 10, 10};
-	//Bullets
+		//Bullets
 		/*if (Component_HasIndex(bulletComponent, eid) && bulletComponent->activated == true){
 			std::cout<< "found a bullet entity for eid " << eid << std::endl;
 			Bullet* bullet = &bulletComponent->bullets[eid];
@@ -294,7 +288,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		    }
 
 		    if (gHat) {
-		      RenderGlamourEffect(renderer, gHat->id, delta, &rect, cameraComponent->camera.x);
+		      RenderGlamourEffect(renderer, gHat->id, delta, &rect);
 		    }
 		      
 		}
