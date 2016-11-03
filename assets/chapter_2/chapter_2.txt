@@ -26,33 +26,41 @@ zone=
 		animation(4,150.0,88,87,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
-		rectangle(1500,1353,88,87,)
+		rectangle(1356,1353,88,87,)
 		texture(assets/demon.png,demon,)
-		ai(500,1,)
+		ai(100,1,)
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
-		rectangle(2200,1353,88,87,)
+		rectangle(1106,990,88,87,)
 		texture(assets/demon.png,demon,)
-		ai(500,1,)
+		ai(250,1,)
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
-		rectangle(1970,210,88,87,)
+		rectangle(1775,1353,88,87,)
 		texture(assets/demon.png,demon,)
-		ai(120,1,)
+		ai(210,1,)
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
-		rectangle(3980,1353,88,87,)
+		rectangle(1670,210,88,87,)
 		texture(assets/demon.png,demon,)
-		ai(30,1,)
+		ai(420,1,)
+		alive();
+	entity=
+		animation(4,150.0,88,87,)
+		movement(3.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(3780,1353,88,87,)
+		texture(assets/demon.png,demon,)
+		ai(230,1,)
 		alive();
 	entity=
 		texture(assets/miner-hat.png,miner,)
@@ -64,7 +72,7 @@ zone=
 		texture(assets/bunny-hat.png,bunny,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,0,)
-		rectangle(3980,1350,48,48,)
+		rectangle(400,120,48,48,)
 		alive();
 	entity=
 		texture(assets/crown.png,crown,)
