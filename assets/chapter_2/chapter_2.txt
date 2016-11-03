@@ -20,7 +20,7 @@ zone=
 		physics(100,)
 		rectangle(1000,1353,88,87,)
 		texture(assets/demon.png,demon,)
-		ai(200,1,)
+		ai(120,1,)
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
@@ -66,7 +66,7 @@ zone=
 		texture(assets/miner-hat.png,miner,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,4,)
-		rectangle(440,1198,49,61,)
+		rectangle(140,1350,49,61,)
 		alive();
 	entity=
 		texture(assets/bunny-hat.png,bunny,)
