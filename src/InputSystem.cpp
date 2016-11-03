@@ -93,6 +93,12 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 			}
 		}
 		//}
+
+		if (keysPressed[SDLK_p]) {
+			// Drop regular hat.
+		} else if (keysPressed[SDLK_o]) {
+			// Drop glamour hat.
+		}
 	}
 }
 

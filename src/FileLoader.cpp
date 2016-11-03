@@ -319,6 +319,7 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					cout << "Adding GoalComponent to entity " << eid << std::endl;
 					GoalComponent_Add(cBag->goalComponent, eid);
 				} else if (strcmp(cmd, "interactable") == 0) {
+					SDL_Color msg_color = {cBag->interactableComponent->r, cBag->interactableComponent->g, cBag->interactableComponent->b, 1};
 					string message = str_parameters.front();
 					str_parameters.pop();
 					int type = int_parameters.front();
@@ -326,7 +327,7 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					int hattype = int_parameters.front();
 					int_parameters.pop();
 					cout << "Adding InteractableComponent to entity " << eid << ":(" << message << ", " << type << ", " << hattype << ")" << endl;
-					InteractableComponent_Add(cBag->interactableComponent, eid, message.c_str(), type, hattype) ;
+					InteractableComponent_Add(cBag->interactableComponent, eid, TextureCache_CreateFont(renderer, cBag->interactableComponent->font, msg_color, message.c_str(), message.c_str()), type, hattype) ;
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}

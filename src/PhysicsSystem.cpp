@@ -71,6 +71,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			continue;
 		}
 		if (Component_HasIndex(interactableComponent, eid)) {
+			
 			continue;
 		}
 
