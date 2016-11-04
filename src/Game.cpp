@@ -337,10 +337,6 @@ void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 			game->playState.chapter.startScene.current++;
 			keysdown[SDLK_RIGHT  % Constants::NumKeys_] = false;
 			keysup[SDLK_RIGHT  % Constants::NumKeys_] = false;
-		} else if (keysdown[SDLK_LEFT  % Constants::NumKeys_] && keysup[SDLK_LEFT %  Constants::NumKeys_]) {
-			game->playState.chapter.startScene.current--;
-			keysdown[SDLK_LEFT % Constants::NumKeys_] = false;
-			keysup[SDLK_LEFT % Constants::NumKeys_] = false;
 		}
 
 		SDL_RenderClear(game->renderer);
