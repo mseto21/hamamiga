@@ -179,14 +179,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		Texture* texture = textureComponent->textures[eid];
 		// If no rectangle, render at (0,0)
 		if (!Component_HasIndex(rectangleComponent, eid)) {
-			//std::cout << "textureW " << texture->w << " textureH " << texture->h << std::endl;
-			std::cout << "no rect component for entity with eid " << eid << std::endl;
 			Rectangle rect = {0, 0, texture->w, texture->h};
-			//std::cout << "printing out texture" << std::endl;
-			std::cout << "textureW " << texture->w << " textureH " << texture->h << std::endl;
 			RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
-			//std::cout << "after rendercoord with eid " << eid << std::endl;
 			continue;
+		}
+		//If has a bullet component, but bullet not alive kill it
+		if (Component_HasIndex(bulletComponent, eid)) {
+			
 		}
 
 		// Otherwise, render at the rectangle
@@ -243,22 +242,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				RenderSystem_RenderCoord(renderer, &rect, NULL, messageTexture);
 			}
 		}
-
-		//	SDL_Rect clip5 = {0, 0, 10, 10};
-		//Bullets
-		/*if (Component_HasIndex(bulletComponent, eid) && bulletComponent->activated == true){
-			std::cout<< "found a bullet entity for eid " << eid << std::endl;
-			Bullet* bullet = &bulletComponent->bullets[eid];
-				if (bullet->init != true){
-				bullet->initialize(rect, delta);
-				std::cout << "ini after is: " << bullet->init << std::endl;
-				}
-				bullet->load(TextureCache_GetTexture("bullet"));
-				bullet->update(delta);
-				if (bullet->age < 1000){
-			RenderSystem_RenderCoord(renderer, &bullet->rect, &clip5, bullet->texture);
-		}
-		}*/
 	}
 	
 	// Render hats on HUD

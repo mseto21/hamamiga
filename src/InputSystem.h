@@ -1,4 +1,5 @@
 #pragma once
+#include "Types.h"
 /* 
 Relies on: MovementComponent.
 Usage: If the InputComponent is attached to an entity, the etity will 

@@ -171,6 +171,10 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		        r1->y += moveValues->yVelocity;
 				cllsn = true;
 			}
+
+		//if (cllsn){
+		//	/std::cout << "COLIDED" << std::endl;
+		//}
 			if (cllsn) {
 			  if (Component_HasIndex(healthComponent, eid)) {
 					if (!healthComponent->invincible[eid]) {

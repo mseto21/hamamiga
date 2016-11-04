@@ -180,6 +180,7 @@ void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
 	AISystem_Update(&game->playState.aiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
 	PhysicsSystem_Update(&game->playState.physicsSystem);
+	BulletSystem_Update(&game->playState.bulletSystem);
 	KillSystem_Update(&game->playState.killSystem);
 	switch (GoalSystem_Update(&game->playState.goalSystem, Constants::OptimalTime_)) {
 		case GameResult_Fell:
@@ -269,6 +270,10 @@ void Game_RunLoop(Game* game) {
 							break;
 						default:
 							keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
+
+							//keysup[event.key.keysym.sym % Constants::NumKeys_] = false;
+							//numpressed[event.key.keysym.sym % Constants::NumKeys_]++;
+
 							break;
 					}
 					break;

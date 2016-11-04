@@ -195,6 +195,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.scoreFont);
 	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
+	BulletSystem_Initialize(&game->playState.bulletSystem, &game->playState.cBag);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
 
 	// Set loaded variable
@@ -247,6 +248,7 @@ void FreePlay(Game* game) {
 	RenderSystem_Free(&game->playState.renderSystem);
 	GoalSystem_Free(&game->playState.goalSystem);
 //	SoundSystem_Free(&game->playState.soundSystem);
+	BulletSystem_Free(&game->playState.bulletSystem);
 	KillSystem_Free(&game->playState.killSystem);
 
 	// Set loaded variable.
