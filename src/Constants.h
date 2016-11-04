@@ -16,9 +16,9 @@ namespace Constants {
 	const uint16	MaxMapWidth_	=	256; // In number of tiles
 	const uint16	MaxMapHeight_	=	256;
 	const uint16	TileSize_		=	48;
-	const uint16	DiscoChannel_	= 2;//channel for disco/overlay sounds
-	const uint16  	SoundChannel_	= 3; //arbitrary channel for rest of sounds
-	const uint16	MaxBullets_ = 5; //max number of alive bullets at a time
+	const uint16	DiscoChannel_	= 	2;//channel for disco/overlay sounds
+	const uint16  	SoundChannel_	= 	3; //arbitrary channel for rest of sounds
+	const uint16	MaxBullets_		= 	5; //max number of alive bullets at a time
 
 	// Intro State
 	const uint32	IntroTime_		= 	5000;
@@ -28,14 +28,15 @@ namespace Constants {
 	
 	// Option State
 	const uint8	 	OptionScreenSelections_	=	1;
-	const uint8		VolumeUnit_							= 4;
-	const uint8		MaxVolume_							= 128;
-	const float		BrightnessUnit_					= 0.1f;
-	const float 	MaxBrightness_					= 1.0f;
+	const uint8		VolumeUnit_				= 4;
+	const uint8		MaxVolume_				= 128;
+	const float		BrightnessUnit_			= 0.1f;
+	const float 	MaxBrightness_			= 1.0f;
 
 	// Zone Intro State Time
 	const uint32	ZoneIntroTime_		=	3000;
-	const uint32	CutSceneSlideTime_	=	5000;
+	const uint32	FaderTime_			=	500;
+	const uint32	SlideTime_			= 	250;
 
 	// Play State
 	const float   	Gravity_        	=   .5f; //gravity
@@ -45,6 +46,7 @@ namespace Constants {
 	const uint8		PlayerIndex_		=   0;
 	const uint16    XRange_            	=   300;
 	const uint16    YRange_            	=   168;
+	const uint8 	MaximumLevels_ 		=	2;
 
 	// High Score State
 	const int     MaxHighScores_		=		5;
@@ -60,6 +62,4 @@ namespace Constants {
 	const String128 GameBackground_ 	= 	"game_background";
 	const String128 TilesetName_ 		= 	"tileset";
 	const String128 ZoneName_ 			=	"zone_name";
-
-	const uint8 MaximumLevels_ 			= 2;
 }
