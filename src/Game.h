@@ -49,8 +49,6 @@ struct TitleState {
 	const char* selectionStrings[Constants::TitleScreenSelections_];
 	uint8 selection;
 	_TTF_Font* titleFont;
-	bool w;
-	bool s;
 	_Mix_Music* titleMusic;
 };
 
@@ -65,8 +63,6 @@ struct OptionState {
 	const char* selectionStrings[Constants::TitleScreenSelections_];
 	uint8 selection;
 	_TTF_Font* font;
-	bool w;
-	bool s;
 };
 
 struct ZoneIntroState {

@@ -84,11 +84,10 @@ void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 			game->gameState = GameState_Play;
 		}
 	} else { // Render cut scene
-		if (keysdown[SDLK_RIGHT % Constants::NumKeys_] && keysup[SDLK_RIGHT % Constants::NumKeys_]) {
+		if (keysdown[SDLK_SPACE % Constants::NumKeys_] && keysup[SDLK_SPACE % Constants::NumKeys_]) {
 			if (game->zoneIntroState.startScene.current + 1 != game->zoneIntroState.startScene.slideCount) {
-				game->zoneIntroState.elapsed = 0;
-				keysdown[SDLK_RIGHT  % Constants::NumKeys_] = false;
-				keysup[SDLK_RIGHT  % Constants::NumKeys_] = false;
+				keysdown[SDLK_SPACE  % Constants::NumKeys_] = false;
+				keysup[SDLK_SPACE  % Constants::NumKeys_] = false;
 				game->zoneIntroState.sliding = true;
 			} else {
 				game->zoneIntroState.startScene.current++;
@@ -97,30 +96,38 @@ void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 
 		if (game->zoneIntroState.sliding) {
 			game->zoneIntroState.elapsed += elapsed;
-			float xOffset = ((float)game->zoneIntroState.elapsed / Constants::SlideTime_) * Constants::ScreenWidth_;
-			SDL_RenderClear(game->renderer);
-			Texture* scene1 = game->zoneIntroState.startScene.slides[game->zoneIntroState.startScene.current];
-			if (scene1) {
-				RenderSystem_Render_xywh(game->renderer, -xOffset, 0, scene1->w, scene1->h, NULL, scene1);
-			}
-			Texture* scene2 = game->zoneIntroState.startScene.slides[game->zoneIntroState.startScene.current + 1];
-			if (scene2) {
-				RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - xOffset, 0, scene2->w, scene2->h, NULL, scene2);
-			}
-			SDL_RenderPresent(game->renderer);
-
 			if (game->zoneIntroState.elapsed >= Constants::SlideTime_) {
-				game->zoneIntroState.sliding = false;
-				game->zoneIntroState.elapsed = 0;
-				game->zoneIntroState.startScene.current++;
+				float xOffset = ((float)(game->zoneIntroState.elapsed - Constants::SlideTime_) / Constants::OvershootTime_) * ((float)Constants::SlideOvershoot_);
+				Texture* scene = game->zoneIntroState.startScene.slides[game->zoneIntroState.startScene.current + 1];
+				if (scene) {
+					RenderSystem_Render_xywh(game->renderer, xOffset - Constants::SlideOvershoot_, 0, scene->w, scene->h, NULL, scene);
+				}
+				SDL_RenderPresent(game->renderer);
+				if (xOffset - Constants::SlideOvershoot_ > 0) {
+					game->zoneIntroState.sliding = false;
+					game->zoneIntroState.elapsed = 0;
+					game->zoneIntroState.startScene.current++;
+				}
+			} else {
+				float xOffset = ((float)game->zoneIntroState.elapsed / Constants::SlideTime_) * ((float)Constants::ScreenWidth_ + Constants::SlideOvershoot_);
+				SDL_RenderClear(game->renderer);
+				Texture* scene1 = game->zoneIntroState.startScene.slides[game->zoneIntroState.startScene.current];
+				if (scene1) {
+					RenderSystem_Render_xywh(game->renderer, -xOffset, 0, scene1->w, scene1->h, NULL, scene1);
+				}
+				Texture* scene2 = game->zoneIntroState.startScene.slides[game->zoneIntroState.startScene.current + 1];
+				if (scene2) {
+					RenderSystem_Render_xywh(game->renderer, Constants::ScreenWidth_ - xOffset, 0, scene2->w, scene2->h, NULL, scene2);
+				}
+				SDL_RenderPresent(game->renderer);
 			}
 		} else {
 			SDL_RenderClear(game->renderer);
 			Texture* scene = game->zoneIntroState.startScene.slides[game->zoneIntroState.startScene.current];
 			if (scene) {
 				RenderSystem_Render_xywh(game->renderer, 0, 0, scene->w, scene->h, NULL, scene);
-				SDL_RenderPresent(game->renderer);
 			}
+			SDL_RenderPresent(game->renderer);
 		}
 	}
 }

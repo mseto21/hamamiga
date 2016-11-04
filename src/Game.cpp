@@ -80,26 +80,14 @@ bool Game_Initialize(Game* game) {
 
 
 void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
-	if (keysdown[SDLK_w] && !game->titleState.w) {
-		if (!game->titleState.w) {
-			game->titleState.w = true;
-			game->titleState.s = false;
+	if (keysdown[SDLK_w] && keysup[SDLK_w]) {
 			game->titleState.selection--;
 			game->titleState.selection %= Constants::TitleScreenSelections_;
-		}
-	}
-	if (keysup[SDLK_w]) {
-		game->titleState.w = false;
-	}
-
-	if (keysdown[SDLK_s] && !game->titleState.s) {
-		game->titleState.w = false;
-		game->titleState.s = true;
+			keysup[SDLK_w] = false;
+	} else if (keysdown[SDLK_s] && keysup[SDLK_s]) {
 		game->titleState.selection++;
 		game->titleState.selection %= Constants::TitleScreenSelections_;
-	}
-	if (keysup[SDLK_s]) {
-		game->titleState.s = false;
+		keysup[SDLK_s] = false;
 	}
 
 	// Check for music playing
@@ -138,26 +126,16 @@ void UpdateHighScore(Game* game, bool* keysdown) {
 
 void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 	// Update their options
-	if (keysdown[SDLK_w] && !game->optionState.w) {
-		if (!game->titleState.w) {
-			game->optionState.w = true;
-			game->optionState.s = false;
+	if (keysdown[SDLK_w] && keysup[SDLK_w]) {
 			game->optionState.selection--;
 			game->optionState.selection %= Constants::OptionScreenSelections_;
-		}
-	}
-	if (keysup[SDLK_w]) {
-		game->optionState.w = false;
+			keysup[SDLK_w] = false;
 	}
 
-	if (keysdown[SDLK_s] && !game->optionState.s) {
-		game->optionState.w = false;
-		game->optionState.s = true;
+	if (keysdown[SDLK_s] && keysup[SDLK_s]) {
 		game->optionState.selection++;
 		game->optionState.selection %= Constants::OptionScreenSelections_;
-	}
-	if (keysup[SDLK_s]) {
-		game->optionState.s = false;
+		keysup[SDLK_s] = false;
 	}
 
 	// Set the next state
@@ -249,6 +227,7 @@ void Game_RunLoop(Game* game) {
 	// Input variables
 	bool keysdown[Constants::NumKeys_] = {false};
 	bool keysup[Constants::NumKeys_] = {true};
+	memset(&keysup, true, Constants::NumKeys_);
 
 	while (game->running) {
 		currentTime = SDL_GetTicks();
