@@ -226,8 +226,9 @@ void Game_RunLoop(Game* game) {
 	Uint32 lag = 0;
 
 	// Input variables
-	bool keysdown[Constants::NumKeys_] = {false};
-	bool keysup[Constants::NumKeys_] = {true};
+	bool keysdown[Constants::NumKeys_];
+	memset(&keysdown, false, Constants::NumKeys_);
+	bool keysup[Constants::NumKeys_];
 	memset(&keysup, true, Constants::NumKeys_);
 
 	while (game->running) {
@@ -270,10 +271,6 @@ void Game_RunLoop(Game* game) {
 							break;
 						default:
 							keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
-
-							//keysup[event.key.keysym.sym % Constants::NumKeys_] = false;
-							//numpressed[event.key.keysym.sym % Constants::NumKeys_]++;
-
 							break;
 					}
 					break;
