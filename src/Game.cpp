@@ -303,14 +303,13 @@ void RenderWin(Game* game) {
 }
 
 
-void RenderZoneIntro(Game* game, uint32 elapsed) {
-	game->zoneIntroState.elapsed += elapsed;
-
-	if (game->zoneIntroState.elapsed >= (game->playState.chapter.startScene.slideCount * Constants::CutSceneSlideTime_) + Constants::ZoneIntroTime_) {
+void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
+	if (game->zoneIntroState.elapsed >= Constants::ZoneIntroTime_) {
 		game->gameState = GameState_Play;
 	}
 	// Render fade
-	if (game->zoneIntroState.elapsed >= game->playState.chapter.startScene.slideCount * Constants::CutSceneSlideTime_) {
+	if (game->playState.chapter.startScene.current == game->playState.chapter.startScene.slideCount) {
+		game->zoneIntroState.elapsed += elapsed;
 		CameraSystem_Update(&game->playState.cameraSystem);
 		SDL_RenderClear(game->renderer);
 		game->zoneIntroState.alpha = 1 - (((float)game->zoneIntroState.elapsed - (game->playState.chapter.startScene.slideCount * Constants::CutSceneSlideTime_)) / ((float)Constants::ZoneIntroTime_));
@@ -333,14 +332,22 @@ void RenderZoneIntro(Game* game, uint32 elapsed) {
 		}
 		SDL_RenderPresent(game->renderer);
 	} else { // Render cut scene
+
+		if (keysdown[SDLK_RIGHT % Constants::NumKeys_] && keysup[SDLK_RIGHT % Constants::NumKeys_]) {
+			game->playState.chapter.startScene.current++;
+			keysdown[SDLK_RIGHT  % Constants::NumKeys_] = false;
+			keysup[SDLK_RIGHT  % Constants::NumKeys_] = false;
+		} else if (keysdown[SDLK_LEFT  % Constants::NumKeys_] && keysup[SDLK_LEFT %  Constants::NumKeys_]) {
+			game->playState.chapter.startScene.current--;
+			keysdown[SDLK_LEFT % Constants::NumKeys_] = false;
+			keysup[SDLK_LEFT % Constants::NumKeys_] = false;
+		}
+
 		SDL_RenderClear(game->renderer);
 		Texture* scene = game->playState.chapter.startScene.slides[game->playState.chapter.startScene.current];
 		if (scene) {
 			RenderSystem_Render_xywh(game->renderer, 0, 0, scene->w, scene->h, NULL, scene);
 			SDL_RenderPresent(game->renderer);
-		}
-		if (game->zoneIntroState.elapsed >= Constants::CutSceneSlideTime_ * (game->playState.chapter.startScene.current + 1)) { // Go to next slide
-			game->playState.chapter.startScene.current++;
 		}
 	}
 }
@@ -438,7 +445,6 @@ void Game_RunLoop(Game* game) {
 							break;
 						default:
 							keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
-							keysup[event.key.keysym.sym % Constants::NumKeys_] = false;
 							break;
 					}
 					break;
@@ -490,7 +496,7 @@ void Game_RunLoop(Game* game) {
 				RenderTitle(game);
 				break;
 			case GameState_ZoneIntro:
-				RenderZoneIntro(game, elapsed);
+				RenderZoneIntro(game, elapsed, keysdown, keysup);
 				break;
 			case GameState_LoadPlay:
 				Mix_HaltMusic();
@@ -517,8 +523,8 @@ void Game_RunLoop(Game* game) {
 			case GameState_Win:
 				RenderWin(game);
 				break;
-	  	case GameState_Lose:
-	  		RenderLose(game);
+	  		case GameState_Lose:
+	  			RenderLose(game);
 				break;
 			case GameState_Returning:
 				FreePlay(game);

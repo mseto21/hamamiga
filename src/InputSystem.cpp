@@ -78,7 +78,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		//if (Component_HasIndex(bulletComponent, eid) && eid == Constants::PlayerIndex_){
 		//fix to if entity has a hat with bullet effect
 		if (eid == Constants::PlayerIndex_ && Component_HasIndex(rectangleComponent, eid)){
-			if (keysPressed[SDLK_SPACE]) {
+			if (keysPressed[SDLK_SPACE] && keysUp[SDLK_SPACE]) {
 				//bulletComponent->activated = true;//bullets[eid].activated = true;
 				//caster's position
 				Rectangle rect = rectangleComponent->entityRectangles[eid];
@@ -88,6 +88,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 				inputSystem->aliveComponent, inputSystem->textureComponent, inputSystem->rectangleComponent,
 				rect, newBullet->eid, bullet);
 				std::cout << "created bullet entity! with eid " << newBullet->eid <<std::endl;
+				keysUp[SDLK_SPACE % Constants::NumKeys_] = false;
 			}
 		}
 		//}
