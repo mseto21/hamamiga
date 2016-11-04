@@ -2,26 +2,19 @@
 #include "Types.h"
 
 namespace Constants {
-	const uint16 	ScreenWidth_ 	= 	1080;
-	const uint16 	ScreenHeight_ 	= 	761;
-	const uint16 	LevelWidth_ 	= 	5040;
-	const uint16 	LevelHeight_ 	= 	1470;
-	const float   	StepSize_ 		= 	8.f;
-	const uint32  	NumKeys_		=	323;
-	const uint32	MaxEntities_  	=   128;
-	const float 	Second_ 		= 	1000.f;
-	const float 	TargetFps_ 		= 	60.f;
-	const float 	OptimalTime_ 	= 	Second_ / TargetFps_; // Update ~16 times per second
-
-	const uint16	MaxMapWidth_	=	256; // In number of tiles
-	const uint16	MaxMapHeight_	=	256;
-	const uint16	TileSize_		=	48;
-	const uint16	DiscoChannel_	= 	2;//channel for disco/overlay sounds
-	const uint16  	SoundChannel_	= 	3; //arbitrary channel for rest of sounds
-	const uint16	MaxBullets_		= 	5; //max number of alive bullets at a time
+	const uint16 	ScreenWidth_ 		= 	1080;
+	const uint16 	ScreenHeight_ 		= 	761;
+	const uint16 	LevelWidth_ 		= 	5040;
+	const uint16 	LevelHeight_ 		= 	1470;
+	const float   	StepSize_ 			= 	8.f;
+	const uint32  	NumKeys_			=	323;
+	const uint32	MaxEntities_  		=   128;
+	const float 	Second_ 			= 	1000.f;
+	const float 	TargetFps_ 			= 	60.f;
+	const float 	OptimalTime_ 		= 	Second_ / TargetFps_; // Update ~16 times per second
 
 	// Intro State
-	const uint32	IntroTime_		= 	5000;
+	const uint32	IntroTime_			= 	5000;
 
 	// Title State
 	const uint8	 	TitleScreenSelections_	=	4;
@@ -49,6 +42,13 @@ namespace Constants {
 	const uint16    XRange_            	=   300;
 	const uint16    YRange_            	=   168;
 	const uint8 	MaximumLevels_ 		=	2;
+	const uint16	MaxMapWidth_		=	256; // In number of tiles
+	const uint16	MaxMapHeight_		=	256;
+	const uint16	TileSize_			=	48;
+	const uint16	MaxTileAnimations_	=	8;
+	const uint16	DiscoChannel_		= 	2;//channel for disco/overlay sounds
+	const uint16  	SoundChannel_		= 	3; //arbitrary channel for rest of sounds
+	const uint16	MaxBullets_			= 	5; //max number of alive bullets at a time
 
 	// High Score State
 	const int     MaxHighScores_		=		5;

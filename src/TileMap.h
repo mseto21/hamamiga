@@ -4,7 +4,7 @@
 #include "Rectangle.h"
 
 struct Tile {
-	uint16 tid;
+	uint16 tid[Constants::MaxTileAnimations_];
 	bool solid;
 	bool moving;
 	bool winning;

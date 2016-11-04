@@ -34,10 +34,10 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 	MovementComponent* movementComponent = inputSystem->movementComponent;;
 	HatComponent* hatComponent = inputSystem->hatComponent;
 	HealthComponent* healthComponent = inputSystem->healthComponent;
-	BulletComponent* bulletComponent = inputSystem->bulletComponent;
-	PhysicsComponent* physicsComponent = inputSystem->physicsComponent;
-	AliveComponent* aliveComponent = inputSystem->aliveComponent;
-	TextureComponent* textureComponent = inputSystem->textureComponent;
+	//BulletComponent* bulletComponent = inputSystem->bulletComponent;
+	//PhysicsComponent* physicsComponent = inputSystem->physicsComponent;
+	//AliveComponent* aliveComponent = inputSystem->aliveComponent;
+	//TextureComponent* textureComponent = inputSystem->textureComponent;
 	RectangleComponent* rectangleComponent = inputSystem->rectangleComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {

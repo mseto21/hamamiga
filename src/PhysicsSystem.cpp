@@ -28,7 +28,6 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->bulletComponent  = cBag->bulletComponent;
 	physicsSystem->hatComponent 		= cBag->hatComponent;
 	physicsSystem->inputComponent		= cBag->inputComponent;
-	physicsSystem->goalComponent 		= cBag->goalComponent;
 	physicsSystem->interactableComponent = cBag->interactableComponent;
 	physicsSystem->aliveComponent 		= cBag->aliveComponent;
 	physicsSystem->map 					= tileMap;
@@ -50,9 +49,8 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;
 	HealthComponent* healthComponent = physicsSystem->healthComponent;
 	HatComponent* hatComponent = physicsSystem->hatComponent;
-	BulletComponent* bulletComponent = physicsSystem->bulletComponent;
+	//BulletComponent* bulletComponent = physicsSystem->bulletComponent;
 	InputComponent* inputComponent = physicsSystem->inputComponent;
-	GoalComponent* goalComponent = physicsSystem->goalComponent;
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
 	AliveComponent * aliveComponent = physicsSystem->aliveComponent;
 	TileMap* map = physicsSystem->map;
@@ -133,7 +131,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			bool cllsn = false;
 			bool cllsnD = false;
-			bool cllsnB = false; //bullet collision
+			//bool cllsnB = false; //bullet collision
 			if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
@@ -198,7 +196,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		// Tiilemap collisions
 		{
 			int tileX = floor(r1->x / Constants::TileSize_);
-			int tileCenterX = ((r1->x + (r1->w / 2)) / Constants::TileSize_);
+			//int tileCenterX = ((r1->x + (r1->w / 2)) / Constants::TileSize_);
 			int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
 			int tileY = floor((r1->y + moveValues->yVelocity) / Constants::TileSize_);
 			int tileCenterY = ((r1->y + (r1->h / 2)) / Constants::TileSize_);
@@ -273,7 +271,6 @@ void PhysicsSystem_Free(PhysicsSystem* physicsSystem) {
 	physicsSystem->hatComponent = nullptr;
 	physicsSystem->bulletComponent = nullptr;
 	physicsSystem->inputComponent = nullptr;
-	physicsSystem->goalComponent = nullptr;
 	physicsSystem->interactableComponent = nullptr;
 	physicsSystem->aliveComponent = nullptr;
 	physicsSystem->map = nullptr;
