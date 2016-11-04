@@ -36,6 +36,7 @@ namespace Constants {
 	// Zone Intro State Time
 	const uint32	ZoneIntroTime_		=	3000;
 	const uint32	FaderTime_			=	500;
+	const uint32	SlideTime_			= 	250;
 
 	// Play State
 	const float   	Gravity_        	=   .5f; //gravity

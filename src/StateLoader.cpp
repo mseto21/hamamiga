@@ -148,6 +148,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, shaderPath.c_str(), Constants::Shader_)->sdltexture, SDL_BLENDMODE_MOD);
 	std::string pShaderPath = "assets/chapter_" + std::to_string(chapter) + "/player-shader.png";
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, pShaderPath.c_str(), Constants::PShader_)->sdltexture, SDL_BLENDMODE_ADD);
+	
 	// Load file
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer, &game->zoneIntroState)) {
 		EntityCache_Free();
@@ -167,6 +168,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	// Initialize fonts
 	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
 	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
+	game->zoneIntroState.sliding = false;
 	if (!game->playState.scoreFont) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 	}

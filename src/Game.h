@@ -74,6 +74,7 @@ struct ZoneIntroState {
 	uint32 elapsed;
 	_TTF_Font* font;
 
+	bool sliding;
 	CutScene startScene;
 	CutScene endScene;
 };
