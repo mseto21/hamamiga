@@ -1,14 +1,19 @@
 #pragma once
 
 //Forward Declarations
-struct BulletComponent;
+struct PhysicsComponent;
 struct RectangleComponent;
+struct BulletComponent;
+struct AliveComponent;
+struct TextureComponent;
 struct ComponentBag;
 
 struct BulletSystem {
-  //MovementComponent* movementComponent;
+  PhysicsComponent* physicsComponent;
   RectangleComponent* rectangleComponent;
   BulletComponent* bulletComponent;
+  AliveComponent* aliveComponent;
+  TextureComponent* textureComponent;
 };
 
 void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag);
