@@ -74,13 +74,11 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		} else if (keysUp[SDLK_e]) {
 			inputComponent->interact[eid] = false;
 		}
-		//Checking bullet activation
-		//if (Component_HasIndex(bulletComponent, eid) && eid == Constants::PlayerIndex_){
-		//fix to if entity has a hat with bullet effect
+
 		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
-			(strcmp(hatComponent->hats[eid].hat.effect, "powpow") == 0)){
+			(strcmp(hatComponent->hats[eid].hat.effect, "powpow") == 0) && 
+			bulletComponent->count < Constants::MaxBullets_){
 			if (keysPressed[SDLK_SPACE] && keysUp[SDLK_SPACE]) {
-				//bulletComponent->activated = true;//bullets[eid].activated = true;
 				//caster's position
 				Rectangle rect = rectangleComponent->entityRectangles[eid];
 				Entity* newBullet = EntityCache_GetNewEntity();

@@ -29,8 +29,10 @@ void Component_Add(Component* component, uint32 eid) {
 
 void Component_Remove(Component* component, uint32 eid) {
 	for (uint32 entityIndex = 0; entityIndex < component->count; entityIndex++) {
-		if (component->entityArray[entityIndex] == eid) {
+		if (component->entityArray[entityIndex] == eid &&
+		component->usedEntities[eid] != false) { //and already isn't removed
 			component->usedEntities[eid] = false;
+			std::cout << "revmoed entity with eid: " << eid << std::endl;
 			return;
 		}
 	}

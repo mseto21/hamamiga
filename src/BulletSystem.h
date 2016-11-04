@@ -1,4 +1,6 @@
 #pragma once
+#include "Constants.h"
+#include "Types.h"
 
 //Forward Declarations
 struct PhysicsComponent;
@@ -14,6 +16,8 @@ struct BulletSystem {
   BulletComponent* bulletComponent;
   AliveComponent* aliveComponent;
   TextureComponent* textureComponent;
+
+ // uint32 eidbullets[Constants::MaxBullets_];//array of bullet entities
 };
 
 void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag);

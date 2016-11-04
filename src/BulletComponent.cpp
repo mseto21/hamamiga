@@ -10,6 +10,8 @@
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* physicsComponent,
 	AliveComponent* aliveComponent, TextureComponent* textureComponent,RectangleComponent* rect,
 	Rectangle rectPos, uint32 eid) {
+
+	if (bulletComponent->count < Constants::MaxBullets_){
 	//Adding relevant components to a bullet entity
 	Component_Add(bulletComponent, eid);
 	PhysicsComponent_Add(physicsComponent, eid, 100);
@@ -24,4 +26,7 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	//std::cout << "bullet.position is: " << bullet.position.x << std::endl;
 	//std::cout << "bullet.position y is: " << bullet.position.y << std::endl;
 	RectangleComponent_Add(rect, eid, bulletComponent->bullet.position.x, bulletComponent->bullet.position.y, texture->w, texture->h);
+} else {
+	std::cout << "max bullets! count is" << bulletComponent->count << std::endl;
+}
 }
