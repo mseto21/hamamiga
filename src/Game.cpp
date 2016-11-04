@@ -80,26 +80,14 @@ bool Game_Initialize(Game* game) {
 
 
 void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
-	if (keysdown[SDLK_w] && !game->titleState.w) {
-		if (!game->titleState.w) {
-			game->titleState.w = true;
-			game->titleState.s = false;
+	if (keysdown[SDLK_w] && keysup[SDLK_w]) {
 			game->titleState.selection--;
 			game->titleState.selection %= Constants::TitleScreenSelections_;
-		}
-	}
-	if (keysup[SDLK_w]) {
-		game->titleState.w = false;
-	}
-
-	if (keysdown[SDLK_s] && !game->titleState.s) {
-		game->titleState.w = false;
-		game->titleState.s = true;
+			keysup[SDLK_w] = false;
+	} else if (keysdown[SDLK_s] && keysup[SDLK_s]) {
 		game->titleState.selection++;
 		game->titleState.selection %= Constants::TitleScreenSelections_;
-	}
-	if (keysup[SDLK_s]) {
-		game->titleState.s = false;
+		keysup[SDLK_s] = false;
 	}
 
 	// Check for music playing
@@ -138,26 +126,16 @@ void UpdateHighScore(Game* game, bool* keysdown) {
 
 void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 	// Update their options
-	if (keysdown[SDLK_w] && !game->optionState.w) {
-		if (!game->titleState.w) {
-			game->optionState.w = true;
-			game->optionState.s = false;
+	if (keysdown[SDLK_w] && keysup[SDLK_w]) {
 			game->optionState.selection--;
 			game->optionState.selection %= Constants::OptionScreenSelections_;
-		}
-	}
-	if (keysup[SDLK_w]) {
-		game->optionState.w = false;
+			keysup[SDLK_w] = false;
 	}
 
-	if (keysdown[SDLK_s] && !game->optionState.s) {
-		game->optionState.w = false;
-		game->optionState.s = true;
+	if (keysdown[SDLK_s] && keysup[SDLK_s]) {
 		game->optionState.selection++;
 		game->optionState.selection %= Constants::OptionScreenSelections_;
-	}
-	if (keysup[SDLK_s]) {
-		game->optionState.s = false;
+		keysup[SDLK_s] = false;
 	}
 
 	// Set the next state
@@ -198,7 +176,7 @@ void UpdatePause(Game* game, uint32 elapsed) {
 }
 
 
-void UpdatePlay(Game* game, bool* keysdown, bool* keysup) {
+void UpdatePlay(Game* game) {
 	AISystem_Update(&game->playState.aiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
 	PhysicsSystem_Update(&game->playState.physicsSystem);
@@ -248,9 +226,10 @@ void Game_RunLoop(Game* game) {
 	Uint32 lag = 0;
 
 	// Input variables
-	bool keysdown[Constants::NumKeys_] = {false};
-	bool keysup[Constants::NumKeys_] = {true};
-	uint16 numpressed[Constants::NumKeys_] = {0};
+	bool keysdown[Constants::NumKeys_];
+	memset(&keysdown, false, Constants::NumKeys_);
+	bool keysup[Constants::NumKeys_];
+	memset(&keysup, true, Constants::NumKeys_);
 
 	while (game->running) {
 		currentTime = SDL_GetTicks();
@@ -292,10 +271,6 @@ void Game_RunLoop(Game* game) {
 							break;
 						default:
 							keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
-
-							//keysup[event.key.keysym.sym % Constants::NumKeys_] = false;
-							//numpressed[event.key.keysym.sym % Constants::NumKeys_]++;
-
 							break;
 					}
 					break;
@@ -310,7 +285,7 @@ void Game_RunLoop(Game* game) {
 
 		// TO-DO: I'm sad about this.
 		if (game->gameState == GameState_Play) {
-			InputSystem_Update(&game->playState.inputSystem, keysdown, keysup, numpressed);
+			InputSystem_Update(&game->playState.inputSystem, keysdown, keysup);
 		}
 
 		// Update game state
@@ -320,7 +295,7 @@ void Game_RunLoop(Game* game) {
 					UpdateTitle(game, keysdown, keysup);
 					break;
 				case GameState_Play:
-					UpdatePlay(game, keysdown, keysup);
+					UpdatePlay(game);
 					break;
 				case GameState_HighScore:
 					UpdateHighScore(game, keysdown);

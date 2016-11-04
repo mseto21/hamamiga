@@ -32,5 +32,5 @@ struct InputSystem {
 
 
 void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag);
-void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[], uint16 numPressed[]);
+void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[]);
 void InputSystem_Free(InputSystem* inputSystem);

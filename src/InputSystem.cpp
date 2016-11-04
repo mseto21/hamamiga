@@ -29,15 +29,15 @@ void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag) {
 	inputSystem->rectangleComponent = cBag->rectangleComponent;
 }
 
-void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[], uint16 numPressed[]) {
+void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[]) {
 	InputComponent* inputComponent = inputSystem->inputComponent;
 	MovementComponent* movementComponent = inputSystem->movementComponent;;
 	HatComponent* hatComponent = inputSystem->hatComponent;
 	HealthComponent* healthComponent = inputSystem->healthComponent;
-	BulletComponent* bulletComponent = inputSystem->bulletComponent;
-	PhysicsComponent* physicsComponent = inputSystem->physicsComponent;
-	AliveComponent* aliveComponent = inputSystem->aliveComponent;
-	TextureComponent* textureComponent = inputSystem->textureComponent;
+	//BulletComponent* bulletComponent = inputSystem->bulletComponent;
+	//PhysicsComponent* physicsComponent = inputSystem->physicsComponent;
+	//AliveComponent* aliveComponent = inputSystem->aliveComponent;
+	//TextureComponent* textureComponent = inputSystem->textureComponent;
 	RectangleComponent* rectangleComponent = inputSystem->rectangleComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {

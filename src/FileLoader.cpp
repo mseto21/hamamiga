@@ -113,7 +113,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 
 	// Hold the tile data.
 	Tile tile;
-	tile.tid = 0;
+	tile.tid[0] = 0;
 	tile.solid = false;
 	tile.moving = false;
 	char tilestr[MaxBuffSize_];
@@ -127,7 +127,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				// Hacky for now
 				tileMap->map[yIndex][xIndex] = tile;
 				tilepos = 0;
-				tile.tid = 0;
+				tile.tid[0] = 0;
 				tile.solid = false;
 				tile.moving = false;
 				tile.rectangle = {(float) xIndex * Constants::TileSize_, (float) yIndex * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_};
@@ -142,7 +142,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 			case ' ': // Flush tile
 				tileMap->map[yIndex][xIndex] = tile;
 				tilepos = 0;
-				tile.tid = 0;
+				tile.tid[0] = 0;
 				tile.solid = false;
 				tile.moving = false;
 				tile.winning = false;
@@ -154,7 +154,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 			case ':': // Tile parameters
 				if (tilepos != 0) {
 					int tid = stoi(tilestr);
-					tile.tid = tid;
+					tile.tid[0] = tid;
 					getParams = true;
 				} else {
 					cerr << "Error: Expected tile id but none was given." << endl;
@@ -162,7 +162,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				break;
 			case '0': // Null tile
 				if (tilepos == 0) {
-					tile.tid = 0;
+					tile.tid[0] = 0;
 				} else {
 					tilestr[tilepos++] = t;
 				}
@@ -391,7 +391,7 @@ int ReadMusic(FILE* chapterFile, Zone* zone) {
 
 
 /* Read a cut scene in the beginning of the level. */
-int ReadCutSceneStart(FILE* chapterFile, Zone* zone, SDL_Renderer* renderer, ZoneIntroState* zoneIntroState) {
+int ReadCutSceneStart(FILE* chapterFile, SDL_Renderer* renderer, ZoneIntroState* zoneIntroState) {
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
 	uint8 pos = 0;
@@ -444,7 +444,7 @@ int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* re
 			} else if (strcmp(str, "music") == 0) {
 				lineNumber += ReadMusic(chapterFile, zone);
 			} else if (strcmp(str, "cutstart") == 0) {
-				lineNumber += ReadCutSceneStart(chapterFile, zone, renderer, zoneIntroState);
+				lineNumber += ReadCutSceneStart(chapterFile, renderer, zoneIntroState);
 			} else if (strcmp(str, "zone") == 0) {
 				// Embedded zone, won't worry about that right now.
 			} else if (strcmp(str, "END") == 0) {

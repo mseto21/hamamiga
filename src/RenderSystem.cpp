@@ -24,12 +24,12 @@
 #include <iostream>
 
 // Render constants
-const int XLeftRender_ = Constants::ScreenWidth_ / 16;
+//const int XLeftRender_ = Constants::ScreenWidth_ / 16;
 const int XRightRender_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4;
 const int YTopRender_ = Constants::ScreenHeight_ / 16;
 const int WHealth_ = Constants::ScreenWidth_/ 5;
 const int HHealth_ = Constants::ScreenHeight_ / 16;
-const SDL_Color scoreColor = {255, 255, 255, 1};
+//const SDL_Color scoreColor = {255, 255, 255, 1};
 
 
 // --------------------------------------------------------------------
@@ -154,10 +154,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	if (tileset) {
 		for (int r = tileStartY; r <= tileEndY; r++) {
 			for (int c = tileStartX; c <= tileEndX; c++) {
-				if (map->map[r][c].tid == 0) {
+				if (map->map[r][c].tid[0] == 0) {
 					continue;
 				}
-				int tid = map->map[r][c].tid - 1; // Minus zero to account for null tile
+				int tid = map->map[r][c].tid[0] - 1; // Minus zero to account for null tile
 				int y = floor(tid / (tileset->w / Constants::TileSize_)) * Constants::TileSize_;
 				int x = (tid % (tileset->w / Constants::TileSize_)) * Constants::TileSize_;
 				SDL_Rect clip = {x, y, Constants::TileSize_, Constants::TileSize_};

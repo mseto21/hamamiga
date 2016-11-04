@@ -47,7 +47,7 @@ Entity* EntityCache_GetNewEntityAtIndex(uint32 eid) {
 /* Resets the entity array. */
 void EntityCache_RemoveAll() {
 	eCache->index = 0;
-	for (int e = 0; e < Constants::MaxEntities_; e++) {
+	for (uint32 e = 0; e < Constants::MaxEntities_; e++) {
 		eCache->entities[e].eid = 0;
 	}
 }

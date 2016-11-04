@@ -24,14 +24,14 @@
 const int DamageReduction_ = 5;
 const float JumpEnhancement_ = 1.41;
 
-// ADD HATS AT END OF ENUM, DO NOT INSERT NO BAD!
+// ADD HATS AT END OF ENUM, DO NOT INSERT IN MIDDLE, NO! BAD!
 enum HatTypes {
 	HatTypes_BunnyHat = 0,
-	HatTypes_HardHat, //1
-	HatTypes_Crown, //2
-	HatTypes_Disco, //3
-	HatTypes_Miner, //4
-	HatTypes_Cowboy, //5
+	HatTypes_HardHat, 	//1
+	HatTypes_Crown, 	//2
+	HatTypes_Disco, 	//3
+	HatTypes_Miner, 	//4
+	HatTypes_Cowboy, 	//5
 };
 
 void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
@@ -82,5 +82,7 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 
 
 void RemoveHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
-
+	(void) hatType;
+	(void) eid;
+	(void) cBag;
 }

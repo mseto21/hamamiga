@@ -66,7 +66,7 @@ void BulletSystem_Update(BulletSystem* bulletSystem) {
     	float maxScreenX = playerRect->x + (Constants::ScreenWidth_ /2);
     	float minScreenX = playerRect->x - (Constants::ScreenWidth_ /2);
     	float bX = bulletComponent->bullet.position.x;
-    	float bY = bulletComponent->bullet.position.y;
+    	//float bY = bulletComponent->bullet.position.y;
 	    //std::cout << "updating bullet system: bullet.position.x" << std::endl;
 
 	   // std::cout << "bullet position X " << bX << std::endl;
