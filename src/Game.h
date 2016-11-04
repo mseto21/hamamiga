@@ -19,6 +19,11 @@ struct SDL_Renderer;
 struct _TTF_Font;
 struct _Mix_Music;
 
+struct CutScene {
+	uint16 slideCount;
+	uint16 current;
+	Texture* slides[MaxSlides_];
+};
 
 enum GameState {
 	GameState_Intro = 0,
@@ -68,6 +73,9 @@ struct ZoneIntroState {
 	float alpha;
 	uint32 elapsed;
 	_TTF_Font* font;
+
+	CutScene startScene;
+	CutScene endScene;
 };
 
 struct PlayState {

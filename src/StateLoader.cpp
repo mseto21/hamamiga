@@ -115,7 +115,7 @@ void LoadOptionStateAssets(Game* game) {
 void LoadZoneIntroAssets(Game* game, String128 name) {
 	game->zoneIntroState.alpha = 0.f;
 	game->zoneIntroState.elapsed = 0;
-	game->playState.chapter.startScene.current = 0;
+	game->zoneIntroState.startScene.current = 0;
 	game->zoneIntroState.font = TTF_OpenFont("assets/BadMofo.ttf", 50);
 	if (!game->zoneIntroState.font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
@@ -149,7 +149,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	std::string pShaderPath = "assets/chapter_" + std::to_string(chapter) + "/player-shader.png";
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, pShaderPath.c_str(), Constants::PShader_)->sdltexture, SDL_BLENDMODE_ADD);
 	// Load file
-	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer)) {
+	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer, &game->zoneIntroState)) {
 		EntityCache_Free();
 		ComponentBag_Free(&game->playState.cBag);
 		std::cerr << "Error: Unable to load from path " << chapterPath << std::endl;
@@ -217,14 +217,14 @@ void FreePlay(Game* game) {
 	//for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
 	//	game->playState.chapter.startScene.slides[i] = nullptr;
 	//}
-	game->playState.chapter.startScene.slideCount = 0;
-	game->playState.chapter.startScene.current = 0;
+	game->zoneIntroState.startScene.slideCount = 0;
+	game->zoneIntroState.startScene.current = 0;
 
 	//for (int i = 0; i < game->playState.chapter.endScene.slideCount; i++) {
 	//	game->playState.chapter.endScene.slides[i] = nullptr;
 	//}
-	game->playState.chapter.endScene.slideCount = 0;
-	game->playState.chapter.endScene.current = 0;
+	game->zoneIntroState.endScene.slideCount = 0;
+	game->zoneIntroState.endScene.current = 0;
 
 	// Free fonts
 	TTF_CloseFont(game->playState.scoreFont);

@@ -303,16 +303,14 @@ void RenderWin(Game* game) {
 }
 
 
+// TO-DO: THIS WHOLE METHOD BE UGLY!
 void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
-	if (game->zoneIntroState.elapsed >= Constants::ZoneIntroTime_) {
-		game->gameState = GameState_Play;
-	}
 	// Render fade
-	if (game->playState.chapter.startScene.current == game->playState.chapter.startScene.slideCount) {
+	if (game->zoneIntroState.startScene.current ==game->zoneIntroState.startScene.slideCount) {
 		game->zoneIntroState.elapsed += elapsed;
 		CameraSystem_Update(&game->playState.cameraSystem);
 		SDL_RenderClear(game->renderer);
-		game->zoneIntroState.alpha = 1 - (((float)game->zoneIntroState.elapsed - (game->playState.chapter.startScene.slideCount * Constants::CutSceneSlideTime_)) / ((float)Constants::ZoneIntroTime_));
+		game->zoneIntroState.alpha = 1 - ((float)game->zoneIntroState.elapsed / Constants::ZoneIntroTime_);
 		
 		// Render intro
 		Texture* fader = TextureCache_GetTexture(Constants::TitleFader_);
@@ -331,16 +329,19 @@ void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 			RenderSystem_Render_xywh(game->renderer, 0, 0, fader->w, fader->h, NULL,  fader);
 		}
 		SDL_RenderPresent(game->renderer);
+		if (game->zoneIntroState.elapsed >= Constants::ZoneIntroTime_) {
+			game->gameState = GameState_Play;
+		}
 	} else { // Render cut scene
-
 		if (keysdown[SDLK_RIGHT % Constants::NumKeys_] && keysup[SDLK_RIGHT % Constants::NumKeys_]) {
-			game->playState.chapter.startScene.current++;
+			game->zoneIntroState.startScene.current++;
+			game->zoneIntroState.elapsed = 0;
 			keysdown[SDLK_RIGHT  % Constants::NumKeys_] = false;
 			keysup[SDLK_RIGHT  % Constants::NumKeys_] = false;
 		}
 
 		SDL_RenderClear(game->renderer);
-		Texture* scene = game->playState.chapter.startScene.slides[game->playState.chapter.startScene.current];
+		Texture* scene = game->zoneIntroState.startScene.slides[game->zoneIntroState.startScene.current];
 		if (scene) {
 			RenderSystem_Render_xywh(game->renderer, 0, 0, scene->w, scene->h, NULL, scene);
 			SDL_RenderPresent(game->renderer);

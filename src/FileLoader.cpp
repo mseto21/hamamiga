@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "EntityCache.h"
 #include "TextureCache.h"
+#include "Game.h"
 
 #include "ComponentBag.h"
 #include "RectangleComponent.h"
@@ -394,7 +395,7 @@ int ReadMusic(FILE* chapterFile, Zone* zone) {
 
 
 /* Read a cut scene in the beginning of the level. */
-int ReadCutSceneStart(FILE* chapterFile, Zone* zone, SDL_Renderer* renderer) {
+int ReadCutSceneStart(FILE* chapterFile, Zone* zone, SDL_Renderer* renderer, ZoneIntroState* zoneIntroState) {
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
 	uint8 pos = 0;
@@ -402,18 +403,18 @@ int ReadCutSceneStart(FILE* chapterFile, Zone* zone, SDL_Renderer* renderer) {
 
 	int c;
 	int count = 1;
-	zone->startScene.slideCount = 0;
+	zoneIntroState->startScene.slideCount = 0;
 	// Loop until we reach an end of line.
 	while ((c=fgetc(chapterFile)) != ';') {
 	  count++;
 		if (c == '\n') {
 			lineNumber++;
 		} else if (c == ',') {
-			zone->startScene.slides[zone->startScene.slideCount] = TextureCache_CreateTexture(renderer, str, str);
-			if (!zone->startScene.slides[zone->startScene.slideCount]) {
+			zoneIntroState->startScene.slides[zoneIntroState->startScene.slideCount] = TextureCache_CreateTexture(renderer, str, str);
+			if (!zoneIntroState->startScene.slides[zoneIntroState->startScene.slideCount]) {
 				cerr << "Error: Unable to read cutscene " << str << "!" << endl;
 			}
-			zone->startScene.slideCount++;
+			zoneIntroState->startScene.slideCount++;
 			memset(&str, 0, MaxBuffSize_);
 			pos = 0;
 		} else {
@@ -427,7 +428,7 @@ int ReadCutSceneStart(FILE* chapterFile, Zone* zone, SDL_Renderer* renderer) {
 
 
 /* Read in a zone and its parts. */
-int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
+int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer, ZoneIntroState* zoneIntroState) {
 	int c;
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
@@ -447,7 +448,7 @@ int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* re
 			} else if (strcmp(str, "music") == 0) {
 				lineNumber += ReadMusic(chapterFile, zone);
 			} else if (strcmp(str, "cutstart") == 0) {
-				lineNumber += ReadCutSceneStart(chapterFile, zone, renderer);
+				lineNumber += ReadCutSceneStart(chapterFile, zone, renderer, zoneIntroState);
 			} else if (strcmp(str, "zone") == 0) {
 				// Embedded zone, won't worry about that right now.
 			} else if (strcmp(str, "END") == 0) {
@@ -473,7 +474,7 @@ int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* re
 
 
 /* Begin reading a chapter file. */
-bool FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Renderer* renderer) {
+bool FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Renderer* renderer, ZoneIntroState* zoneIntroState) {
 	if (!zone) {
 		std::cerr << "Error: The given zone was uninitialized." << std::endl;
 		return false;
@@ -494,7 +495,7 @@ bool FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Rende
 	while ((c=fgetc(chapterFile)) != EOF) {
 		if (c =='=') {
 			if (strcmp(str, "zone") == 0) {
-				lineNumber += ReadZone(zone, chapterFile, cBag, renderer);
+				lineNumber += ReadZone(zone, chapterFile, cBag, renderer, zoneIntroState);
 				pos = 0;
 				memset(&str, 0, MaxBuffSize_);
 			} else {
