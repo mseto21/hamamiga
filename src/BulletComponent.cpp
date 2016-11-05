@@ -2,15 +2,13 @@
 #include "PhysicsComponent.h"
 #include "AliveComponent.h"
 #include "TextureComponent.h"
+#include "MovementComponent.h"
 #include "RectangleComponent.h"
 #include "TextureCache.h"
 
-#include <iostream>
-
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* physicsComponent,
-	AliveComponent* aliveComponent, TextureComponent* textureComponent,RectangleComponent* rect,
-	Rectangle rectPos, uint32 eid, bool team) {
-
+	AliveComponent* aliveComponent, TextureComponent* textureComponent, MovementComponent* movementComponent,
+	RectangleComponent* rect, Rectangle rectPos, uint32 eid, bool team) {
 	if (bulletComponent->count < Constants::MaxBullets_){
 	//Adding relevant components to a bullet entity
 	Component_Add(bulletComponent, eid);
@@ -20,16 +18,11 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	//Texture
 	Texture* texture = TextureCache_GetTexture("bullet");
 	TextureComponent_Add(textureComponent, eid, texture); //default bullet texture
-	bulletComponent->bullet[eid].position.x = rectPos.x + 150;
-	bulletComponent->bullet[eid].position.y = rectPos.y + 40;
+	float startX = rectPos.x;
+	float startY = rectPos.y;
 	bulletComponent->bullet[eid].collided = false;
-	//std::cout << "rectpos is: " << rectPos.x << std::endl;
-	//std::cout << "rpos y is: " << rectPos.y << std::endl;
-	//std::cout << "bullet.position is: " << bullet.position.x << std::endl;
-	//std::cout << "bullet.position y is: " << bullet.position.y << std::endl;
-	RectangleComponent_Add(rect, eid, bulletComponent->bullet[eid].position.x,
-	 bulletComponent->bullet[eid].position.y, texture->w, texture->h);
-} else {
-	std::cout << "max bullets! count is" << bulletComponent->count << std::endl;
-}
+	RectangleComponent_Add(rect, eid, startX + 50, startY + 40, texture->w, texture->h);
+	//Movement
+	MovementComponent_Add(movementComponent, eid, 4, 0, 1.0, 1.0);//default bullet speed
+	}
 }

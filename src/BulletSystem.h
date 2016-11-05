@@ -8,6 +8,7 @@ struct RectangleComponent;
 struct BulletComponent;
 struct AliveComponent;
 struct TextureComponent;
+struct MovementComponent;
 struct ComponentBag;
 
 struct BulletSystem {
@@ -16,6 +17,7 @@ struct BulletSystem {
   BulletComponent* bulletComponent;
   AliveComponent* aliveComponent;
   TextureComponent* textureComponent;
+  MovementComponent* movementComponent;
 };
 
 void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag);

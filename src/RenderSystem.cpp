@@ -125,7 +125,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	TextureComponent* textureComponent = renderSystem->textureComponent;
  	RectangleComponent* rectangleComponent = renderSystem->rectangleComponent;
  	AnimationComponent* animationComponent = renderSystem->animationComponent;
- 	BulletComponent* bulletComponent = renderSystem->bulletComponent;
+ //	BulletComponent* bulletComponent = renderSystem->bulletComponent;
  	MovementComponent* movementComponent = renderSystem->movementComponent;
  	CameraComponent* cameraComponent = renderSystem->cameraComponent;
  	HatComponent* hatComponent = renderSystem->hatComponent;
@@ -199,13 +199,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			RenderSystem_RenderCoord(renderer, &rect, NULL, texture);
 			continue;
 		}
-		//If has a bullet component, but bullet not alive kill it
-		if (Component_HasIndex(bulletComponent, eid)) {
-			
-		}
 
 		// Otherwise, render at the rectangle
-		//std::cout << ""no rect component fo"r entity with eid " << eid << std::endl;
 		Rectangle rect = rectangleComponent->entityRectangles[eid];
 		if (rect.x + rect.w < cameraComponent->camera.x || rect.x > cameraComponent->camera.x + cameraComponent->camera.w
 			|| rect.y > cameraComponent->camera.y + cameraComponent->camera.h || rect.y < cameraComponent->camera.y) {

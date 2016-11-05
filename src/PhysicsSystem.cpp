@@ -91,6 +91,31 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			if (!Component_HasIndex(rectangleComponent, otherEid)) {
 				continue;
 			}
+			//Don't collide with bullets on your team
+			if (Component_HasIndex(bulletComponent, otherEid)){
+				if (eid == Constants::PlayerIndex_&&
+					bulletComponent->bullet[otherEid].friendly == true){
+				continue;//player cannot collide with own bullets
+				}
+				if (eid != Constants::PlayerIndex_&& 
+					bulletComponent->bullet[otherEid].friendly != true){
+				continue;//enemy cannot collide with own bullets
+				}
+				if (Component_HasIndex(bulletComponent, eid)){
+				continue;//bullets cannot collide with other bullets
+				}
+			}
+			//Reverse if entity is bullet and otherEid is player, enemy
+			if (Component_HasIndex(bulletComponent, eid)){
+				if (otherEid == Constants::PlayerIndex_&&
+					bulletComponent->bullet[eid].friendly == true){
+				continue;//player cannot collide with own bullets
+				}
+				if (otherEid != Constants::PlayerIndex_&& 
+					bulletComponent->bullet[eid].friendly != true){
+				continue;//enemy cannot collide with own bullets
+				}
+			}
 			
 
 			// Interaction collisions
@@ -132,67 +157,57 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			bool cllsn = false;
 			bool cllsnD = false;
-			//bool cllsnB = false; //bullet collision
+
 			if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
-
 				if (eid == Constants::PlayerIndex_) {
-				  moveValues->xVelocity = 15;
-				  if (!Collision(down, r2)) {
-				      moveValues->yVelocity = -5;
-				      r1->y += moveValues->yVelocity;
-				  } else {
-				    cllsnD = true;
-				  }
-				  r1->x += moveValues->xVelocity;
+					moveValues->xVelocity = 15;
+					if (!Collision(down, r2)) {
+						moveValues->yVelocity = -5;
+						r1->y += moveValues->yVelocity;
+					} else {
+						cllsnD = true;
+					}
+					r1->x += moveValues->xVelocity;
 				}
 			} else if (Collision(right, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
-				//kickback for player
+					//kickback for player
 				if (eid == Constants::PlayerIndex_) {
-				  moveValues->xVelocity = -15;
-				  r1->x += moveValues->xVelocity;
-				  if (!Collision(down, r2)) {
-				    moveValues->yVelocity = -5;
-				    r1->y += moveValues->yVelocity;
-				  } else {
-				    cllsnD = true;
-				  }
+					moveValues->xVelocity = -15;
+					r1->x += moveValues->xVelocity;
+					if (!Collision(down, r2)) {
+						moveValues->yVelocity = -5;
+						r1->y += moveValues->yVelocity;
+					} else {
+						cllsnD = true;
+					}
 				}
 			}
 			if (Collision(up, r2)) {
-			  moveValues->yVelocity = 0;
+				moveValues->yVelocity = 0;
 				cllsn = true;
 			} else if (cllsnD || Collision(down, r2)) {
-		        moveValues->yVelocity *= -1;
-		        r1->y += moveValues->yVelocity;
+				moveValues->yVelocity *= -1;
+				r1->y += moveValues->yVelocity;
 				cllsn = true;
 			}
 
-			//if collided with bullet, lose health accordingly
+			//if bullet has collided, kill it
 			if (cllsn && Component_HasIndex(bulletComponent, physicsComponent->entityArray[j])){
-				if (eid == Constants::PlayerIndex_&& bulletComponent->bullet[physicsComponent->entityArray[j]].friendly == true){
-				cllsn = false;//if collided with player, don't do damage
-				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
-				} else if (eid != Constants::PlayerIndex_&&
-					bulletComponent->bullet[physicsComponent->entityArray[j]].friendly == true){
-					bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
-					//if collided enemy
-				}
-				//remove if bullets kill each other/collide with each other
 				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
 			}
 
 			if (cllsn) {
-			  if (Component_HasIndex(healthComponent, eid)) {
+				if (Component_HasIndex(healthComponent, eid)) {
 					if (!healthComponent->invincible[eid]) {
-					  healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
-					  //health check
-					  if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
-					  	aliveComponent->alive[eid] = false;
-					  }
+						healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
+					  //health check for enemies, no zombiez
+						if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
+							aliveComponent->alive[eid] = false;
+						}
 					}
 				}
 			}
@@ -211,76 +226,81 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 		// Tiilemap collisions
 		{
-			int tileX = floor(r1->x / Constants::TileSize_);
-			//int tileCenterX = ((r1->x + (r1->w / 2)) / Constants::TileSize_);
-			int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
-			int tileY = floor((r1->y + moveValues->yVelocity) / Constants::TileSize_);
-			int tileCenterY = ((r1->y + (r1->h / 2)) / Constants::TileSize_);
-			int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
-			int tileHeadY = floor((r1->y + 4) / Constants::TileSize_);
-			int tileFootX = floor((r1->x + 12) / Constants::TileSize_);
-			int tileEndFootX = floor((r1->x + r1->w - 12) / Constants::TileSize_);
-			int tileHeadX = floor((r1->x + 4) / Constants::TileSize_);
-			int tileEndHeadX = floor((r1->x + r1->w - 4) / Constants::TileSize_);
-			
-			moveValues->grounded = false;
-			if (moveValues->yVelocity < 0) {
-				if (map->map[tileY][tileHeadX].solid || map->map[tileY][tileEndHeadX].solid) {
-					r1->y = tileY * Constants::TileSize_ + Constants::TileSize_;
-					moveValues->yVelocity = 0;
-				} 
-			} else if (moveValues->yVelocity >= 0) {
-				if (map->map[tileEndY][tileFootX].solid || map->map[tileEndY][tileEndFootX].solid) {
-					r1->y = tileEndY * Constants::TileSize_ - r1->h;
-					moveValues->yVelocity = 0;
-					moveValues->grounded = true;
+			//don't collide with tiles if bullet
+			if (!Component_HasIndex(bulletComponent, eid)){
+				int tileX = floor(r1->x / Constants::TileSize_);
+				//int tileCenterX = ((r1->x + (r1->w / 2)) / Constants::TileSize_);
+				int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
+				int tileY = floor((r1->y + moveValues->yVelocity) / Constants::TileSize_);
+				int tileCenterY = ((r1->y + (r1->h / 2)) / Constants::TileSize_);
+				int tileEndY = floor((r1->y + r1->h) / Constants::TileSize_);
+				int tileHeadY = floor((r1->y + 4) / Constants::TileSize_);
+				int tileFootX = floor((r1->x + 12) / Constants::TileSize_);
+				int tileEndFootX = floor((r1->x + r1->w - 12) / Constants::TileSize_);
+				int tileHeadX = floor((r1->x + 4) / Constants::TileSize_);
+				int tileEndHeadX = floor((r1->x + r1->w - 4) / Constants::TileSize_);
+				
+				moveValues->grounded = false;
+				if (moveValues->yVelocity < 0) {
+					if (map->map[tileY][tileHeadX].solid || map->map[tileY][tileEndHeadX].solid) {
+						r1->y = tileY * Constants::TileSize_ + Constants::TileSize_;
+						moveValues->yVelocity = 0;
+					} 
+				} else if (moveValues->yVelocity >= 0) {
+					if (map->map[tileEndY][tileFootX].solid || map->map[tileEndY][tileEndFootX].solid) {
+						r1->y = tileEndY * Constants::TileSize_ - r1->h;
+						moveValues->yVelocity = 0;
+						moveValues->grounded = true;
 
-					if (map->map[tileEndY][tileFootX].speed > 0) {
-						moveValues->xVelocity += map->map[tileEndY][tileFootX].speed;
-					} else if (map->map[tileEndY][tileEndFootX].speed > 0) {
-						moveValues->xVelocity += map->map[tileEndY][tileEndFootX].speed;
+						if (map->map[tileEndY][tileFootX].speed > 0) {
+							moveValues->xVelocity += map->map[tileEndY][tileFootX].speed;
+						} else if (map->map[tileEndY][tileEndFootX].speed > 0) {
+							moveValues->xVelocity += map->map[tileEndY][tileEndFootX].speed;
+						}
 					}
 				}
-			}
 
-			if (moveValues->xVelocity < 0) {
-				if (moveValues->grounded) {
-					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid) {
-						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
-						moveValues->xVelocity = 0;
+				if (moveValues->xVelocity < 0) {
+					if (moveValues->grounded) {
+						if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid) {
+							r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
+							moveValues->xVelocity = 0;
+						}
+					} else {
+						if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
+							r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
+							moveValues->xVelocity = 0;
+						}
 					}
-				} else {
-					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
-						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
-						moveValues->xVelocity = 0;
-					}
-				}
-			} else if (moveValues->xVelocity > 0) {
-				if (moveValues->grounded) {
-					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid) {
-						r1->x = tileEndX * Constants::TileSize_ - r1->w;
-						moveValues->xVelocity = 0;
-					}
-				} else {
-					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
-						r1->x = tileEndX * Constants::TileSize_ - r1->w;
-						moveValues->xVelocity = 0;
+				} else if (moveValues->xVelocity > 0) {
+					if (moveValues->grounded) {
+						if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid) {
+							r1->x = tileEndX * Constants::TileSize_ - r1->w;
+							moveValues->xVelocity = 0;
+						}
+					} else {
+						if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
+							r1->x = tileEndX * Constants::TileSize_ - r1->w;
+							moveValues->xVelocity = 0;
+						}
 					}
 				}
 			}
 		}
 
 		// World boundary collisions
-		if (r1->x <= 0) {
-			r1->x = 0;
-			moveValues->xVelocity = 0;
-		} else if (r1->x + r1->w >= Constants::LevelWidth_) {
-			r1->x = Constants::LevelWidth_ - r1->w;
-			moveValues->xVelocity = 0;
-		}
-		if (r1->y < 0) {
-			r1->y = 0;
-			moveValues->yVelocity = 0;
+		if (!Component_HasIndex(bulletComponent, eid)){
+			if (r1->x <= 0) {
+				r1->x = 0;
+				moveValues->xVelocity = 0;
+			} else if (r1->x + r1->w >= Constants::LevelWidth_) {
+				r1->x = Constants::LevelWidth_ - r1->w;
+				moveValues->xVelocity = 0;
+			}
+			if (r1->y < 0) {
+				r1->y = 0;
+				moveValues->yVelocity = 0;
+			}
 		}
 	}
 }

@@ -80,9 +80,8 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 				Rectangle rect = rectangleComponent->entityRectangles[eid];
 				Entity* newBullet = EntityCache_GetNewEntity();
 				BulletComponent_Add(inputSystem->bulletComponent, inputSystem->physicsComponent,
-				inputSystem->aliveComponent, inputSystem->textureComponent, inputSystem->rectangleComponent,
-				rect, newBullet->eid, true);
-			//	std::cout << "created bullet entity! with eid " << newBullet->eid <<std::endl;
+				inputSystem->aliveComponent, inputSystem->textureComponent, inputSystem->movementComponent,
+				inputSystem->rectangleComponent,rect, newBullet->eid, true);
 				//numPressed[SDLK_SPACE] = 0;
 				keysUp[SDLK_SPACE % Constants::NumKeys_] = false;
 

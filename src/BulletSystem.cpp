@@ -7,6 +7,7 @@
 #include "AliveComponent.h"
 #include "TextureComponent.h"
 #include "TextureCache.h"
+#include "MovementComponent.h"
 #include "ComponentBag.h"
 
 #include <SDL.h>
@@ -18,6 +19,7 @@ void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag) {
   bulletSystem->bulletComponent     = cBag->bulletComponent;
   bulletSystem->aliveComponent  		= cBag->aliveComponent;
   bulletSystem->textureComponent  	= cBag->textureComponent;
+  bulletSystem->movementComponent   = cBag->movementComponent;
 }
 
 void BulletSystem_Update(BulletSystem* bulletSystem) {
@@ -26,6 +28,7 @@ void BulletSystem_Update(BulletSystem* bulletSystem) {
   BulletComponent* bulletComponent  			= bulletSystem->bulletComponent;
   AliveComponent* aliveComponent  				= bulletSystem->aliveComponent;
   TextureComponent* textureComponent  		= bulletSystem->textureComponent;
+  MovementComponent* movementComponent    = bulletSystem->movementComponent;
 
   uint16 bulletsRemoved = 0;
   for (uint32 entityIndex = 0; entityIndex < bulletComponent->count; entityIndex++) {
@@ -33,7 +36,7 @@ void BulletSystem_Update(BulletSystem* bulletSystem) {
 
     if (!Component_HasIndex(physicsComponent, eid) || !Component_HasIndex(rectangleComponent, eid)
     	|| !Component_HasIndex(bulletComponent, eid) || !Component_HasIndex(aliveComponent, eid)
-    	|| !Component_HasIndex(textureComponent, eid)) {
+    	|| !Component_HasIndex(textureComponent, eid) || !Component_HasIndex(movementComponent,eid)) {
       continue;
     } // make sure all components are there
 
@@ -42,17 +45,20 @@ void BulletSystem_Update(BulletSystem* bulletSystem) {
     	Rectangle* playerRect = &rectangleComponent->entityRectangles[Constants::PlayerIndex_];
     	float maxScreenX = playerRect->x + (Constants::ScreenWidth_ /2);
     	float minScreenX = playerRect->x - (Constants::ScreenWidth_ /2);
-    	float bX = bulletComponent->bullet[eid].position.x;
-    	//float bY = bulletComponent->bullet.position.y;
-	    //std::cout << "updating bullet system: bullet.position.x" << std::endl;
-
+    	float bX = rectangleComponent->entityRectangles[eid].x;
+    MovementValues* moveValues = &movementComponent->movementValues[eid];
+    if (!moveValues) {
+      std::cerr << "Error: No movement values for the input system to use." << std::endl;
+      continue;
+    }
+    moveValues->xAccel = 0;
+    moveValues->yAccel = 0;
+    moveValues->xAccel = moveValues->accelX;
+    
 	    if (bX > Constants::LevelWidth_ || bX < 0 || bX < minScreenX || bX > maxScreenX ||
         bulletComponent->bullet[eid].collided == true){
 	    	aliveComponent->alive[eid] = false;
 	    	bulletsRemoved++;
-        std::cout << "REVMOED BULLET" << std::endl;
-	    	//std::cout << "BULLET OUT OF SCREEN, x: "<< bX << " y: " << bY <<
-	    	//" eid: " << eid << "alivec should be false: " << aliveComponent->alive[eid] << std::endl;
 	    }
 		}
   }
