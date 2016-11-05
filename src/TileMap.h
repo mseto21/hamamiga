@@ -6,9 +6,9 @@
 struct Tile {
 	uint16 tid[Constants::MaxTileAnimations_];
 	bool solid;
-	bool moving;
 	bool winning;
 
+	float speed;
 	int animationTime;
 	int elapsed;
 	int currentIndex;

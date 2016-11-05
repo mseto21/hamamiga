@@ -20,6 +20,7 @@
 #include <SDL.h>
 #include <iostream>
 
+// Physics Constants
 void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap) {
 	physicsSystem->physicsComponent 	= cBag->physicsComponent;
 	physicsSystem->movementComponent 	= cBag->movementComponent;
@@ -218,6 +219,12 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					r1->y = tileEndY * Constants::TileSize_ - r1->h;
 					moveValues->yVelocity = 0;
 					moveValues->grounded = true;
+
+					if (map->map[tileEndY][tileFootX].speed > 0) {
+						moveValues->xVelocity += map->map[tileEndY][tileFootX].speed;
+					} else if (map->map[tileEndY][tileEndFootX].speed > 0) {
+						moveValues->xVelocity += map->map[tileEndY][tileEndFootX].speed;
+					}
 				}
 			}
 

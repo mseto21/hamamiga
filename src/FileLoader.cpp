@@ -117,7 +117,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 		tile.tid[i] = 0;
 	}
 	tile.solid = false;
-	tile.moving = false;
+	tile.speed = 0;
 	tile.animationTime = 0;
 	tile.elapsed = 0;
 	tile.currentIndex = 0;
@@ -127,7 +127,6 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 
 	int tileIndex = 0;
 	bool getParams = false;
-	bool getAnimationTime = false;
 
 	// LMAO THIS WHOLE THING IS A HACK AND A HALF IM SO SORRY,
 	// BUT GIRLS JUST WANNA HAVE FUN. IF ANYONE EVER SEES THIS
@@ -139,18 +138,15 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				tilepos = 0;
 				tile.tid[0] = 0;
 				tile.solid = false;
-				tile.moving = false;
+				tile.speed = 0;
 				tile.animationTime = 0;
 				tile.elapsed = 0;
 				tile.currentIndex = 0;
 				tile.rectangle = {(float) xIndex * Constants::TileSize_, (float) yIndex * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_};
 				memset(&tilestr, 0, MaxBuffSize_);
 				xIndex++;
-
 				getParams = false;
-				getAnimationTime = false;
 				tileIndex = 0;
-
 				tileMap->w = xIndex;
 				yIndex++;
 				xIndex = 0;
@@ -160,7 +156,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				tilepos = 0;
 				tile.tid[0] = 0;
 				tile.solid = false;
-				tile.moving = false;
+				tile.speed = 0;
 				tile.winning = false;
 				tile.rectangle = {(float) xIndex * Constants::TileSize_, (float) yIndex * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_};
 				tile.animationTime = 0;
@@ -169,7 +165,6 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				memset(&tilestr, 0, MaxBuffSize_);
 				xIndex++;
 				getParams = false;
-				getAnimationTime = false;
 				tileIndex = 0;
 				break;
 			case ':': // Tile parameters
@@ -197,18 +192,31 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				if (getParams)
 					tile.solid = true; // TO-DO: Make this not temporary.
 				break;
-			case 'm':
-				if (getParams)
-					tile.moving = true;// TO-DO: Make this not temporary.
+			case '[':
+				if (getParams) {
+					memset(&tilestr, 0, MaxBuffSize_);
+					tilepos = 0;
+				}
+				break;
+			case ']':
+				if (getParams) {
+					tile.speed = stof(tilestr);
+					memset(&tilestr, 0, MaxBuffSize_);
+					tilepos = 0;
+				}
 				break;
 			case '(':
-				getAnimationTime = true;
+				if (getParams) {
+					memset(&tilestr, 0, MaxBuffSize_);
+					tilepos = 0;
+				}
 				break;
 			case ')':
-				tile.animationTime = stoi(tilestr);
-				memset(&tilestr, 0, MaxBuffSize_);
-				getAnimationTime = false;
-				tilepos = 0;
+				if (getParams) {
+					tile.animationTime = stoi(tilestr);
+					memset(&tilestr, 0, MaxBuffSize_);
+					tilepos = 0;
+				}
 				break;
 			case ',':
 				tile.tid[tileIndex++] = stoi(tilestr);
@@ -338,8 +346,7 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					Hat gHat = Hat();
 					cout << "Adding hat to entity " << eid << "..." << endl;
 					HatComponent_Add(cBag->hatComponent, eid, hat, gHat);
-				}
-				 else if (strcmp(cmd, "ai") == 0) {
+				} else if (strcmp(cmd, "ai") == 0) {
 					int range = int_parameters.front();
 					int_parameters.pop();
 					int facing = int_parameters.front();
