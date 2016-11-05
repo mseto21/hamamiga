@@ -11,7 +11,7 @@ zone=
 		movement(5.0,20.0,1.5,14.0,)
 		physics(100,)
 		rectangle(0,1350,48,87,)
-		texture(assets/tinykev.png,player,)
+		texture(assets/kevin/tinykev.png,player,)
 		hat()
 		camera()
 		goal();
@@ -21,7 +21,7 @@ zone=
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1000,1350,88,87,)
-		texture(assets/demon.png,demon,)
+		texture(assets/enemies/demon.png,demon,)
 		ai(200,1,)
 		alive()
 		goal();
@@ -31,7 +31,7 @@ zone=
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1500,1350,88,87,)
-		texture(assets/demon.png,demon,)
+		texture(assets/enemies/demon.png,demon,)
 		ai(500,1,)
 		alive();
 	entity=
@@ -40,7 +40,7 @@ zone=
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(2200,1350,88,87,)
-		texture(assets/demon.png,demon,)
+		texture(assets/enemies/demon.png,demon,)
 		ai(500,1,)
 		alive();
 	entity=
@@ -49,7 +49,7 @@ zone=
 		health(100,)
 		physics(100,)
 		rectangle(1970,210,88,87,)
-		texture(assets/demon.png,demon,)
+		texture(assets/enemies/demon.png,demon,)
 		ai(120,1,)
 		alive();
 	entity=
@@ -58,29 +58,29 @@ zone=
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(3980,1350,88,87,)
-		texture(assets/demon.png,demon,)
+		texture(assets/enemies/demon.png,demon,)
 		ai(30,1,)
 		alive();
 	entity=
-		texture(assets/bunny-hat.png,bunny,)
+		texture(assets/hats/bunny-hat.png,bunny,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,0,)
 		rectangle(3980,1350,48,48,)
 		alive();
 	entity=
-		texture(assets/crown.png,crown,)
+		texture(assets/hats/crown.png,crown,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,2,)
 		rectangle(48,216,49,24,)
 		alive();
 	entity=
-		texture(assets/disco-hat.png,disco,)
+		texture(assets/hats/disco-hat.png,disco,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,3,)
 		rectangle(4848,1350,48,48,)
 		alive();
 	entity=
-		texture(assets/cowboy-hat.png,cowboy,)
+		texture(assets/hats/cowboy-hat.png,cowboy,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,5,)
 		rectangle(300,1350,48,48,)
