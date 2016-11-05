@@ -157,7 +157,23 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				if (map->map[r][c].tid[0] == 0) {
 					continue;
 				}
-				int tid = map->map[r][c].tid[0] - 1; // Minus zero to account for null tile
+
+				Tile* tile = &map->map[r][c];
+				int tid = 0;
+				if (tile->animationTime == 0) {
+					tid = tile->tid[0] - 1;
+				} else {
+					tile->elapsed += delta;
+					if (tile->elapsed >= tile->animationTime) {
+						tile->elapsed = 0;
+						tile->currentIndex++;
+						if (tile->tid[tile->currentIndex] == 0) {
+							tile->currentIndex = 0;
+						}
+					}
+					tid = tile->tid[tile->currentIndex] - 1;
+				}
+
 				int y = floor(tid / (tileset->w / Constants::TileSize_)) * Constants::TileSize_;
 				int x = (tid % (tileset->w / Constants::TileSize_)) * Constants::TileSize_;
 				SDL_Rect clip = {x, y, Constants::TileSize_, Constants::TileSize_};

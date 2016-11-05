@@ -9,6 +9,10 @@ struct Tile {
 	bool moving;
 	bool winning;
 
+	int animationTime;
+	int elapsed;
+	int currentIndex;
+
 	Rectangle rectangle;
 };
 

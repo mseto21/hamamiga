@@ -113,27 +113,43 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 
 	// Hold the tile data.
 	Tile tile;
-	tile.tid[0] = 0;
+	for (int i = 0; i < Constants::MaxTileAnimations_; i++) {
+		tile.tid[i] = 0;
+	}
 	tile.solid = false;
 	tile.moving = false;
+	tile.animationTime = 0;
+	tile.elapsed = 0;
+	tile.currentIndex = 0;
 	char tilestr[MaxBuffSize_];
 	memset(&tilestr, 0, MaxBuffSize_);
 	uint8 tilepos = 0;
-	bool getParams = false;
 
+	int tileIndex = 0;
+	bool getParams = false;
+	bool getAnimationTime = false;
+
+	// LMAO THIS WHOLE THING IS A HACK AND A HALF IM SO SORRY,
+	// BUT GIRLS JUST WANNA HAVE FUN. IF ANYONE EVER SEES THIS
+	// COMMENT, THEY'LL KNOW IM LIT AF.
 	while ((t=fgetc(tilemapFile)) != EOF) {
 		switch (t) {
 			case '\n': // New line
-				// Hacky for now
 				tileMap->map[yIndex][xIndex] = tile;
 				tilepos = 0;
 				tile.tid[0] = 0;
 				tile.solid = false;
 				tile.moving = false;
+				tile.animationTime = 0;
+				tile.elapsed = 0;
+				tile.currentIndex = 0;
 				tile.rectangle = {(float) xIndex * Constants::TileSize_, (float) yIndex * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_};
 				memset(&tilestr, 0, MaxBuffSize_);
 				xIndex++;
+
 				getParams = false;
+				getAnimationTime = false;
+				tileIndex = 0;
 
 				tileMap->w = xIndex;
 				yIndex++;
@@ -147,15 +163,22 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 				tile.moving = false;
 				tile.winning = false;
 				tile.rectangle = {(float) xIndex * Constants::TileSize_, (float) yIndex * Constants::TileSize_, Constants::TileSize_, Constants::TileSize_};
+				tile.animationTime = 0;
+				tile.elapsed = 0;
+				tile.currentIndex = 0;
 				memset(&tilestr, 0, MaxBuffSize_);
 				xIndex++;
 				getParams = false;
+				getAnimationTime = false;
+				tileIndex = 0;
 				break;
 			case ':': // Tile parameters
 				if (tilepos != 0) {
 					int tid = stoi(tilestr);
 					tile.tid[0] = tid;
 					getParams = true;
+					memset(&tilestr, 0, MaxBuffSize_);
+					tilepos = 0;
 				} else {
 					cerr << "Error: Expected tile id but none was given." << endl;
 				}
@@ -177,6 +200,20 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 			case 'm':
 				if (getParams)
 					tile.moving = true;// TO-DO: Make this not temporary.
+				break;
+			case '(':
+				getAnimationTime = true;
+				break;
+			case ')':
+				tile.animationTime = stoi(tilestr);
+				memset(&tilestr, 0, MaxBuffSize_);
+				getAnimationTime = false;
+				tilepos = 0;
+				break;
+			case ',':
+				tile.tid[tileIndex++] = stoi(tilestr);
+				memset(&tilestr, 0, MaxBuffSize_);
+				tilepos = 0;
 				break;
 			default: // Add to integer string
 				tilestr[tilepos++] = t;
