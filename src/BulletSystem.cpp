@@ -12,35 +12,12 @@
 #include <SDL.h>
 #include <iostream>
 
-/*void BulletAllComponents_Add(PhysicsComponent* physicsComponent, AliveComponent* aliveComponent,
- TextureComponent* textureComponent, uint32 eid) {
-	//Adding relevant components to a bullet entity
-	//Component_Add(bulletComponent, eid);
-	PhysicsComponent_Add(physicsComponent, eid, 100);
-	AliveComponent_Add(aliveComponent, eid);
-	//Texture
-	Texture* texture = TextureCache_GetTexture("bullet");
-	TextureComponent_Add(textureComponent, eid, texture); //default bullet texture
-	//bulletComponent->bullet.position.x = rectPos.x + 150;
-	//bulletComponent->bullet.position.y = rectPos.y + 40;
-	//std::cout << "rectpos is: " << rectPos.x << std::endl;
-	//std::cout << "rpos y is: " << rectPos.y << std::endl;
-	//std::cout << "bullet.position is: " << bullet.position.x << std::endl;
-	//std::cout << "bullet.position y is: " << bullet.position.y << std::endl;
-//	RectangleComponent_Add(rect, eid, bulletComponent->bullet.position.x, bulletComponent->bullet.position.y, texture->w, texture->h);
-}*/
-
 void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag) {
   bulletSystem->physicsComponent    = cBag->physicsComponent;
   bulletSystem->rectangleComponent  = cBag->rectangleComponent;
   bulletSystem->bulletComponent     = cBag->bulletComponent;
   bulletSystem->aliveComponent  		= cBag->aliveComponent;
   bulletSystem->textureComponent  	= cBag->textureComponent;
-
-  //Initializing max bullet entities
-  //for (int i = 0; i < Contants::MaxBullets_; i++){
-
- // }
 }
 
 void BulletSystem_Update(BulletSystem* bulletSystem) {
@@ -65,18 +42,17 @@ void BulletSystem_Update(BulletSystem* bulletSystem) {
     	Rectangle* playerRect = &rectangleComponent->entityRectangles[Constants::PlayerIndex_];
     	float maxScreenX = playerRect->x + (Constants::ScreenWidth_ /2);
     	float minScreenX = playerRect->x - (Constants::ScreenWidth_ /2);
-    	float bX = bulletComponent->bullet.position.x;
+    	float bX = bulletComponent->bullet[eid].position.x;
     	//float bY = bulletComponent->bullet.position.y;
 	    //std::cout << "updating bullet system: bullet.position.x" << std::endl;
 
-	   // std::cout << "bullet position X " << bX << std::endl;
-	   // std::cout << "maxScreenX " << maxScreenX << std::endl;
-	   // std::cout << "minScreenX " << minScreenX << std::endl;
-	    if (bX > Constants::LevelWidth_ || bX < 0 || bX < minScreenX || bX > maxScreenX){
+	    if (bX > Constants::LevelWidth_ || bX < 0 || bX < minScreenX || bX > maxScreenX ||
+        bulletComponent->bullet[eid].collided == true){
 	    	aliveComponent->alive[eid] = false;
 	    	bulletsRemoved++;
-	    	std::cout << "BULLET OUT OF SCREEN, x: "<< bX << " y: " << bY <<
-	    	" eid: " << eid << "alivec should be false: " << aliveComponent->alive[eid] << std::endl;
+        std::cout << "REVMOED BULLET" << std::endl;
+	    	//std::cout << "BULLET OUT OF SCREEN, x: "<< bX << " y: " << bY <<
+	    	//" eid: " << eid << "alivec should be false: " << aliveComponent->alive[eid] << std::endl;
 	    }
 		}
   }

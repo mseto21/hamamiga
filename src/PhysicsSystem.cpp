@@ -49,7 +49,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;
 	HealthComponent* healthComponent = physicsSystem->healthComponent;
 	HatComponent* hatComponent = physicsSystem->hatComponent;
-	//BulletComponent* bulletComponent = physicsSystem->bulletComponent;
+	BulletComponent* bulletComponent = physicsSystem->bulletComponent;
 	InputComponent* inputComponent = physicsSystem->inputComponent;
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
 	AliveComponent * aliveComponent = physicsSystem->aliveComponent;
@@ -170,13 +170,28 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				cllsn = true;
 			}
 
-		//if (cllsn){
-		//	/std::cout << "COLIDED" << std::endl;
-		//}
+			//if collided with bullet, lose health accordingly
+			if (cllsn && Component_HasIndex(bulletComponent, physicsComponent->entityArray[j])){
+				if (eid == Constants::PlayerIndex_&& bulletComponent->bullet[physicsComponent->entityArray[j]].friendly == true){
+				cllsn = false;//if collided with player, don't do damage
+				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
+				} else if (eid != Constants::PlayerIndex_&&
+					bulletComponent->bullet[physicsComponent->entityArray[j]].friendly == true){
+					bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
+					//if collided enemy
+				}
+				//remove if bullets kill each other/collide with each other
+				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
+			}
+
 			if (cllsn) {
 			  if (Component_HasIndex(healthComponent, eid)) {
 					if (!healthComponent->invincible[eid]) {
 					  healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
+					  //health check
+					  if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
+					  	aliveComponent->alive[eid] = false;
+					  }
 					}
 				}
 			}

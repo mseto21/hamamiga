@@ -34,10 +34,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 	MovementComponent* movementComponent = inputSystem->movementComponent;;
 	HatComponent* hatComponent = inputSystem->hatComponent;
 	HealthComponent* healthComponent = inputSystem->healthComponent;
-	//BulletComponent* bulletComponent = inputSystem->bulletComponent;
-	//PhysicsComponent* physicsComponent = inputSystem->physicsComponent;
-	//AliveComponent* aliveComponent = inputSystem->aliveComponent;
-	//TextureComponent* textureComponent = inputSystem->textureComponent;
+	BulletComponent* bulletComponent = inputSystem->bulletComponent;
 	RectangleComponent* rectangleComponent = inputSystem->rectangleComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
@@ -84,8 +81,8 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 				Entity* newBullet = EntityCache_GetNewEntity();
 				BulletComponent_Add(inputSystem->bulletComponent, inputSystem->physicsComponent,
 				inputSystem->aliveComponent, inputSystem->textureComponent, inputSystem->rectangleComponent,
-				rect, newBullet->eid);
-				std::cout << "created bullet entity! with eid " << newBullet->eid <<std::endl;
+				rect, newBullet->eid, true);
+			//	std::cout << "created bullet entity! with eid " << newBullet->eid <<std::endl;
 				//numPressed[SDLK_SPACE] = 0;
 				keysUp[SDLK_SPACE % Constants::NumKeys_] = false;
 

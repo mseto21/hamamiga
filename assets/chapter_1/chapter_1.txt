@@ -17,6 +17,7 @@ zone=
 		goal();
 	entity=
 		animation(4,150.0,88,87,)
+		health(100,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1000,1350,88,87,)
@@ -26,6 +27,7 @@ zone=
 		goal();
 	entity=
 		animation(4,150.0,88,87,)
+		health(100,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1500,1350,88,87,)
@@ -34,6 +36,7 @@ zone=
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
+		health(100,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(2200,1350,88,87,)
@@ -43,6 +46,7 @@ zone=
 	entity=
 		animation(4,150.0,88,87,)
 		movement(3.0,20.0,1.0,1.0,)
+		health(100,)
 		physics(100,)
 		rectangle(1970,210,88,87,)
 		texture(assets/demon.png,demon,)
@@ -50,6 +54,7 @@ zone=
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
+		health(100,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(3980,1350,88,87,)

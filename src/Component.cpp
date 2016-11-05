@@ -32,7 +32,6 @@ void Component_Remove(Component* component, uint32 eid) {
 		if (component->entityArray[entityIndex] == eid &&
 		component->usedEntities[eid] != false) { //and already isn't removed
 			component->usedEntities[eid] = false;
-			std::cout << "revmoed entity with eid: " << eid << std::endl;
 			return;
 		}
 	}
