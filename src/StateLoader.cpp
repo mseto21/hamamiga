@@ -19,11 +19,11 @@ void LoadIntroStateAssets(Game* game) {
 	game->introState.elapsed = 0;
 	game->introState.alpha = 0.f;
 
-	TextureCache_CreateTexture(game->renderer, "assets/menu-screen.png", Constants::TitleBackground_);
-	TextureCache_CreateTexture(game->renderer, "assets/menu-screen-overlay.png", Constants::MenuOverlay_);
-	TextureCache_CreateTexture(game->renderer, "assets/fader.png", Constants::TitleFader_);
-	TextureCache_CreateTexture(game->renderer, "assets/win-screen.png", Constants::WinBackground_);
-	TextureCache_CreateTexture(game->renderer, "assets/lose-screen.png", Constants::LoseBackground_);
+	TextureCache_CreateTexture(game->renderer, "assets/screens/menu-screen.png", Constants::TitleBackground_);
+	TextureCache_CreateTexture(game->renderer, "assets/screens/menu-screen-overlay.png", Constants::MenuOverlay_);
+	TextureCache_CreateTexture(game->renderer, "assets/screens/fader.png", Constants::TitleFader_);
+	TextureCache_CreateTexture(game->renderer, "assets/screens/win-screen.png", Constants::WinBackground_);
+	TextureCache_CreateTexture(game->renderer, "assets/screens/lose-screen.png", Constants::LoseBackground_);
 }
 
 
@@ -31,7 +31,7 @@ void LoadIntroStateAssets(Game* game) {
 void LoadTitleStateAssets(Game* game) {
 	// Load font textures
 	game->titleState.selection = 0;
-	game->titleState.titleFont = TTF_OpenFont("assets/minnie\'shat.ttf", 75);
+	game->titleState.titleFont = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
 	if (!game->titleState.titleFont) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
@@ -55,7 +55,7 @@ void LoadTitleStateAssets(Game* game) {
 	TTF_CloseFont(game->titleState.titleFont);
 
 	// Load title music
-	game->titleState.titleMusic = Mix_LoadMUS("assets/themesong.ogg");
+	game->titleState.titleMusic = Mix_LoadMUS("assets/music/themesong.ogg");
 	if (game->titleState.titleMusic == NULL) {
 		std::cerr << "Unable to initialize titlescreen music! SDL_Error: " << Mix_GetError() << std::endl;
 	}
@@ -65,7 +65,7 @@ void LoadTitleStateAssets(Game* game) {
 
 void LoadHighScoreStateAssets(Game* game) {
 	// Load font
-	game->highScoreState.font = TTF_OpenFont("assets/minnie\'shat.ttf", 75);
+	game->highScoreState.font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
 	if (!game->highScoreState.font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
@@ -85,7 +85,7 @@ void LoadHighScoreStateAssets(Game* game) {
 
 void LoadOptionStateAssets(Game* game) {
 	// Load font
-	game->optionState.font = TTF_OpenFont("assets/minnie\'shat.ttf", 75);
+	game->optionState.font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
 	if (!game->optionState.font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
@@ -116,7 +116,7 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 	game->zoneIntroState.alpha = 0.f;
 	game->zoneIntroState.elapsed = 0;
 	game->zoneIntroState.startScene.current = 0;
-	game->zoneIntroState.font = TTF_OpenFont("assets/BadMofo.ttf", 50);
+	game->zoneIntroState.font = TTF_OpenFont("assets/fonts/BadMofo.ttf", 50);
 	if (!game->zoneIntroState.font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
@@ -166,8 +166,8 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	}
 
 	// Initialize fonts
-	game->playState.scoreFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
-	game->playState.healthFont = TTF_OpenFont("assets/minnie\'shat.ttf", 30);
+	game->playState.scoreFont = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
+	game->playState.healthFont = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
 	game->zoneIntroState.sliding = false;
 	if (!game->playState.scoreFont) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
@@ -181,8 +181,8 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/disco.ogg", "disco");
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
 	SoundCache_CreateSound("assets/sounds/nj.ogg", "nj");
-	TextureCache_CreateTexture(game->renderer, "assets/bullet.png", "bullet");
-	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_ADD);
+	TextureCache_CreateTexture(game->renderer, "assets/hats/bullet.png", "bullet");
+	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/hats/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_ADD);
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
 

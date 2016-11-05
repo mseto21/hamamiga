@@ -2,7 +2,7 @@
 #include "TextureCache.h"
 #include <SDL_ttf.h>
 
-const char* FontPath_ = "assets/DINCondensedBold.ttf";
+const char* FontPath_ = "assets/fonts/DINCondensedBold.ttf";
 
 void InteractableComponent_Initialize(InteractableComponent* interactableComponent) {
 	Component_Initialize(interactableComponent);
