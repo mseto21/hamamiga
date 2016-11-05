@@ -113,7 +113,7 @@ void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 				SDL_RenderClear(game->renderer);
 				Texture* scene1 = game->zoneIntroState.startScene.slides[game->zoneIntroState.startScene.current];
 				if (scene1) {
-					RenderSystem_Render_xywh(game->renderer, -xOffset, 0, scene1->w, scene1->h, NULL, scene1);
+					RenderSystem_Render_xywh(game->renderer, 0, -xOffset, scene1->w, scene1->h, NULL, scene1);
 				}
 				Texture* scene2 = game->zoneIntroState.startScene.slides[game->zoneIntroState.startScene.current + 1];
 				if (scene2) {
