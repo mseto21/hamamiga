@@ -10,7 +10,7 @@ struct Rectangle;
 struct Bullet {
   bool friendly = false; //friendly or enemy bullet, default false?
   bool collided; //check if bullet has died from collision
-  bool left = false; //direction the bullet should go
+  bool left = false; //direction bullet is heading
 };
 
 struct BulletComponent : public Component {
@@ -18,4 +18,5 @@ struct BulletComponent : public Component {
 };
 
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent*,
-	AliveComponent*, TextureComponent*, MovementComponent*, RectangleComponent*, Rectangle, uint32 eid, bool);
+	AliveComponent*, TextureComponent*, MovementComponent*, RectangleComponent*,
+	 Rectangle, uint32 eid, bool, bool);

@@ -9,6 +9,7 @@ struct MovementValues {
 	float accelY; //standard y acceleration
 	float maxXVelocity; //maximum x velocity
 	float maxYVelocity; //maximum y velocity
+	bool left; //direction the entity is facing
 	bool grounded;
 };
 

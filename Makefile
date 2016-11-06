@@ -13,7 +13,7 @@ test := $(shell test -d $(OBJDIR) || mkdir -p $(OBJDIR))
 
 all: build
 
-build: $(EXECUTABLE)
+build: clean $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) -o $@

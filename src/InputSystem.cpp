@@ -34,7 +34,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 	MovementComponent* movementComponent = inputSystem->movementComponent;;
 	HatComponent* hatComponent = inputSystem->hatComponent;
 	HealthComponent* healthComponent = inputSystem->healthComponent;
-	BulletComponent* bulletComponent = inputSystem->bulletComponent;
+	//BulletComponent* bulletComponent = inputSystem->bulletComponent;
 	RectangleComponent* rectangleComponent = inputSystem->rectangleComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
@@ -73,21 +73,19 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		}
 
 		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
-			(strcmp(hatComponent->hats[eid].hat.effect, "powpow") == 0) && 
-			bulletComponent->count < Constants::MaxBullets_){
+			(strcmp(hatComponent->hats[eid].hat.effect, "powpow") == 0)){//} && 
+			//bulletComponent->count < Constants::MaxBullets_){ Add bullet restrictions later
 			if (keysPressed[SDLK_SPACE] && keysUp[SDLK_SPACE]) {
-				//caster's position
+				//caster's position & facing direction
 				Rectangle rect = rectangleComponent->entityRectangles[eid];
 				Entity* newBullet = EntityCache_GetNewEntity();
 				BulletComponent_Add(inputSystem->bulletComponent, inputSystem->physicsComponent,
 				inputSystem->aliveComponent, inputSystem->textureComponent, inputSystem->movementComponent,
-				inputSystem->rectangleComponent,rect, newBullet->eid, true);
-				//numPressed[SDLK_SPACE] = 0;
+					inputSystem->rectangleComponent,rect, newBullet->eid, true,
+					inputSystem->movementComponent->movementValues[eid].left);
 				keysUp[SDLK_SPACE % Constants::NumKeys_] = false;
-
 			}
 		}
-		//}
 
 		if (keysPressed[SDLK_p]) {
 			// Drop regular hat.
