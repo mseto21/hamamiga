@@ -68,13 +68,13 @@ zone=
 		rectangle(3980,1350,85,60,)
 		alive();
 	entity=
-		texture(assets/chapter_1/hats-chap1.png,crown,85,0,85,60,)
+		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,2,)
 		rectangle(48,216,85,60,)
 		alive();
 	entity=
-		texture(assets/chapter_1/hats-chap1.png,disco,170,0,85,60,)
+		texture(assets/chapter_1/hats-chap1.png,disco,85,0,85,60,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,3,)
 		rectangle(4848,1350,85,60,)
