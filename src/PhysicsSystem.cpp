@@ -212,9 +212,13 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				}
 			}
 		}
-
+		bool flying = false;
+		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
+		    strcmp(hatComponent->hats[eid].hat.name, "propeller") == 0) {
+		  flying = true;
+		}
 		// Move player based on physics
-		if (!moveValues->grounded) {
+		if (!moveValues->grounded && !flying) {
 		  moveValues->yVelocity += Constants::Gravity_;
 		  moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
 		} else {
