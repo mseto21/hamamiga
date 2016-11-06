@@ -36,6 +36,25 @@ Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, co
 	return &tcache->textures[textureIndex];
 }
 
+/* Creates and returns a new texture from the given path and the given clip. */
+Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, const char* name, int x, int y, int w, int h) {
+	// Check if we already have that texture.
+	int textureIndex = 0;
+	for (; textureIndex < tcache->index; textureIndex++) {
+		if (strcmp(tcache->textures[textureIndex].name, name) == 0) {
+			TextureCache_Remove(name);
+			break;
+		}
+	}
+
+	// Load texture if not loaded.
+	Texture_LoadTexture(&tcache->textures[textureIndex], renderer, path, name, x, y, w, h);
+	SDL_SetTextureBlendMode(tcache->textures[textureIndex].sdltexture , SDL_BLENDMODE_BLEND );
+	if (textureIndex == tcache->index)
+		tcache->index++;
+	return &tcache->textures[textureIndex];
+}
+
 
 /* Creates and returns a new texture with the given message, color, and font*/
 Texture* TextureCache_CreateFont(SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name) {

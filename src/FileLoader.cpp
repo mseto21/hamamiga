@@ -336,8 +336,20 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					str_parameters.pop();
 					string tag = str_parameters.front();
 					str_parameters.pop();
-					cout << "Adding texture to entity " << eid << ":(" << path << "," << tag << ")" << endl;
-					TextureComponent_Add(cBag->textureComponent, eid, TextureCache_CreateTexture(renderer, path.c_str(), tag.c_str()));
+					if (int_parameters.empty()) {
+						cout << "Adding texture to entity " << eid << ":(" << path << "," << tag << ")" << endl;
+						TextureComponent_Add(cBag->textureComponent, eid, TextureCache_CreateTexture(renderer, path.c_str(), tag.c_str()));
+					} else {
+						int x = int_parameters.front();
+						int_parameters.pop();
+						int y = int_parameters.front();
+						int_parameters.pop();
+						int w = int_parameters.front();
+						int_parameters.pop();
+						int h = int_parameters.front();
+						int_parameters.pop();
+						TextureComponent_Add(cBag->textureComponent, eid, TextureCache_CreateTexture(renderer, path.c_str(), tag.c_str(), x, y, w, h));
+					}
 				} else if (strcmp(cmd, "camera") == 0) {
 					cout << "Adding camera to entity " << eid << "..." << endl;
 					CameraComponent_Add(cBag->cameraComponent, eid);

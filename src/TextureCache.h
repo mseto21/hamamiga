@@ -13,6 +13,7 @@ struct TextureCache {
 
 TextureCache* TextureCache_GetCache();
 Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, const char* name);
+Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, const char* name, int x, int y, int w, int h);
 Texture* TextureCache_CreateFont(SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name);
 Texture* TextureCache_GetTexture(const String128 path);
 Texture* TextureCache_GetTexture(int index);

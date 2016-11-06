@@ -33,10 +33,28 @@ bool Texture_LoadTexture(Texture* texture, SDL_Renderer* renderer, const char* p
 
 	texture->w = surface->w;
 	texture->h = surface->h;
+	texture->clipX = 0;
+	texture->clipY = 0;
+	texture->clipW = 0;
+	texture->clipH = 0;
+
 	texture->flip = SDL_FLIP_NONE;
 	strcpy(texture->name, name);
 	SDL_FreeSurface(surface);
 
+	return true;
+}
+
+bool Texture_LoadTexture(Texture* texture, SDL_Renderer* renderer, const char* path, const char* name, int x, int y, int w, int h) {
+	if (!Texture_LoadTexture(texture, renderer, path, name)) {
+		return false;
+	}
+	texture->clipX = x;
+	texture->clipY = y;
+	texture->clipW = w;
+	texture->clipH = h;
+	texture->w = texture->clipW;
+	texture->h = texture->clipH;
 	return true;
 }
 
