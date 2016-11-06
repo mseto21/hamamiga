@@ -66,7 +66,8 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		if (keysPressed[SDLK_d]) {
 			moveValues->xAccel = moveValues->accelX;
 		}
-		else if (keysPressed[SDLK_e]) {
+		
+		if (keysPressed[SDLK_e]) {
 			inputComponent->interact[eid] = true;
 		} else if (keysUp[SDLK_e]) {
 			inputComponent->interact[eid] = false;
