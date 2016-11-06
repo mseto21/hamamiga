@@ -292,7 +292,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		      gHatTexture->flip = SDL_FLIP_NONE;
 		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		      gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
-		      RenderSystem_Render_xywh(renderer, rect.x + (rect.w - hatTexture->w)/2, rect.y - gHatTexture->h / 2.5, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+		      RenderSystem_Render_xywh(renderer, rect.x + (rect.w - gHatTexture->w)/2, rect.y - gHatTexture->h / 2.5, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    // Render given shader over entire scene
 		    Texture* shader = TextureCache_GetTexture(Constants::Shader_);
