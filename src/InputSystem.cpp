@@ -53,19 +53,35 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 			std::cerr << "Error: No movement values for the input system to use." << std::endl;
 			continue;
 		}
+		int drunk = 1;
+		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
+		    strcmp(hatComponent->hats[eid].gHat.name, "beer") == 0) {
+		        drunk = -1;
+		}
+		bool flying = false;
+		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
+		    strcmp(hatComponent->hats[eid].hat.name, "propeller") == 0) {
+		        flying = true;
+		}
 		moveValues->xAccel = 0;
 		moveValues->yAccel = 0;
 		if (keysPressed[SDLK_w] && moveValues->grounded) {
-			moveValues->yAccel = -moveValues->accelY;
+			moveValues->yAccel = -moveValues->accelY*drunk;
+		} else if (keysPressed[SDLK_w] && flying) {
+		        moveValues->yAccel = -moveValues->accelX*drunk;
 		}
 		if (keysPressed[SDLK_a]) {
-		    moveValues->xAccel = -moveValues->accelX;
+		    moveValues->xAccel = -moveValues->accelX*drunk;
 		}
 		if (keysPressed[SDLK_i]) {
 		    healthComponent->invincible[eid] = !(healthComponent->invincible[eid]);
 		}
 		if (keysPressed[SDLK_d]) {
-			moveValues->xAccel = moveValues->accelX;
+			moveValues->xAccel = moveValues->accelX*drunk;
+		}
+
+		if (keysPressed[SDLK_s] && flying) {
+		        moveValues->yAccel = moveValues->accelX*drunk;
 		}
 		
 		if (keysPressed[SDLK_e]) {
