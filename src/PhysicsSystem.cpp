@@ -231,7 +231,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		// Tiilemap collisions
 		{
 			//don't collide with tiles if bullet
-			if (!Component_HasIndex(bulletComponent, eid)){
 				int tileX = floor(r1->x / Constants::TileSize_);
 				//int tileCenterX = ((r1->x + (r1->w / 2)) / Constants::TileSize_);
 				int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
@@ -243,7 +242,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				int tileEndFootX = floor((r1->x + r1->w - 12) / Constants::TileSize_);
 				int tileHeadX = floor((r1->x + 4) / Constants::TileSize_);
 				int tileEndHeadX = floor((r1->x + r1->w - 4) / Constants::TileSize_);
-				
+
 				moveValues->grounded = false;
 				if (moveValues->yVelocity < 0) {
 					if (map->map[tileY][tileHeadX].solid || map->map[tileY][tileEndHeadX].solid) {
@@ -255,7 +254,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						r1->y = tileEndY * Constants::TileSize_ - r1->h;
 						moveValues->yVelocity = 0;
 						moveValues->grounded = true;
-
 						if (map->map[tileEndY][tileFootX].speed > 0) {
 							moveValues->xVelocity += map->map[tileEndY][tileFootX].speed;
 						} else if (map->map[tileEndY][tileEndFootX].speed > 0) {
@@ -274,6 +272,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
 							r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
 							moveValues->xVelocity = 0;
+							bulletComponent->bullet[eid].collided = true;
 						}
 					}
 				} else if (moveValues->xVelocity > 0) {
@@ -286,10 +285,10 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
 							r1->x = tileEndX * Constants::TileSize_ - r1->w;
 							moveValues->xVelocity = 0;
+							bulletComponent->bullet[eid].collided = true;
 						}
 					}
 				}
-			}
 		}
 
 		// World boundary collisions
