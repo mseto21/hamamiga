@@ -75,7 +75,7 @@ Harry: Designed the second level, added lighting/shaders for the miner hat.
 
 Matt: Added interactable logic (picking up hats), Chapter loading, improving hat components, bug fixes.
 
-Mindy: Jumping animation, bug fixing, future base for projectile system (not yet implemented).
+Mindy: Logic for cowboy hat (BulletSystem, BulletComponent, can kill enemies now)
  
 Gavi: Designed artwork for second level (tile set, new hats, background, jumping animation, shaders, etc.). 
 
