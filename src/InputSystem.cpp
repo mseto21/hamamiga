@@ -34,8 +34,9 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 	MovementComponent* movementComponent = inputSystem->movementComponent;;
 	HatComponent* hatComponent = inputSystem->hatComponent;
 	HealthComponent* healthComponent = inputSystem->healthComponent;
-	//BulletComponent* bulletComponent = inputSystem->bulletComponent;
+	BulletComponent* bulletComponent = inputSystem->bulletComponent;
 	RectangleComponent* rectangleComponent = inputSystem->rectangleComponent;
+	AliveComponent* aliveComponent = inputSystem->aliveComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
 		uint32 eid = inputComponent->entityArray[entityIndex];
@@ -73,11 +74,21 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 			inputComponent->interact[eid] = false;
 		}
 
+		uint32 numBullets = 0;
+		//scan through the bullets since the count is fked up
+	for (uint32 entityIndex = 0; entityIndex < bulletComponent->count; entityIndex++) {
+    uint32 eid = bulletComponent->entityArray[entityIndex];
+    if (Component_HasIndex(aliveComponent, eid)){
+    	if (aliveComponent->alive[eid] == true){
+    		numBullets++;
+    	}
+    }
+  }
+
 		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
-			(strcmp(hatComponent->hats[eid].hat.effect, "powpow") == 0)){//} && 
-			//bulletComponent->count < Constants::MaxBullets_){ Add bullet restrictions later
+			(strcmp(hatComponent->hats[eid].hat.effect, "powpow") == 0) && 
+			numBullets < Constants::MaxBullets_){// Add bullet restrictions later
 			if (keysPressed[SDLK_SPACE] && keysUp[SDLK_SPACE]) {
-				//caster's position & facing direction
 				Rectangle rect = rectangleComponent->entityRectangles[eid];
 				Entity* newBullet = EntityCache_GetNewEntity();
 				BulletComponent_Add(inputSystem->bulletComponent, inputSystem->physicsComponent,
