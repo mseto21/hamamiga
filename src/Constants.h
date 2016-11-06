@@ -41,7 +41,7 @@ namespace Constants {
 	const uint8		PlayerIndex_				= 0;
 	const uint16  XRange_           	= 300;
 	const uint16  YRange_           	= 168;
-	const uint8 	MaximumLevels_ 			=	2;
+	const uint8 	MaximumLevels_ 			=	3;
 	const uint16	MaxMapWidth_				=	256; // In number of tiles
 	const uint16	MaxMapHeight_				=	256;
 	const uint16	TileSize_						=	48;
