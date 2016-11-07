@@ -22,6 +22,7 @@ Game Controls:
 'I' to make Kevin INVINCIBLE (so you don't die)
 'U' to cheat and Auto-Win the level
 'E' to pick up hat and wear it
+'SPACE' to shoot enemies when wearing the "Cowboy" hat
 'WASD' to move, 'W' to jump
 
 
@@ -46,13 +47,23 @@ Platforms can be jumped on by pressing 'W' and jumping on top of them. You canno
 from underneath- you will collide with the bottom of the platform.
 
 ---------
-CHAPTER 1
+CHAPTER 1: The Mysterious, Murderous Memo
 ---------
+Hats:
+-----
+Cowboy Hat: Allows player to shoot enemies with SPACE (located at the start)
+Bunny Hat: Makes the player jump higher (located at the very right on ground floor)
+Strobe Hat: PARTY! (located at very bottom right of level)
+Crown: Escape! (located at the top left of level)
+
 In order to win and escape this factory, you have to dodge the demons
 and reach the magical crown (located at the very top left of the screen). The crown can only be
 reached in this level after the bunny hat is obtained. After obtaining the bunny hat, it will be displayed in
 the top right hand of the screen (underneatH the health bar), and Kevin will be granted SUPER JUMP POWERS!
 This allows Kevin to jump to the skies and reach the crown.
+
+Cowboy hat lets you shoot the dirty demons by pressing 'SPACE'. Only a max of
+3 bullets are currently allowed at a given time.
 
 Bunny hat is located on the far right of the level. Press 'E' to pick the hat up to wear and gain super jump powers.
 
@@ -60,13 +71,37 @@ Now there is additional glamour hat hiding on the level which will cause a super
 You will keep the powers of the bunny hat but you will see the disco hat on your head. Press 'E' to pick up the disco hat.
 
 --------
-CHAPTER 2
+Chapter 2: Into the Vents!
 --------
+Hats:
+-----
+Cowboy Hat: Allows player to shoot enemies with SPACE (located at the top left)
+Miner's Hat: Lights up the level (located at the start)
+Crown: Escape! (located at very bottom right of level)
+
 After winning Chapter 1 (by completing the level, or by pressing 'U' to auto-win), selecting "Play" again will load the second chapter.
 
-Here we have a dark level where you need the "Miner Hat" in order to win. The "Miner Hat" is located at the very beginning of the level. Press 'E' to pick up the miner hat and light up the level!
+Here Kevin is lost in a dark level after he escaped the previous demons and landed in the vents! In this level you need the "Miner Hat" in order to clear up the darkness and escape. The "Miner Hat" is located at the very beginning of the level. Press 'E' to pick up the miner hat and light up the level!
+
+Navigate through the vents to reach the crown. If the demons are too tough, there is a Cowboy Hat located on the level that will help you kill them!
 
 This level is very tough so it will probably be easiest to press 'U' to win. However, if you want to challenge yourself and navigate through Chapter 2, the crown is located in the bottom right corner of the second level.
+
+--------
+Chapter 3: Scurry Out of Shipping
+--------
+Hats:
+-----
+Beer Hat: Don't drink and fly! (near top right, follow the conveyor belts)
+Propellor Hat: FLYYYYY! (very right, follow conveyor upwards, past the beer hat)
+Crown: Escape! (located left from start, can see it)
+
+
+Kevin is now lost in the shipping room! Don't stay on any conveyor belt too long or you might fall to your death! It is very easy to plummet to your death so be careful! :) Keep following the belts until you find the propellor hat that lets you fly!
+
+After obtaining the propellor hat, move around to reach the beer hat. Be careful though, you might regret drinking and flying!
+
+Press 'E' to equip the propellor hat and beer hat when Kevin is standing over it.
 
 ---------------
 Breakdown of what each member achieved:
