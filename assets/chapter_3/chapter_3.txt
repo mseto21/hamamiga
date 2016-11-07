@@ -15,51 +15,6 @@ zone=
 		camera()
 		goal();
 	entity=
-		animation(4,150.0,88,87,)
-		health(100,)
-		movement(3.0,20.0,1.0,1.0,)
-		physics(100,)
-		rectangle(990,510,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		ai(20,1,)
-		alive();
-	entity=
-		animation(4,150.0,88,87,)
-		health(100,)
-		movement(3.0,20.0,1.0,1.0,)
-		physics(100,)
-		rectangle(1400,910,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		ai(30,1,)
-		alive();
-	entity=
-		animation(4,150.0,88,87,)
-		health(100,)
-		movement(3.0,20.0,1.0,1.0,)
-		physics(100,)
-		rectangle(1400,1300,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		ai(30,1,)
-		alive();
-	entity=
-		animation(4,150.0,88,87,)
-		health(100,)
-		movement(3.0,20.0,1.0,1.0,)
-		physics(100,)
-		rectangle(1875,410,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		ai(30,1,)
-		alive();
-	entity=
-		animation(4,150.0,88,87,)
-		health(100,)
-		movement(3.0,20.0,1.0,1.0,)
-		physics(100,)
-		rectangle(4800,1000,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		ai(100,1,)
-		alive();
-	entity=
 		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,6,)
