@@ -55,16 +55,7 @@ zone=
 		health(100,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
-		rectangle(3720,595,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		ai(30,1,)
-		alive();
-	entity=
-		animation(4,150.0,88,87,)
-		health(100,)
-		movement(3.0,20.0,1.0,1.0,)
-		physics(100,)
-		rectangle(4700,1000,88,87,)
+		rectangle(4800,1000,88,87,)
 		texture(assets/enemies/demon.png,demon,)
 		ai(100,1,)
 		alive();
