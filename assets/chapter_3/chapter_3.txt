@@ -61,9 +61,9 @@ zone=
 		ai(30,1,)
 		alive();
 	entity=
-		texture(assets/chapter_1/hats-chap1.png,bunny,0,0,85,60,)
+		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
 		physics(0,)
-		interactable(Press E to Pick Up,0,0,)
+		interactable(Press E to Pick Up,0,6,)
 		rectangle(3980,1350,85,60,)
 		alive();
 	entity=
@@ -71,12 +71,6 @@ zone=
 		physics(0,)
 		interactable(Press E to Pick Up,0,2,)
 		rectangle(48,200,85,60,)
-		alive();
-	entity=
-		texture(assets/chapter_1/hats-chap1.png,disco,85,0,85,60,)
-		physics(0,)
-		interactable(Press E to Pick Up,0,3,)
-		rectangle(4848,1350,85,60,)
 		alive();
 	entity=
 		texture(assets/chapter_3/hats-chap3.png,beer,0,0,85,60,)
