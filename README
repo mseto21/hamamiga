@@ -77,5 +77,5 @@ Matt: Added interactable logic (picking up hats), Chapter loading, improving hat
 
 Mindy: Logic for cowboy hat (BulletSystem, BulletComponent, can kill enemies now)
  
-Gavi: Designed artwork for second level (tile set, new hats, background, jumping animation, shaders, etc.). 
+Gavi: Designed artwork for third level (Conveyor belt platforms, background, tiles, beer hat, propeller hat, flying enemy). 
 
