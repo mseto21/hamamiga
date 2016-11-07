@@ -71,7 +71,7 @@ This level is very tough so it will probably be easiest to press 'U' to win. How
 ---------------
 Breakdown of what each member achieved:
 ---------------
-Harry: Designed the second level, added lighting/shaders for the miner hat.
+Harry: Designed the 3rd level and added logic for beer hat and propeller hat
 
 Matt: Added animations to tiles, made it so textures can be queried by tilesheet rather than just by image,
 added speed to tiles so they'd act like belts, put in transitions between cut scenes that you can
