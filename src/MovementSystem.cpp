@@ -30,11 +30,16 @@ void MovementSystem_Update(MovementSystem* movementSystem) {
 		MovementValues* moveValue = &movementComponent->movementValues[eid];
 		moveValue->xVelocity 	+= moveValue->xAccel;
 		moveValue->yVelocity    += moveValue->yAccel;
+		int flying = 1;
+		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
+		    strcmp(hatComponent->hats[eid].hat.name, "propeller") == 0) {
+		  flying = 2;
+		}
 		// Check XVelocity Maximum
-		if (moveValue->xVelocity >= moveValue->maxXVelocity) {
-		  moveValue->xVelocity = moveValue->maxXVelocity;
-		} else if (moveValue->xVelocity <= -moveValue->maxXVelocity) {
-		  moveValue->xVelocity = -moveValue->maxXVelocity;
+		if (moveValue->xVelocity >= moveValue->maxXVelocity*flying) {
+		  moveValue->xVelocity = moveValue->maxXVelocity*flying;
+		} else if (moveValue->xVelocity <= -moveValue->maxXVelocity*flying) {
+		  moveValue->xVelocity = -moveValue->maxXVelocity*flying;
 		}
 
 		float jump = 1;
@@ -43,10 +48,10 @@ void MovementSystem_Update(MovementSystem* movementSystem) {
 		  jump = 1.41;
 		}
 		// Check YVelocity Maximum
-		if (moveValue->yVelocity >= moveValue->maxYVelocity) {
-		  moveValue->yVelocity = moveValue->maxYVelocity;
-		} else if (moveValue->yVelocity <= -14*jump) {
-		  moveValue->yVelocity = -14*jump;
+		if (moveValue->yVelocity >= moveValue->maxYVelocity/flying) {
+		  moveValue->yVelocity = moveValue->maxYVelocity/flying;
+		} else if (moveValue->yVelocity <= -14*jump/flying) {
+		  moveValue->yVelocity = -14*jump/flying;
 		}
 
 		// Get the entity's rectangle
