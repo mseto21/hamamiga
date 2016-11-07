@@ -18,18 +18,18 @@ zone=
 		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,6,)
-		rectangle(3980,1350,85,60,)
+		rectangle(4900,1000,85,60,)
 		alive();
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,2,)
-		rectangle(48,200,85,60,)
+		rectangle(10,910,85,60,)
 		alive();
 	entity=
 		texture(assets/chapter_3/hats-chap3.png,beer,0,0,85,60,)
 		physics(0,)
 		interactable(Press E to Pick Up,0,7,)
-		rectangle(300,1350,85,60,)
+		rectangle(3416,920,85,60,)
 		alive();
 END=
