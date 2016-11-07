@@ -209,7 +209,7 @@ void FreePlay(Game* game) {
 	// Free sounds
 	//Mix_FreeMusic(game->playState.chapter.music);
 	//game->playState.chapter.music = nullptr;
-	//Mix_HaltChannel(Constants::DiscoChannel_);
+	Mix_HaltChannel(Constants::DiscoChannel_);
 	// Free caches
 	EntityCache_Free();
 	ComponentBag_Free(&game->playState.cBag);
