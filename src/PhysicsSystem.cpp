@@ -272,7 +272,9 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
 							r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
 							moveValues->xVelocity = 0;
-							bulletComponent->bullet[eid].collided = true;
+							if (Component_HasIndex(bulletComponent, eid)){
+								bulletComponent->bullet[eid].collided = true;
+							}
 						}
 					}
 				} else if (moveValues->xVelocity > 0) {
@@ -285,7 +287,9 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
 							r1->x = tileEndX * Constants::TileSize_ - r1->w;
 							moveValues->xVelocity = 0;
-							bulletComponent->bullet[eid].collided = true;
+							if (Component_HasIndex(bulletComponent, eid)){
+								bulletComponent->bullet[eid].collided = true;
+							}
 						}
 					}
 				}
