@@ -10,6 +10,9 @@ void Component_Initialize(Component* component) {
 }
 
 bool Component_HasIndex(Component* component, uint32 eid) {
+	if (!component) {
+		std::cerr << "Error: The component has not yet been initialized for has_index!" << std::endl;
+	}
 	return component->usedEntities[eid];
 }
 

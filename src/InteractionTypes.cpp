@@ -116,7 +116,7 @@ void PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 				Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
 				Entity* newBullet = EntityCache_GetNewEntity();
 				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
-				cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
+					cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
 					cBag->rectangleComponent,rect, newBullet->eid, true,
 					cBag->movementComponent->movementValues[eid].left);
 			}
@@ -126,8 +126,7 @@ void PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 	}
 }
 
-void RemoveHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
-	(void) hatType;
+void RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 	(void) eid;
 	(void) cBag;
 }
