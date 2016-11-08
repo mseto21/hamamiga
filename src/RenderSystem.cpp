@@ -29,6 +29,7 @@ const int XRightRender_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4;
 const int YTopRender_ = Constants::ScreenHeight_ / 16;
 const int WHealth_ = Constants::ScreenWidth_/ 5;
 const int HHealth_ = Constants::ScreenHeight_ / 16;
+const int HealthBarHeight_ = 8;
 //const SDL_Color scoreColor = {255, 255, 255, 1};
 
 
@@ -256,17 +257,31 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			if (interactableComponent->canBeInteractedWith[eid]) {
 				messageTexture = interactableComponent->msgs[eid];
 				rect.y -= messageTexture->h;
+				rect.x += (rect.w / 2 - messageTexture->w / 2);
 				RenderSystem_RenderCoord(renderer, &rect, NULL, messageTexture);
 			}
 		}
-	}
+
+		if (Component_HasIndex(healthComponent, eid)) {
+			if (eid != Constants::PlayerIndex_) {
+				int max = healthComponent->maxHealth[eid];
+				int current = healthComponent->health[eid];
+				const SDL_Rect maxRect = {XRightRender_, YTopRender_, static_cast<int>(rect.w), HealthBarHeight_};
+				const SDL_Rect currentRect = {static_cast<int>(rect.x), static_cast<int>(rect.y) - HealthBarHeight_, static_cast<int>(rect.w * ((float) current / max)), HealthBarHeight_};
+				SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
+				SDL_RenderFillRect(renderer, &maxRect);
+				SDL_SetRenderDrawColor(renderer, 0, 255, 0, 1);
+				SDL_RenderFillRect(renderer, &currentRect);
+			}
+		}
+	} // End entity render.
 	
 	// Render hats
 	if (Component_HasIndex(hatComponent, Constants::PlayerIndex_)) {
 		Hat* hat = &hatComponent->hats[Constants::PlayerIndex_].hat;
 		Hat* gHat = &hatComponent->hats[Constants::PlayerIndex_].gHat;
 		Texture* gHatTexture = TextureCache_GetTexture(gHat->name);
-	  Texture* hatTexture = TextureCache_GetTexture(hat->name);
+	  	Texture* hatTexture = TextureCache_GetTexture(hat->name);
 
 		if (Component_HasIndex(rectangleComponent, Constants::PlayerIndex_)) {
 		    Rectangle rect = rectangleComponent->entityRectangles[Constants::PlayerIndex_];

@@ -64,25 +64,25 @@ zone=
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,bunny,0,0,85,60,)
 		physics(0,)
-		interactable(Press E to Pick Up,0,0,)
+		interactable(E to Put On,0,0,)
 		rectangle(3980,1350,85,60,)
 		alive();
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
 		physics(0,)
-		interactable(Press E to Pick Up,0,2,)
+		interactable(E to Win,0,2,)
 		rectangle(48,200,85,60,)
 		alive();
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,disco,85,0,85,60,)
 		physics(0,)
-		interactable(Press E to Pick Up,0,3,)
+		interactable(E to Put On,0,3,)
 		rectangle(4848,1350,85,60,)
 		alive();
 	entity=
-		texture(assets/hats/cowboy-hat.png,cowboy,)
+		texture(assets/chapter_1/hats-chap1.png,bunny,0,0,85,60,)
 		physics(0,)
-		interactable(Press E to Pick Up,0,5,)
+		interactable(E to Put On,0,0,)
 		rectangle(300,1350,85,60,)
 		alive();
 END=

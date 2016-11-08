@@ -272,6 +272,7 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 	memset(&param, 0, MaxBuffSize_);
 	uint8 parampos = 0;
 	bool getParams = false;
+	bool getDelimeter = false;
 
 	queue<int> int_parameters;
 	queue<string> str_parameters;
@@ -403,15 +404,33 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 				memset(&param, 0, MaxBuffSize_);
 				parampos = 0;
 			} else if (c != '\t') {
-					param[parampos++] = c;
+					if (c == '\\') {
+						getDelimeter = true;
+					} else if (getDelimeter) {
+						switch (c) {
+							case 'n':
+								param[parampos++] = '\n';
+								break;
+							case 't':
+								param[parampos++] = '\t';
+								break;
+							default:
+								param[parampos++] = c;
+								break;
+						}
+						getDelimeter = false;
+					} else {
+						param[parampos++] = c;
+					}
 			}
 		} else if (c == '(') { // Add correct Component to the entity
 			getParams = true;
 		} else {
-			if (c == '\n') // Increase line #
+			if (c == '\n')  {// Increase line #
 				lineNumber++;
-			else if (c != '\t') // Add to command if not tab
+			} else if (c != '\t')  {// Add to command if not tab
 				cmd[cmdpos++] = c;
+			}
 		}
 	}
 	cout << "SUCCESS: Entity " << eid << " successfully loaded!" << endl;
