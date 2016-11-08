@@ -25,15 +25,17 @@
 // Some constants for hats
 const int DamageReduction_ = 5;
 const float JumpEnhancement_ = 1.41;
+const float MaxYVelocityReduction_ = 0.5f;
+const float MaxYVelocityEnchancement_ = 1.5f;
 
 // ADD HATS AT END OF ENUM, DO NOT INSERT IN MIDDLE, NO! BAD!
 enum HatTypes {
 	HatTypes_BunnyHat = 0,
 	HatTypes_HardHat, 	//1
-	HatTypes_Crown, 	//2
-	HatTypes_Disco, 	//3
-	HatTypes_Miner, 	//4
-	HatTypes_Cowboy, 	//5
+	HatTypes_Crown, 		//2
+	HatTypes_Disco, 		//3
+	HatTypes_Miner, 		//4
+	HatTypes_Cowboy, 		//5
 	HatTypes_Propeller, //6
 	HatTypes_Beer,      //7
 
@@ -84,8 +86,10 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Fly!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			cBag->movementComponent->movementValues[eid].flying = true;
+			cBag->movementComponent->movementValues[eid].maxXVelocity *= MaxYVelocityEnchancement_;
+			cBag->movementComponent->movementValues[eid].maxYVelocity *= MaxYVelocityReduction_;
 			break;
-	    case HatTypes_Beer:
+	  case HatTypes_Beer:
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "beer", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Tipsy at Work", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
 			cBag->movementComponent->movementValues[eid].accelX *= -1;

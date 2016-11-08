@@ -20,6 +20,7 @@ void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag) {
   bulletSystem->aliveComponent  		= cBag->aliveComponent;
   bulletSystem->textureComponent  	= cBag->textureComponent;
   bulletSystem->movementComponent   = cBag->movementComponent;
+  bulletSystem->cBag                = cBag;
 }
 
 void BulletSystem_Update(BulletSystem* bulletSystem) {
@@ -60,7 +61,7 @@ void BulletSystem_Update(BulletSystem* bulletSystem) {
 
         if (bX > Constants::LevelWidth_ || bX < 0 || bX < minScreenX || bX > maxScreenX ||
           bulletComponent->bullet[eid].collided == true){
-          aliveComponent->alive[eid] = false;
+          ComponentBag_ForceRemove(bulletSystem->cBag, eid);
           bulletComponent->bulletCount--;
       }
     }
@@ -73,5 +74,6 @@ void BulletSystem_Free(BulletSystem* bulletSystem) {
   bulletSystem->bulletComponent = nullptr;
   bulletSystem->aliveComponent = nullptr;
   bulletSystem->textureComponent = nullptr;
+  bulletSystem->cBag = nullptr;
 }
 

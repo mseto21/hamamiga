@@ -27,11 +27,18 @@ void Component_Add(Component* component, uint32 eid) {
 	component->count++;
 }
 
-void Component_Remove(Component* component, uint32 eid) {
+void Component_Disable(Component* component, uint32 eid) {
+	if (component->usedEntities[eid]) {
+		component->usedEntities[eid] = false;
+	}
+}
+
+void Component_ForceRemove(Component* component, uint32 eid) {
 	for (uint32 entityIndex = 0; entityIndex < component->count; entityIndex++) {
-		if (component->entityArray[entityIndex] == eid &&
-		component->usedEntities[eid] != false) { //and already isn't removed
+		if (component->entityArray[entityIndex] == eid && component->usedEntities[eid] != false) { //and already isn't removed
 			component->usedEntities[eid] = false;
+			component->count--;
+			component->entityArray[entityIndex] = component->entityArray[component->count];
 			return;
 		}
 	}

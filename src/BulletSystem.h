@@ -18,6 +18,7 @@ struct BulletSystem {
   AliveComponent* aliveComponent;
   TextureComponent* textureComponent;
   MovementComponent* movementComponent;
+  ComponentBag* cBag;
 };
 
 void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag);

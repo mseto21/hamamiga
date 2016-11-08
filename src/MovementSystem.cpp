@@ -8,8 +8,8 @@
 
 void MovementSystem_Initialize(MovementSystem* movementSystem, ComponentBag* cBag) {
 	movementSystem->movementComponent 	=	cBag->movementComponent;
-	movementSystem->rectangleComponent      =	cBag->rectangleComponent;
-	movementSystem->hatComponent            =       cBag->hatComponent;
+	movementSystem->rectangleComponent  =	cBag->rectangleComponent;
+	movementSystem->hatComponent        =   cBag->hatComponent;
 }
 
 
@@ -44,7 +44,7 @@ void MovementSystem_Update(MovementSystem* movementSystem) {
 		  moveValue->yVelocity = -moveValue->maxYVelocity;
 		}
 
-		// Get the entity's rectangle
+		// Transform the entity's rectangle
 		Rectangle* rectangle = &rectangleComponent->entityRectangles[eid];
 		rectangle->x += moveValue->xVelocity;
 		rectangle->y += moveValue->yVelocity;

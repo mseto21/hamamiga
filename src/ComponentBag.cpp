@@ -129,49 +129,95 @@ void ComponentBag_Free(ComponentBag* bag) {
 	bag->interactableComponent = nullptr;
 }
 
-void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid) {
+void Component_DisableEntity(ComponentBag* bag, uint32 eid) {
 	if (Component_HasIndex(bag->rectangleComponent, eid)) {
-		Component_Remove(bag->rectangleComponent, eid);
+		Component_Disable(bag->rectangleComponent, eid);
 	}
 	if (Component_HasIndex(bag->movementComponent, eid)) {
-		Component_Remove(bag->movementComponent, eid);
+		Component_Disable(bag->movementComponent, eid);
 	}
 	if (Component_HasIndex(bag->physicsComponent, eid)) {
-		Component_Remove(bag->physicsComponent, eid);
+		Component_Disable(bag->physicsComponent, eid);
 	}	
 	if (Component_HasIndex(bag->textureComponent, eid)) {
-		Component_Remove(bag->textureComponent, eid);
+		Component_Disable(bag->textureComponent, eid);
 	}
 	if (Component_HasIndex(bag->inputComponent, eid)) {
-		Component_Remove(bag->inputComponent, eid);
+		Component_Disable(bag->inputComponent, eid);
 	}
 	if (Component_HasIndex(bag->animationComponent, eid)) {
-		Component_Remove(bag->animationComponent, eid);
+		Component_Disable(bag->animationComponent, eid);
 	}
 	if (Component_HasIndex(bag->bulletComponent, eid)) {
-		Component_Remove(bag->bulletComponent, eid);
+		Component_Disable(bag->bulletComponent, eid);
 	}
 	if (Component_HasIndex(bag->healthComponent, eid)) {
-		Component_Remove(bag->healthComponent, eid);
+		Component_Disable(bag->healthComponent, eid);
 		bag->healthComponent->health[eid] = 0;
 	}
 	if (Component_HasIndex(bag->cameraComponent, eid)) {
-		Component_Remove(bag->cameraComponent, eid);
+		Component_Disable(bag->cameraComponent, eid);
 	}
 	if (Component_HasIndex(bag->hatComponent, eid)) {
-		Component_Remove(bag->hatComponent, eid);
+		Component_Disable(bag->hatComponent, eid);
 	}
 	if (Component_HasIndex(bag->aiComponent, eid)) {
-		Component_Remove(bag->aiComponent, eid);
+		Component_Disable(bag->aiComponent, eid);
 	}
 	if (Component_HasIndex(bag->aliveComponent, eid)) {
-		Component_Remove(bag->aliveComponent, eid);
+		Component_Disable(bag->aliveComponent, eid);
 	}
 	if (Component_HasIndex(bag->goalComponent, eid)) {
-		Component_Remove(bag->goalComponent, eid);
+		Component_Disable(bag->goalComponent, eid);
 	}
 	if (Component_HasIndex(bag->interactableComponent, eid)) {
-		Component_Remove(bag->interactableComponent, eid);
+		Component_Disable(bag->interactableComponent, eid);
+	}
+}
+
+void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid) {
+	if (Component_HasIndex(bag->rectangleComponent, eid)) {
+		Component_ForceRemove(bag->rectangleComponent, eid);
+	}
+	if (Component_HasIndex(bag->movementComponent, eid)) {
+		Component_ForceRemove(bag->movementComponent, eid);
+	}
+	if (Component_HasIndex(bag->physicsComponent, eid)) {
+		Component_ForceRemove(bag->physicsComponent, eid);
+	}	
+	if (Component_HasIndex(bag->textureComponent, eid)) {
+		Component_ForceRemove(bag->textureComponent, eid);
+	}
+	if (Component_HasIndex(bag->inputComponent, eid)) {
+		Component_ForceRemove(bag->inputComponent, eid);
+	}
+	if (Component_HasIndex(bag->animationComponent, eid)) {
+		Component_ForceRemove(bag->animationComponent, eid);
+	}
+	if (Component_HasIndex(bag->bulletComponent, eid)) {
+		Component_ForceRemove(bag->bulletComponent, eid);
+	}
+	if (Component_HasIndex(bag->healthComponent, eid)) {
+		Component_ForceRemove(bag->healthComponent, eid);
+		bag->healthComponent->health[eid] = 0;
+	}
+	if (Component_HasIndex(bag->cameraComponent, eid)) {
+		Component_ForceRemove(bag->cameraComponent, eid);
+	}
+	if (Component_HasIndex(bag->hatComponent, eid)) {
+		Component_ForceRemove(bag->hatComponent, eid);
+	}
+	if (Component_HasIndex(bag->aiComponent, eid)) {
+		Component_ForceRemove(bag->aiComponent, eid);
+	}
+	if (Component_HasIndex(bag->aliveComponent, eid)) {
+		Component_ForceRemove(bag->aliveComponent, eid);
+	}
+	if (Component_HasIndex(bag->goalComponent, eid)) {
+		Component_ForceRemove(bag->goalComponent, eid);
+	}
+	if (Component_HasIndex(bag->interactableComponent, eid)) {
+		Component_ForceRemove(bag->interactableComponent, eid);
 	}
 }
 

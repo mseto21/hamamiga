@@ -37,4 +37,5 @@ void ComponentBag_Malloc(ComponentBag* bag);
 void ComponentBag_Check(ComponentBag* bag);
 void ComponentBag_Reset(ComponentBag* bag);
 void ComponentBag_Free(ComponentBag* bag);
-void ComponentBag_RemoveEntity(ComponentBag* bag, uint32 eid);
+void Component_DisableEntity(ComponentBag* bag, uint32 eid);
+void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid);

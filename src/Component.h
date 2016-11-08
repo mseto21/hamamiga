@@ -20,4 +20,5 @@ struct Component {
 void Component_Initialize(Component* component);
 bool Component_HasIndex(Component* component, uint32 eid);
 void Component_Add(Component* component, uint32);
-void Component_Remove(Component* component, uint32);
+void Component_Disable(Component* component, uint32);
+void Component_ForceRemove(Component* component, uint32);
