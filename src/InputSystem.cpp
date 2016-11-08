@@ -3,16 +3,9 @@
 #include "Types.h"
 #include "MovementComponent.h"
 #include "InputComponent.h"
-#include "RectangleComponent.h"
-#include "HatComponent.h"
 #include "HealthComponent.h"
-#include "BulletComponent.h"
-#include "PhysicsComponent.h"
-#include "AliveComponent.h"
-#include "TextureComponent.h"
-//#include "RectangleComponent.h"
-#include "EntityCache.h"
 #include "ComponentBag.h"
+#include "InteractionTypes.h"
 
 #include <SDL.h>
 #include <iostream>
@@ -20,23 +13,14 @@
 void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag) {
 	inputSystem->inputComponent 	= cBag->inputComponent;
 	inputSystem->movementComponent 	= cBag->movementComponent;
-	inputSystem->hatComponent       = cBag->hatComponent;
 	inputSystem->healthComponent    = cBag->healthComponent;
-	inputSystem->bulletComponent  	= cBag->bulletComponent;
-	inputSystem->aliveComponent  		= cBag->aliveComponent;
-	inputSystem->physicsComponent  	= cBag->physicsComponent;
-	inputSystem->textureComponent  	= cBag->textureComponent;
-	inputSystem->rectangleComponent = cBag->rectangleComponent;
+	inputSystem->cBag 				= cBag;
 }
 
 void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[]) {
 	InputComponent* inputComponent = inputSystem->inputComponent;
 	MovementComponent* movementComponent = inputSystem->movementComponent;;
-	HatComponent* hatComponent = inputSystem->hatComponent;
 	HealthComponent* healthComponent = inputSystem->healthComponent;
-	BulletComponent* bulletComponent = inputSystem->bulletComponent;
-	RectangleComponent* rectangleComponent = inputSystem->rectangleComponent;
-	AliveComponent* aliveComponent = inputSystem->aliveComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
 		uint32 eid = inputComponent->entityArray[entityIndex];
@@ -53,36 +37,22 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 			std::cerr << "Error: No movement values for the input system to use." << std::endl;
 			continue;
 		}
-		int drunk = 1;
-		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
-		    strcmp(hatComponent->hats[eid].gHat.name, "beer") == 0) {
-		        drunk = -1;
-		}
-		bool flying = false;
-		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
-		    strcmp(hatComponent->hats[eid].hat.name, "propeller") == 0) {
-		        flying = true;
-		}
 		moveValues->xAccel = 0;
 		moveValues->yAccel = 0;
-		if (keysPressed[SDLK_w] && moveValues->grounded) {
-			moveValues->yAccel = -moveValues->accelY*drunk;
-		} else if (keysPressed[SDLK_w] && flying) {
-		        moveValues->yAccel = -moveValues->accelX*drunk;
+		if (keysPressed[SDLK_w] && (moveValues->grounded || moveValues->flying)) {
+			moveValues->yAccel = -moveValues->accelY;
 		}
 		if (keysPressed[SDLK_a]) {
-		    moveValues->xAccel = -moveValues->accelX*drunk;
+		    moveValues->xAccel = -moveValues->accelX;
 		}
 		if (keysPressed[SDLK_i]) {
 		    healthComponent->invincible[eid] = !(healthComponent->invincible[eid]);
 		}
 		if (keysPressed[SDLK_d]) {
-			moveValues->xAccel = moveValues->accelX*drunk;
+			moveValues->xAccel = moveValues->accelX;
 		}
-		if (keysPressed[SDLK_s] && moveValues->grounded && drunk == -1) {
-		        moveValues->yAccel = moveValues->accelY*drunk;
-		} else if (keysPressed[SDLK_s] && flying) {
-		        moveValues->yAccel = moveValues->accelX*drunk;
+		if (keysPressed[SDLK_s] && moveValues->flying) {
+		    moveValues->yAccel = moveValues->accelY;
 		}
 		
 		if (keysPressed[SDLK_e]) {
@@ -91,35 +61,15 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 			inputComponent->interact[eid] = false;
 		}
 
-		uint32 numBullets = 0;
-		//scan through the bullets since the count is fked up
-	for (uint32 entityIndex = 0; entityIndex < bulletComponent->count; entityIndex++) {
-    uint32 eid = bulletComponent->entityArray[entityIndex];
-    if (Component_HasIndex(aliveComponent, eid)){
-    	if (aliveComponent->alive[eid] == true){
-    		numBullets++;
-    	}
-    }
-  }
-
-		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
-			(strcmp(hatComponent->hats[eid].hat.effect, "powpow") == 0) && 
-			numBullets < Constants::MaxBullets_){// Add bullet restrictions later
-			if (keysPressed[SDLK_SPACE] && keysUp[SDLK_SPACE]) {
-				Rectangle rect = rectangleComponent->entityRectangles[eid];
-				Entity* newBullet = EntityCache_GetNewEntity();
-				BulletComponent_Add(inputSystem->bulletComponent, inputSystem->physicsComponent,
-				inputSystem->aliveComponent, inputSystem->textureComponent, inputSystem->movementComponent,
-					inputSystem->rectangleComponent,rect, newBullet->eid, true,
-					inputSystem->movementComponent->movementValues[eid].left);
-				keysUp[SDLK_SPACE % Constants::NumKeys_] = false;
-			}
+		if (keysPressed[SDLK_SPACE] && keysUp[SDLK_SPACE]) {
+			PlayEventInteraction(eid, inputSystem->cBag);
+			keysUp[SDLK_SPACE % Constants::NumKeys_] = false;
 		}
 
 		if (keysPressed[SDLK_p]) {
-			// Drop regular hat.
+			
 		} else if (keysPressed[SDLK_o]) {
-			// Drop glamour hat.
+			
 		}
 	}
 }
@@ -127,10 +77,6 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 void InputSystem_Free(InputSystem* inputSystem) {
 	inputSystem->inputComponent = nullptr;
 	inputSystem->movementComponent = nullptr;
-	inputSystem->hatComponent = nullptr;
 	inputSystem->healthComponent = nullptr;
-	inputSystem->bulletComponent = nullptr;
-	inputSystem->physicsComponent = nullptr;
-	inputSystem->aliveComponent = nullptr;
-	inputSystem->textureComponent = nullptr;
+	inputSystem->cBag = nullptr;
 }

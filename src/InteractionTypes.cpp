@@ -16,6 +16,8 @@
 #include "InteractableComponent.h"
 #include "SoundCache.h"
 #include "GlamourHatEnum.h"
+#include "EntityCache.h"
+
 // TO-DO: These includes weren't the best thing I've done.
 #include <iostream>
 
@@ -32,8 +34,8 @@ enum HatTypes {
 	HatTypes_Disco, 	//3
 	HatTypes_Miner, 	//4
 	HatTypes_Cowboy, 	//5
-	HatTypes_Propeller,     //6
-	HatTypes_Beer,          //7
+	HatTypes_Propeller, //6
+	HatTypes_Beer,      //7
 
 };
 
@@ -58,7 +60,6 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "cowboy", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "powpow", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
-			//cBag->bulletComponent->activated = true;
 			break;
 		case HatTypes_Crown:
 			cBag->goalComponent->winGoal[eid] = true;
@@ -81,18 +82,44 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "propeller", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Fly!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			cBag->movementComponent->movementValues[eid].flying = true;
 			break;
 	    case HatTypes_Beer:
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "beer", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Tipsy at Work", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
+			cBag->movementComponent->movementValues[eid].accelX *= -1;
+			cBag->movementComponent->movementValues[eid].accelY *= -1;
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Beer;
 			break;
 		default:
 			std::cerr << "Error: Unknown hat type given." << std::endl;
 			break;
 	}
+	cBag->hatComponent->hats[eid].hat.hatType = hatType;
 }
 
+
+void PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
+	if (!Component_HasIndex(cBag->hatComponent, eid)) {
+		return;
+	}
+
+	Hat* hat = &cBag->hatComponent->hats[eid].hat;
+	switch (hat->hatType) {
+		case HatTypes_Cowboy:
+			{ // Scoped for C reasons...
+				Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
+				Entity* newBullet = EntityCache_GetNewEntity();
+				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
+				cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
+					cBag->rectangleComponent,rect, newBullet->eid, true,
+					cBag->movementComponent->movementValues[eid].left);
+			}
+			break;
+		default:
+			break;
+	}
+}
 
 void RemoveHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 	(void) hatType;

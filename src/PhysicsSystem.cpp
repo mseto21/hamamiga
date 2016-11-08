@@ -204,7 +204,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				if (Component_HasIndex(healthComponent, eid)) {
 					if (!healthComponent->invincible[eid]) {
 						healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
-					  //health check for enemies, no zombiez
 						if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
 							aliveComponent->alive[eid] = false;
 						}
@@ -212,14 +211,9 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				}
 			}
 		}
-		bool flying = false;
-		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid)) {
-			if (strcmp(hatComponent->hats[eid].hat.name, "propeller") == 0) {
-			  flying = true;
-			}
-		}
+
 		// Move player based on physics
-		if (!moveValues->grounded && !flying) {
+		if (!moveValues->grounded && !moveValues->flying) {
 		  moveValues->yVelocity += Constants::Gravity_;
 		  moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
 		} else {

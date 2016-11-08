@@ -10,3 +10,4 @@ enum InteractionTypes {
 };
 
 void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag);
+void PlayEventInteraction(uint32 eid, ComponentBag* cBag);

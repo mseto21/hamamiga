@@ -30,7 +30,6 @@ void BulletSystem_Update(BulletSystem* bulletSystem) {
   TextureComponent* textureComponent  		= bulletSystem->textureComponent;
   MovementComponent* movementComponent    = bulletSystem->movementComponent;
 
-  uint16 bulletsRemoved = 0;
   for (uint32 entityIndex = 0; entityIndex < bulletComponent->count; entityIndex++) {
     uint32 eid = bulletComponent->entityArray[entityIndex];
 
@@ -62,13 +61,10 @@ void BulletSystem_Update(BulletSystem* bulletSystem) {
         if (bX > Constants::LevelWidth_ || bX < 0 || bX < minScreenX || bX > maxScreenX ||
           bulletComponent->bullet[eid].collided == true){
           aliveComponent->alive[eid] = false;
-        bulletsRemoved++;
-        //std::cout << "BULLET REMOVED with eid " << eid << std::endl;
+          bulletComponent->bulletCount--;
       }
     }
   }
-  //update bullet count
-  //bulletComponent->count -= bulletsRemoved;
 }
 
 void BulletSystem_Free(BulletSystem* bulletSystem) {

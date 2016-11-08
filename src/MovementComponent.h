@@ -11,6 +11,7 @@ struct MovementValues {
 	float maxYVelocity; //maximum y velocity
 	bool left; //direction the entity is facing
 	bool grounded;
+	bool flying;
 };
 
 struct MovementComponent : public Component {

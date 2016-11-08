@@ -9,25 +9,14 @@ accept basic input controls from the user.
 // Forward Declarations
 struct MovementComponent;
 struct InputComponent;
-struct HatComponent;
 struct HealthComponent;
-struct BulletComponent;
-struct PhysicsComponent;
-struct AliveComponent;
-struct TextureComponent;
-struct RectangleComponent;
 struct ComponentBag;
 
 struct InputSystem {
 	InputComponent* inputComponent;
 	MovementComponent* movementComponent; 
-	HatComponent* hatComponent;
 	HealthComponent* healthComponent;
-	BulletComponent* bulletComponent;
-	PhysicsComponent* physicsComponent;
-	AliveComponent* aliveComponent;
-	TextureComponent* textureComponent;
-	RectangleComponent* rectangleComponent;
+	ComponentBag* cBag;
 };
 
 

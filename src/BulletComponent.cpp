@@ -8,10 +8,16 @@
 
 #include <SDL.h>
 
+int BulletComponent::bulletCount = 0;
 
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* physicsComponent,
 	AliveComponent* aliveComponent, TextureComponent* textureComponent, MovementComponent* movementComponent,
 	RectangleComponent* rect, Rectangle rectPos, uint32 eid, bool team, bool left) {
+
+	if (bulletComponent->bulletCount == Constants::MaxBullets_) {
+		return;
+	}
+
 	//Adding relevant components to a bullet entity
 	Component_Add(bulletComponent, eid);
 	bulletComponent->bullet[eid].friendly = team;
@@ -32,4 +38,5 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	RectangleComponent_Add(rect, eid, startX + 50, startY + 40, texture->w, texture->h);
 	//Movement
 	MovementComponent_Add(movementComponent, eid, 7, 0, 1.5, 1.0);//default bullet speed
+	bulletComponent->bulletCount++;
 }
