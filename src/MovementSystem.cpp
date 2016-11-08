@@ -16,7 +16,6 @@ void MovementSystem_Initialize(MovementSystem* movementSystem, ComponentBag* cBa
 void MovementSystem_Update(MovementSystem* movementSystem) {
 	MovementComponent* movementComponent = movementSystem->movementComponent;
 	RectangleComponent* rectangleComponent = movementSystem->rectangleComponent;
-	HatComponent* hatComponent = movementSystem->hatComponent;
 	for (uint32 entityIndex = 0; entityIndex < movementComponent->count; entityIndex++) {
 		uint32 eid = movementComponent->entityArray[entityIndex];
 		if (!Component_HasIndex(movementComponent, eid)) {
@@ -30,28 +29,19 @@ void MovementSystem_Update(MovementSystem* movementSystem) {
 		MovementValues* moveValue = &movementComponent->movementValues[eid];
 		moveValue->xVelocity 	+= moveValue->xAccel;
 		moveValue->yVelocity    += moveValue->yAccel;
-		int flying = 1;
-		if (eid == Constants::PlayerIndex_ && Component_HasIndex(hatComponent, eid) &&
-		    strcmp(hatComponent->hats[eid].hat.name, "propeller") == 0) {
-		  flying = 2;
-		}
+
 		// Check XVelocity Maximum
-		if (moveValue->xVelocity >= moveValue->maxXVelocity*flying) {
-		  moveValue->xVelocity = moveValue->maxXVelocity*flying;
-		} else if (moveValue->xVelocity <= -moveValue->maxXVelocity*flying) {
-		  moveValue->xVelocity = -moveValue->maxXVelocity*flying;
+		if (moveValue->xVelocity >= moveValue->maxXVelocity) {
+		  moveValue->xVelocity = moveValue->maxXVelocity;
+		} else if (moveValue->xVelocity <= -moveValue->maxXVelocity) {
+		  moveValue->xVelocity = -moveValue->maxXVelocity;
 		}
 
-		float jump = 1;
-		if (Component_HasIndex(hatComponent, eid)) {
-		  if (strcmp((&hatComponent->hats[eid].hat)->name, "bunny") == 0)
-		  jump = 1.41;
-		}
 		// Check YVelocity Maximum
-		if (moveValue->yVelocity >= moveValue->maxYVelocity/flying) {
-		  moveValue->yVelocity = moveValue->maxYVelocity/flying;
-		} else if (moveValue->yVelocity <= -14*jump/flying) {
-		  moveValue->yVelocity = -14*jump/flying;
+		if (moveValue->yVelocity >= moveValue->maxYVelocity) {
+		  moveValue->yVelocity = moveValue->maxYVelocity;
+		} else if (moveValue->yVelocity <= -moveValue->maxYVelocity) {
+		  moveValue->yVelocity = -moveValue->maxYVelocity;
 		}
 
 		// Get the entity's rectangle

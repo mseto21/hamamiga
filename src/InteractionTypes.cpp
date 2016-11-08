@@ -46,6 +46,7 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "bunny", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "2x jump", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->movementComponent->movementValues[eid].accelY *= JumpEnhancement_;
+			cBag->movementComponent->movementValues[eid].maxYVelocity *= JumpEnhancement_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			break;
 		case HatTypes_HardHat:
