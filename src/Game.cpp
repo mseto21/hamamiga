@@ -257,6 +257,12 @@ void Game_RunLoop(Game* game) {
 								game->gameState = GameState_Title;
 							}
 							break;
+						case SDLK_n:
+							if (game->gameState == GameState_Win || game->gameState == GameState_Lose 
+								|| game->gameState == GameState_Play || game->gameState == GameState_ZoneIntro) {
+								FreePlay(game);
+								game->gameState = GameState_LoadPlay;
+							} 
 						case SDLK_p:
 							if (game->gameState == GameState_ZoneIntro)
 								game->gameState = GameState_Play;
@@ -332,7 +338,7 @@ void Game_RunLoop(Game* game) {
 				break;
 			case GameState_Returning:
 				FreePlay(game);
-				game->gameState = GameState_LoadPlay;
+				game->gameState = GameState_Title;
 				break;
 			case GameState_Closing:
 				if (game->gameState == GameState_Win || game->gameState == GameState_Lose || game->gameState == GameState_Play)
