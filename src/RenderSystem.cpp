@@ -118,7 +118,7 @@ void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Re
 	    case GlamourHatId_Miner: {
 		    	Texture* mShader = TextureCache_GetTexture("miner-shader");
 		    	mShader->flip = TextureCache_GetTexture("miner")->flip;
-		  		RenderSystem_Render_xywh(renderer, rect->x + (rect->w - mShader->w)/2, rect->y - mShader->h / 2, mShader->w, mShader->h, NULL, mShader);
+			RenderSystem_Render_xywh(renderer, rect->x + (rect->w - mShader->w)/2, rect->y + (rect->h- mShader->h)/ 2, mShader->w, mShader->h, NULL, mShader);
 	      		break;
 	      	}
       	default:
@@ -334,14 +334,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
 				RenderSystem_Render_xywh(renderer, rect.x + (rect.w - gHatTexture->w)/2, rect.y - gHatTexture->h / 2.5, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
-		    // Render given shader over entire scene
-		    Texture* shader = TextureCache_GetTexture(Constants::Shader_);
-		    if (shader) {
-		      RenderSystem_Render_xywh(renderer, 0, 0, shader->w, shader->h, NULL, shader);
-		    }
-
+		    
 		    Texture* pShader = TextureCache_GetTexture(Constants::PShader_);
-		    if (pShader) {
+		    char* name = (char*)hatComponent->hats[Constants::PlayerIndex_].gHat.name;
+		    if (pShader && !strcmp(name, "miner") == 0) {
 		      RenderSystem_Render_xywh(renderer, rect.x + (rect.w - pShader->w)/2, rect.y + (rect.h - pShader->h)/2, pShader->w, pShader->h, NULL, pShader);
 		    }
 
