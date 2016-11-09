@@ -173,7 +173,7 @@ void Component_DisableEntity(ComponentBag* bag, uint32 eid) {
 		Component_Disable(bag->aiComponent, eid);
 	}
 	if (Component_HasIndex(bag->faiComponent, eid)) {
-		Component_Remove(bag->faiComponent, eid);
+		Component_Disable(bag->faiComponent, eid);
 	}
 	if (Component_HasIndex(bag->aliveComponent, eid)) {
 		Component_Disable(bag->aliveComponent, eid);
@@ -220,6 +220,9 @@ void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HasIndex(bag->aiComponent, eid)) {
 		Component_ForceRemove(bag->aiComponent, eid);
+	}
+       	if (Component_HasIndex(bag->faiComponent, eid)) {
+		Component_ForceRemove(bag->faiComponent, eid);
 	}
 	if (Component_HasIndex(bag->aliveComponent, eid)) {
 		Component_ForceRemove(bag->aliveComponent, eid);

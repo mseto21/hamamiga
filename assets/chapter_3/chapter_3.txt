@@ -7,7 +7,7 @@ zone=
 		animation(4,150.0,48,87,)
 		health(100,)
 		input()
-		movement(5.0,20.0,1.5,14.0,)
+		movement(5.0,14.0,1.5,14.0,)
 		physics(100,)
 		rectangle(0,1350,48,87,)
 		texture(assets/kevin/tinykev.png,player,)
