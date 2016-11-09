@@ -33,7 +33,6 @@ void BulletSystem_Update(BulletSystem* bulletSystem) {
 
   for (uint32 entityIndex = 0; entityIndex < bulletComponent->count; entityIndex++) {
     uint32 eid = bulletComponent->entityArray[entityIndex];
-
     if (!Component_HasIndex(physicsComponent, eid) || !Component_HasIndex(rectangleComponent, eid)
     	|| !Component_HasIndex(bulletComponent, eid) || !Component_HasIndex(aliveComponent, eid)
     	|| !Component_HasIndex(textureComponent, eid) || !Component_HasIndex(movementComponent,eid)) {

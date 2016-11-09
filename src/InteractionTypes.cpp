@@ -118,7 +118,7 @@ void PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 				Entity* newBullet = EntityCache_GetNewEntity();
 				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
 					cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
-					cBag->rectangleComponent,rect, newBullet->eid, true,
+					cBag->rectangleComponent, rect, newBullet->eid, true,
 					cBag->movementComponent->movementValues[eid].left);
 			}
 			break;
