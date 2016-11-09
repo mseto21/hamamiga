@@ -57,7 +57,7 @@ void FAISystem_Update(FAISystem* faiSystem) {
 	       moveValues->yAccel = moveValues->accelY;
       }
     } else {
-      FlyValues* marchValues = &faiComponent->flyValues[eid];
+          FlyValues* marchValues = &faiComponent->flyValues[eid];
   	  moveValues->yAccel = moveValues->accelY*marchValues->facing;
   	  marchValues->distance += moveValues->yAccel*marchValues->facing;
   	  if (marchValues->distance >= marchValues->range) {

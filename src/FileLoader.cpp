@@ -16,6 +16,7 @@
 #include "HealthComponent.h"
 #include "CameraComponent.h"
 #include "HatComponent.h"
+#include "FAIComponent.h"
 #include "AIComponent.h"
 #include "AliveComponent.h"
 #include "GoalComponent.h"
@@ -366,6 +367,13 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					int_parameters.pop();
 					cout << "Adding AI to entity " << eid << ":(" << range << ", " << facing << ")" << endl;
 					AIComponent_Add(cBag->aiComponent, eid, range, facing);
+				} else if (strcmp(cmd, "fai") == 0) {
+					int range = int_parameters.front();
+					int_parameters.pop();
+					int facing = int_parameters.front();
+					int_parameters.pop();
+					cout << "Adding FAI to entity " << eid << ":(" << range << ", " << facing << ")" << endl;
+					FAIComponent_Add(cBag->faiComponent, eid, range, facing);
 				} else if (strcmp(cmd, "alive") == 0) {
 					cout << "Adding AliveComponent to entity " << eid << std::endl;
 					AliveComponent_Add(cBag->aliveComponent, eid);
