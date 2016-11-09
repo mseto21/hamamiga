@@ -79,10 +79,4 @@ zone=
 		interactable(E to Put On,0,3,)
 		rectangle(4848,1350,85,60,)
 		alive();
-	entity=
-		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
-		physics(0,)
-		interactable(E to Put On,0,5,)
-		rectangle(300,1350,85,60,)
-		alive();
 END=

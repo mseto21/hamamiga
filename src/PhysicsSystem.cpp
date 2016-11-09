@@ -95,25 +95,25 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			if (Component_HasIndex(bulletComponent, otherEid)){
 				if (eid == Constants::PlayerIndex_&&
 					bulletComponent->bullet[otherEid].friendly == true){
-				continue;//player cannot collide with own bullets
+					continue;//player cannot collide with own bullets
 				}
 				if (eid != Constants::PlayerIndex_&& 
 					bulletComponent->bullet[otherEid].friendly != true){
-				continue;//enemy cannot collide with own bullets
+					continue;//enemy cannot collide with own bullets
 				}
 				if (Component_HasIndex(bulletComponent, eid)){
-				continue;//bullets cannot collide with other bullets
+					continue;//bullets cannot collide with other bullets
 				}
 			}
 			//Reverse if entity is bullet and otherEid is player, enemy
 			if (Component_HasIndex(bulletComponent, eid)){
 				if (otherEid == Constants::PlayerIndex_&&
 					bulletComponent->bullet[eid].friendly == true){
-				continue;//player cannot collide with own bullets
+					continue;//player cannot collide with own bullets
 				}
 				if (otherEid != Constants::PlayerIndex_&& 
 					bulletComponent->bullet[eid].friendly != true){
-				continue;//enemy cannot collide with own bullets
+					continue;//enemy cannot collide with own bullets
 				}
 			}
 			

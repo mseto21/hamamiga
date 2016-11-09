@@ -112,11 +112,14 @@ void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Re
 			SDL_RenderFillRect(renderer, &DiscoHat::Rectangle);
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 			break;
-	    case GlamourHatId_Miner:
-	    	Texture* mShader = TextureCache_GetTexture("miner-shader");
-	    	mShader->flip = TextureCache_GetTexture("miner")->flip;
-	  		RenderSystem_Render_xywh(renderer, rect->x + (rect->w - mShader->w)/2, rect->y - mShader->h / 2, mShader->w, mShader->h, NULL, mShader);
-      break;
+	    case GlamourHatId_Miner: {
+		    	Texture* mShader = TextureCache_GetTexture("miner-shader");
+		    	mShader->flip = TextureCache_GetTexture("miner")->flip;
+		  		RenderSystem_Render_xywh(renderer, rect->x + (rect->w - mShader->w)/2, rect->y - mShader->h / 2, mShader->w, mShader->h, NULL, mShader);
+	      		break;
+	      	}
+      	default:
+      		break;
 		
 	}
 }
@@ -194,6 +197,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			continue;
 		}
 		Texture* texture = textureComponent->textures[eid];
+
 		// If no rectangle, render at (0,0)
 		if (!Component_HasIndex(rectangleComponent, eid)) {
 			Rectangle rect = {0, 0, texture->w, texture->h};
@@ -223,7 +227,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				continue;
 		  	}
 
-			// TO-DO: Move this out of render system. Not sure where yet.
 			animation->currentFrameTime += delta;
 			if (animation->currentFrameTime >= animation->frameTime) {
 				animation->currentFrame++;
@@ -290,24 +293,24 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		    if (hatTexture) {
 		    	SDL_Rect clip = {0, 0, hatTexture->w, hatTexture->h};
 		    	if (hatTexture->clipW || hatTexture->clipH) {
-						clip = {hatTexture->clipX, hatTexture->clipY, hatTexture->clipW, hatTexture->clipH};
-					}
-		      hatTexture->flip = SDL_FLIP_NONE;
-		      RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
-		      hatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
-		      if (!gHatTexture) {
-						RenderSystem_Render_xywh(renderer, rect.x + (rect.w - hatTexture->w)/2, rect.y - hatTexture->h / 2.5, hatTexture->w, hatTexture->h, &clip, hatTexture);
-		      }
+					clip = {hatTexture->clipX, hatTexture->clipY, hatTexture->clipW, hatTexture->clipH};
+				}
+				hatTexture->flip = SDL_FLIP_NONE;
+				RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
+				hatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
+				if (!gHatTexture) {
+					RenderSystem_Render_xywh(renderer, rect.x + (rect.w - hatTexture->w)/2, rect.y - hatTexture->h / 2.5, hatTexture->w, hatTexture->h, &clip, hatTexture);
+				}
 		    }
 		    if (gHatTexture) {
 		    	SDL_Rect clip = {0, 0, gHatTexture->w, gHatTexture->h};
 		    	if (gHatTexture->clipW || gHatTexture->clipH) {
-						clip = {gHatTexture->clipX, gHatTexture->clipY, gHatTexture->clipW, gHatTexture->clipH};
-					}
-		      gHatTexture->flip = SDL_FLIP_NONE;
-		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
-		      gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
-		      RenderSystem_Render_xywh(renderer, rect.x + (rect.w - gHatTexture->w)/2, rect.y - gHatTexture->h / 2.5, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+					clip = {gHatTexture->clipX, gHatTexture->clipY, gHatTexture->clipW, gHatTexture->clipH};
+				}
+				gHatTexture->flip = SDL_FLIP_NONE;
+				RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+				gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
+				RenderSystem_Render_xywh(renderer, rect.x + (rect.w - gHatTexture->w)/2, rect.y - gHatTexture->h / 2.5, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    // Render given shader over entire scene
 		    Texture* shader = TextureCache_GetTexture(Constants::Shader_);

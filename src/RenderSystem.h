@@ -37,10 +37,6 @@ struct RenderSystem {
 	_TTF_Font* defaultFont;
 };
 
-// State specific rendering
-void RenderSystem_RenderIntro(Game* game, uint32 elapsed);
-
-
 // Game specific rendering
 void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, TileMap* tileMap, _TTF_Font* defaultFont);
 void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture);

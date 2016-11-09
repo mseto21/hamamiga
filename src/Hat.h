@@ -6,4 +6,5 @@ struct Hat {
   String128 effect;
   uint8 id;
   uint8 hatType;
+  uint32 eid;
 };
