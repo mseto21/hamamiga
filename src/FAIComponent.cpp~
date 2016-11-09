@@ -1,8 +1,0 @@
-#include "FAIComponent.h"
-
-void FAIComponent_Add(FAIComponent* faiComponent, uint32 eid, int range, int facing) {
-  Component_Add(faiComponent, eid);
-  faiComponent->marchValues[eid].range = range;
-  faiComponent->marchValues[eid].facing = facing;
-  faiComponent->marchValues[eid].distance = 0;
-}

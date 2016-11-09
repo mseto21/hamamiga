@@ -67,7 +67,7 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Miner;
 			break;
 	    case HatTypes_Propeller:
-	    Sound_Play(SoundCache_GetSound("hatpickup"), 0);
+	    	Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "propeller", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Fly with W and S!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
@@ -76,7 +76,7 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			cBag->movementComponent->movementValues[eid].maxYVelocity *= MaxYVelocityReduction_;
 			break;
 	  case HatTypes_Beer:
-	  Sound_Play(SoundCache_GetSound("hatpickup"), 0);
+	 		Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "beer", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Tipsy at Work!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
 			cBag->movementComponent->movementValues[eid].accelX *= -1;

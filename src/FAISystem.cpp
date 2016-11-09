@@ -52,9 +52,9 @@ void FAISystem_Update(FAISystem* faiSystem) {
   	    moveValues->xAccel = moveValues->accelX;
   	  }
       if (pRect.y + (pRect.h)/2 < eRect->x + (eRect->h)/2) {
-	moveValues->yAccel = -moveValues->accelY;
+	       moveValues->yAccel = -moveValues->accelY;
       } else {
-	moveValues->yAccel = moveValues->accelY;
+	       moveValues->yAccel = moveValues->accelY;
       }
     } else {
       FlyValues* marchValues = &faiComponent->flyValues[eid];

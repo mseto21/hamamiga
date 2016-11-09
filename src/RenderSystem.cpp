@@ -337,7 +337,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		    
 		    Texture* pShader = TextureCache_GetTexture(Constants::PShader_);
 		    char* name = (char*)hatComponent->hats[Constants::PlayerIndex_].gHat.name;
-		    if (pShader && !strcmp(name, "miner") == 0) {
+		    if (pShader && strcmp(name, "miner") != 0) {
 		      RenderSystem_Render_xywh(renderer, rect.x + (rect.w - pShader->w)/2, rect.y + (rect.h - pShader->h)/2, pShader->w, pShader->h, NULL, pShader);
 		    }
 
