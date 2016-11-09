@@ -178,6 +178,7 @@ void UpdatePause(Game* game, uint32 elapsed) {
 
 void UpdatePlay(Game* game) {
 	AISystem_Update(&game->playState.aiSystem);
+	FAISystem_Update(&game->playState.faiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
 	PhysicsSystem_Update(&game->playState.physicsSystem);
 	BulletSystem_Update(&game->playState.bulletSystem, Constants::OptimalTime_);

@@ -189,6 +189,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 
 	// Initialize systems
 	AISystem_Initialize(&game->playState.aiSystem, &game->playState.cBag);
+	FAISystem_Initialize(&game->playState.faiSystem, &game->playState.cBag);
 	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag);
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
 	MovementSystem_Initialize(&game->playState.movementSystem, &game->playState.cBag);
@@ -242,6 +243,7 @@ void FreePlay(Game* game) {
 
 	// Delete all pointers in ai system
 	AISystem_Free(&game->playState.aiSystem);
+	FAISystem_Free(&game->playState.faiSystem);
 	CameraSystem_Free(&game->playState.cameraSystem);
 	InputSystem_Free(&game->playState.inputSystem);
 	MovementSystem_Free(&game->playState.movementSystem);
