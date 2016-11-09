@@ -22,5 +22,5 @@ struct BulletSystem {
 };
 
 void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag);
-void BulletSystem_Update(BulletSystem* bulletSystem);
+void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed);
 void BulletSystem_Free(BulletSystem* bulletSystem);

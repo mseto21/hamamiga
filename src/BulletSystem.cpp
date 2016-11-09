@@ -23,7 +23,7 @@ void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag) {
   bulletSystem->cBag                = cBag;
 }
 
-void BulletSystem_Update(BulletSystem* bulletSystem) {
+void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
 	PhysicsComponent* physicsComponent  	 	= bulletSystem->physicsComponent;
   RectangleComponent* rectangleComponent  = bulletSystem->rectangleComponent;
   BulletComponent* bulletComponent  			= bulletSystem->bulletComponent;
@@ -39,29 +39,31 @@ void BulletSystem_Update(BulletSystem* bulletSystem) {
       continue;
     } // make sure all components are there
 
-      //Getting player's information
-      if (Component_HasIndex(rectangleComponent, Constants::PlayerIndex_)){
-      	Rectangle* playerRect = &rectangleComponent->entityRectangles[Constants::PlayerIndex_];
-      	float maxScreenX = playerRect->x + Constants::ScreenWidth_;
-      	float minScreenX = playerRect->x - Constants::ScreenWidth_;
-      	float bX = rectangleComponent->entityRectangles[eid].x;
-        MovementValues* moveValues = &movementComponent->movementValues[eid];
-        if (!moveValues) {
-          std::cerr << "Error: No movement values for the input system to use." << std::endl;
-          continue;
-        }
-        moveValues->xAccel = 0;
-        moveValues->yAccel = 0;
-        if (bulletComponent->bullet[eid].left == true){
-          moveValues->xAccel = -moveValues->accelX;
-        }else {
-          moveValues->xAccel = moveValues->accelX;
-        }
+    bulletComponent->bullet[eid].life += elapsed;
 
-        if (bX > Constants::LevelWidth_ || bX < 0 || bX < minScreenX || bX > maxScreenX ||
-          bulletComponent->bullet[eid].collided == true){
-          ComponentBag_ForceRemove(bulletSystem->cBag, eid);
-          bulletComponent->bulletCount--;
+    //Getting player's information
+    if (Component_HasIndex(rectangleComponent, Constants::PlayerIndex_)){
+    	Rectangle* playerRect = &rectangleComponent->entityRectangles[Constants::PlayerIndex_];
+    	float maxScreenX = playerRect->x + Constants::ScreenWidth_;
+    	float minScreenX = playerRect->x - Constants::ScreenWidth_;
+    	float bX = rectangleComponent->entityRectangles[eid].x;
+      MovementValues* moveValues = &movementComponent->movementValues[eid];
+      if (!moveValues) {
+        std::cerr << "Error: No movement values for the input system to use." << std::endl;
+        continue;
+      }
+      moveValues->xAccel = 0;
+      moveValues->yAccel = 0;
+      if (bulletComponent->bullet[eid].left == true){
+        moveValues->xAccel = -moveValues->accelX;
+      }else {
+        moveValues->xAccel = moveValues->accelX;
+      }
+
+      if (bX > Constants::LevelWidth_ || bX < 0 || bX < minScreenX || bX > maxScreenX ||
+        bulletComponent->bullet[eid].collided == true || bulletComponent->bullet[eid].life > MaxBulletLife_){
+        ComponentBag_ForceRemove(bulletSystem->cBag, eid);
+        bulletComponent->bulletCount--;
       }
     }
   }

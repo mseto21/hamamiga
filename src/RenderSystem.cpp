@@ -4,6 +4,7 @@
 #include "Types.h"
 #include "ComponentBag.h"
 #include "Game.h"
+#include "InteractionTypes.h"
 
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
@@ -26,6 +27,7 @@
 // Render constants
 //const int XLeftRender_ = Constants::ScreenWidth_ / 16;
 const int XRightRender_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4;
+const int XLeftRender_ = Constants::ScreenWidth_ / 24;
 const int YTopRender_ = Constants::ScreenHeight_ / 16;
 const int WHealth_ = Constants::ScreenWidth_/ 5;
 const int HHealth_ = Constants::ScreenHeight_ / 16;
@@ -38,15 +40,16 @@ void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, Til
 	renderSystem->textureComponent 		= cBag->textureComponent;
 	renderSystem->rectangleComponent 	= cBag->rectangleComponent;
 	renderSystem->animationComponent 	= cBag->animationComponent;
-	renderSystem->bulletComponent = cBag->bulletComponent;
+	renderSystem->bulletComponent 		= cBag->bulletComponent;
 	renderSystem->movementComponent 	= cBag->movementComponent;
 	renderSystem->cameraComponent 		= cBag->cameraComponent;
-	renderSystem->hatComponent 				= cBag->hatComponent;
+	renderSystem->hatComponent 			= cBag->hatComponent;
 	renderSystem->healthComponent 		= cBag->healthComponent;
-	renderSystem->goalComponent 			= cBag->goalComponent;
+	renderSystem->goalComponent 		= cBag->goalComponent;
 	renderSystem->interactableComponent = cBag->interactableComponent;
-	renderSystem->defaultFont 		 		= defaultFont;
-	renderSystem->map 								= tileMap;
+	renderSystem->defaultFont 		 	= defaultFont;
+	renderSystem->map 					= tileMap;
+	renderSystem->cBag 					= cBag;
 }
 
 // --------------------------------------------------------------------
@@ -125,11 +128,29 @@ void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Re
 }
 
 // --------------------------------------------------------------------
+void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentBag* cBag) {
+	(void) elapsed;
+	switch (hatId) {
+		case HatTypes_Cowboy: 
+			{
+				Texture* texture = TextureCache_GetTexture("bullet");
+				for (int bulletIndex = cBag->bulletComponent->bulletCount; bulletIndex < Constants::MaxBullets_; bulletIndex++) {
+					RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + (texture->h * bulletIndex), texture->w, texture->h, NULL, texture);
+				}
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+
+// --------------------------------------------------------------------
 void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uint32 delta) {
 	TextureComponent* textureComponent = renderSystem->textureComponent;
  	RectangleComponent* rectangleComponent = renderSystem->rectangleComponent;
  	AnimationComponent* animationComponent = renderSystem->animationComponent;
- //	BulletComponent* bulletComponent = renderSystem->bulletComponent;
+ 	//	BulletComponent* bulletComponent = renderSystem->bulletComponent;
  	MovementComponent* movementComponent = renderSystem->movementComponent;
  	CameraComponent* cameraComponent = renderSystem->cameraComponent;
  	HatComponent* hatComponent = renderSystem->hatComponent;
@@ -301,6 +322,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				if (!gHatTexture) {
 					RenderSystem_Render_xywh(renderer, rect.x + (rect.w - hatTexture->w)/2, rect.y - hatTexture->h / 2.5, hatTexture->w, hatTexture->h, &clip, hatTexture);
 				}
+				RenderHatHUD(renderer, hat->hatType, delta, renderSystem->cBag);
 		    }
 		    if (gHatTexture) {
 		    	SDL_Rect clip = {0, 0, gHatTexture->w, gHatTexture->h};

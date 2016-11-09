@@ -7,10 +7,13 @@ struct MovementComponent;
 struct RectangleComponent;
 struct Rectangle;
 
+const int MaxBulletLife_ = 2500;
+
 struct Bullet {
   bool friendly = false; //friendly or enemy bullet, default false?
   bool collided; //check if bullet has died from collision
   bool left = false; //direction bullet is heading
+  int life;
 };
 
 struct BulletComponent : public Component {

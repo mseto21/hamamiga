@@ -180,7 +180,7 @@ void UpdatePlay(Game* game) {
 	AISystem_Update(&game->playState.aiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
 	PhysicsSystem_Update(&game->playState.physicsSystem);
-	BulletSystem_Update(&game->playState.bulletSystem);
+	BulletSystem_Update(&game->playState.bulletSystem, Constants::OptimalTime_);
 	KillSystem_Update(&game->playState.killSystem);
 	switch (GoalSystem_Update(&game->playState.goalSystem, Constants::OptimalTime_)) {
 		case GameResult_Fell:

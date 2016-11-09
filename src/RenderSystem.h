@@ -35,6 +35,7 @@ struct RenderSystem {
 	InteractableComponent* interactableComponent;
 	TileMap* map;
 	_TTF_Font* defaultFont;
+	ComponentBag* cBag;
 };
 
 // Game specific rendering
