@@ -12,6 +12,11 @@ void Component_Initialize(Component* component) {
 bool Component_HasIndex(Component* component, uint32 eid) {
 	if (!component) {
 		std::cerr << "Error: The component has not yet been initialized for has_index!" << std::endl;
+		return false;
+	}
+	if (eid >= Constants::MaxEntities_) {
+		std::cerr << "Error: The largest of shenanigans!" << std::endl;
+		return false;
 	}
 	return component->usedEntities[eid];
 }
@@ -21,7 +26,7 @@ void Component_Add(Component* component, uint32 eid) {
 		std::cerr << "Error: Attempting to add too many entities to the component!" << std::endl;
 		return;
 	}
-	if (eid >= Constants::MaxEntities_) {
+	if (component->count >= Constants::MaxEntities_) {
 		std::cerr << "Error: Attempting to add too many entities to the component!" << std::endl;
 		return;
 	}

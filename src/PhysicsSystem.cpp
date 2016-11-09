@@ -26,7 +26,7 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->movementComponent 	= cBag->movementComponent;
 	physicsSystem->rectangleComponent 	= cBag->rectangleComponent;
 	physicsSystem->healthComponent 		= cBag->healthComponent;
-	physicsSystem->bulletComponent  = cBag->bulletComponent;
+	physicsSystem->bulletComponent  	= cBag->bulletComponent;
 	physicsSystem->hatComponent 		= cBag->hatComponent;
 	physicsSystem->inputComponent		= cBag->inputComponent;
 	physicsSystem->interactableComponent = cBag->interactableComponent;
@@ -70,7 +70,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			continue;
 		}
 		if (Component_HasIndex(interactableComponent, eid)) {
-			
 			continue;
 		}
 
@@ -143,8 +142,8 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 							ApplyHatInteraction(hattype, eid, physicsSystem->componentBag);
 							interactableComponent->interacted[otherEid] = true;
 							if (Component_HasIndex(aliveComponent, otherEid)) {
-					  		aliveComponent->alive[otherEid] = false;
-					  	}
+						  		aliveComponent->alive[otherEid] = false;
+						  	}
 						}
 					}
 					continue;
@@ -199,7 +198,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			if (cllsn && Component_HasIndex(bulletComponent, physicsComponent->entityArray[j])){
 				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
 			}
-
 			if (cllsn) {
 				if (Component_HasIndex(healthComponent, eid)) {
 					if (!healthComponent->invincible[eid]) {
