@@ -199,7 +199,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
 			}
 			if (cllsn) {
-				if (Component_HasIndex(healthComponent, eid)) {
+			        if (Component_HasIndex(healthComponent, eid)) {
 					if (!healthComponent->invincible[eid]) {
 						healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
 						if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
