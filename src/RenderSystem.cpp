@@ -322,7 +322,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				if (!gHatTexture) {
 					RenderSystem_Render_xywh(renderer, rect.x + (rect.w - hatTexture->w)/2, rect.y - hatTexture->h / 2.5, hatTexture->w, hatTexture->h, &clip, hatTexture);
 				}
-				RenderHatHUD(renderer, hat->hatType, delta, renderSystem->cBag);
 		    }
 		    if (gHatTexture) {
 		    	SDL_Rect clip = {0, 0, gHatTexture->w, gHatTexture->h};
@@ -344,7 +343,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		    if (gHat) {
 		      RenderGlamourEffect(renderer, gHat->id, delta, &rect);
 		    }
-		      
+		    RenderHatHUD(renderer, hat->hatType, delta, renderSystem->cBag);
 		}
 	}
 	
