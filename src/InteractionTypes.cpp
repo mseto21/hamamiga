@@ -44,7 +44,7 @@ enum HatTypes {
 void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 	switch (hatType)  {
 		case HatTypes_BunnyHat:
-			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
+			Sound_Play(SoundCache_GetSound("hop"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "bunny", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "2x jump", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->movementComponent->movementValues[eid].accelY *= JumpEnhancement_;
@@ -59,7 +59,7 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			break;
 		case HatTypes_Cowboy:
-			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
+			Sound_Play(SoundCache_GetSound("western"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "cowboy", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "powpow", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
