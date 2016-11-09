@@ -331,7 +331,7 @@ void Game_RunLoop(Game* game) {
 				break;
 			case GameState_Returning:
 				FreePlay(game);
-				game->gameState = GameState_Title;
+				game->gameState = GameState_LoadPlay;
 				break;
 			case GameState_Closing:
 				if (game->gameState == GameState_Win || game->gameState == GameState_Lose || game->gameState == GameState_Play)
