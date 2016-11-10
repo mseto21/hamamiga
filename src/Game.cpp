@@ -276,6 +276,11 @@ void Game_RunLoop(Game* game) {
 								}
 							}
 							break;
+						case SDLK_SPACE:
+							if (game->gameState == GameState_Pause) {
+								game->gameState = GameState_Play;
+							}
+							break;
 						default:
 							keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
 							break;
@@ -351,6 +356,12 @@ void Game_RunLoop(Game* game) {
 				break;
 		}
 	}
+}
+
+
+void Game_TriggerPause(Game* game, Texture** pauseTextures) {
+	game->gameState = GameState_Pause;
+	game->pauseState.pauseTextures = pauseTextures;
 }
 
 

@@ -18,6 +18,8 @@
 #include "GlamourHatEnum.h"
 #include "EntityCache.h"
 
+#include "Game.h"
+
 // TO-DO: These includes weren't the best thing I've done.
 #include <iostream>
 
@@ -27,7 +29,8 @@ const float JumpEnhancement_ = 1.41;
 const float MaxYVelocityReduction_ = 0.5f;
 const float MaxYVelocityEnchancement_ = 1.5f;
 
-void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
+
+void Interaction_ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 	switch (hatType)  {
 		case HatTypes_BunnyHat:
 			Sound_Play(SoundCache_GetSound("hop"), 0);
@@ -87,11 +90,17 @@ void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
 			std::cerr << "Error: Unknown hat type given." << std::endl;
 			break;
 	}
-	cBag->hatComponent->hats[eid].hat.hatType = hatType;
 }
 
 
-void PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
+void Interaction_DisplayMessage(Game* game, Texture** txt) {
+	if (!txt)
+		return;
+	Game_TriggerPause(game, txt);
+}
+
+
+void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 	if (!Component_HasIndex(cBag->hatComponent, eid)) {
 		return;
 	}

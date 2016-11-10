@@ -14,6 +14,7 @@ struct InteractableComponent;
 struct AliveComponent;
 struct FAIComponent;
 struct BulletComponent;
+struct Game;
 
 struct PhysicsSystem {
 	PhysicsComponent* physicsComponent; 
@@ -28,8 +29,9 @@ struct PhysicsSystem {
 	FAIComponent* faiComponent;
 	TileMap* map;
 	ComponentBag* componentBag;
+	Game* game;
 };
 
-void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap);
+void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Game* game);
 void PhysicsSystem_Update(PhysicsSystem* physicsSystem);
 void PhysicsSystem_Free(PhysicsSystem* physicsSystem);

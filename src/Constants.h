@@ -51,6 +51,9 @@ namespace Constants {
 	const uint16  	SoundChannel_		= 3; //arbitrary channel for rest of sounds
 	const uint16	MaxBullets_			= 3; //max number of alive bullets at a time
 
+	// Pause State
+	const uint16	MaxInteractableMessages_	= 12;
+
 	// High Score State
 	const int     MaxHighScores_			=		5;
 

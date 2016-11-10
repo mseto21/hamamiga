@@ -16,13 +16,14 @@
 #include "ComponentBag.h"
 #include "SoundCache.h"
 #include "InteractionTypes.h"
+#include "Texture.h"
 
 #include <stdlib.h>
 #include <SDL.h>
 #include <iostream>
 
 // Physics Constants
-void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap) {
+void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Game* game) {
 	physicsSystem->physicsComponent 	= cBag->physicsComponent;
 	physicsSystem->movementComponent 	= cBag->movementComponent;
 	physicsSystem->rectangleComponent 	= cBag->rectangleComponent;
@@ -35,6 +36,7 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->faiComponent             = cBag->faiComponent;
 	physicsSystem->map 					= tileMap;
 	physicsSystem->componentBag 		= cBag;
+	physicsSystem->game 				= game;
 }
 
 
@@ -138,20 +140,24 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	 		  	}
 
 				int type = interactableComponent->types[otherEid];
-				if (type == InteractionType_Hat) {
-					int hattype = interactableComponent->hattypes[otherEid];
-					if (Component_HasIndex(hatComponent, eid)){
-						if (!interactableComponent->interacted[otherEid]) {
-							ApplyHatInteraction(hattype, eid, physicsSystem->componentBag);
-							interactableComponent->interacted[otherEid] = true;
-							if (Component_HasIndex(aliveComponent, otherEid)) {
-						  		aliveComponent->alive[otherEid] = false;
-						  	}
+				switch (type) {
+					case InteractionType_Hat: {
+						int hattype = interactableComponent->hattypes[otherEid];
+						if (Component_HasIndex(hatComponent, eid)){
+							if (!interactableComponent->interacted[otherEid]) {
+								Interaction_ApplyHatInteraction(hattype, eid, physicsSystem->componentBag);
+								Interaction_DisplayMessage(physicsSystem->game, interactableComponent->txt[otherEid]);
+								interactableComponent->interacted[otherEid] = true;
+								if (Component_HasIndex(aliveComponent, otherEid)) {
+							  		aliveComponent->alive[otherEid] = false;
+							  	}
+							}
 						}
+						continue;
 					}
-					continue;
+					default:
+						continue;
 				}
-				continue;
 			}
 
 

@@ -62,7 +62,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		}
 
 		if (keysPressed[SDLK_SPACE] && keysUp[SDLK_SPACE]) {
-			PlayEventInteraction(eid, inputSystem->cBag);
+			Interaction_PlayEventInteraction(eid, inputSystem->cBag);
 			keysUp[SDLK_SPACE % Constants::NumKeys_] = false;
 		}
 

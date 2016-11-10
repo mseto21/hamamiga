@@ -351,6 +351,7 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 						int h = int_parameters.front();
 						int_parameters.pop();
 						TextureComponent_Add(cBag->textureComponent, eid, TextureCache_CreateTexture(renderer, path.c_str(), tag.c_str(), x, y, w, h));
+						cout << "Adding texture to entity " << eid << ":(" << path << "," << tag  << "; with clip:" << x << "," << y << "," << w << "," << h << ")" << endl;
 					}
 				} else if (strcmp(cmd, "camera") == 0) {
 					cout << "Adding camera to entity " << eid << "..." << endl;
@@ -388,8 +389,18 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					int_parameters.pop();
 					int hattype = int_parameters.front();
 					int_parameters.pop();
+
+					int msgCnt = 0;
+					Texture* txt[Constants::MaxInteractableMessages_] = {NULL};
+					while (!str_parameters.empty()) {
+						string text = str_parameters.front();
+						txt[msgCnt] = TextureCache_CreateFont(renderer, cBag->interactableComponent->font, msg_color, text.c_str(), text.c_str());
+						str_parameters.pop();
+						msgCnt++;
+					}
+					
 					cout << "Adding InteractableComponent to entity " << eid << ":(" << message << ", " << type << ", " << hattype << ")" << endl;
-					InteractableComponent_Add(cBag->interactableComponent, eid, TextureCache_CreateFont(renderer, cBag->interactableComponent->font, msg_color, message.c_str(), message.c_str()), type, hattype) ;
+					InteractableComponent_Add(cBag->interactableComponent, eid, TextureCache_CreateFont(renderer, cBag->interactableComponent->font, msg_color, message.c_str(), message.c_str()), type, hattype, txt);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}

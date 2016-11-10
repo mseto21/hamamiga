@@ -1,6 +1,8 @@
 #pragma once
 #include "Types.h"
 struct ComponentBag;
+struct Game;
+struct Texture;
 
 enum InteractionTypes {
 	InteractionType_Hat = 0,
@@ -22,5 +24,6 @@ enum HatTypes {
 
 };
 
-void ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag);
-void PlayEventInteraction(uint32 eid, ComponentBag* cBag);
+void Interaction_ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag);
+void Interaction_DisplayMessage(Game* game, Texture** txt);
+void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag);

@@ -102,6 +102,10 @@ struct PlayState {
 	BulletSystem bulletSystem;
 };
 
+struct PauseState {
+	Texture** pauseTextures;
+};
+
 struct Game {
 	// Game globals
 	bool running;
@@ -116,10 +120,12 @@ struct Game {
 	HighScoreState highScoreState;
 	PlayState playState;
 	OptionState optionState;
+	PauseState pauseState;
 };
 
 bool Game_Initialize(Game* game);
 void Game_RunLoop(Game* game);
 void Game_Close(Game* game);
+void Game_TriggerPause(Game* game, Texture** pauseTextures);
 
 

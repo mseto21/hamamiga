@@ -189,6 +189,23 @@ void RenderHighScore(Game* game, uint32 elapsed) {
 	SDL_RenderPresent(game->renderer);
 }
 
+
+void RenderPauseState(Game* game, uint32  elapsed) {
+	(void) elapsed;
+	SDL_RenderClear(game->renderer);
+	RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
+	for (int textureIndex = 0; textureIndex < 1; textureIndex++) {
+		Texture* texture = game->pauseState.pauseTextures[textureIndex];
+		if (texture != NULL) {
+			int renderX = Constants::ScreenWidth_ / 2 - texture->w / 2;
+			int renderY = Constants::ScreenHeight_ / 2 - texture->h / 2;
+			RenderSystem_Render_xywh(game->renderer, renderX, renderY, texture->w, texture->h, NULL, texture);
+		}
+	}
+	SDL_RenderPresent(game->renderer);
+}
+
+
 void UIRenderSystem_Render(int gameState, Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 	switch (gameState) {
 		case GameState_Intro:
@@ -211,6 +228,9 @@ void UIRenderSystem_Render(int gameState, Game* game, uint32 elapsed, bool* keys
 			break;
   		case GameState_Lose:
   			RenderLose(game);
+  		case GameState_Pause:
+  			RenderPauseState(game, elapsed);
+  		default:
 			break;
 	}
 }

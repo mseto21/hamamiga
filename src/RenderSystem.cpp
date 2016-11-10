@@ -25,14 +25,12 @@
 #include <iostream>
 
 // Render constants
-//const int XLeftRender_ = Constants::ScreenWidth_ / 16;
 const int XRightRender_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4;
 const int XLeftRender_ = Constants::ScreenWidth_ / 24;
 const int YTopRender_ = Constants::ScreenHeight_ / 16;
 const int WHealth_ = Constants::ScreenWidth_/ 5;
 const int HHealth_ = Constants::ScreenHeight_ / 16;
 const int HealthBarHeight_ = 8;
-//const SDL_Color scoreColor = {255, 255, 255, 1};
 
 
 // --------------------------------------------------------------------

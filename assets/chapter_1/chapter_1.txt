@@ -79,4 +79,10 @@ zone=
 		interactable(E to Put On,0,3,)
 		rectangle(4800,1350,85,60,)
 		alive();
+	entity=
+		texture(assets/chapter_1/hats-chap1.png,bunny,0,0,85,60,)
+		physics(0,)
+		interactable(E to Put On,0,0,This is the bunny hat! You can now jump twice as high,)
+		rectangle(300,1350,85,60,)
+		alive();
 END=
