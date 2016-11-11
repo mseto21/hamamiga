@@ -172,7 +172,7 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 void UpdatePause(Game* game, bool* keysdown, bool* keysup) {
 	if (keysdown[SDLK_SPACE] && keysup[SDLK_SPACE]) {
 		game->pauseState.pauseIndex++;
-		keysup[SDLK_SPACE] = true;
+		keysup[SDLK_SPACE] = false;
 	}
 }
 
@@ -292,8 +292,18 @@ void Game_RunLoop(Game* game) {
 		}
 
 		// TO-DO: I'm sad about this.
-		if (game->gameState == GameState_Play) {
-			InputSystem_Update(&game->playState.inputSystem, keysdown, keysup);
+		switch (game->gameState) {
+			case GameState_Play:
+				InputSystem_Update(&game->playState.inputSystem, keysdown, keysup);
+				break;
+			case GameState_Options:
+				UpdateOptions(game, keysdown, keysup);
+				break;
+			case GameState_Pause:
+				UpdatePause(game, keysdown, keysup);
+				break;
+			default:
+				break;
 		}
 
 		// Update game state
@@ -307,12 +317,6 @@ void Game_RunLoop(Game* game) {
 					break;
 				case GameState_HighScore:
 					UpdateHighScore(game, keysdown);
-					break;
-				case GameState_Options:
-					UpdateOptions(game, keysdown, keysup);
-					break;
-				case GameState_Pause:
-					UpdatePause(game, keysdown, keysup);
 					break;
 				default:
 					lag = Constants::OptimalTime_;
