@@ -169,10 +169,11 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 		}
 }
 
-void UpdatePause(Game* game, uint32 elapsed) {
-	// TO-DO: Implement some sort of pause
-	(void) elapsed;
-	(void) game;
+void UpdatePause(Game* game, bool* keysdown, bool* keysup) {
+	if (keysdown[SDLK_SPACE] && keysup[SDLK_SPACE]) {
+		game->pauseState.pauseIndex++;
+		keysup[SDLK_SPACE] = true;
+	}
 }
 
 
@@ -276,11 +277,6 @@ void Game_RunLoop(Game* game) {
 								}
 							}
 							break;
-						case SDLK_SPACE:
-							if (game->gameState == GameState_Pause) {
-								game->gameState = GameState_Play;
-							}
-							break;
 						default:
 							keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
 							break;
@@ -316,7 +312,7 @@ void Game_RunLoop(Game* game) {
 					UpdateOptions(game, keysdown, keysup);
 					break;
 				case GameState_Pause:
-					UpdatePause(game, elapsed);
+					UpdatePause(game, keysdown, keysup);
 					break;
 				default:
 					lag = Constants::OptimalTime_;
@@ -362,6 +358,7 @@ void Game_RunLoop(Game* game) {
 void Game_TriggerPause(Game* game, Texture** pauseTextures) {
 	game->gameState = GameState_Pause;
 	game->pauseState.pauseTextures = pauseTextures;
+	game->pauseState.pauseIndex = 0;
 }
 
 

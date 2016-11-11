@@ -23,8 +23,6 @@ void InteractableComponent_Initialize(InteractableComponent* interactableCompone
  	interactableComponent->interacted[eid] = false;
 
  	for (int index = 0; index < Constants::MaxInteractableMessages_; index++) {
- 		if (txt[index] == NULL)
- 			break;
  		interactableComponent->txt[eid][index] = txt[index];
  	}
 }

@@ -104,6 +104,7 @@ struct PlayState {
 
 struct PauseState {
 	Texture** pauseTextures;
+	int pauseIndex;
 };
 
 struct Game {
