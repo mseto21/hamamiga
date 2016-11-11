@@ -177,12 +177,63 @@ void Component_DisableEntity(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HasIndex(bag->aliveComponent, eid)) {
 		Component_Disable(bag->aliveComponent, eid);
+		bag->aliveComponent->alive[eid] = true;
 	}
 	if (Component_HasIndex(bag->goalComponent, eid)) {
 		Component_Disable(bag->goalComponent, eid);
 	}
 	if (Component_HasIndex(bag->interactableComponent, eid)) {
 		Component_Disable(bag->interactableComponent, eid);
+		bag->interactableComponent->interacted[eid] = false;
+	}
+}
+
+void Component_EnableEntity(ComponentBag* bag, uint32 eid) {
+	if (Component_HadIndex(bag->rectangleComponent, eid)) {
+		Component_Enable(bag->rectangleComponent, eid);
+	}
+	if (Component_HadIndex(bag->movementComponent, eid)) {
+		Component_Enable(bag->movementComponent, eid);
+	}
+	if (Component_HadIndex(bag->physicsComponent, eid)) {
+		Component_Enable(bag->physicsComponent, eid);
+	}	
+	if (Component_HadIndex(bag->textureComponent, eid)) {
+		Component_Enable(bag->textureComponent, eid);
+	}
+	if (Component_HadIndex(bag->inputComponent, eid)) {
+		Component_Enable(bag->inputComponent, eid);
+	}
+	if (Component_HadIndex(bag->animationComponent, eid)) {
+		Component_Enable(bag->animationComponent, eid);
+	}
+	if (Component_HadIndex(bag->bulletComponent, eid)) {
+		Component_Enable(bag->bulletComponent, eid);
+	}
+	if (Component_HadIndex(bag->healthComponent, eid)) {
+		Component_Enable(bag->healthComponent, eid);
+		bag->healthComponent->health[eid] = bag->healthComponent->maxHealth[eid];
+	}
+	if (Component_HadIndex(bag->cameraComponent, eid)) {
+		Component_Enable(bag->cameraComponent, eid);
+	}
+	if (Component_HadIndex(bag->hatComponent, eid)) {
+		Component_Enable(bag->hatComponent, eid);
+	}
+	if (Component_HadIndex(bag->aiComponent, eid)) {
+		Component_Enable(bag->aiComponent, eid);
+	}
+	if (Component_HadIndex(bag->faiComponent, eid)) {
+		Component_Enable(bag->faiComponent, eid);
+	}
+	if (Component_HadIndex(bag->aliveComponent, eid)) {
+		Component_Enable(bag->aliveComponent, eid);
+	}
+	if (Component_HadIndex(bag->goalComponent, eid)) {
+		Component_Enable(bag->goalComponent, eid);
+	}
+	if (Component_HadIndex(bag->interactableComponent, eid)) {
+		Component_Enable(bag->interactableComponent, eid);
 	}
 }
 

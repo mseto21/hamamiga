@@ -24,6 +24,7 @@ enum HatTypes {
 
 };
 
-void Interaction_ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag);
+void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag);
+void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag);
 void Interaction_DisplayMessage(Game* game, Texture** txt);
 void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag);

@@ -30,7 +30,9 @@ const float MaxYVelocityReduction_ = 0.5f;
 const float MaxYVelocityEnchancement_ = 1.5f;
 
 
-void Interaction_ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag) {
+void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag) {
+	cBag->hatComponent->hats[eid].hat.hatType = hatType;
+	cBag->hatComponent->hats[eid].hat.eid = hatEid;
 	switch (hatType)  {
 		case HatTypes_BunnyHat:
 			Sound_Play(SoundCache_GetSound("hop"), 0);
@@ -92,6 +94,48 @@ void Interaction_ApplyHatInteraction(int hatType, uint32 eid, ComponentBag* cBag
 	}
 }
 
+void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
+	if (!Component_HasIndex(cBag->hatComponent, eid)) {
+		return;
+	}
+	Hat* hat = &cBag->hatComponent->hats[eid].hat;
+	uint32 hatEid = hat->eid;
+	switch (hat->hatType)  {
+		case HatTypes_BunnyHat:
+			cBag->movementComponent->movementValues[eid].accelY /= JumpEnhancement_;
+			cBag->movementComponent->movementValues[eid].maxYVelocity /= JumpEnhancement_;
+			break;
+		case HatTypes_HardHat:
+			cBag->healthComponent->damageReduction[eid] = 0;
+			break;
+	    case HatTypes_Propeller:
+			cBag->movementComponent->movementValues[eid].flying = false;
+			cBag->movementComponent->movementValues[eid].maxXVelocity /= MaxYVelocityEnchancement_;
+			cBag->movementComponent->movementValues[eid].maxYVelocity /= MaxYVelocityReduction_;
+			break;
+	  	case HatTypes_Beer:
+			cBag->movementComponent->movementValues[eid].accelX /= -1;
+			cBag->movementComponent->movementValues[eid].accelY /= -1;
+			break;
+		default:
+			std::cerr << "Error: Unknown hat type given: " << hat->hatType << std::endl;
+			break;
+	}
+	Component_EnableEntity(cBag, hatEid);
+	Rectangle dropperRect = cBag->rectangleComponent->entityRectangles[eid];
+	if (cBag->movementComponent->movementValues[eid].left)
+		cBag->rectangleComponent->entityRectangles[hatEid].x = dropperRect.x - cBag->rectangleComponent->entityRectangles[hatEid].w;
+	else
+		cBag->rectangleComponent->entityRectangles[hatEid].x = dropperRect.x + dropperRect.w;
+	cBag->rectangleComponent->entityRectangles[hatEid].y = dropperRect.y - cBag->rectangleComponent->entityRectangles[hatEid].h;
+
+  	cBag->hatComponent->hats[eid].hat.id = -1;
+  	cBag->hatComponent->hats[eid].hat.hatType = -1;
+    cBag->hatComponent->hats[eid].hat.eid = -1;
+    memcpy(hat->name, "", sizeof(String128));
+    memcpy(hat->effect, "", sizeof(String128));
+}
+
 
 void Interaction_DisplayMessage(Game* game, Texture** txt) {
 	if (!txt)
@@ -120,9 +164,4 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 		default:
 			break;
 	}
-}
-
-void RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
-	(void) eid;
-	(void) cBag;
 }

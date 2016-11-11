@@ -21,6 +21,15 @@ bool Component_HasIndex(Component* component, uint32 eid) {
 	return component->usedEntities[eid];
 }
 
+bool Component_HadIndex(Component* component, uint32 eid) {
+	for (uint32 entityIndex = 0; entityIndex < component->count; entityIndex++) {
+		if (component->entityArray[entityIndex] == eid && !component->usedEntities[eid]) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void Component_Add(Component* component, uint32 eid) {
 	if (component->count >= Constants::MaxEntities_) {
 		std::cerr << "Error: Attempting to add too many entities to the component!" << std::endl;
@@ -33,6 +42,12 @@ void Component_Add(Component* component, uint32 eid) {
 	component->entityArray[component->count] = eid;
 	component->usedEntities[eid] = true;
 	component->count++;
+}
+
+void Component_Enable(Component* component, uint32 eid) {
+	if (!component->usedEntities[eid]) {
+		component->usedEntities[eid] = true;
+	}
 }
 
 void Component_Disable(Component* component, uint32 eid) {

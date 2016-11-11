@@ -64,7 +64,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
 		uint32 eid = physicsComponent->entityArray[entityIndex];
 
-		// Component checks are bad.... FUCK PHYSICS.
+		// Component checks are bad...
 		if (!Component_HasIndex(physicsComponent, eid)) {
 			continue;
 		}
@@ -72,9 +72,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			continue;
 		}
 		if (!Component_HasIndex(rectangleComponent, eid)) {
-			continue;
-		}
-		if (Component_HasIndex(interactableComponent, eid)) {
 			continue;
 		}
 
@@ -88,6 +85,9 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		const Rectangle up 		= {r1->x, r1->y, r1->w, 1};
 		const Rectangle down 	= {r1->x+12, r1->y + r1->h, r1->w-13, 1};
 		for (uint32 j = 0; j < physicsComponent->count; j++) {
+			if (Component_HasIndex(interactableComponent, eid)) {
+				break;
+			}
 			uint32 otherEid = physicsComponent->entityArray[j];
 			if (eid ==  otherEid) {
 				continue;
@@ -145,8 +145,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						int hattype = interactableComponent->hattypes[otherEid];
 						if (Component_HasIndex(hatComponent, eid)){
 							if (!interactableComponent->interacted[otherEid]) {
-								Interaction_ApplyHatInteraction(hattype, eid, physicsSystem->componentBag);
-
+								Interaction_ApplyHatInteraction(hattype, eid, otherEid, physicsSystem->componentBag);
 								Interaction_DisplayMessage(physicsSystem->game, interactableComponent->txt[otherEid]);
 								interactableComponent->interacted[otherEid] = true;
 								if (Component_HasIndex(aliveComponent, otherEid)) {

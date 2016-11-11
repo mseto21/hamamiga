@@ -27,7 +27,7 @@ struct ComponentBag {
 	PhysicsComponent* 	physicsComponent;
 	HealthComponent* 	healthComponent;
 	CameraComponent*	cameraComponent;
-  HatComponent*       hatComponent;
+  	HatComponent*       hatComponent;
 	AIComponent* 		aiComponent;
 	FAIComponent*		faiComponent;
 	AliveComponent* 	aliveComponent;
@@ -39,5 +39,6 @@ void ComponentBag_Malloc(ComponentBag* bag);
 void ComponentBag_Check(ComponentBag* bag);
 void ComponentBag_Reset(ComponentBag* bag);
 void ComponentBag_Free(ComponentBag* bag);
+void Component_EnableEntity(ComponentBag* bag, uint32 eid);
 void Component_DisableEntity(ComponentBag* bag, uint32 eid);
 void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid);

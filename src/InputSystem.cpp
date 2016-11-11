@@ -66,10 +66,9 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 			keysUp[SDLK_SPACE % Constants::NumKeys_] = false;
 		}
 
-		if (keysPressed[SDLK_p]) {
-			
-		} else if (keysPressed[SDLK_o]) {
-			
+		if (keysPressed[SDLK_q] && keysUp[SDLK_q]) {
+			Interaction_RemoveHatInteraction(eid, inputSystem->cBag);
+			keysUp[SDLK_q] = false;
 		}
 	}
 }
