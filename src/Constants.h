@@ -53,6 +53,7 @@ namespace Constants {
 
 	// Pause State
 	const uint16	MaxInteractableMessages_	= 12;
+	const int		DialogSize_					= ScreenWidth_ / 4;
 
 	// High Score State
 	const int     MaxHighScores_			=		5;

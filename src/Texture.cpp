@@ -45,6 +45,7 @@ bool Texture_LoadTexture(Texture* texture, SDL_Renderer* renderer, const char* p
 	return true;
 }
 
+//--------------------------------------------------------------------
 bool Texture_LoadTexture(Texture* texture, SDL_Renderer* renderer, const char* path, const char* name, int x, int y, int w, int h) {
 	if (!Texture_LoadTexture(texture, renderer, path, name)) {
 		return false;
@@ -72,6 +73,40 @@ bool Texture_CreateTextureFromFont(Texture* texture, SDL_Renderer* renderer, TTF
 	}
 
 	SDL_Surface* surface = TTF_RenderText_Blended(font, message, color);
+	if (surface == NULL) {
+		std::cerr << "Could not load surface for message: " << message << "! Error: " << IMG_GetError() << std::endl;
+		return false;
+	}
+
+	texture->sdltexture = SDL_CreateTextureFromSurface(renderer, surface);
+
+	if (texture->sdltexture == NULL) {
+		std::cerr << "Unable to create texture with message " << message << "! Error:" << IMG_GetError() << std::endl;
+		return false;
+	}
+
+	texture->w = surface->w;
+	texture->h = surface->h;
+	texture->flip = SDL_FLIP_NONE;
+	strcpy(texture->name, name);
+	SDL_FreeSurface(surface);
+
+	return true;
+}
+
+//--------------------------------------------------------------------
+bool Texture_CreateTextureFromFontWithWidth(Texture* texture, SDL_Renderer* renderer, TTF_Font* font, SDL_Color color, const char* message, const char* name, int width) {
+	if (!texture) {
+		std::cerr << "Error: Uninitialized texture!" << std::endl;
+		return false;
+	}
+
+	if (!font) {
+		std::cerr << "Error: The font was nullptr!" << std::endl;
+		return false;
+	}
+
+	SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(font, message, color, width);
 	if (surface == NULL) {
 		std::cerr << "Could not load surface for message: " << message << "! Error: " << IMG_GetError() << std::endl;
 		return false;

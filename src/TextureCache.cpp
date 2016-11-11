@@ -57,8 +57,14 @@ Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, co
 
 
 /* Creates and returns a new texture with the given message, color, and font*/
-Texture* TextureCache_CreateFont(SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name) {
+Texture* TextureCache_CreateTextureFromFont(SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name) {
 	Texture_CreateTextureFromFont(&tcache->textures[tcache->index], renderer, font, color, message, name);
+	return &tcache->textures[tcache->index++];
+}
+
+/* Creates and returns a new texture with the given message, color, font, and wrapped width. */
+Texture* TextureCache_CreateTextureFromFontWithWidth(SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name, int width) {
+	Texture_CreateTextureFromFontWithWidth(&tcache->textures[tcache->index], renderer, font, color, message, name, width);
 	return &tcache->textures[tcache->index++];
 }
 

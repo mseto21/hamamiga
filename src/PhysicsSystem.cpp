@@ -146,6 +146,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						if (Component_HasIndex(hatComponent, eid)){
 							if (!interactableComponent->interacted[otherEid]) {
 								Interaction_ApplyHatInteraction(hattype, eid, physicsSystem->componentBag);
+
 								Interaction_DisplayMessage(physicsSystem->game, interactableComponent->txt[otherEid]);
 								interactableComponent->interacted[otherEid] = true;
 								if (Component_HasIndex(aliveComponent, otherEid)) {

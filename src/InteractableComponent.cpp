@@ -8,6 +8,7 @@ const char* FontPath_ = "assets/fonts/DINCondensedBold.ttf";
 void InteractableComponent_Initialize(InteractableComponent* interactableComponent) {
 	Component_Initialize(interactableComponent);
 	interactableComponent->font = TTF_OpenFont(FontPath_, 28);
+	
 	interactableComponent->r = 220;
 	interactableComponent->g = 220;
 	interactableComponent->b = 220;

@@ -394,13 +394,13 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					Texture* txt[Constants::MaxInteractableMessages_] = {NULL};
 					while (!str_parameters.empty()) {
 						string text = str_parameters.front();
-						txt[msgCnt] = TextureCache_CreateFont(renderer, cBag->interactableComponent->font, msg_color, text.c_str(), text.c_str());
+						txt[msgCnt] = TextureCache_CreateTextureFromFontWithWidth(renderer, cBag->interactableComponent->font, msg_color, text.c_str(), text.c_str(), Constants::DialogSize_);
 						str_parameters.pop();
 						msgCnt++;
 					}
 					
 					cout << "Adding InteractableComponent to entity " << eid << ":(" << message << ", " << type << ", " << hattype << ")" << endl;
-					InteractableComponent_Add(cBag->interactableComponent, eid, TextureCache_CreateFont(renderer, cBag->interactableComponent->font, msg_color, message.c_str(), message.c_str()), type, hattype, txt);
+					InteractableComponent_Add(cBag->interactableComponent, eid, TextureCache_CreateTextureFromFont(renderer, cBag->interactableComponent->font, msg_color, message.c_str(), message.c_str()), type, hattype, txt);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}

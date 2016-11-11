@@ -47,10 +47,10 @@ void LoadTitleStateAssets(Game* game) {
 	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
 		std::string base = game->titleState.selectionStrings[selectionIndex];
 		base.append("_base");
-		TextureCache_CreateFont(game->renderer, game->titleState.titleFont, baseColor, game->titleState.selectionStrings[selectionIndex], base.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, game->titleState.titleFont, baseColor, game->titleState.selectionStrings[selectionIndex], base.c_str());
 		std::string select = game->titleState.selectionStrings[selectionIndex];
 		select.append("_select");
-		TextureCache_CreateFont(game->renderer, game->titleState.titleFont, selectedColor, game->titleState.selectionStrings[selectionIndex], select.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, game->titleState.titleFont, selectedColor, game->titleState.selectionStrings[selectionIndex], select.c_str());
 	}
 	TTF_CloseFont(game->titleState.titleFont);
 
@@ -77,7 +77,7 @@ void LoadHighScoreStateAssets(Game* game) {
 		std::string msg = std::to_string(game->highScoreState.scores[highScoreIndex]);
 		std::string name = "high_score_";
 		name.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
-		TextureCache_CreateFont(game->renderer, game->highScoreState.font, scoreColor, msg.c_str(), name.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, game->highScoreState.font, scoreColor, msg.c_str(), name.c_str());
 	}
 	TTF_CloseFont(game->highScoreState.font);
 }
@@ -102,10 +102,10 @@ void LoadOptionStateAssets(Game* game) {
 	for (int selectionIndex = 0; selectionIndex < Constants::OptionScreenSelections_; selectionIndex++) {
 		std::string base = game->optionState.selectionStrings[selectionIndex];
 		base.append("_base");
-		TextureCache_CreateFont(game->renderer, game->optionState.font, baseColor, game->optionState.selectionStrings[selectionIndex], base.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, game->optionState.font, baseColor, game->optionState.selectionStrings[selectionIndex], base.c_str());
 		std::string select = game->optionState.selectionStrings[selectionIndex];
 		select.append("_select");
-		TextureCache_CreateFont(game->renderer, game->optionState.font, selectedColor, game->optionState.selectionStrings[selectionIndex], select.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, game->optionState.font, selectedColor, game->optionState.selectionStrings[selectionIndex], select.c_str());
 	}
 	TTF_CloseFont(game->highScoreState.font);
 }
@@ -123,7 +123,7 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 	}
 
 	SDL_Color color = {255, 255, 255, 255};
-	TextureCache_CreateFont(game->renderer, game->zoneIntroState.font, color, name, Constants::ZoneName_);
+	TextureCache_CreateTextureFromFont(game->renderer, game->zoneIntroState.font, color, name, Constants::ZoneName_);
 	TTF_CloseFont(game->zoneIntroState.font);
 }
 
