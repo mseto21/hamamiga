@@ -195,7 +195,11 @@ void RenderPauseState(Game* game, uint32  elapsed) {
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
 	Texture* texture = game->pauseState.pauseTextures[game->pauseState.pauseIndex];
+	Texture* speech = TextureCache_GetTexture("speech-bubble");
 	if (texture != NULL) {
+		int bubbleX = Constants::ScreenWidth_ / 2 - speech->w / 2;
+		int bubbleY = Constants::ScreenHeight_ / 2 - speech->h / 2;
+		RenderSystem_Render_xywh(game->renderer, bubbleX, bubbleY, speech->w, speech->h, NULL, speech);
 		int renderX = Constants::ScreenWidth_ / 2 - texture->w / 2;
 		int renderY = Constants::ScreenHeight_ / 2 - texture->h / 2;
 		RenderSystem_Render_xywh(game->renderer, renderX, renderY, texture->w, texture->h, NULL, texture);

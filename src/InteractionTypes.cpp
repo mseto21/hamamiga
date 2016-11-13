@@ -118,8 +118,7 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 			cBag->movementComponent->movementValues[eid].accelY /= -1;
 			break;
 		default:
-			std::cerr << "Error: Unknown hat type given: " << hat->hatType << std::endl;
-			break;
+			return;
 	}
 	Component_EnableEntity(cBag, hatEid);
 	Rectangle dropperRect = cBag->rectangleComponent->entityRectangles[eid];

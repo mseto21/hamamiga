@@ -200,6 +200,9 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	BulletSystem_Initialize(&game->playState.bulletSystem, &game->playState.cBag);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
 
+	// Pause state
+	TextureCache_CreateTexture(game->renderer, "assets/interactables/speech-bubble.png", "speech-bubble");
+
 	// Set loaded variable
 	game->playState.loaded = true;
 
