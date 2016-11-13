@@ -108,9 +108,10 @@ Breakdown of what each member achieved:
 ---------------
 Harry: Designed the 3rd level and added logic for beer hat and propeller hat
 
-Matt: Added animations to tiles, made it so textures can be queried by tilesheet rather than just by image,
-added speed to tiles so they'd act like belts, put in transitions between cut scenes that you can
-see by pressing SPACE, added hover over text for interactable objects
+Matt: I added the ability for messages when you interact with an object, so that now you can get an idea of what
+you picked up. Also, I cleaned up some of the code in the input, physics and movement systems by moving hat-specific
+code to a separate area. Essentially just decoupling some things that shouldn't be checked on every update. I also
+added the ability to take off your current hat, although it is not by any means a perfected system at the moment.
 
 Mindy: Logic for cowboy hat (BulletSystem, BulletComponent, can kill enemies now)
  
