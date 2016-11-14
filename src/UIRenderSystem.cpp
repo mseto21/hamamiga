@@ -193,7 +193,7 @@ void RenderHighScore(Game* game, uint32 elapsed) {
 void RenderPauseState(Game* game, uint32  elapsed) {
 	(void) elapsed;
 	SDL_RenderClear(game->renderer);
-	RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
+	RenderSystem_Update(&game->playState.renderSystem, game->renderer, 0);
 	Texture* texture = game->pauseState.pauseTextures[game->pauseState.pauseIndex];
 	Texture* speech = TextureCache_GetTexture("speech-bubble");
 	if (texture != NULL) {
