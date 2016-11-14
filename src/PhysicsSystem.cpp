@@ -10,6 +10,7 @@
 #include "InputComponent.h"
 #include "AliveComponent.h"
 #include "FAIComponent.h"
+#include "AIComponent.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
 #include "TileMap.h"
@@ -34,6 +35,7 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->interactableComponent = cBag->interactableComponent;
 	physicsSystem->aliveComponent 		= cBag->aliveComponent;
 	physicsSystem->faiComponent             = cBag->faiComponent;
+	physicsSystem->aiComponent              = cBag->aiComponent;
 	physicsSystem->map 					= tileMap;
 	physicsSystem->componentBag 		= cBag;
 	physicsSystem->game 				= game;
@@ -59,6 +61,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
 	AliveComponent * aliveComponent = physicsSystem->aliveComponent;
 	FAIComponent * faiComponent = physicsSystem->faiComponent;
+	AIComponent * aiComponent = physicsSystem->aiComponent;
 	TileMap* map = physicsSystem->map;
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
@@ -208,14 +211,18 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
 			}
 			if (cllsn) {
-			        if (Component_HasIndex(healthComponent, eid)) {
-					if (!healthComponent->invincible[eid]) {
-						healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
-						if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
-							aliveComponent->alive[eid] = false;
-						}
-					}
+			  if (Component_HasIndex(healthComponent, eid)) {
+			    if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, physicsComponent->entityArray[j]))){
+			      if (!healthComponent->invincible[eid]) {
+				healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
+				if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
+				  aliveComponent->alive[eid] = false;
 				}
+			      }
+			    } else {
+			      aiComponent->marchValues[eid].facing *= -1;
+			    }
+			  }
 			}
 		}
 

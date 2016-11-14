@@ -15,7 +15,7 @@ General Controls:
 'ESC' at any time will exit the game.
 'M' to return to the Main menu, or to skip the fade in intro (go to Main screen anytime)
 'P' to skip the game backstory/intro cut scene
-'Enter' to select menu options 
+'Enter' to select menu options
 
 
 Game Controls:
@@ -106,7 +106,7 @@ Press 'E' to equip the propellor hat and beer hat when Kevin is standing over it
 ---------------
 Breakdown of what each member achieved:
 ---------------
-Harry: Designed the 3rd level and added logic for beer hat and propeller hat
+Harry: Fixed the demon to demon collision (no longer hurt each other and turn around now) improved the flying demon movement system (still not perfect)
 
 Matt: I added the ability for messages when you interact with an object, so that now you can get an idea of what
 you picked up. Also, I cleaned up some of the code in the input, physics and movement systems by moving hat-specific
@@ -114,6 +114,5 @@ code to a separate area. Essentially just decoupling some things that shouldn't 
 added the ability to take off your current hat, although it is not by any means a perfected system at the moment.
 
 Mindy: Logic for cowboy hat (BulletSystem, BulletComponent, can kill enemies now)
- 
-Gavi: Designed artwork for third level (Conveyor belt platforms, background, tiles, beer hat, propeller hat, flying enemy). 
 
+Gavi: Designed slides for presentation, creates speech bubble.

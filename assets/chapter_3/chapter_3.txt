@@ -17,11 +17,11 @@ zone=
 	entity=
 		animation(4,150.0,125,71,)
 		health(100,)
-		movement(3.0,20.0,1.0,1.0,)
+		movement(4.0,4.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1000,1353,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
-		fai(5,1,)
+		fai(20,1,)
 		alive();
 	entity=
 		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)

@@ -17,8 +17,8 @@ void FAISystem_Initialize(FAISystem* faiSystem, ComponentBag* cBag) {
 }
 
 bool near(const Rectangle* r1, const Rectangle* r2) {
-  if (abs(((int)(r1->x+(r1->w)/2)) - ((int)(r2->x+(r2->w)/2))) < Constants::XRange_
-      && abs(((int)(r1->y + (r1->h)/2)) - ((int)(r2->y+(r2->h)/2))) < Constants::YRange_) {
+  if (abs(((int)(r1->x+(r1->w)/2)) - ((int)(r2->x+(r2->w)/2))) < 2*Constants::XRange_
+      && abs(((int)(r1->y + (r1->h)/2)) - ((int)(r2->y+(r2->h)/2))) < 2*Constants::YRange_) {
     return true;
   }
   return false;
