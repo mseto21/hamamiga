@@ -106,7 +106,7 @@ Press 'E' to equip the propellor hat and beer hat when Kevin is standing over it
 ---------------
 Breakdown of what each member achieved:
 ---------------
-Harry: Designed the 3rd level and added logic for beer hat and propeller hat
+Harry: Fixed the demon to demon collision (no longer hurt each other and turn around now) improved the flying demon movement system (still not perfect)
 
 Matt: I added the ability for messages when you interact with an object, so that now you can get an idea of what
 you picked up. Also, I cleaned up some of the code in the input, physics and movement systems by moving hat-specific
