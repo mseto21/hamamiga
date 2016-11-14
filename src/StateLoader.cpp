@@ -181,6 +181,8 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/hop_soundbible.ogg", "hop");
 	SoundCache_CreateSound("assets/sounds/disco.ogg", "disco");
 	SoundCache_CreateSound("assets/sounds/western.ogg", "western");
+	SoundCache_CreateSound("assets/sounds/heli.ogg", "heli");
+	SoundCache_CreateSound("assets/sounds/beer.ogg", "beer");
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
 	TextureCache_CreateTexture(game->renderer, "assets/hats/bullet.png", "bullet");
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/hats/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_MOD);
