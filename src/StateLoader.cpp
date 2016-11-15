@@ -255,7 +255,7 @@ void FreePlay(Game* game) {
 	PhysicsSystem_Free(&game->playState.physicsSystem);
 	RenderSystem_Free(&game->playState.renderSystem);
 	GoalSystem_Free(&game->playState.goalSystem);
-//	SoundSystem_Free(&game->playState.soundSystem);
+	//	SoundSystem_Free(&game->playState.soundSystem);
 	BulletSystem_Free(&game->playState.bulletSystem);
 	KillSystem_Free(&game->playState.killSystem);
 

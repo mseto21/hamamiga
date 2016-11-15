@@ -228,10 +228,12 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 		// Move player based on physics
 		if (!moveValues->grounded && !moveValues->flying && !Component_HasIndex(faiComponent, eid)) {
-		  moveValues->yVelocity += Constants::Gravity_;
-		  moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
+		  	moveValues->yVelocity += Constants::Gravity_;
+		  	moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
+		  	moveValues->xAccel -= moveValues->xAccel*Constants::AirRes_;
 		} else {
-		  moveValues->xVelocity -= moveValues->xVelocity*Constants::Friction_;
+			moveValues->xAccel -= moveValues->xAccel*Constants::Friction_;
+		 	moveValues->xVelocity -= moveValues->xVelocity*Constants::Friction_;
 		}
 		if (moveValues->xVelocity < 0.2 && moveValues->xVelocity > -0.2) {
 		  moveValues->xVelocity = 0;

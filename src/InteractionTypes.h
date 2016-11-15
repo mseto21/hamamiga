@@ -21,7 +21,6 @@ enum HatTypes {
 	HatTypes_Cowboy, 		//5
 	HatTypes_Propeller,		//6
 	HatTypes_Beer,      	//7
-
 };
 
 void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag);
