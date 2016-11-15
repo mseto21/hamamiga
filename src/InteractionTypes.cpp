@@ -122,13 +122,14 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 	}
 	Component_EnableEntity(cBag, hatEid);
 	Rectangle dropperRect = cBag->rectangleComponent->entityRectangles[eid];
-	if (cBag->movementComponent->movementValues[eid].left)
-		cBag->rectangleComponent->entityRectangles[hatEid].x = dropperRect.x - cBag->rectangleComponent->entityRectangles[hatEid].w;
-	else
-		cBag->rectangleComponent->entityRectangles[hatEid].x = dropperRect.x + dropperRect.w;
+	cBag->rectangleComponent->entityRectangles[hatEid].x = (dropperRect.w / 2 - cBag->rectangleComponent->entityRectangles[hatEid].w / 2) + dropperRect.x;
+
 	cBag->rectangleComponent->entityRectangles[hatEid].y = dropperRect.y - cBag->rectangleComponent->entityRectangles[hatEid].h;
-	cBag->movementComponent->movementValues[hatEid].yVelocity = cBag->movementComponent->movementValues[eid].yVelocity;
-	cBag->movementComponent->movementValues[hatEid].xAccel = cBag->movementComponent->movementValues[eid].xVelocity;
+	cBag->movementComponent->movementValues[hatEid].yVelocity = cBag->movementComponent->movementValues[eid].yVelocity - cBag->movementComponent->movementValues[hatEid].accelY;
+	int dir = 1;
+	if (cBag->movementComponent->movementValues[eid].left)
+		dir = -1;
+	cBag->movementComponent->movementValues[hatEid].xAccel = cBag->movementComponent->movementValues[eid].xVelocity + cBag->movementComponent->movementValues[hatEid].accelX * dir;
 
   	cBag->hatComponent->hats[eid].hat.id = -1;
   	cBag->hatComponent->hats[eid].hat.hatType = -1;
