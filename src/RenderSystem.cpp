@@ -319,6 +319,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				hatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
 				if (!gHatTexture || strcmp(gHatTexture->name, "") == 0) {
 					RenderSystem_Render_xywh(renderer, rect.x + (rect.w - hatTexture->w)/2, rect.y - hatTexture->h / 2.5, hatTexture->w, hatTexture->h, &clip, hatTexture);
+				}
 		    }
 		    if (gHatTexture) {
 		    	SDL_Rect clip = {0, 0, gHatTexture->w, gHatTexture->h};
