@@ -164,7 +164,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		std::cerr << "Error: The game background is not available." << std::endl;
 		return;
 	}
-	SDL_Rect backgroundClip = {cameraComponent->camera.x, cameraComponent->camera.y, Constants::ScreenWidth_, Constants::ScreenHeight_};
+	SDL_Rect backgroundClip = {cameraComponent->camera.x / 2, (cameraComponent->camera.y), Constants::ScreenWidth_, Constants::ScreenHeight_};
 	RenderSystem_Render_xywh(renderer, 0, 0, background->w, background->h, &backgroundClip, background);
  	
 
@@ -326,8 +326,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				hatTexture->flip = SDL_FLIP_NONE;
 				RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
 				hatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
-				if (!gHatTexture)
+				if (!gHatTexture || strcmp(gHatTexture->name, "") == 0) {
 					RenderSystem_Render_xywh(renderer, rect.x + (rect.w - hatTexture->w)/2, rect.y - hatTexture->h / 2.5, hatTexture->w, hatTexture->h, &clip, hatTexture);
+				}
 		    }
 		    if (gHatTexture) {
 		    	SDL_Rect clip = {0, 0, gHatTexture->w, gHatTexture->h};

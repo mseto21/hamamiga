@@ -17,7 +17,7 @@ void FAISystem_Initialize(FAISystem* faiSystem, ComponentBag* cBag) {
 }
 
 bool near(const Rectangle* r1, const Rectangle* r2) {
-  if (abs(((int)(r1->x+(r1->w)/2)) - ((int)(r2->x+(r2->w)/2))) < 2*Constants::XRange_
+  if (abs(((int)(r1->x+(r1->w)/2)) - ((int)(r2->x+(r2->w)/2))) < Constants::XRange_
       && abs(((int)(r1->y + (r1->h)/2)) - ((int)(r2->y+(r2->h)/2))) < 2*Constants::YRange_) {
     return true;
   }
@@ -45,16 +45,17 @@ void FAISystem_Update(FAISystem* faiSystem) {
     MovementValues* moveValues = &movementComponent->movementValues[eid];
     Rectangle* eRect = &faiSystem->rectangleComponent->entityRectangles[eid];
     moveValues->xAccel = 0;
+    moveValues->yAccel = 0;
     if (near(&pRect, eRect)) {
       if (pRect.x + (pRect.w)/2 < eRect->x + (eRect->w)/2) {
   	    moveValues->xAccel = -moveValues->accelX;
   	  } else {
   	    moveValues->xAccel = moveValues->accelX;
   	  }
-      if (pRect.y + (pRect.h)/2 < eRect->x + (eRect->h)/2) {
-	       moveValues->yAccel = -moveValues->accelY;
+      if (pRect.y + (pRect.h)/2 < eRect->y + (eRect->h)/2) {
+	moveValues->yAccel = -moveValues->accelY;
       } else {
-	       moveValues->yAccel = moveValues->accelY;
+	moveValues->yAccel = moveValues->accelY;
       }
     } else {
           FlyValues* marchValues = &faiComponent->flyValues[eid];
@@ -63,7 +64,6 @@ void FAISystem_Update(FAISystem* faiSystem) {
   	  if (marchValues->distance >= marchValues->range) {
   	    marchValues->distance = 0;
   	    marchValues->facing *= -1;
-  	    moveValues->yAccel *= -1;
   	  }
     }  
   }
