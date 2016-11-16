@@ -75,6 +75,7 @@ zone=
 		rectangle(140,1350,48,48,)
 		alive();
 	entity=
+		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/hats/cowboy-hat.png,cowboy,)
 		physics(0,)
 		interactable(E to Put On,0,5,)

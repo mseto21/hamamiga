@@ -117,6 +117,8 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 			cBag->movementComponent->movementValues[eid].accelX /= -1;
 			cBag->movementComponent->movementValues[eid].accelY /= -1;
 			break;
+		case HatTypes_Cowboy:
+			break;
 		default:
 			return;
 	}

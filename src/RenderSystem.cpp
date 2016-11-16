@@ -288,12 +288,21 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			if (eid != Constants::PlayerIndex_) {
 				int max = healthComponent->maxHealth[eid];
 				int current = healthComponent->health[eid];
-				const SDL_Rect maxRect = {XRightRender_, YTopRender_, static_cast<int>(rect.w), HealthBarHeight_};
+				//const SDL_Rect maxRect = {XRightRender_, YTopRender_, static_cast<int>(rect.w), HealthBarHeight_};
 				const SDL_Rect currentRect = {static_cast<int>(rect.x), static_cast<int>(rect.y) - HealthBarHeight_, static_cast<int>(rect.w * ((float) current / max)), HealthBarHeight_};
-				SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
-				SDL_RenderFillRect(renderer, &maxRect);
-				SDL_SetRenderDrawColor(renderer, 0, 255, 0, 1);
+				float ratio = (float) current / max;
+				int r;
+				int g;
+				if (ratio > 0.5f) {
+					r = 2 * 255 * (1 - ((float)current / max));
+					g = 255;
+				} else {
+					r = 255;
+					g = 255 * (1 - (float)current / max);
+				}
+				SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
 				SDL_RenderFillRect(renderer, &currentRect);
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 			}
 		}
 	} // End entity render.
@@ -348,11 +357,19 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	if (Component_HasIndex(healthComponent, Constants::PlayerIndex_)) {
 		int max = healthComponent->maxHealth[Constants::PlayerIndex_];
 		int current = healthComponent->health[Constants::PlayerIndex_];
-		const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
+		//const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
 		const SDL_Rect currentRect = {XRightRender_, YTopRender_, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
-		SDL_RenderFillRect(renderer, &maxRect);
-		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 1);
+		float ratio = (float) current / max;
+		int r;
+		int g;
+		if (ratio > 0.5f) {
+			r = 2 * 255 * (1 - ((float)current / max));
+			g = 255;
+		} else {
+			r = 255;
+			g = 255 * 255 * (1 - (float)current / max);
+		}
+		SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
 		SDL_RenderFillRect(renderer, &currentRect);
 	}
 
