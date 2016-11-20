@@ -22,7 +22,7 @@ zone=
 		physics(100,)
 		rectangle(1000,1350,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(200,1,)
+		ai(0,200,1,)
 		alive()
 		goal();
 	entity=
@@ -32,7 +32,7 @@ zone=
 		physics(100,)
 		rectangle(1500,1350,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(500,1,)
+		ai(0,500,1,)
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
@@ -41,7 +41,7 @@ zone=
 		physics(100,)
 		rectangle(2200,1350,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(500,1,)
+		ai(0,500,1,)
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
@@ -50,7 +50,7 @@ zone=
 		physics(100,)
 		rectangle(1970,210,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(120,1,)
+		ai(0,120,1,)
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
@@ -59,7 +59,7 @@ zone=
 		physics(100,)
 		rectangle(3980,1350,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(30,1,)
+		ai(0,30,1,)
 		alive();
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)

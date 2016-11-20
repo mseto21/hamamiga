@@ -18,6 +18,7 @@ void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag) {
   aiSystem->rectangleComponent  = cBag->rectangleComponent;
   aiSystem->aiComponent         = cBag->aiComponent;
   aiSystem->animationComponent  = cBag->animationComponent;
+  aiSystem->rectangleComponent  = cBag->rectangleComponent;
 }
 
 bool close(const Rectangle* r1, const Rectangle* r2) {
@@ -28,59 +29,102 @@ bool close(const Rectangle* r1, const Rectangle* r2) {
   return false;
 }
 
-void AISystem_Update(AISystem* aiSystem) {
-  RectangleComponent* rectangleComponent = aiSystem->rectangleComponent;
-  MovementComponent* movementComponent = aiSystem->movementComponent;
+
+void MarcherUpdate(AISystem* aiSystem, uint32 eid) {
   AIComponent* aiComponent = aiSystem->aiComponent;
   AnimationComponent* animationComponent = aiSystem->animationComponent;
+  RectangleComponent* rectangleComponent = aiSystem->rectangleComponent;
+  MovementComponent* movementComponent = aiSystem->movementComponent;
+  if (!Component_HasIndex(movementComponent, eid)) {
+    return;
+  }
+  if (!Component_HasIndex(rectangleComponent, eid)) {
+    return;
+  }
 
   Rectangle pRect = rectangleComponent->entityRectangles[rectangleComponent->entityArray[Constants::PlayerIndex_]];
+
+  MovementValues* moveValues = &movementComponent->movementValues[eid];
+  moveValues->xAccel = 0;
+  MarchValues* marchValues = &aiComponent->marchValues[eid];
+  Rectangle* eRect = &rectangleComponent->entityRectangles[eid];
+  if (close(&pRect, eRect)) {
+    if (!marchValues->aggrod) {
+      animationComponent->animations[eid].frameTime /= SpeedMultiplier_;
+      moveValues->maxXVelocity *= SpeedMultiplier_;
+      marchValues->aggrod = true;
+    }
+    if (pRect.x + (pRect.w)/2 < eRect->x + (eRect->w)/2) {
+      moveValues->xAccel = -moveValues->accelX;
+    } else {
+      moveValues->xAccel = moveValues->accelX;
+    }
+  } else {
+    if (marchValues->aggrod) {
+      animationComponent->animations[eid].frameTime *= SpeedMultiplier_;
+      moveValues->maxXVelocity /= SpeedMultiplier_;
+      marchValues->aggrod = false;
+    }
+    moveValues->xAccel = moveValues->accelX*marchValues->facing;
+    marchValues->distance += moveValues->xAccel*marchValues->facing;
+    if (marchValues->distance >= marchValues->range) {
+      marchValues->distance = 0;
+      marchValues->facing *= -1;
+      moveValues->xAccel *= -1;
+    }
+  } 
+}
+
+
+void ProjectileUpdate(AISystem* aiSystem, uint32 eid) {
+  AIComponent* aiComponent = aiSystem->aiComponent;
+  RectangleComponent* rectangleComponent = aiSystem->rectangleComponent;
+  MovementComponent* movementComponent = aiSystem->movementComponent;
+  if (!Component_HasIndex(movementComponent, eid)) {
+    return;
+  }
+
+  Rectangle pRect = rectangleComponent->entityRectangles[rectangleComponent->entityArray[Constants::PlayerIndex_]];
+
+  MovementValues* moveValues = &movementComponent->movementValues[eid];
+  MarchValues* marchValues = &aiComponent->marchValues[eid];
+  Rectangle* eRect = &rectangleComponent->entityRectangles[eid];
+  if (close(&pRect, eRect) && !marchValues->aggrod) {
+    if (pRect.x + (pRect.w)/2 < eRect->x + (eRect->w)/2) {
+      moveValues->xAccel = -moveValues->accelX;
+    } else {
+      moveValues->xAccel = moveValues->accelX;
+    }
+  }
+}
+
+
+void ThrowerUpdate(AISystem* aiSystem, uint32 eid) {
+  (void) aiSystem;
+  (void) eid;
+}
+
+
+void AISystem_Update(AISystem* aiSystem) {
+  AIComponent* aiComponent = aiSystem->aiComponent;
   for (uint32 entityIndex = 0; entityIndex < aiComponent->count; entityIndex++) {
     uint32 eid = aiComponent->entityArray[entityIndex];
-    if (!Component_HasIndex(aiComponent, eid)) {
-      continue;
-    }
-    if (!Component_HasIndex(movementComponent, eid)) {
-      continue;
-    }
-    if (!Component_HasIndex(rectangleComponent, eid)) {
-      continue;
-    }
-    MovementValues* moveValues = &movementComponent->movementValues[eid];
-    Rectangle* eRect = &aiSystem->rectangleComponent->entityRectangles[eid];
-    moveValues->xAccel = 0;
-    MarchValues* marchValues = &aiComponent->marchValues[eid];
-    if (close(&pRect, eRect)) {
-      if (!marchValues->aggrod) {
-        animationComponent->animations[eid].frameTime /= SpeedMultiplier_;
-        moveValues->maxXVelocity *= SpeedMultiplier_;
-        marchValues->aggrod = true;
-      }
-      if (pRect.x + (pRect.w)/2 < eRect->x + (eRect->w)/2) {
-  	    moveValues->xAccel = -moveValues->accelX;
-  	  } else {
-  	    moveValues->xAccel = moveValues->accelX;
-  	  }
-    } else {
-      if (marchValues->aggrod) {
-        animationComponent->animations[eid].frameTime *= SpeedMultiplier_;
-        moveValues->maxXVelocity /= SpeedMultiplier_;
-        marchValues->aggrod = false;
-      }
-  	  moveValues->xAccel = moveValues->accelX*marchValues->facing;
-  	  marchValues->distance += moveValues->xAccel*marchValues->facing;
-  	  if (marchValues->distance >= marchValues->range) {
-  	    marchValues->distance = 0;
-  	    marchValues->facing *= -1;
-  	    moveValues->xAccel *= -1;
-  	  }
-    }  
+    switch (aiComponent->types[eid]) {
+      case AIType_Marcher:
+        MarcherUpdate(aiSystem, eid);
+        break;
+      case AIType_Projectile:
+        ProjectileUpdate(aiSystem, eid);
+        break;
+      case AIType_Thrower:
+        ThrowerUpdate(aiSystem, eid);
+        break;
+    } 
   }
 }
 
 void AISystem_Free(AISystem* aiSystem) {
   aiSystem->movementComponent = nullptr;
-  aiSystem->rectangleComponent = nullptr;
   aiSystem->aiComponent = nullptr;
 }
 

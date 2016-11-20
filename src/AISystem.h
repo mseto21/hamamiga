@@ -3,15 +3,15 @@
 //Forward Declarations
 struct MovementComponent;
 struct AIComponent;
-struct RectangleComponent;
 struct AnimationComponent;
+struct RectangleComponent;
 struct ComponentBag;
 
 struct AISystem {
 	MovementComponent* movementComponent;
-	RectangleComponent* rectangleComponent;
 	AIComponent* aiComponent;
 	AnimationComponent* animationComponent;
+	RectangleComponent* rectangleComponent;
 };
 
 void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag);

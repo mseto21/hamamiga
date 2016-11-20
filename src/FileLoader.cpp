@@ -362,12 +362,21 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					cout << "Adding hat to entity " << eid << "..." << endl;
 					HatComponent_Add(cBag->hatComponent, eid, hat, gHat);
 				} else if (strcmp(cmd, "ai") == 0) {
-					int range = int_parameters.front();
+					int type = int_parameters.front();
 					int_parameters.pop();
-					int facing = int_parameters.front();
-					int_parameters.pop();
-					cout << "Adding AI to entity " << eid << ":(" << range << ", " << facing << ")" << endl;
-					AIComponent_Add(cBag->aiComponent, eid, range, facing);
+					int sz = int_parameters.size();
+
+					if (sz == 2) {
+						int range = int_parameters.front();
+						int_parameters.pop();
+						int facing = int_parameters.front();
+						int_parameters.pop();
+						cout << "Adding AI to entity " << eid << ":(Chasing," << range << ", " << facing << ")" << endl;
+						AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
+					} else {
+						cout << "Adding AI to entity " << eid << ":(" << type << ")" << endl;
+						AIComponent_Add(cBag->aiComponent, eid, type);
+					}
 				} else if (strcmp(cmd, "fai") == 0) {
 					int range = int_parameters.front();
 					int_parameters.pop();
