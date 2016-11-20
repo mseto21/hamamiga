@@ -5,6 +5,7 @@ struct MarchValues {
 	int range;
 	float distance;
 	int facing;
+	bool aggrod;
 };
 
 struct AIComponent : public Component {

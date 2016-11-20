@@ -4,16 +4,20 @@
 #include "MovementComponent.h"
 #include "AIComponent.h"
 #include "RectangleComponent.h"
+#include "AnimationComponent.h"
 #include "Rectangle.h"
 #include "ComponentBag.h"
 
 #include <SDL.h>
 #include <iostream>
 
+const float SpeedMultiplier_ = 1.25;
+
 void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag) {
   aiSystem->movementComponent   = cBag->movementComponent;
   aiSystem->rectangleComponent  = cBag->rectangleComponent;
   aiSystem->aiComponent         = cBag->aiComponent;
+  aiSystem->animationComponent  = cBag->animationComponent;
 }
 
 bool close(const Rectangle* r1, const Rectangle* r2) {
@@ -28,6 +32,7 @@ void AISystem_Update(AISystem* aiSystem) {
   RectangleComponent* rectangleComponent = aiSystem->rectangleComponent;
   MovementComponent* movementComponent = aiSystem->movementComponent;
   AIComponent* aiComponent = aiSystem->aiComponent;
+  AnimationComponent* animationComponent = aiSystem->animationComponent;
 
   Rectangle pRect = rectangleComponent->entityRectangles[rectangleComponent->entityArray[Constants::PlayerIndex_]];
   for (uint32 entityIndex = 0; entityIndex < aiComponent->count; entityIndex++) {
@@ -44,14 +49,24 @@ void AISystem_Update(AISystem* aiSystem) {
     MovementValues* moveValues = &movementComponent->movementValues[eid];
     Rectangle* eRect = &aiSystem->rectangleComponent->entityRectangles[eid];
     moveValues->xAccel = 0;
+    MarchValues* marchValues = &aiComponent->marchValues[eid];
     if (close(&pRect, eRect)) {
+      if (!marchValues->aggrod) {
+        animationComponent->animations[eid].frameTime /= SpeedMultiplier_;
+        moveValues->maxXVelocity *= SpeedMultiplier_;
+        marchValues->aggrod = true;
+      }
       if (pRect.x + (pRect.w)/2 < eRect->x + (eRect->w)/2) {
   	    moveValues->xAccel = -moveValues->accelX;
   	  } else {
   	    moveValues->xAccel = moveValues->accelX;
   	  }
     } else {
-      MarchValues* marchValues = &aiComponent->marchValues[eid];
+      if (marchValues->aggrod) {
+        animationComponent->animations[eid].frameTime *= SpeedMultiplier_;
+        moveValues->maxXVelocity /= SpeedMultiplier_;
+        marchValues->aggrod = false;
+      }
   	  moveValues->xAccel = moveValues->accelX*marchValues->facing;
   	  marchValues->distance += moveValues->xAccel*marchValues->facing;
   	  if (marchValues->distance >= marchValues->range) {

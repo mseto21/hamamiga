@@ -214,10 +214,11 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			  if (Component_HasIndex(healthComponent, eid)) {
 			    if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, physicsComponent->entityArray[j]))){
 			      if (!healthComponent->invincible[eid]) {
-				healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
-				if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
-				  aliveComponent->alive[eid] = false;
-				}
+			      	healthComponent->startHealth[eid] = healthComponent->health[eid];
+					healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
+					if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
+					  aliveComponent->alive[eid] = false;
+					}
 			      }
 			    } else {
 			      aiComponent->marchValues[eid].facing *= -1;

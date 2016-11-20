@@ -294,7 +294,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				int r;
 				int g;
 				if (ratio > 0.5f) {
-					r = 2 * 255 * (1 - ((float)current / max));
+					r = 255 * (1 - ((float)current / max));
 					g = 255;
 				} else {
 					r = 255;
@@ -356,8 +356,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	
 	// Render HUD
 	if (Component_HasIndex(healthComponent, Constants::PlayerIndex_)) {
+		int current = HealthComponent_Lerp(healthComponent, Constants::PlayerIndex_, delta);
 		int max = healthComponent->maxHealth[Constants::PlayerIndex_];
-		int current = healthComponent->health[Constants::PlayerIndex_];
 		//const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
 		const SDL_Rect currentRect = {XRightRender_, YTopRender_, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
 		float ratio = (float) current / max;
@@ -368,7 +368,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			g = 255;
 		} else {
 			r = 255;
-			g = 255 * 255 * (1 - (float)current / max);
+			g = 2 * 255 * ((float)current / max);
 		}
 		SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
 		SDL_RenderFillRect(renderer, &currentRect);
