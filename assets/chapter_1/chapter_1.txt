@@ -77,7 +77,14 @@ zone=
 		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_1/hats-chap1.png,bunny,0,0,85,60,)
 		physics(0,)
-		interactable(E to Put On,0,0,This is the bunny hat! It gives you the ability to jump twice as high,JUMP KEVIN JUMP LIKE YOU'VE NEVER JUMPED BEFORE,)
+		interactable(E to Put On,0,0,This is the bunny hat! It gives you the ability to jump twice as high!,)
 		rectangle(3980,1350,85,60,)
+		alive();
+	entity=
+		movement(3.0,14.0,1.0,5.0,)
+		texture(assets/chapter_1/hats-chap1.png,bunny,0,0,85,60,)
+		physics(0,)
+		interactable(E to Put On,0,0,This is the bunny hat! It gives you the ability to jump twice as high!,)
+		rectangle(300,1350,85,60,)
 		alive();
 END=

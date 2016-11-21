@@ -3,11 +3,13 @@
 #include <SDL_ttf.h>
 
 #include <iostream>
-const char* FontPath_ = "assets/fonts/DINCondensedBold.ttf";
+const char* MsgFontPath_ = "assets/fonts/The_Quest_of_Discoveries.ttf";
+const char* HoverFontPath_ = "assets/fonts/Coffee_with_Sugar.ttf";
 
 void InteractableComponent_Initialize(InteractableComponent* interactableComponent) {
 	Component_Initialize(interactableComponent);
-	interactableComponent->font = TTF_OpenFont(FontPath_, 28);
+	interactableComponent->msgFont = TTF_OpenFont(MsgFontPath_, 24);
+	interactableComponent->hoverFont = TTF_OpenFont(HoverFontPath_, 28);
 	
 	interactableComponent->r = 220;
 	interactableComponent->g = 220;
@@ -28,5 +30,5 @@ void InteractableComponent_Initialize(InteractableComponent* interactableCompone
 }
 
 void InteractableComponent_Free(InteractableComponent* interactableComponent) {
-	TTF_CloseFont(interactableComponent->font);
+	TTF_CloseFont(interactableComponent->msgFont);
 }

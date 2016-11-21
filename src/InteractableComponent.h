@@ -12,7 +12,8 @@ struct InteractableComponent : public Component {
  	bool interacted[Constants::MaxEntities_];
  	Texture* txt[Constants::MaxEntities_][Constants::MaxInteractableMessages_];
 
- 	_TTF_Font* font;
+ 	_TTF_Font* hoverFont;
+ 	_TTF_Font* msgFont;
  	unsigned char r, g, b;
 };
 
