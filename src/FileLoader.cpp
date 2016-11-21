@@ -385,7 +385,19 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 								AIComponent_Add(cBag->aiComponent, eid, type);
 							}
 							break;
-						case AIType_Thrower:
+						case AIType_Thrower:{
+								cout << "Adding AI to entity " << eid << ":(" << "Thrower" << ")" << endl;
+								AIComponent_Add(cBag->aiComponent, eid, type);
+							}
+							break;
+						case AIType_Flyer: {
+								int range = int_parameters.front();
+								int_parameters.pop();
+								int facing = int_parameters.front();
+								int_parameters.pop();
+								cout << "Adding AI to entity " << eid << ":(" << "Flyer" << ")" << endl;
+								AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
+							}
 							break;
 					}
 

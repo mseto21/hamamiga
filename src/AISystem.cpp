@@ -109,6 +109,7 @@ void FlyerUpdate(AISystem* aiSystem, uint32 eid) {
       if (marchValues->distance >= marchValues->range) {
         marchValues->distance = 0;
         marchValues->facing *= -1;
+        moveValues->xAccel *= -1;
       }
   } 
 }
@@ -151,13 +152,14 @@ void AISystem_Update(AISystem* aiSystem) {
       case AIType_Marcher:
         MarcherUpdate(aiSystem, eid);
         break;
-      case AIType_Flyer:
-        FlyerUpdate(aiSystem, eid);
       case AIType_Projectile:
         ProjectileUpdate(aiSystem, eid);
         break;
       case AIType_Thrower:
         ThrowerUpdate(aiSystem, eid);
+        break;
+      case AIType_Flyer:
+        FlyerUpdate(aiSystem, eid);
         break;
     } 
   }
