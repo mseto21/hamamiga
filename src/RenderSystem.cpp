@@ -381,6 +381,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.substr(0, 4).c_str(), "score_string");
 		RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
 	}*/
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 }
 
 void RenderSystem_Free(RenderSystem* renderSystem) {

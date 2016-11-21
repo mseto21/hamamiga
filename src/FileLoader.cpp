@@ -16,7 +16,6 @@
 #include "HealthComponent.h"
 #include "CameraComponent.h"
 #include "HatComponent.h"
-#include "FAIComponent.h"
 #include "AIComponent.h"
 #include "AliveComponent.h"
 #include "GoalComponent.h"
@@ -315,8 +314,15 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					float_parameters.pop();
 					int yAccel = float_parameters.front();
 					float_parameters.pop();
-					cout << "Adding movement to entity " << eid << ":(" << xVelocity << "," << yVelocity << "," << xAccel << "," << yAccel << ")" << endl;
-					MovementComponent_Add(cBag->movementComponent, eid, xVelocity, yVelocity, xAccel, yAccel);
+					if (int_parameters.empty()) {
+						cout << "Adding movement to entity " << eid << ":(" << xVelocity << "," << yVelocity << "," << xAccel << "," << yAccel << ")" << endl;
+						MovementComponent_Add(cBag->movementComponent, eid, xVelocity, yVelocity, xAccel, yAccel);
+					} else {
+						int flying = int_parameters.front();
+						int_parameters.pop();
+						cout << "Adding movement to entity " << eid << ":(" << xVelocity << "," << yVelocity << "," << xAccel << "," << yAccel << "," << flying << ")" << endl;
+						MovementComponent_Add(cBag->movementComponent, eid, xVelocity, yVelocity, xAccel, yAccel, flying);
+					}
 				} else if (strcmp(cmd, "physics") == 0) {
 					int mass = int_parameters.front();
 					int_parameters.pop();
@@ -364,26 +370,25 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 				} else if (strcmp(cmd, "ai") == 0) {
 					int type = int_parameters.front();
 					int_parameters.pop();
-					int sz = int_parameters.size();
-
-					if (sz == 2) {
-						int range = int_parameters.front();
-						int_parameters.pop();
-						int facing = int_parameters.front();
-						int_parameters.pop();
-						cout << "Adding AI to entity " << eid << ":(Chasing," << range << ", " << facing << ")" << endl;
-						AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
-					} else {
-						cout << "Adding AI to entity " << eid << ":(" << type << ")" << endl;
-						AIComponent_Add(cBag->aiComponent, eid, type);
+					switch(type) {
+						case AIType_Marcher: {
+								int range = int_parameters.front();
+								int_parameters.pop();
+								int facing = int_parameters.front();
+								int_parameters.pop();
+								cout << "Adding AI to entity " << eid << ":(Marcher," << range << ", " << facing << ")" << endl;
+								AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
+							}
+							break;
+						case AIType_Projectile: {
+								cout << "Adding AI to entity " << eid << ":(" << "Projectile" << ")" << endl;
+								AIComponent_Add(cBag->aiComponent, eid, type);
+							}
+							break;
+						case AIType_Thrower:
+							break;
 					}
-				} else if (strcmp(cmd, "fai") == 0) {
-					int range = int_parameters.front();
-					int_parameters.pop();
-					int facing = int_parameters.front();
-					int_parameters.pop();
-					cout << "Adding FAI to entity " << eid << ":(" << range << ", " << facing << ")" << endl;
-					FAIComponent_Add(cBag->faiComponent, eid, range, facing);
+
 				} else if (strcmp(cmd, "alive") == 0) {
 					cout << "Adding AliveComponent to entity " << eid << std::endl;
 					AliveComponent_Add(cBag->aliveComponent, eid);

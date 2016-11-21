@@ -9,7 +9,6 @@
 #include "HatComponent.h"
 #include "InputComponent.h"
 #include "AliveComponent.h"
-#include "FAIComponent.h"
 #include "AIComponent.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
@@ -34,7 +33,6 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->inputComponent		= cBag->inputComponent;
 	physicsSystem->interactableComponent = cBag->interactableComponent;
 	physicsSystem->aliveComponent 		= cBag->aliveComponent;
-	physicsSystem->faiComponent             = cBag->faiComponent;
 	physicsSystem->aiComponent              = cBag->aiComponent;
 	physicsSystem->map 					= tileMap;
 	physicsSystem->componentBag 		= cBag;
@@ -60,7 +58,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	InputComponent* inputComponent = physicsSystem->inputComponent;
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
 	AliveComponent * aliveComponent = physicsSystem->aliveComponent;
-	FAIComponent * faiComponent = physicsSystem->faiComponent;
 	AIComponent * aiComponent = physicsSystem->aiComponent;
 	TileMap* map = physicsSystem->map;
 
@@ -228,7 +225,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		}
 
 		// Move player based on physics
-		if (!moveValues->grounded && !moveValues->flying && !Component_HasIndex(faiComponent, eid)) {
+		if (!moveValues->grounded && !moveValues->flying) {
 		  	moveValues->yVelocity += Constants::Gravity_;
 		  	moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
 		  	moveValues->xAccel -= moveValues->xAccel*Constants::AirRes_;

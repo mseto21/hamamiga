@@ -12,7 +12,6 @@ struct HealthComponent;
 struct CameraComponent;
 struct HatComponent;
 struct AIComponent;
-struct FAIComponent;
 struct AliveComponent;
 struct GoalComponent;
 struct InteractableComponent;
@@ -29,7 +28,6 @@ struct ComponentBag {
 	CameraComponent*	cameraComponent;
   	HatComponent*       hatComponent;
 	AIComponent* 		aiComponent;
-	FAIComponent*		faiComponent;
 	AliveComponent* 	aliveComponent;
 	GoalComponent* 		goalComponent;
 	InteractableComponent * interactableComponent;

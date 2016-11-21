@@ -5,6 +5,7 @@ enum AIType {
   AIType_Marcher = 0,
   AIType_Projectile,
   AIType_Thrower,
+  AIType_Flyer,
 };
 
 struct MarchValues {

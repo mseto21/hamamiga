@@ -4,7 +4,6 @@
 #include "Zone.h"
 
 #include "AISystem.h"
-#include "FAISystem.h"
 #include "CameraSystem.h"
 #include "InputSystem.h"
 #include "MovementSystem.h"
@@ -90,7 +89,6 @@ struct PlayState {
 
 	/* Systems */
 	AISystem aiSystem;
-	FAISystem faiSystem;
 	CameraSystem cameraSystem;
 	InputSystem inputSystem;
 	MovementSystem movementSystem;

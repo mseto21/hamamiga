@@ -76,6 +76,44 @@ void MarcherUpdate(AISystem* aiSystem, uint32 eid) {
 }
 
 
+void FlyerUpdate(AISystem* aiSystem, uint32 eid) {
+  AIComponent* aiComponent = aiSystem->aiComponent;
+  MovementComponent* movementComponent = aiSystem->movementComponent;
+  RectangleComponent* rectangleComponent = aiSystem->rectangleComponent;
+  if (!Component_HasIndex(movementComponent, eid)) {
+    return;
+  }
+  if (!Component_HasIndex(rectangleComponent, eid)) {
+    return;
+  }
+  Rectangle pRect = rectangleComponent->entityRectangles[rectangleComponent->entityArray[Constants::PlayerIndex_]];
+  MovementValues* moveValues = &movementComponent->movementValues[eid];
+  Rectangle* eRect = &rectangleComponent->entityRectangles[eid];
+  moveValues->xAccel = 0;
+  moveValues->yAccel = 0;
+  if (close(&pRect, eRect)) {
+    if (pRect.x + (pRect.w)/2 < eRect->x + (eRect->w)/2) {
+      moveValues->xAccel = -moveValues->accelX;
+    } else {
+      moveValues->xAccel = moveValues->accelX;
+    }
+    if (pRect.y + (pRect.h)/2 < eRect->y + (eRect->h)/2) {
+      moveValues->yAccel = -moveValues->accelY;
+    } else {
+      moveValues->yAccel = moveValues->accelY;
+    }
+  } else {
+      MarchValues* marchValues = &aiComponent->marchValues[eid];
+      moveValues->yAccel = moveValues->accelY*marchValues->facing;
+      marchValues->distance += moveValues->yAccel*marchValues->facing;
+      if (marchValues->distance >= marchValues->range) {
+        marchValues->distance = 0;
+        marchValues->facing *= -1;
+      }
+  } 
+}
+
+
 void ProjectileUpdate(AISystem* aiSystem, uint32 eid) {
   AIComponent* aiComponent = aiSystem->aiComponent;
   RectangleComponent* rectangleComponent = aiSystem->rectangleComponent;
@@ -113,6 +151,8 @@ void AISystem_Update(AISystem* aiSystem) {
       case AIType_Marcher:
         MarcherUpdate(aiSystem, eid);
         break;
+      case AIType_Flyer:
+        FlyerUpdate(aiSystem, eid);
       case AIType_Projectile:
         ProjectileUpdate(aiSystem, eid);
         break;
