@@ -34,6 +34,7 @@ enum GameState {
 	GameState_Play,
 	GameState_HighScore,
 	GameState_Options,
+	GameState_Controls,
 	GameState_Pause,
 	GameState_Win,
 	GameState_Lose,
@@ -64,6 +65,10 @@ struct OptionState {
 	const char* selectionStrings[Constants::TitleScreenSelections_];
 	uint8 selection;
 	_TTF_Font* font;
+};
+
+struct ControlsState {
+
 };
 
 struct ZoneIntroState {

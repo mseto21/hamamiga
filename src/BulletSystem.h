@@ -10,6 +10,7 @@ struct AliveComponent;
 struct TextureComponent;
 struct MovementComponent;
 struct ComponentBag;
+struct Zone;
 
 struct BulletSystem {
   PhysicsComponent* physicsComponent;
@@ -19,8 +20,9 @@ struct BulletSystem {
   TextureComponent* textureComponent;
   MovementComponent* movementComponent;
   ComponentBag* cBag;
+  Zone* zone;
 };
 
-void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag);
+void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag, Zone* zone);
 void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed);
 void BulletSystem_Free(BulletSystem* bulletSystem);

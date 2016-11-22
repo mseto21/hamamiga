@@ -4,6 +4,7 @@ zone=
 	tilemap=assets/chapter_1/chapter_1_level.csv;
 	music=assets/sounds/chapter_1.ogg;
 	cutstart=assets/chapter_1/cutscene-1.png,assets/chapter_1/cutscene-2.png,assets/chapter_1/cutscene-3.png,;
+	dimensions=5040,1470;
 	entity=
 		animation(4,150.0,48,87,)
 		health(100,)
@@ -85,6 +86,7 @@ zone=
 		texture(assets/chapter_1/hats-chap1.png,bunny,0,0,85,60,)
 		physics(0,)
 		interactable(E to Put On,0,0,This is the bunny hat! It gives you the ability to jump twice as high!,)
+		rectangle(300,1350,85,60,)
 		rectangle(300,1350,85,60,)
 		alive();
 END=

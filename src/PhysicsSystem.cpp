@@ -309,8 +309,8 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			if (r1->x <= 0) {
 				r1->x = 0;
 				moveValues->xVelocity = 0;
-			} else if (r1->x + r1->w >= Constants::LevelWidth_) {
-				r1->x = Constants::LevelWidth_ - r1->w;
+			} else if (r1->x + r1->w >= map->w * Constants::TileSize_) {
+				r1->x = map->w * Constants::TileSize_- r1->w;
 				moveValues->xVelocity = 0;
 			}
 			if (r1->y < 0) {

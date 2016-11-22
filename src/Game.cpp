@@ -102,14 +102,18 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 				game->gameState = GameState_LoadPlay;
 				break;
 			case 1:
-				game->gameState = GameState_HighScore;
-				LoadHighScoreStateAssets(game);
+				game->gameState = GameState_Controls;
+				LoadControlsStateAssets(game);
 				break;
 			case 2:
 				game->gameState = GameState_Options;
 				LoadOptionStateAssets(game);
 				break;
 			case 3:
+				game->gameState = GameState_HighScore;
+				LoadHighScoreStateAssets(game);
+				break;
+			case 4:
 				Mix_HaltMusic();
 				game->gameState = GameState_Closing;
 				break;

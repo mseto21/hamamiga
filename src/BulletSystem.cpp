@@ -9,11 +9,12 @@
 #include "TextureCache.h"
 #include "MovementComponent.h"
 #include "ComponentBag.h"
+#include "Zone.h"
 
 #include <SDL.h>
 #include <iostream>
 
-void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag) {
+void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag, Zone* zone) {
   bulletSystem->physicsComponent    = cBag->physicsComponent;
   bulletSystem->rectangleComponent  = cBag->rectangleComponent;
   bulletSystem->bulletComponent     = cBag->bulletComponent;
@@ -21,6 +22,7 @@ void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag) {
   bulletSystem->textureComponent  	= cBag->textureComponent;
   bulletSystem->movementComponent   = cBag->movementComponent;
   bulletSystem->cBag                = cBag;
+  bulletSystem->zone                = zone;
 }
 
 void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
@@ -60,7 +62,7 @@ void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
         moveValues->xAccel = moveValues->accelX;
       }
 
-      if (bX > Constants::LevelWidth_ || bX < 0 || bX < minScreenX || bX > maxScreenX ||
+      if (bX > bulletSystem->zone->levelWidth || bX < 0 || bX < minScreenX || bX > maxScreenX ||
         bulletComponent->bullet[eid].collided == true){
         ComponentBag_ForceRemove(bulletSystem->cBag, eid);
       } else if (bulletComponent->bullet[eid].life > MaxBulletLife_) {

@@ -38,9 +38,10 @@ void LoadTitleStateAssets(Game* game) {
 	}
 	TTF_SetFontHinting(game->titleState.titleFont, TTF_HINTING_MONO);
 	game->titleState.selectionStrings[0] = "Play";
-	game->titleState.selectionStrings[1] = "High Scores";
+	game->titleState.selectionStrings[1] = "Controls";
 	game->titleState.selectionStrings[2] = "Options";
-	game->titleState.selectionStrings[3] = "Quit";
+	game->titleState.selectionStrings[3] = "High Scores";
+	game->titleState.selectionStrings[4] = "Quit";
 
 	SDL_Color baseColor = {255, 255, 255, 255};
 	SDL_Color selectedColor = {100, 100, 100, 100};
@@ -108,6 +109,11 @@ void LoadOptionStateAssets(Game* game) {
 		TextureCache_CreateTextureFromFont(game->renderer, game->optionState.font, selectedColor, game->optionState.selectionStrings[selectionIndex], select.c_str());
 	}
 	TTF_CloseFont(game->highScoreState.font);
+}
+
+
+void LoadControlsStateAssets(Game* game) {
+	LoadPlayStateAssets(game, 0);
 }
 
 
@@ -191,14 +197,14 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 
 	// Initialize systems
 	AISystem_Initialize(&game->playState.aiSystem, &game->playState.cBag);
-	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag);
+	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag, &game->playState.chapter);
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
 	MovementSystem_Initialize(&game->playState.movementSystem, &game->playState.cBag);
 	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap, game);
 	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.scoreFont);
-	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag);
+	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag, &game->playState.chapter);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
-	BulletSystem_Initialize(&game->playState.bulletSystem, &game->playState.cBag);
+	BulletSystem_Initialize(&game->playState.bulletSystem, &game->playState.cBag, &game->playState.chapter);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
 
 	// Pause state

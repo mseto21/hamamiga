@@ -542,6 +542,32 @@ int ReadCutSceneStart(FILE* chapterFile, SDL_Renderer* renderer, ZoneIntroState*
 	return lineNumber;
 }
 
+/* Read the width and height of the level. */
+int ReadDimensions(FILE* chapterFile, Zone* zone) {
+	char str[MaxBuffSize_];
+	memset(&str, 0, MaxBuffSize_);
+	uint8 pos = 0;
+	int lineNumber = 0;
+
+	int c;
+	// Loop until we reach an end of line.
+	while ((c=fgetc(chapterFile)) != ';') {
+		if (c == '\n') {
+			lineNumber++;
+		} else if (c == ',') {
+			zone->levelWidth = stoi(str);
+			memset(&str, 0, MaxBuffSize_);
+			pos = 0;
+		} else {
+			if (c != '\t')
+				str[pos++] = c;
+		}
+	}
+	zone->levelHeight = stoi(str);
+	cout << "SUCCESS: Zone given dimensions " << zone->levelWidth << "," << zone->levelHeight << "!" << endl;
+	return lineNumber;
+}
+
 
 /* Read in a zone and its parts. */
 int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer, ZoneIntroState* zoneIntroState) {
@@ -567,6 +593,8 @@ int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* re
 				lineNumber += ReadCutSceneStart(chapterFile, renderer, zoneIntroState);
 			} else if (strcmp(str, "zone") == 0) {
 				// Embedded zone, won't worry about that right now.
+			} else if (strcmp(str, "dimensions") == 0) {
+				lineNumber += ReadDimensions(chapterFile, zone);
 			} else if (strcmp(str, "END") == 0) {
 				lineNumber++;
 				cout << "SUCCESS: Zone successfully loaded!" << endl;

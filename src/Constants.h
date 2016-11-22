@@ -5,8 +5,6 @@ namespace Constants {
 	const uint16 	ScreenWidth_ 	= 	1080;
 	const uint16 	ScreenHeight_ 	= 	760;
 
-	const uint16 	LevelWidth_ 		= 	5040;
-	const uint16 	LevelHeight_ 		= 	1470;
 	const float   	StepSize_ 			= 	8.f;
 	const uint32  	NumKeys_			=	323;
 	const uint32	MaxEntities_  		=   128;
@@ -18,7 +16,7 @@ namespace Constants {
 	const uint32	IntroTime_			= 	5000;
 
 	// Title State
-	const uint8	 	TitleScreenSelections_	=	4;
+	const uint8	 	TitleScreenSelections_	=	5;
 	
 	// Option State
 	const uint8	 	OptionScreenSelections_	=	1;

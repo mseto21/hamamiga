@@ -2,16 +2,19 @@
 #include "CameraComponent.h"
 #include "RectangleComponent.h"
 #include "ComponentBag.h"
+#include "Zone.h"
 #include <iostream>
 
-void CameraSystem_Initialize(CameraSystem* cameraSystem, ComponentBag* cBag) {
+void CameraSystem_Initialize(CameraSystem* cameraSystem, ComponentBag* cBag, Zone* zone) {
 	cameraSystem->cameraComponent 		=	cBag->cameraComponent;
 	cameraSystem->rectangleComponent 	= cBag->rectangleComponent;
+	cameraSystem->zone = zone;
 }
 
 void CameraSystem_Update(CameraSystem* cameraSystem) {
 	CameraComponent* cameraComponent = cameraSystem->cameraComponent;
 	RectangleComponent* rectangleComponent = cameraSystem->rectangleComponent;
+	Zone* zone = cameraSystem->zone;
 
 	for (uint32 entityIndex = 0; entityIndex < cameraComponent->count; entityIndex++) {
 		uint32 eid = cameraComponent->entityArray[entityIndex];
@@ -40,12 +43,12 @@ void CameraSystem_Update(CameraSystem* cameraSystem) {
 			camera->y = 0;
 		}
 
-		if (camera->x > Constants::LevelWidth_ - camera->w) {
-			camera->x = Constants::LevelWidth_  - camera->w;
+		if (camera->x > zone->levelWidth - camera->w) {
+			camera->x = zone->levelWidth  - camera->w;
 		}
 		
-		if (camera->y > Constants::LevelHeight_  - camera->h) {
-			camera->y = Constants::LevelHeight_  - camera->h;
+		if (camera->y > zone->levelHeight  - camera->h) {
+			camera->y = zone->levelHeight  - camera->h;
 		}
 	}
 }
