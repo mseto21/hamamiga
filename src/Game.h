@@ -31,10 +31,10 @@ enum GameState {
 	GameState_Title,
 	GameState_ZoneIntro,
 	GameState_LoadPlay,
+	GameState_LoadTutorial,
 	GameState_Play,
 	GameState_HighScore,
 	GameState_Options,
-	GameState_Controls,
 	GameState_Pause,
 	GameState_Win,
 	GameState_Lose,
@@ -67,9 +67,6 @@ struct OptionState {
 	_TTF_Font* font;
 };
 
-struct ControlsState {
-
-};
 
 struct ZoneIntroState {
 	float alpha;

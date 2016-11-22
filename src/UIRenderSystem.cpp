@@ -196,6 +196,9 @@ void RenderPauseState(Game* game, uint32  elapsed) {
 	RenderSystem_Update(&game->playState.renderSystem, game->renderer, 0);
 	Texture* texture = game->pauseState.pauseTextures[game->pauseState.pauseIndex];
 	Texture* speech = TextureCache_GetTexture("speech-bubble");
+	if (speech == NULL) {
+		return;
+	}
 	if (texture != NULL) {
 		int bubbleX = Constants::ScreenWidth_ / 2 - speech->w / 2;
 		int bubbleY = Constants::ScreenHeight_ / 2 - speech->h / 2;

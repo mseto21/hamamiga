@@ -112,11 +112,6 @@ void LoadOptionStateAssets(Game* game) {
 }
 
 
-void LoadControlsStateAssets(Game* game) {
-	LoadPlayStateAssets(game, 0);
-}
-
-
 
 void LoadZoneIntroAssets(Game* game, String128 name) {
 	game->zoneIntroState.alpha = 0.f;

@@ -102,8 +102,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 				game->gameState = GameState_LoadPlay;
 				break;
 			case 1:
-				game->gameState = GameState_Controls;
-				LoadControlsStateAssets(game);
+				game->gameState = GameState_LoadTutorial;
 				break;
 			case 2:
 				game->gameState = GameState_Options;
@@ -336,6 +335,17 @@ void Game_RunLoop(Game* game) {
 				LoadPlayStateAssets(game, game->playState.currentLevel);
 				if (!game->playState.loaded) {
 					std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
+					game->gameState = GameState_Title;
+				} else {
+					LoadZoneIntroAssets(game, game->playState.chapter.name);
+					game->gameState = GameState_ZoneIntro;
+				}
+				break;
+			case GameState_LoadTutorial:
+				Mix_HaltMusic();
+				LoadPlayStateAssets(game, 0);
+				if (!game->playState.loaded) {
+					std::cerr << "Error: Unable to find game with level 0" << std::endl;
 					game->gameState = GameState_Title;
 				} else {
 					LoadZoneIntroAssets(game, game->playState.chapter.name);
