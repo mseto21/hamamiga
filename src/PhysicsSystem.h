@@ -15,6 +15,7 @@ struct AliveComponent;
 struct AIComponent;
 struct BulletComponent;
 struct Game;
+struct Zone;
 
 struct PhysicsSystem {
 	PhysicsComponent* physicsComponent; 
@@ -30,8 +31,9 @@ struct PhysicsSystem {
 	TileMap* map;
 	ComponentBag* componentBag;
 	Game* game;
+	Zone* zone;
 };
 
-void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Game* game);
+void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Game* game, Zone* zone);
 void PhysicsSystem_Update(PhysicsSystem* physicsSystem);
 void PhysicsSystem_Free(PhysicsSystem* physicsSystem);

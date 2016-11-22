@@ -17,13 +17,14 @@
 #include "SoundCache.h"
 #include "InteractionTypes.h"
 #include "Texture.h"
+#include "Zone.h"
 
 #include <stdlib.h>
 #include <SDL.h>
 #include <iostream>
 
 // Physics Constants
-void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Game* game) {
+void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Game* game, Zone* zone) {
 	physicsSystem->physicsComponent 	= cBag->physicsComponent;
 	physicsSystem->movementComponent 	= cBag->movementComponent;
 	physicsSystem->rectangleComponent 	= cBag->rectangleComponent;
@@ -33,10 +34,11 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->inputComponent		= cBag->inputComponent;
 	physicsSystem->interactableComponent = cBag->interactableComponent;
 	physicsSystem->aliveComponent 		= cBag->aliveComponent;
-	physicsSystem->aiComponent              = cBag->aiComponent;
+	physicsSystem->aiComponent          = cBag->aiComponent;
 	physicsSystem->map 					= tileMap;
 	physicsSystem->componentBag 		= cBag;
 	physicsSystem->game 				= game;
+	physicsSystem->zone 				= zone;
 }
 
 
@@ -309,8 +311,8 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			if (r1->x <= 0) {
 				r1->x = 0;
 				moveValues->xVelocity = 0;
-			} else if (r1->x + r1->w >= map->w * Constants::TileSize_) {
-				r1->x = map->w * Constants::TileSize_- r1->w;
+			} else if (r1->x + r1->w >= physicsSystem->zone->levelWidth) {
+				r1->x = physicsSystem->zone->levelWidth - r1->w;
 				moveValues->xVelocity = 0;
 			}
 			if (r1->y < 0) {
