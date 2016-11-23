@@ -13,6 +13,7 @@
 #include "AliveComponent.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
+#include "NameComponent.h"
 #include <iostream>
 
 
@@ -31,6 +32,7 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->aliveComponent 		= (AliveComponent*)malloc(sizeof(*bag->aliveComponent));
 	bag->goalComponent 			= (GoalComponent*)malloc(sizeof(*bag->goalComponent));
 	bag->interactableComponent 	= (InteractableComponent*)malloc(sizeof(*bag->interactableComponent));
+	bag->nameComponent 			= (NameComponent*)malloc(sizeof(*bag->nameComponent));
 	ComponentBag_Reset(bag);
 }
 
@@ -49,6 +51,7 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->aliveComponent);
 	Component_Initialize(bag->goalComponent);
 	InteractableComponent_Initialize(bag->interactableComponent);
+	NameComponent_Initialize(bag->nameComponent);
 }
 
 void ComponentBag_Check(ComponentBag* bag) {
@@ -94,6 +97,9 @@ void ComponentBag_Check(ComponentBag* bag) {
 	if (!bag->interactableComponent) {
 	  std::cout << "Error: Uninitialized aliveComponent" << std::endl;
 	}
+	if (!bag->nameComponent) {
+	  std::cout << "Error: Uninitialized aliveComponent" << std::endl;
+	}
 }
 
 void ComponentBag_Free(ComponentBag* bag) {
@@ -127,6 +133,9 @@ void ComponentBag_Free(ComponentBag* bag) {
 	InteractableComponent_Free(bag->interactableComponent);
 	free(bag->interactableComponent);
 	bag->interactableComponent = nullptr;
+	free(bag->nameComponent);
+	bag->nameComponent = nullptr;
+	NameComponent_Free(bag->nameComponent);
 }
 
 void Component_DisableEntity(ComponentBag* bag, uint32 eid) {
@@ -175,6 +184,9 @@ void Component_DisableEntity(ComponentBag* bag, uint32 eid) {
 		Component_Disable(bag->interactableComponent, eid);
 		bag->interactableComponent->interacted[eid] = false;
 	}
+	if (Component_HasIndex(bag->nameComponent, eid)) {
+		Component_Disable(bag->nameComponent, eid);
+	}
 }
 
 void Component_EnableEntity(ComponentBag* bag, uint32 eid) {
@@ -221,6 +233,9 @@ void Component_EnableEntity(ComponentBag* bag, uint32 eid) {
 	if (Component_HadIndex(bag->interactableComponent, eid)) {
 		Component_Enable(bag->interactableComponent, eid);
 	}
+	if (Component_HadIndex(bag->nameComponent, eid)) {
+		Component_Enable(bag->nameComponent, eid);
+	}
 }
 
 void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid) {
@@ -266,6 +281,9 @@ void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HasIndex(bag->interactableComponent, eid)) {
 		Component_ForceRemove(bag->interactableComponent, eid);
+	}
+	if (Component_HasIndex(bag->nameComponent, eid)) {
+		Component_ForceRemove(bag->nameComponent, eid);
 	}
 }
 

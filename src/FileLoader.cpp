@@ -20,6 +20,7 @@
 #include "AliveComponent.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
+#include "NameComponent.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -427,6 +428,12 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					
 					cout << "Adding InteractableComponent to entity " << eid << ":(" << message << ", " << type << ", " << hattype << ")" << endl;
 					InteractableComponent_Add(cBag->interactableComponent, eid, TextureCache_CreateTextureFromFont(renderer, cBag->interactableComponent->hoverFont, msg_color, message.c_str(), message.c_str()), type, hattype, txt);
+				} else if (strcmp(cmd, "name") == 0) {
+					string message = str_parameters.front();
+					str_parameters.pop();
+					cout << "Adding Name to entity " << eid << ":(" << message << ")" << endl;
+					Texture* texture = TextureCache_CreateTextureFromFont(renderer, cBag->nameComponent->font, {cBag->nameComponent->r, cBag->nameComponent->g, cBag->nameComponent->b, 1}, message.c_str(), message.c_str());
+					NameComponent_Add(cBag->nameComponent, eid, texture);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}

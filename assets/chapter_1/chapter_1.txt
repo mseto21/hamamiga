@@ -17,6 +17,7 @@ zone=
 		camera()
 		goal();
 	entity=
+		name(James from Marketing,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		movement(3.0,20.0,1.0,1.0,)
@@ -27,6 +28,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Harry,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		movement(3.0,20.0,1.0,1.0,)

@@ -18,6 +18,7 @@
 #include "GlamourHatEnum.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
+#include "NameComponent.h"
 
 #include <cstring>
 #include <math.h>
@@ -45,6 +46,7 @@ void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, Til
 	renderSystem->healthComponent 		= cBag->healthComponent;
 	renderSystem->goalComponent 		= cBag->goalComponent;
 	renderSystem->interactableComponent = cBag->interactableComponent;
+	renderSystem->nameComponent 		= cBag->nameComponent;
 	renderSystem->defaultFont 		 	= defaultFont;
 	renderSystem->map 					= tileMap;
 	renderSystem->cBag 					= cBag;
@@ -148,13 +150,14 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	TextureComponent* textureComponent = renderSystem->textureComponent;
  	RectangleComponent* rectangleComponent = renderSystem->rectangleComponent;
  	AnimationComponent* animationComponent = renderSystem->animationComponent;
- 	//	BulletComponent* bulletComponent = renderSystem->bulletComponent;
+ 	//BulletComponent* bulletComponent = renderSystem->bulletComponent;
  	MovementComponent* movementComponent = renderSystem->movementComponent;
  	CameraComponent* cameraComponent = renderSystem->cameraComponent;
  	HatComponent* hatComponent = renderSystem->hatComponent;
  	HealthComponent* healthComponent = renderSystem->healthComponent;
  	InteractableComponent* interactableComponent = renderSystem->interactableComponent;
  	//GoalComponent* goalComponent = renderSystem->goalComponent;
+ 	NameComponent* nameComponent = renderSystem->nameComponent;
  	TileMap* map = renderSystem->map;
 
 
@@ -278,9 +281,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			Texture* messageTexture;
 			if (interactableComponent->canBeInteractedWith[eid]) {
 				messageTexture = interactableComponent->msgs[eid];
-				rect.y -= messageTexture->h;
-				rect.x += (rect.w / 2 - messageTexture->w / 2);
-				RenderSystem_RenderCoord(renderer, &rect, NULL, messageTexture);
+				Rectangle messageRect = {rect.x + (rect.w / 2 - messageTexture->w / 2), rect.y - messageTexture->h, messageTexture->w, messageTexture->h};
+				RenderSystem_RenderCoord(renderer, &messageRect, NULL, messageTexture);
 			}
 		}
 
@@ -303,6 +305,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
 				SDL_RenderFillRect(renderer, &currentRect);
 				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
+			}
+		}
+		if (Component_HasIndex(nameComponent, eid)) {
+			Texture* nameTexture = nameComponent->textures[eid];
+			if (nameTexture) {
+				Rectangle nameRect = {rect.x + (rect.w / 2 - nameTexture->w / 2), rect.y - nameTexture->h - HealthBarHeight_, nameTexture->w, nameTexture->h};
+				RenderSystem_RenderCoord(renderer, &nameRect, NULL, nameTexture);
 			}
 		}
 	} // End entity render.
