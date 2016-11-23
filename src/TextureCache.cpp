@@ -23,7 +23,6 @@ Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, co
 	int textureIndex = 0;
 	for (; textureIndex < tcache->index; textureIndex++) {
 		if (strcmp(tcache->textures[textureIndex].name, name) == 0) {
-			TextureCache_Remove(name);
 			break;
 		}
 	}
@@ -42,7 +41,6 @@ Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, co
 	int textureIndex = 0;
 	for (; textureIndex < tcache->index; textureIndex++) {
 		if (strcmp(tcache->textures[textureIndex].name, name) == 0) {
-			TextureCache_Remove(name);
 			break;
 		}
 	}
@@ -58,14 +56,32 @@ Texture* TextureCache_CreateTexture(SDL_Renderer* renderer, const char* path, co
 
 /* Creates and returns a new texture with the given message, color, and font*/
 Texture* TextureCache_CreateTextureFromFont(SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name) {
-	Texture_CreateTextureFromFont(&tcache->textures[tcache->index], renderer, font, color, message, name);
-	return &tcache->textures[tcache->index++];
+	// Check if we already have that texture.
+	int textureIndex = 0;
+	for (; textureIndex < tcache->index; textureIndex++) {
+		if (strcmp(tcache->textures[textureIndex].name, name) == 0) {
+			break;
+		}
+	}
+	Texture_CreateTextureFromFont(&tcache->textures[textureIndex], renderer, font, color, message, name);
+	if (textureIndex == tcache->index)
+		tcache->index++;
+	return &tcache->textures[textureIndex];
 }
 
 /* Creates and returns a new texture with the given message, color, font, and wrapped width. */
 Texture* TextureCache_CreateTextureFromFontWithWidth(SDL_Renderer* renderer, _TTF_Font* font, SDL_Color color, const char* message, const char* name, int width) {
-	Texture_CreateTextureFromFontWithWidth(&tcache->textures[tcache->index], renderer, font, color, message, name, width);
-	return &tcache->textures[tcache->index++];
+	// Check if we already have that texture.
+	int textureIndex = 0;
+	for (; textureIndex < tcache->index; textureIndex++) {
+		if (strcmp(tcache->textures[textureIndex].name, name) == 0) {
+			break;
+		}
+	}
+	Texture_CreateTextureFromFontWithWidth(&tcache->textures[textureIndex], renderer, font, color, message, name, width);
+	if (textureIndex == tcache->index)
+		tcache->index++;
+	return &tcache->textures[textureIndex];
 }
 
 
@@ -146,3 +162,14 @@ void TextureCache_Free() {
 	free(tcache);
 	tcache = nullptr;
 }
+
+
+/* Print all of the textures in order. */
+void TextureCache_Print() {
+	for (int i = 0; i < tcache->index; i++) {
+		std::cout << i + 1 << ")" << tcache->textures[i].name << std::endl;
+	}
+}
+
+
+

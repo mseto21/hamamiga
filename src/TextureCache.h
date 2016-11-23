@@ -23,3 +23,4 @@ Texture* TextureCache_ReplaceTexture(SDL_Renderer* renderer, const char* path, c
 void TextureCache_Remove(const char* path);
 void TextureCache_FreeLevel();
 void TextureCache_Free();
+void TextureCache_Print();

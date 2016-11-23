@@ -1,5 +1,4 @@
 #include "NameComponent.h"
-#include "Texture.h"
 #include <SDL_ttf.h>
 #include <iostream>
 
