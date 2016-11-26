@@ -31,9 +31,6 @@ const float MaxYVelocityEnchancement_ = 1.5f;
 
 
 bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag) {
-	if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty) {
-		return false;
-	}
 
 	cBag->hatComponent->hats[eid].hat.hatType = hatType;
 	cBag->hatComponent->hats[eid].hat.eid = hatEid;
@@ -45,6 +42,9 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->movementComponent->movementValues[eid].accelY *= JumpEnhancement_;
 			cBag->movementComponent->movementValues[eid].maxYVelocity *= JumpEnhancement_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty) {
+				return false;
+			}
 			break;
 		case HatTypes_HardHat:
 			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
@@ -52,15 +52,24 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Take Half Damage!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->healthComponent->damageReduction[eid] = DamageReduction_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty) {
+				return false;
+			}
 			break;
 		case HatTypes_Cowboy:
 			Sound_Play(SoundCache_GetSound("western"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "cowboy", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to shoot bulelts at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty) {
+				return false;
+			}
 			break;
 		case HatTypes_Crown:
 			cBag->goalComponent->winGoal[eid] = true;
+			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty) {
+				return false;
+			}
 			break;
 		case HatTypes_Disco:
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "disco", sizeof(cBag->hatComponent->hats[eid].gHat.name));
@@ -83,6 +92,9 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->movementComponent->movementValues[eid].maxXVelocity *= MaxYVelocityEnchancement_;
 			cBag->movementComponent->movementValues[eid].maxYVelocity *= MaxYVelocityReduction_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty) {
+				return false;
+			}
 			break;
 	  case HatTypes_Beer:
 	 		Sound_Play(SoundCache_GetSound("beer"), 0);

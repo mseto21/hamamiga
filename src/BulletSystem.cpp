@@ -58,12 +58,12 @@ void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
       moveValues->yAccel = 0;
       if (bulletComponent->bullet[eid].left == true){
         moveValues->xAccel = -moveValues->accelX;
-      }else {
+      } else {
         moveValues->xAccel = moveValues->accelX;
       }
 
       if (bX > bulletSystem->zone->levelWidth || bX < 0 || bX < minScreenX || bX > maxScreenX ||
-        bulletComponent->bullet[eid].collided == true){
+        bulletComponent->bullet[eid].collided == true) {
         ComponentBag_ForceRemove(bulletSystem->cBag, eid);
         bulletComponent->bulletCount--;
       }
