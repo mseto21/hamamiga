@@ -215,8 +215,9 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			      if (!healthComponent->invincible[eid]) {
 			      	healthComponent->startHealth[eid] = healthComponent->health[eid];
 					healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
-					if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
-					  aliveComponent->alive[eid] = false;
+					if (Component_HasIndex(aliveComponent, eid)) {
+						if (healthComponent->health[eid] <= 0)
+					  		aliveComponent->alive[eid] = false;
 					}
 			      }
 			    } else {

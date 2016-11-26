@@ -4,6 +4,7 @@ zone=
 	tilemap=assets/chapter_3/chapter_3_level.csv;
 	music=assets/chapter_1/chapter_1.ogg;
 	dimensions=5040,1470;
+	cutstart=assets/chapter_3/cutscene-1.png,;
 	entity=
 		animation(4,150.0,48,87,)
 		health(100,)
@@ -30,12 +31,6 @@ zone=
 		physics(0,)
 		interactable(E to Put On,0,6,)
 		rectangle(4900,1000,85,60,)
-		alive();
-	entity=
-		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
-		physics(0,)
-		interactable(E to Put On,0,6,)
-		rectangle(49,1350,85,60,)
 		alive();
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
