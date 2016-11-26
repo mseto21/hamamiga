@@ -65,8 +65,6 @@ void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
       if (bX > bulletSystem->zone->levelWidth || bX < 0 || bX < minScreenX || bX > maxScreenX ||
         bulletComponent->bullet[eid].collided == true){
         ComponentBag_ForceRemove(bulletSystem->cBag, eid);
-      } else if (bulletComponent->bullet[eid].life > MaxBulletLife_) {
-        ComponentBag_ForceRemove(bulletSystem->cBag, eid);
         bulletComponent->bulletCount--;
       }
     }

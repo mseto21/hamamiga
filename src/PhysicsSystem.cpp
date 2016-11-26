@@ -147,12 +147,13 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						int hattype = interactableComponent->hattypes[otherEid];
 						if (Component_HasIndex(hatComponent, eid)){
 							if (!interactableComponent->interacted[otherEid]) {
-								Interaction_ApplyHatInteraction(hattype, eid, otherEid, physicsSystem->componentBag);
-								Interaction_DisplayMessage(physicsSystem->game, interactableComponent->txt[otherEid]);
-								interactableComponent->interacted[otherEid] = true;
-								if (Component_HasIndex(aliveComponent, otherEid)) {
-							  		aliveComponent->alive[otherEid] = false;
+								if (Interaction_ApplyHatInteraction(hattype, eid, otherEid, physicsSystem->componentBag)) {
+									Interaction_DisplayMessage(physicsSystem->game, interactableComponent->txt[otherEid]);
+									interactableComponent->interacted[otherEid] = true;
+									if (Component_HasIndex(aliveComponent, otherEid)) {
+								  		aliveComponent->alive[otherEid] = false;
 							  	}
+							  }
 							}
 						}
 						continue;

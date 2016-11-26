@@ -30,7 +30,11 @@ const float MaxYVelocityReduction_ = 0.5f;
 const float MaxYVelocityEnchancement_ = 1.5f;
 
 
-void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag) {
+bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag) {
+	if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty) {
+		return false;
+	}
+
 	cBag->hatComponent->hats[eid].hat.hatType = hatType;
 	cBag->hatComponent->hats[eid].hat.eid = hatEid;
 	switch (hatType)  {
@@ -75,10 +79,10 @@ void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 	    	Sound_Play(SoundCache_GetSound("heli"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "propeller", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Fly with W and S!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
-			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			cBag->movementComponent->movementValues[eid].flying = true;
 			cBag->movementComponent->movementValues[eid].maxXVelocity *= MaxYVelocityEnchancement_;
 			cBag->movementComponent->movementValues[eid].maxYVelocity *= MaxYVelocityReduction_;
+			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			break;
 	  case HatTypes_Beer:
 	 		Sound_Play(SoundCache_GetSound("beer"), 0);
@@ -90,8 +94,9 @@ void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			break;
 		default:
 			std::cerr << "Error: Unknown hat type given." << std::endl;
-			break;
+			return false;
 	}
+	return true;
 }
 
 void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
@@ -122,6 +127,7 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 		default:
 			return;
 	}
+
 	Component_EnableEntity(cBag, hatEid);
 	Rectangle dropperRect = cBag->rectangleComponent->entityRectangles[eid];
 	cBag->rectangleComponent->entityRectangles[hatEid].x = (dropperRect.w / 2 - cBag->rectangleComponent->entityRectangles[hatEid].w / 2) + dropperRect.x;
@@ -133,9 +139,8 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 		dir = -1;
 	cBag->movementComponent->movementValues[hatEid].xAccel = cBag->movementComponent->movementValues[eid].xVelocity + cBag->movementComponent->movementValues[hatEid].accelX * dir;
 
-  	cBag->hatComponent->hats[eid].hat.id = -1;
-  	cBag->hatComponent->hats[eid].hat.hatType = -1;
-    cBag->hatComponent->hats[eid].hat.eid = -1;
+  	cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+  	cBag->hatComponent->hats[eid].hat.hatType = HatTypes_Empty;
     memcpy(hat->name, "", sizeof(String128));
     memcpy(hat->effect, "", sizeof(String128));
 }
@@ -155,8 +160,7 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 
 	Hat* hat = &cBag->hatComponent->hats[eid].hat;
 	switch (hat->hatType) {
-		case HatTypes_Cowboy:
-			{ // Scoped for C reasons...
+		case HatTypes_Cowboy: {
 				Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
 				Entity* newBullet = EntityCache_GetNewEntity();
 				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
