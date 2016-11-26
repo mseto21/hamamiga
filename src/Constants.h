@@ -17,6 +17,7 @@ namespace Constants {
 
 	// Title State
 	const uint8	 	TitleScreenSelections_	=	5;
+	const uint8	 	TitleScreenTextures_	=	6;
 	
 	// Option State
 	const uint8	 	OptionScreenSelections_	=	1;

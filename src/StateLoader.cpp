@@ -37,15 +37,16 @@ void LoadTitleStateAssets(Game* game) {
 		return;
 	}
 	TTF_SetFontHinting(game->titleState.titleFont, TTF_HINTING_MONO);
-	game->titleState.selectionStrings[0] = "Play";
+	game->titleState.selectionStrings[0] = "New Game";
 	game->titleState.selectionStrings[1] = "Controls";
 	game->titleState.selectionStrings[2] = "Options";
 	game->titleState.selectionStrings[3] = "High Scores";
 	game->titleState.selectionStrings[4] = "Quit";
+	game->titleState.selectionStrings[5] = "Continue...";
 
 	SDL_Color baseColor = {255, 255, 255, 255};
 	SDL_Color selectedColor = {100, 100, 100, 100};
-	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
+	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenTextures_; selectionIndex++) {
 		std::string base = game->titleState.selectionStrings[selectionIndex];
 		base.append("_base");
 		TextureCache_CreateTextureFromFont(game->renderer, game->titleState.titleFont, baseColor, game->titleState.selectionStrings[selectionIndex], base.c_str());

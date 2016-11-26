@@ -48,7 +48,7 @@ struct IntroState {
 };
 
 struct TitleState {
-	const char* selectionStrings[Constants::TitleScreenSelections_];
+	const char* selectionStrings[Constants::TitleScreenTextures_];
 	uint8 selection;
 	_TTF_Font* titleFont;
 	_Mix_Music* titleMusic;
