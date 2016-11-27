@@ -4,7 +4,7 @@ zone=
 	tilemap=assets/chapter_4/chapter_4_level.csv;
 	music=assets/chapter_1/chapter_1.ogg;
 	dimensions=5040,1470;
-	cutstart=assets/chapter_4/cutscene-1.png,assets/chapter_4/cutscene-2.png;
+	cutstart=assets/chapter_4/cutscene-1.png,assets/chapter_4/cutscene-2.png,;
 	entity=
 		animation(4,150.0,48,87,)
 		health(100,)
