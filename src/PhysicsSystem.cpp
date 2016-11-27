@@ -175,7 +175,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
-				if (eid == Constants::PlayerIndex_) {
+				if (eid == Constants::PlayerIndex_ && Component_HasIndex(aiComponent, physicsComponent->entityArray[j])) {
 					moveValues->xVelocity = 15;
 					if (!Collision(down, r2)) {
 						moveValues->yVelocity = -5;
@@ -189,7 +189,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
 				//kickback for player
-				if (eid == Constants::PlayerIndex_) {
+				if (eid == Constants::PlayerIndex_ && Component_HasIndex(aiComponent, physicsComponent->entityArray[j])) {
 					moveValues->xVelocity = -15;
 					if (!Collision(down, r2)) {
 						moveValues->yVelocity = -5;
