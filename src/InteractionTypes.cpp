@@ -13,6 +13,7 @@
 #include "AIComponent.h"
 #include "AliveComponent.h"
 #include "GoalComponent.h"
+#include "DamageComponent.h"
 #include "InteractableComponent.h"
 #include "SoundCache.h"
 #include "GlamourHatEnum.h"
@@ -176,7 +177,8 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
 					cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
 					cBag->rectangleComponent, rect, newBullet->eid, true,
-					cBag->movementComponent->movementValues[eid].left);
+						    cBag->movementComponent->movementValues[eid].left);
+				DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
 			}
 			break;
 		default:

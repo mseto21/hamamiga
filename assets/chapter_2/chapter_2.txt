@@ -19,6 +19,7 @@ zone=
 	entity=
 		animation(4,150.0,88,87,)
 		health(100,)
+		damage(20,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1000,1353,88,87,)
@@ -28,6 +29,7 @@ zone=
 	entity=
 		animation(4,150.0,88,87,)
 		health(100,)		
+		damage(20,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1356,1353,88,87,)
@@ -37,6 +39,7 @@ zone=
 	entity=
 		animation(4,150.0,88,87,)
 		health(100,)
+		damage(20,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1106,990,88,87,)
@@ -46,6 +49,7 @@ zone=
 	entity=
 		animation(4,150.0,88,87,)
 		health(100,)
+		damage(20,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1775,1353,88,87,)
@@ -55,6 +59,7 @@ zone=
 	entity=
 		animation(4,150.0,88,87,)
 		health(100,)
+		damage(20,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1670,210,88,87,)
@@ -64,6 +69,7 @@ zone=
 	entity=
 		animation(4,150.0,88,87,)
 		health(100,)
+		damage(20,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(3780,1353,88,87,)

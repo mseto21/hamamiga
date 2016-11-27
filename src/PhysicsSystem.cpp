@@ -10,6 +10,7 @@
 #include "InputComponent.h"
 #include "AliveComponent.h"
 #include "AIComponent.h"
+#include "DamageComponent.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
 #include "TileMap.h"
@@ -35,6 +36,7 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->interactableComponent = cBag->interactableComponent;
 	physicsSystem->aliveComponent 		= cBag->aliveComponent;
 	physicsSystem->aiComponent          = cBag->aiComponent;
+	physicsSystem->damageComponent      = cBag->damageComponent;
 	physicsSystem->map 					= tileMap;
 	physicsSystem->componentBag 		= cBag;
 	physicsSystem->game 				= game;
@@ -61,6 +63,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
 	AliveComponent * aliveComponent = physicsSystem->aliveComponent;
 	AIComponent * aiComponent = physicsSystem->aiComponent;
+	DamageComponent * damageComponent = physicsSystem->damageComponent;
 	TileMap* map = physicsSystem->map;
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
@@ -212,11 +215,11 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				
 			}
 			if (cllsn) {
-			  if (Component_HasIndex(healthComponent, eid)) {
-			    if (!Component_HasIndex(inputComponent, physicsComponent->entityArray[j]) && !(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, physicsComponent->entityArray[j]))){
+			  if (Component_HasIndex(healthComponent, eid) && Component_HasIndex(damageComponent, physicsComponent->entityArray[j])) {
+			    if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, physicsComponent->entityArray[j]))){
 			      if (!healthComponent->invincible[eid]) {
 			      	        healthComponent->startHealth[eid] = healthComponent->health[eid];
-					healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
+					healthComponent->health[eid] -= damageComponent->damageValues[physicsComponent->entityArray[j]].damage / healthComponent->damageReduction[eid];
 					if (Component_HasIndex(aliveComponent, eid)) {
 						if (healthComponent->health[eid] <= 0)
 					  		aliveComponent->alive[eid] = false;

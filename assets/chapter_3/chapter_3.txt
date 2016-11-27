@@ -19,6 +19,7 @@ zone=
 	entity=
 		animation(4,150.0,125,71,)
 		health(100,)
+		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)
 		rectangle(1000,1353,125,71,)
@@ -51,6 +52,5 @@ zone=
 		physics(0,)
 		interactable(E to Put On,0,7, Oh no! Didn't your mom tell you to never drink and fly!,)
 		rectangle(4120,120,85,60,)
-
 		alive();
 END=

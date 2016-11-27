@@ -17,6 +17,7 @@
 #include "CameraComponent.h"
 #include "HatComponent.h"
 #include "AIComponent.h"
+#include "DamageComponent.h"
 #include "AliveComponent.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
@@ -329,6 +330,11 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					int_parameters.pop();
 					cout << "Adding physics to entity " << eid << ":(" << mass << ")" << endl;
 					PhysicsComponent_Add(cBag->physicsComponent, eid, mass);
+				} else if (strcmp(cmd, "damage") == 0) {
+				        int damage = int_parameters.front();
+					int_parameters.pop();
+					cout << "Adding damage to entity" << eid << ":(" << damage << ")" << endl;
+					DamageComponent_Add(cBag->damageComponent, eid, damage);
 				} else if (strcmp(cmd, "rectangle") == 0) {
 					int x = int_parameters.front();
 					int_parameters.pop();
