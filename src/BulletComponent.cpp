@@ -46,7 +46,7 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	else
 		RectangleComponent_Add(rect, eid, startX - texture->w, startY + 40, texture->w, texture->h);
 	//Movement
-	if (texture == 0) {
+	if (txtr == 0) {
 	  MovementComponent_Add(movementComponent, eid, 7, 0, 1.5, 1.0);//default bullet speed
 	} else {
 	  MovementComponent_Add(movementComponent, eid, 9, 14, 1.5, 1.0);
