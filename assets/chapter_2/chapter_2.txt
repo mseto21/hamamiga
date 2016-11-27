@@ -84,7 +84,7 @@ zone=
 		rectangle(400,120,85,60,)
 		alive();
 	entity=
-		texture(assets/hats/crown.png,crown,)
+		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
 		physics(0,)
 		interactable(E to Put On,0,2,)
 		rectangle(4850,1350,85,60,)

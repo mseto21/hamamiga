@@ -1,0 +1,31 @@
+zone=
+	name=Tutorial;
+	tileset=assets/chapter_1/chapter_1_tileset.png;
+	tilemap=assets/chapter_0/chapter_0_level.csv;
+	dimensions=1080,760;
+	entity=
+		animation(4,150.0,48,87,)
+		health(100,)
+		input()
+		movement(5.0,14.0,1.5,14.0,)
+		physics(100,)
+		rectangle(0,634,48,87,)
+		texture(assets/kevin/tinykev.png,player,)
+		hat()
+		camera()
+		goal();
+	entity=
+		movement(3.0,14.0,1.0,5.0,)
+		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
+		physics(0,)
+		interactable(E to Put On,0,6,)
+		rectangle(250,634,85,60,)
+		alive();
+	entity=
+		movement(3.0,14.0,1.0,5.0,)
+		texture(assets/hats/cowboy-hat.png,cowboy,)
+		physics(0,)
+		interactable(E to Put On,0,5,)
+		rectangle(153,634,85,60,)
+		alive();
+END=

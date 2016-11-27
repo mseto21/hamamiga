@@ -17,10 +17,7 @@
 #include "SoundCache.h"
 #include "GlamourHatEnum.h"
 #include "EntityCache.h"
-
 #include "Game.h"
-
-// TO-DO: These includes weren't the best thing I've done.
 #include <iostream>
 
 // Some constants for hats
@@ -71,6 +68,8 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 		case HatTypes_Disco:
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "disco", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Strobe Lights!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
+			cBag->hatComponent->hats[eid].gHat.hatType = hatType;
+			cBag->hatComponent->hats[eid].gHat.eid = hatEid;
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Disco;
 			Mix_VolumeMusic(MIX_MAX_VOLUME/4);
       		Sound_Play(SoundCache_GetSound("disco"), -1);
@@ -79,6 +78,8 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "miner", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Let There be light!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
+			cBag->hatComponent->hats[eid].gHat.hatType = hatType;
+			cBag->hatComponent->hats[eid].gHat.eid = hatEid;
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Miner;
 			break;
 	    case HatTypes_Propeller:
@@ -100,6 +101,8 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Tipsy at Work!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
 			cBag->movementComponent->movementValues[eid].accelX *= -1;
 			cBag->movementComponent->movementValues[eid].accelY *= -1;
+			cBag->hatComponent->hats[eid].gHat.hatType = hatType;
+			cBag->hatComponent->hats[eid].gHat.eid = hatEid;
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Beer;
 			break;
 		default:

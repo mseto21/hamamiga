@@ -21,9 +21,9 @@ struct _TTF_Font;
 struct _Mix_Music;
 
 struct CutScene {
-	uint16 slideCount;
-	uint16 current;
-	Texture* slides[MaxSlides_];
+	uint16 slideCount;			/* Number of slides. */
+	uint16 current;				/* Current slide index. */
+	Texture* slides[MaxSlides_];/* Slides. */
 };
 
 enum GameState {
@@ -43,39 +43,43 @@ enum GameState {
 };
 
 struct IntroState {
-	float alpha;
-	uint32 elapsed;
+	float alpha;		/* Current opacity of introduction. */
+	uint32 elapsed;		/* Time keeper of introduction. */
 };
 
 struct TitleState {
-	const char* selectionStrings[Constants::TitleScreenTextures_];
-	uint8 selection;
-	_TTF_Font* titleFont;
-	_Mix_Music* titleMusic;
+	const char* selectionStrings[Constants::TitleScreenTextures_];	/* Strings of title options. */
+	uint8 selection;		/* Current title selection. */
+	_TTF_Font* titleFont;	/* Used title font. */
+	_Mix_Music* titleMusic;	/* Title music. */
 };
 
 struct HighScoreState {
-	int scores[Constants::MaxHighScores_];
-	_TTF_Font* font;
+	int scores[Constants::MaxHighScores_];	/* Array of scores. */
+	_TTF_Font* font;						/* Font used to display scores. */
 };
 
 struct OptionState {
-	uint16 musicVolume = 128;
-	float windowBrightness = 1.0f;
-	const char* selectionStrings[Constants::TitleScreenSelections_];
-	uint8 selection;
-	_TTF_Font* font;
+	uint16 musicVolume = 128;		/* Current music volume. */
+	float windowBrightness = 1.0f;	/* Current window brightness. */
+	const char* selectionStrings[Constants::TitleScreenSelections_]; /* Options strings. */
+	uint8 selection;				/* Current selection. */
+	_TTF_Font* font;				/* Font used by options. */
 };
 
-
 struct ZoneIntroState {
-	float alpha;
-	uint32 elapsed;
-	_TTF_Font* font;
+	float alpha;			/* Opacity of intro. */
+	uint32 elapsed;			/* Time elapsed in intro state. */
+	_TTF_Font* font;		/* Font for chapter name. */
 
-	bool sliding;
-	CutScene startScene;
-	CutScene endScene;
+	bool sliding;			/* Check if we're in transition. */
+	CutScene startScene;	/* Scenes at start of chapter. */
+	CutScene endScene;		/* Scenes at end of chapter. */
+};
+
+struct PauseState {
+	Texture** pauseTextures;	/* Pointer to an array of textures to display. */
+	int pauseIndex;				/* Index inside array of textures. */
 };
 
 struct PlayState {
@@ -83,11 +87,10 @@ struct PlayState {
 	_TTF_Font* scoreFont;
 	_TTF_Font* healthFont;
 
-	bool loaded; /* Ensure file loaded properly. */
+	bool loaded; 		/* Ensure file loaded properly. */
 	uint8 currentLevel; /* Keeps track of player progress. TO-DO: Read from file! */
-
-	Zone chapter;/* The current level, loaded by FileLoader. */
-	ComponentBag cBag;
+	Zone chapter;		/* The current level, loaded by FileLoader. */
+	ComponentBag cBag;	/* All components. */
 
 	/* Systems */
 	AISystem aiSystem;
@@ -100,11 +103,6 @@ struct PlayState {
 	SoundSystem soundSystem;
 	KillSystem killSystem;
 	BulletSystem bulletSystem;
-};
-
-struct PauseState {
-	Texture** pauseTextures;
-	int pauseIndex;
 };
 
 struct Game {

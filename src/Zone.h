@@ -9,10 +9,8 @@ const uint8 MaxSlides_ = 16;
 
 struct Zone {
 	String128 name;		/* The name of the current zone. */
-	TileMap tileMap;
-	int levelWidth;
-	int levelHeight;
-	_Mix_Music* music;
+	TileMap tileMap;	/* Map of zone. */
+	int levelWidth;		/* Level width. */
+	int levelHeight;	/* Level height. */
+	_Mix_Music* music;	/* Music playing in level. */
 };
-
-void Zone_Create(const char* name, Zone* embeddedZones);

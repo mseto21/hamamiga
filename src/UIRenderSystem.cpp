@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 
+/* Render main menu. */
 void RenderTitle(Game* game) {
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
@@ -38,6 +39,7 @@ void RenderTitle(Game* game) {
 }
 
 
+/* Render intro with proper fade. */
 void RenderIntro(Game* game, uint32 elapsed) {
 	// Check if the intro is done
 	game->introState.elapsed += elapsed;
@@ -63,6 +65,7 @@ void RenderIntro(Game* game, uint32 elapsed) {
 }
 
 
+/* Render intro with transitions between cut scenes. */
 void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 	// Render fade
 	if (game->zoneIntroState.startScene.current ==game->zoneIntroState.startScene.slideCount) {
@@ -141,6 +144,7 @@ void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 }
 
 
+/* Render lose screen. */
 void RenderLose(Game* game) {
 	Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
 	SDL_RenderClear(game->renderer);
@@ -149,6 +153,7 @@ void RenderLose(Game* game) {
 }
 
 
+/* Render win screen. */
 void RenderWin(Game* game) {
 	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
 	SDL_RenderClear(game->renderer);
@@ -157,6 +162,7 @@ void RenderWin(Game* game) {
 }
 
 
+/* Render options based on current selection. */
 void RenderOptions(Game* game, uint32 elapsed) {
 	//std::cout<< "in redner options" << std::endl;
 	(void) elapsed;
@@ -181,6 +187,7 @@ void RenderOptions(Game* game, uint32 elapsed) {
 	SDL_RenderPresent(game->renderer);
 }
 
+/* Render high scores. */
 void RenderHighScore(Game* game, uint32 elapsed) {
 	(void) elapsed;
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
@@ -198,6 +205,7 @@ void RenderHighScore(Game* game, uint32 elapsed) {
 }
 
 
+/* Render the paused state with given texure and speech bubbles. */
 void RenderPauseState(Game* game, uint32  elapsed) {
 	(void) elapsed;
 	SDL_RenderClear(game->renderer);
@@ -221,6 +229,7 @@ void RenderPauseState(Game* game, uint32  elapsed) {
 }
 
 
+/* Select the correct render based on state. */
 void UIRenderSystem_Render(int gameState, Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 	switch (gameState) {
 		case GameState_Intro:
