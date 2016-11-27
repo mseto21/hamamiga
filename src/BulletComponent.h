@@ -23,4 +23,4 @@ struct BulletComponent : public Component {
 
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent*,
 	AliveComponent*, TextureComponent*, MovementComponent*, RectangleComponent*,
-	 Rectangle, uint32 eid, bool, bool);
+	 Rectangle, uint32 eid, bool, bool, int);

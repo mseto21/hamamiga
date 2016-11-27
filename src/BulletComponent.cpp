@@ -12,7 +12,7 @@ int BulletComponent::bulletCount = 0;
 
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* physicsComponent,
 	AliveComponent* aliveComponent, TextureComponent* textureComponent, MovementComponent* movementComponent,
-	RectangleComponent* rect, Rectangle rectPos, uint32 eid, bool team, bool left) {
+			 RectangleComponent* rect, Rectangle rectPos, uint32 eid, bool team, bool left, int txtr) {
 
 	if (bulletComponent->bulletCount == Constants::MaxBullets_) {
 		return;
@@ -25,7 +25,12 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	PhysicsComponent_Add(physicsComponent, eid, 100);
 	AliveComponent_Add(aliveComponent, eid);
 	//Texture
-	Texture* texture = TextureCache_GetTexture("bullet");
+	Texture* texture;
+	if (txtr == 0) {
+	  texture = TextureCache_GetTexture("bullet");
+	}else {
+	  texture = TextureCache_GetTexture("knife");
+	}
 	if (left == true) {
 		texture->flip = SDL_FLIP_HORIZONTAL;
 	} else {
@@ -41,6 +46,11 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	else
 		RectangleComponent_Add(rect, eid, startX - texture->w, startY + 40, texture->w, texture->h);
 	//Movement
-	MovementComponent_Add(movementComponent, eid, 7, 0, 1.5, 1.0);//default bullet speed
+	if (txtr == 0) {
+	  MovementComponent_Add(movementComponent, eid, 7, 0, 1.5, 1.0);//default bullet speed
+	} else {
+	  MovementComponent_Add(movementComponent, eid, 9, 14, 1.5, 1.0);
+	  movementComponent->movementValues[eid].yVelocity = -7;
+	}
 	bulletComponent->bulletCount++;
 }

@@ -67,16 +67,30 @@ void LoadTitleStateAssets(Game* game) {
 
 void LoadHighScoreStateAssets(Game* game) {
 	// Load font
-	game->highScoreState.font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
+	game->highScoreState.font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
 	if (!game->highScoreState.font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
 	// TO-DO: Read this in from a file.
+	std::string scorePath = "assets/score/score.txt";
+	// Load file
+	if (!FileLoader_LoadScores(scorePath.c_str(), game->highScoreState.scores)) {
+		std::cerr << "Error: Unable to load scores from path " << std::endl;
+		return;
+	}
+	
+ 	game->highScoreState.scoreType[0]= "GameTime: ";
+ 	game->highScoreState.scoreType[1]= "Hats Collected: ";
+ 	game->highScoreState.scoreType[2]= "Levels Won: ";
+ 	game->highScoreState.scoreType[3]= "";
+ 	game->highScoreState.scoreType[4]= "";
+	
 	// Create textures for the current high scores
 	SDL_Color scoreColor = {255, 255, 255, 255};
 	for (int highScoreIndex = 0; highScoreIndex < Constants::MaxHighScores_; highScoreIndex++) {
-		std::string msg = std::to_string(game->highScoreState.scores[highScoreIndex]);
+		std::string msg = game->highScoreState.scoreType[highScoreIndex];
+		msg.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
 		std::string name = "high_score_";
 		name.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
 		TextureCache_CreateTextureFromFont(game->renderer, game->highScoreState.font, scoreColor, msg.c_str(), name.c_str());
@@ -187,6 +201,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/beer.ogg", "beer");
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
 	TextureCache_CreateTexture(game->renderer, "assets/hats/bullet.png", "bullet");
+	TextureCache_CreateTexture(game->renderer, "assets/hats/knife.png", "knife");
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/hats/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_MOD);
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
