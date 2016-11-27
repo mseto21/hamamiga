@@ -185,16 +185,16 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			} else if (Collision(right, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
-					//kickback for player
+				//kickback for player
 				if (eid == Constants::PlayerIndex_) {
 					moveValues->xVelocity = -15;
-					r1->x += moveValues->xVelocity;
 					if (!Collision(down, r2)) {
 						moveValues->yVelocity = -5;
 						r1->y += moveValues->yVelocity;
 					} else {
 						cllsnD = true;
 					}
+					r1->x += moveValues->xVelocity;
 				}
 			}
 			if (Collision(up, r2)) {
@@ -209,12 +209,13 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			//if bullet has collided, kill it
 			if (cllsn && Component_HasIndex(bulletComponent, physicsComponent->entityArray[j])){
 				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
+				
 			}
 			if (cllsn) {
 			  if (Component_HasIndex(healthComponent, eid)) {
-			    if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, physicsComponent->entityArray[j]))){
+			    if (!Component_HasIndex(inputComponent, physicsComponent->entityArray[j]) && !(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, physicsComponent->entityArray[j]))){
 			      if (!healthComponent->invincible[eid]) {
-			      	healthComponent->startHealth[eid] = healthComponent->health[eid];
+			      	        healthComponent->startHealth[eid] = healthComponent->health[eid];
 					healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
 					if (Component_HasIndex(aliveComponent, eid)) {
 						if (healthComponent->health[eid] <= 0)
@@ -222,17 +223,22 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					}
 			      }
 			    } else {
-			      aiComponent->marchValues[eid].facing *= -1;
+			                aiComponent->marchValues[eid].facing *= -1;
 			    }
 			  }
 			}
 		}
 
 		// Move player based on physics
-		if (!moveValues->grounded && !moveValues->flying) {
+		if (!moveValues->grounded) {
+		  if (moveValues->flying) {
+		        moveValues->yVelocity += Constants::Gravity_ / 2;
+		  } else {
 		  	moveValues->yVelocity += Constants::Gravity_;
+		  }
 		  	moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
 		  	moveValues->xAccel -= moveValues->xAccel*Constants::AirRes_;
+			
 		} else {
 			moveValues->xAccel -= moveValues->xAccel*Constants::Friction_;
 		 	moveValues->xVelocity -= moveValues->xVelocity*Constants::Friction_;
