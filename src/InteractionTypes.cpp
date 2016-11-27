@@ -189,7 +189,7 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
 					cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
 					cBag->rectangleComponent, rect, newBullet->eid, true,
-						    cBag->movementComponent->movementValues[eid].left, 1);
+						    cBag->movementComponent->movementValues[eid].left, 0);
 				DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
 			}
 			break;
