@@ -55,8 +55,6 @@ struct TitleState {
 };
 
 struct HighScoreState {
-	int scores[Constants::MaxHighScores_];	/* Array of scores. */
-	_TTF_Font* font;						/* Font used to display scores. */
 	const char* scoreType[Constants::MaxHighScores_];
 	float scores[Constants::MaxHighScores_];
 	_TTF_Font* font;
