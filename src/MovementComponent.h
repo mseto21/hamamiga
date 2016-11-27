@@ -19,3 +19,4 @@ struct MovementComponent : public Component {
 };
 
 void MovementComponent_Add(MovementComponent* movementComponent, uint32 eid, float xVelocity, float yVelocity, float xAccel, float yAccel);
+void MovementComponent_Add(MovementComponent* movementComponent, uint32 eid, float xVelocity, float yVelocity, float xAccel, float yAccel, bool flying);

@@ -14,3 +14,8 @@ void MovementComponent_Add(MovementComponent* movementComponent, uint32 eid, flo
 	movementComponent->movementValues[eid].grounded         = false;
 	movementComponent->movementValues[eid].flying			= false;
 }
+
+void MovementComponent_Add(MovementComponent* movementComponent, uint32 eid, float xVelocity, float yVelocity, float xAccel, float yAccel, bool flying) {
+	MovementComponent_Add(movementComponent, eid, xVelocity, yVelocity, xAccel, yAccel);
+	movementComponent->movementValues[eid].flying			= flying;
+}

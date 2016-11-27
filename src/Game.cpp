@@ -102,14 +102,17 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 				game->gameState = GameState_LoadPlay;
 				break;
 			case 1:
-				game->gameState = GameState_HighScore;
-				LoadHighScoreStateAssets(game);
+				game->gameState = GameState_LoadTutorial;
 				break;
 			case 2:
 				game->gameState = GameState_Options;
 				LoadOptionStateAssets(game);
 				break;
 			case 3:
+				game->gameState = GameState_HighScore;
+				LoadHighScoreStateAssets(game);
+				break;
+			case 4:
 				Mix_HaltMusic();
 				game->gameState = GameState_Closing;
 				break;
@@ -139,34 +142,34 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 	}
 
 	// Set the next state
-		switch (game->optionState.selection) {
-			case 0:
-				if (keysdown[SDLK_d]){
-					if (game->optionState.musicVolume < Constants::MaxVolume_) {
-						game->optionState.musicVolume += Constants::VolumeUnit_;
-					}
-				} else if (keysdown[SDLK_a]){
-					if (game->optionState.musicVolume > 0){
-						game->optionState.musicVolume -= Constants::VolumeUnit_;
-					}
+	switch (game->optionState.selection) {
+		case 0:
+			if (keysdown[SDLK_d]){
+				if (game->optionState.musicVolume < Constants::MaxVolume_) {
+					game->optionState.musicVolume += Constants::VolumeUnit_;
 				}
-				Mix_VolumeMusic(game->optionState.musicVolume);
-				break;
-			/*case 1:
-				if (keysdown[SDLK_d]){
-					if (game->optionState.windowBrightness < Constants::MaxBrightness_) {
-						game->optionState.windowBrightness += Constants::BrightnessUnit_;
-					}
-				} else if (keysdown[SDLK_a]){
-					game->optionState.windowBrightness -= Constants::BrightnessUnit_;
-					if (game->optionState.windowBrightness < 0){
-						game->optionState.windowBrightness = 0;
-					}
+			} else if (keysdown[SDLK_a]){
+				if (game->optionState.musicVolume > 0){
+					game->optionState.musicVolume -= Constants::VolumeUnit_;
 				}
-				SDL_SetWindowBrightness(game->window, game->optionState.windowBrightness);
-				SDL_UpdateWindowSurface(game->window);*/
-				break;
-		}
+			}
+			Mix_VolumeMusic(game->optionState.musicVolume);
+			break;
+		/*case 1:
+			if (keysdown[SDLK_d]){
+				if (game->optionState.windowBrightness < Constants::MaxBrightness_) {
+					game->optionState.windowBrightness += Constants::BrightnessUnit_;
+				}
+			} else if (keysdown[SDLK_a]){
+				game->optionState.windowBrightness -= Constants::BrightnessUnit_;
+				if (game->optionState.windowBrightness < 0){
+					game->optionState.windowBrightness = 0;
+				}
+			}
+			SDL_SetWindowBrightness(game->window, game->optionState.windowBrightness);
+			SDL_UpdateWindowSurface(game->window);*/
+			break;
+	}
 }
 
 void UpdatePause(Game* game, bool* keysdown, bool* keysup) {
@@ -179,7 +182,6 @@ void UpdatePause(Game* game, bool* keysdown, bool* keysup) {
 
 void UpdatePlay(Game* game) {
 	AISystem_Update(&game->playState.aiSystem);
-	FAISystem_Update(&game->playState.faiSystem);
 	MovementSystem_Update(&game->playState.movementSystem);
 	PhysicsSystem_Update(&game->playState.physicsSystem);
 	BulletSystem_Update(&game->playState.bulletSystem, Constants::OptimalTime_);
@@ -195,9 +197,6 @@ void UpdatePlay(Game* game) {
 			if (game->playState.currentLevel > Constants::MaximumLevels_) {
 				game->playState.currentLevel = 1;
 			}
-			game->gameState = GameState_Win;
-			//Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
-			//Sound_Play(SoundCache_GetSound("nj"), 0);
 			game->gameState = GameState_Win;
 		default:
 			break;
@@ -333,6 +332,17 @@ void Game_RunLoop(Game* game) {
 				LoadPlayStateAssets(game, game->playState.currentLevel);
 				if (!game->playState.loaded) {
 					std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
+					game->gameState = GameState_Title;
+				} else {
+					LoadZoneIntroAssets(game, game->playState.chapter.name);
+					game->gameState = GameState_ZoneIntro;
+				}
+				break;
+			case GameState_LoadTutorial:
+				Mix_HaltMusic();
+				LoadPlayStateAssets(game, 0);
+				if (!game->playState.loaded) {
+					std::cerr << "Error: Unable to find game with level 0" << std::endl;
 					game->gameState = GameState_Title;
 				} else {
 					LoadZoneIntroAssets(game, game->playState.chapter.name);

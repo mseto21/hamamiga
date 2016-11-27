@@ -37,14 +37,16 @@ void LoadTitleStateAssets(Game* game) {
 		return;
 	}
 	TTF_SetFontHinting(game->titleState.titleFont, TTF_HINTING_MONO);
-	game->titleState.selectionStrings[0] = "Play";
-	game->titleState.selectionStrings[1] = "High Scores";
+	game->titleState.selectionStrings[0] = "New Game";
+	game->titleState.selectionStrings[1] = "Controls";
 	game->titleState.selectionStrings[2] = "Options";
-	game->titleState.selectionStrings[3] = "Quit";
+	game->titleState.selectionStrings[3] = "High Scores";
+	game->titleState.selectionStrings[4] = "Quit";
+	game->titleState.selectionStrings[5] = "Continue...";
 
 	SDL_Color baseColor = {255, 255, 255, 255};
 	SDL_Color selectedColor = {100, 100, 100, 100};
-	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
+	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenTextures_; selectionIndex++) {
 		std::string base = game->titleState.selectionStrings[selectionIndex];
 		base.append("_base");
 		TextureCache_CreateTextureFromFont(game->renderer, game->titleState.titleFont, baseColor, game->titleState.selectionStrings[selectionIndex], base.c_str());
@@ -197,15 +199,14 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 
 	// Initialize systems
 	AISystem_Initialize(&game->playState.aiSystem, &game->playState.cBag);
-	FAISystem_Initialize(&game->playState.faiSystem, &game->playState.cBag);
-	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag);
+	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag, &game->playState.chapter);
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
 	MovementSystem_Initialize(&game->playState.movementSystem, &game->playState.cBag);
-	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap, game);
+	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap, game, &game->playState.chapter);
 	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.scoreFont);
-	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag);
+	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag, &game->playState.chapter);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
-	BulletSystem_Initialize(&game->playState.bulletSystem, &game->playState.cBag);
+	BulletSystem_Initialize(&game->playState.bulletSystem, &game->playState.cBag, &game->playState.chapter);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
 
 	// Pause state
@@ -254,14 +255,13 @@ void FreePlay(Game* game) {
 
 	// Delete all pointers in ai system
 	AISystem_Free(&game->playState.aiSystem);
-	FAISystem_Free(&game->playState.faiSystem);
 	CameraSystem_Free(&game->playState.cameraSystem);
 	InputSystem_Free(&game->playState.inputSystem);
 	MovementSystem_Free(&game->playState.movementSystem);
 	PhysicsSystem_Free(&game->playState.physicsSystem);
 	RenderSystem_Free(&game->playState.renderSystem);
 	GoalSystem_Free(&game->playState.goalSystem);
-//	SoundSystem_Free(&game->playState.soundSystem);
+	//	SoundSystem_Free(&game->playState.soundSystem);
 	BulletSystem_Free(&game->playState.bulletSystem);
 	KillSystem_Free(&game->playState.killSystem);
 

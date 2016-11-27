@@ -18,6 +18,7 @@
 #include "GlamourHatEnum.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
+#include "NameComponent.h"
 
 #include <cstring>
 #include <math.h>
@@ -45,6 +46,7 @@ void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, Til
 	renderSystem->healthComponent 		= cBag->healthComponent;
 	renderSystem->goalComponent 		= cBag->goalComponent;
 	renderSystem->interactableComponent = cBag->interactableComponent;
+	renderSystem->nameComponent 		= cBag->nameComponent;
 	renderSystem->defaultFont 		 	= defaultFont;
 	renderSystem->map 					= tileMap;
 	renderSystem->cBag 					= cBag;
@@ -148,13 +150,14 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	TextureComponent* textureComponent = renderSystem->textureComponent;
  	RectangleComponent* rectangleComponent = renderSystem->rectangleComponent;
  	AnimationComponent* animationComponent = renderSystem->animationComponent;
- 	//	BulletComponent* bulletComponent = renderSystem->bulletComponent;
+ 	//BulletComponent* bulletComponent = renderSystem->bulletComponent;
  	MovementComponent* movementComponent = renderSystem->movementComponent;
  	CameraComponent* cameraComponent = renderSystem->cameraComponent;
  	HatComponent* hatComponent = renderSystem->hatComponent;
  	HealthComponent* healthComponent = renderSystem->healthComponent;
  	InteractableComponent* interactableComponent = renderSystem->interactableComponent;
  	//GoalComponent* goalComponent = renderSystem->goalComponent;
+ 	NameComponent* nameComponent = renderSystem->nameComponent;
  	TileMap* map = renderSystem->map;
 
 
@@ -164,7 +167,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		std::cerr << "Error: The game background is not available." << std::endl;
 		return;
 	}
-	SDL_Rect backgroundClip = {cameraComponent->camera.x, cameraComponent->camera.y, Constants::ScreenWidth_, Constants::ScreenHeight_};
+	SDL_Rect backgroundClip = {cameraComponent->camera.x / 2, (cameraComponent->camera.y), Constants::ScreenWidth_, Constants::ScreenHeight_};
 	RenderSystem_Render_xywh(renderer, 0, 0, background->w, background->h, &backgroundClip, background);
  	
 
@@ -278,9 +281,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			Texture* messageTexture;
 			if (interactableComponent->canBeInteractedWith[eid]) {
 				messageTexture = interactableComponent->msgs[eid];
-				rect.y -= messageTexture->h;
-				rect.x += (rect.w / 2 - messageTexture->w / 2);
-				RenderSystem_RenderCoord(renderer, &rect, NULL, messageTexture);
+				Rectangle messageRect = {rect.x + (rect.w / 2 - messageTexture->w / 2), rect.y - messageTexture->h, messageTexture->w, messageTexture->h};
+				RenderSystem_RenderCoord(renderer, &messageRect, NULL, messageTexture);
 			}
 		}
 
@@ -288,12 +290,28 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			if (eid != Constants::PlayerIndex_) {
 				int max = healthComponent->maxHealth[eid];
 				int current = healthComponent->health[eid];
-				const SDL_Rect maxRect = {XRightRender_, YTopRender_, static_cast<int>(rect.w), HealthBarHeight_};
+				//const SDL_Rect maxRect = {XRightRender_, YTopRender_, static_cast<int>(rect.w), HealthBarHeight_};
 				const SDL_Rect currentRect = {static_cast<int>(rect.x), static_cast<int>(rect.y) - HealthBarHeight_, static_cast<int>(rect.w * ((float) current / max)), HealthBarHeight_};
-				SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
-				SDL_RenderFillRect(renderer, &maxRect);
-				SDL_SetRenderDrawColor(renderer, 0, 255, 0, 1);
+				float ratio = (float) current / max;
+				int r;
+				int g;
+				if (ratio > 0.5f) {
+					r = 255 * (1 - ((float)current / max));
+					g = 255;
+				} else {
+					r = 255;
+					g = 255 * (1 - (float)current / max);
+				}
+				SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
 				SDL_RenderFillRect(renderer, &currentRect);
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
+			}
+		}
+		if (Component_HasIndex(nameComponent, eid)) {
+			Texture* nameTexture = nameComponent->textures[eid];
+			if (nameTexture) {
+				Rectangle nameRect = {rect.x + (rect.w / 2 - nameTexture->w / 2), rect.y - nameTexture->h - HealthBarHeight_, nameTexture->w, nameTexture->h};
+				RenderSystem_RenderCoord(renderer, &nameRect, NULL, nameTexture);
 			}
 		}
 	} // End entity render.
@@ -317,7 +335,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				hatTexture->flip = SDL_FLIP_NONE;
 				RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
 				hatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
-				if (!gHatTexture) {
+				if (!gHatTexture || strcmp(gHatTexture->name, "") == 0) {
 					RenderSystem_Render_xywh(renderer, rect.x + (rect.w - hatTexture->w)/2, rect.y - hatTexture->h / 2.5, hatTexture->w, hatTexture->h, &clip, hatTexture);
 				}
 		    }
@@ -347,13 +365,21 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	
 	// Render HUD
 	if (Component_HasIndex(healthComponent, Constants::PlayerIndex_)) {
+		int current = HealthComponent_Lerp(healthComponent, Constants::PlayerIndex_, delta);
 		int max = healthComponent->maxHealth[Constants::PlayerIndex_];
-		int current = healthComponent->health[Constants::PlayerIndex_];
-		const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
+		//const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
 		const SDL_Rect currentRect = {XRightRender_, YTopRender_, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 1);
-		SDL_RenderFillRect(renderer, &maxRect);
-		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 1);
+		float ratio = (float) current / max;
+		int r;
+		int g;
+		if (ratio > 0.5f) {
+			r = 2 * 255 * (1 - ((float)current / max));
+			g = 255;
+		} else {
+			r = 255;
+			g = 2 * 255 * ((float)current / max);
+		}
+		SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
 		SDL_RenderFillRect(renderer, &currentRect);
 	}
 
@@ -364,6 +390,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.substr(0, 4).c_str(), "score_string");
 		RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
 	}*/
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 }
 
 void RenderSystem_Free(RenderSystem* renderSystem) {

@@ -9,7 +9,6 @@
 #include "HatComponent.h"
 #include "InputComponent.h"
 #include "AliveComponent.h"
-#include "FAIComponent.h"
 #include "AIComponent.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
@@ -18,13 +17,14 @@
 #include "SoundCache.h"
 #include "InteractionTypes.h"
 #include "Texture.h"
+#include "Zone.h"
 
 #include <stdlib.h>
 #include <SDL.h>
 #include <iostream>
 
 // Physics Constants
-void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Game* game) {
+void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Game* game, Zone* zone) {
 	physicsSystem->physicsComponent 	= cBag->physicsComponent;
 	physicsSystem->movementComponent 	= cBag->movementComponent;
 	physicsSystem->rectangleComponent 	= cBag->rectangleComponent;
@@ -34,11 +34,11 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->inputComponent		= cBag->inputComponent;
 	physicsSystem->interactableComponent = cBag->interactableComponent;
 	physicsSystem->aliveComponent 		= cBag->aliveComponent;
-	physicsSystem->faiComponent             = cBag->faiComponent;
-	physicsSystem->aiComponent              = cBag->aiComponent;
+	physicsSystem->aiComponent          = cBag->aiComponent;
 	physicsSystem->map 					= tileMap;
 	physicsSystem->componentBag 		= cBag;
 	physicsSystem->game 				= game;
+	physicsSystem->zone 				= zone;
 }
 
 
@@ -60,7 +60,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	InputComponent* inputComponent = physicsSystem->inputComponent;
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
 	AliveComponent * aliveComponent = physicsSystem->aliveComponent;
-	FAIComponent * faiComponent = physicsSystem->faiComponent;
 	AIComponent * aiComponent = physicsSystem->aiComponent;
 	TileMap* map = physicsSystem->map;
 
@@ -148,12 +147,13 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						int hattype = interactableComponent->hattypes[otherEid];
 						if (Component_HasIndex(hatComponent, eid)){
 							if (!interactableComponent->interacted[otherEid]) {
-								Interaction_ApplyHatInteraction(hattype, eid, otherEid, physicsSystem->componentBag);
-								Interaction_DisplayMessage(physicsSystem->game, interactableComponent->txt[otherEid]);
-								interactableComponent->interacted[otherEid] = true;
-								if (Component_HasIndex(aliveComponent, otherEid)) {
-							  		aliveComponent->alive[otherEid] = false;
+								if (Interaction_ApplyHatInteraction(hattype, eid, otherEid, physicsSystem->componentBag)) {
+									Interaction_DisplayMessage(physicsSystem->game, interactableComponent->txt[otherEid]);
+									interactableComponent->interacted[otherEid] = true;
+									if (Component_HasIndex(aliveComponent, otherEid)) {
+								  		aliveComponent->alive[otherEid] = false;
 							  	}
+							  }
 							}
 						}
 						continue;
@@ -185,16 +185,16 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			} else if (Collision(right, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
-					//kickback for player
+				//kickback for player
 				if (eid == Constants::PlayerIndex_) {
 					moveValues->xVelocity = -15;
-					r1->x += moveValues->xVelocity;
 					if (!Collision(down, r2)) {
 						moveValues->yVelocity = -5;
 						r1->y += moveValues->yVelocity;
 					} else {
 						cllsnD = true;
 					}
+					r1->x += moveValues->xVelocity;
 				}
 			}
 			if (Collision(up, r2)) {
@@ -209,29 +209,39 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			//if bullet has collided, kill it
 			if (cllsn && Component_HasIndex(bulletComponent, physicsComponent->entityArray[j])){
 				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
+				
 			}
 			if (cllsn) {
 			  if (Component_HasIndex(healthComponent, eid)) {
-			    if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, physicsComponent->entityArray[j]))){
+			    if (!Component_HasIndex(inputComponent, physicsComponent->entityArray[j]) && !(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, physicsComponent->entityArray[j]))){
 			      if (!healthComponent->invincible[eid]) {
-				healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
-				if (Component_HasIndex(aliveComponent, eid) && healthComponent->health[eid] <= 0){
-				  aliveComponent->alive[eid] = false;
-				}
+			      	        healthComponent->startHealth[eid] = healthComponent->health[eid];
+					healthComponent->health[eid] -= Constants::Damage_ / healthComponent->damageReduction[eid];
+					if (Component_HasIndex(aliveComponent, eid)) {
+						if (healthComponent->health[eid] <= 0)
+					  		aliveComponent->alive[eid] = false;
+					}
 			      }
 			    } else {
-			      aiComponent->marchValues[eid].facing *= -1;
+			                aiComponent->marchValues[eid].facing *= -1;
 			    }
 			  }
 			}
 		}
 
 		// Move player based on physics
-		if (!moveValues->grounded && !moveValues->flying && !Component_HasIndex(faiComponent, eid)) {
-		  moveValues->yVelocity += Constants::Gravity_;
-		  moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
+		if (!moveValues->grounded) {
+		  if (moveValues->flying) {
+		        moveValues->yVelocity += Constants::Gravity_ / 2;
+		  } else {
+		  	moveValues->yVelocity += Constants::Gravity_;
+		  }
+		  	moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
+		  	moveValues->xAccel -= moveValues->xAccel*Constants::AirRes_;
+			
 		} else {
-		  moveValues->xVelocity -= moveValues->xVelocity*Constants::Friction_;
+			moveValues->xAccel -= moveValues->xAccel*Constants::Friction_;
+		 	moveValues->xVelocity -= moveValues->xVelocity*Constants::Friction_;
 		}
 		if (moveValues->xVelocity < 0.2 && moveValues->xVelocity > -0.2) {
 		  moveValues->xVelocity = 0;
@@ -309,8 +319,8 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			if (r1->x <= 0) {
 				r1->x = 0;
 				moveValues->xVelocity = 0;
-			} else if (r1->x + r1->w >= Constants::LevelWidth_) {
-				r1->x = Constants::LevelWidth_ - r1->w;
+			} else if (r1->x + r1->w >= physicsSystem->zone->levelWidth) {
+				r1->x = physicsSystem->zone->levelWidth - r1->w;
 				moveValues->xVelocity = 0;
 			}
 			if (r1->y < 0) {

@@ -4,6 +4,7 @@ zone=
 	tilemap=assets/chapter_1/chapter_1_level.csv;
 	music=assets/sounds/chapter_1.ogg;
 	cutstart=assets/chapter_1/cutscene-1.png,assets/chapter_1/cutscene-2.png,assets/chapter_1/cutscene-3.png,;
+	dimensions=5040,1470;
 	entity=
 		animation(4,150.0,48,87,)
 		health(100,)
@@ -16,23 +17,25 @@ zone=
 		camera()
 		goal();
 	entity=
+		name(James from Marketing,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1000,1350,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(200,1,)
+		ai(0,200,1,)
 		alive()
 		goal();
 	entity=
+		name(Harry,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(1500,1350,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(500,1,)
+		ai(0,500,1,)
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
@@ -41,7 +44,7 @@ zone=
 		physics(100,)
 		rectangle(2200,1350,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(500,1,)
+		ai(0,500,1,)
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
@@ -50,7 +53,7 @@ zone=
 		physics(100,)
 		rectangle(1970,210,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(120,1,)
+		ai(0,120,1,)
 		alive();
 	entity=
 		animation(4,150.0,88,87,)
@@ -59,7 +62,7 @@ zone=
 		physics(100,)
 		rectangle(3980,1350,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(30,1,)
+		ai(0,30,1,)
 		alive();
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
@@ -74,10 +77,10 @@ zone=
 		rectangle(4800,1350,85,60,)
 		alive();
 	entity=
-		movement(3.0,20.0,1.0,1.0,)
+		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_1/hats-chap1.png,bunny,0,0,85,60,)
 		physics(0,)
-		interactable(E to Put On,0,0,This is the bunny hat! It gives you the ability to jump twice as high,JUMP KEVIN JUMP LIKE YOU'VE NEVER JUMPED BEFORE,)
+		interactable(E to Put On,0,0,This is the bunny hat! It gives you the ability to jump twice as high!,)
 		rectangle(3980,1350,85,60,)
 		alive();
 END=

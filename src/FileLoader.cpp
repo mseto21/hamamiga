@@ -16,11 +16,11 @@
 #include "HealthComponent.h"
 #include "CameraComponent.h"
 #include "HatComponent.h"
-#include "FAIComponent.h"
 #include "AIComponent.h"
 #include "AliveComponent.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
+#include "NameComponent.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -315,8 +315,15 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					float_parameters.pop();
 					int yAccel = float_parameters.front();
 					float_parameters.pop();
-					cout << "Adding movement to entity " << eid << ":(" << xVelocity << "," << yVelocity << "," << xAccel << "," << yAccel << ")" << endl;
-					MovementComponent_Add(cBag->movementComponent, eid, xVelocity, yVelocity, xAccel, yAccel);
+					if (int_parameters.empty()) {
+						cout << "Adding movement to entity " << eid << ":(" << xVelocity << "," << yVelocity << "," << xAccel << "," << yAccel << ")" << endl;
+						MovementComponent_Add(cBag->movementComponent, eid, xVelocity, yVelocity, xAccel, yAccel);
+					} else {
+						int flying = int_parameters.front();
+						int_parameters.pop();
+						cout << "Adding movement to entity " << eid << ":(" << xVelocity << "," << yVelocity << "," << xAccel << "," << yAccel << "," << flying << ")" << endl;
+						MovementComponent_Add(cBag->movementComponent, eid, xVelocity, yVelocity, xAccel, yAccel, flying);
+					}
 				} else if (strcmp(cmd, "physics") == 0) {
 					int mass = int_parameters.front();
 					int_parameters.pop();
@@ -362,19 +369,39 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					cout << "Adding hat to entity " << eid << "..." << endl;
 					HatComponent_Add(cBag->hatComponent, eid, hat, gHat);
 				} else if (strcmp(cmd, "ai") == 0) {
-					int range = int_parameters.front();
+					int type = int_parameters.front();
 					int_parameters.pop();
-					int facing = int_parameters.front();
-					int_parameters.pop();
-					cout << "Adding AI to entity " << eid << ":(" << range << ", " << facing << ")" << endl;
-					AIComponent_Add(cBag->aiComponent, eid, range, facing);
-				} else if (strcmp(cmd, "fai") == 0) {
-					int range = int_parameters.front();
-					int_parameters.pop();
-					int facing = int_parameters.front();
-					int_parameters.pop();
-					cout << "Adding FAI to entity " << eid << ":(" << range << ", " << facing << ")" << endl;
-					FAIComponent_Add(cBag->faiComponent, eid, range, facing);
+					switch(type) {
+						case AIType_Marcher: {
+								int range = int_parameters.front();
+								int_parameters.pop();
+								int facing = int_parameters.front();
+								int_parameters.pop();
+								cout << "Adding AI to entity " << eid << ":(Marcher," << range << ", " << facing << ")" << endl;
+								AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
+							}
+							break;
+						case AIType_Projectile: {
+								cout << "Adding AI to entity " << eid << ":(" << "Projectile" << ")" << endl;
+								AIComponent_Add(cBag->aiComponent, eid, type);
+							}
+							break;
+						case AIType_Thrower:{
+								cout << "Adding AI to entity " << eid << ":(" << "Thrower" << ")" << endl;
+								AIComponent_Add(cBag->aiComponent, eid, type);
+							}
+							break;
+						case AIType_Flyer: {
+								int range = int_parameters.front();
+								int_parameters.pop();
+								int facing = int_parameters.front();
+								int_parameters.pop();
+								cout << "Adding AI to entity " << eid << ":(" << "Flyer" << ")" << endl;
+								AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
+							}
+							break;
+					}
+
 				} else if (strcmp(cmd, "alive") == 0) {
 					cout << "Adding AliveComponent to entity " << eid << std::endl;
 					AliveComponent_Add(cBag->aliveComponent, eid);
@@ -394,13 +421,19 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					Texture* txt[Constants::MaxInteractableMessages_] = {NULL};
 					while (!str_parameters.empty()) {
 						string text = str_parameters.front();
-						txt[msgCnt] = TextureCache_CreateTextureFromFontWithWidth(renderer, cBag->interactableComponent->font, msg_color, text.c_str(), text.c_str(), Constants::DialogSize_);
+						txt[msgCnt] = TextureCache_CreateTextureFromFontWithWidth(renderer, cBag->interactableComponent->msgFont, msg_color, text.c_str(), text.c_str(), Constants::DialogSize_);
 						str_parameters.pop();
 						msgCnt++;
 					}
 					
 					cout << "Adding InteractableComponent to entity " << eid << ":(" << message << ", " << type << ", " << hattype << ")" << endl;
-					InteractableComponent_Add(cBag->interactableComponent, eid, TextureCache_CreateTextureFromFont(renderer, cBag->interactableComponent->font, msg_color, message.c_str(), message.c_str()), type, hattype, txt);
+					InteractableComponent_Add(cBag->interactableComponent, eid, TextureCache_CreateTextureFromFont(renderer, cBag->interactableComponent->hoverFont, msg_color, message.c_str(), message.c_str()), type, hattype, txt);
+				} else if (strcmp(cmd, "name") == 0) {
+					string message = str_parameters.front();
+					str_parameters.pop();
+					cout << "Adding Name to entity " << eid << ":(" << message << ")" << endl;
+					Texture* nameTexture = TextureCache_CreateTextureFromFont(renderer, cBag->nameComponent->font, {cBag->nameComponent->r, cBag->nameComponent->g, cBag->nameComponent->b, 1}, message.c_str(), message.c_str());
+					NameComponent_Add(cBag->nameComponent, eid, nameTexture);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}
@@ -516,6 +549,32 @@ int ReadCutSceneStart(FILE* chapterFile, SDL_Renderer* renderer, ZoneIntroState*
 	return lineNumber;
 }
 
+/* Read the width and height of the level. */
+int ReadDimensions(FILE* chapterFile, Zone* zone) {
+	char str[MaxBuffSize_];
+	memset(&str, 0, MaxBuffSize_);
+	uint8 pos = 0;
+	int lineNumber = 0;
+
+	int c;
+	// Loop until we reach an end of line.
+	while ((c=fgetc(chapterFile)) != ';') {
+		if (c == '\n') {
+			lineNumber++;
+		} else if (c == ',') {
+			zone->levelWidth = stoi(str);
+			memset(&str, 0, MaxBuffSize_);
+			pos = 0;
+		} else {
+			if (c != '\t')
+				str[pos++] = c;
+		}
+	}
+	zone->levelHeight = stoi(str);
+	cout << "SUCCESS: Zone given dimensions " << zone->levelWidth << "," << zone->levelHeight << "!" << endl;
+	return lineNumber;
+}
+
 
 /* Read in a zone and its parts. */
 int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer, ZoneIntroState* zoneIntroState) {
@@ -541,6 +600,8 @@ int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* re
 				lineNumber += ReadCutSceneStart(chapterFile, renderer, zoneIntroState);
 			} else if (strcmp(str, "zone") == 0) {
 				// Embedded zone, won't worry about that right now.
+			} else if (strcmp(str, "dimensions") == 0) {
+				lineNumber += ReadDimensions(chapterFile, zone);
 			} else if (strcmp(str, "END") == 0) {
 				lineNumber++;
 				cout << "SUCCESS: Zone successfully loaded!" << endl;

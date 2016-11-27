@@ -30,11 +30,13 @@ const float MaxYVelocityReduction_ = 0.5f;
 const float MaxYVelocityEnchancement_ = 1.5f;
 
 
-void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag) {
-	cBag->hatComponent->hats[eid].hat.hatType = hatType;
-	cBag->hatComponent->hats[eid].hat.eid = hatEid;
+bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag) {
 	switch (hatType)  {
 		case HatTypes_BunnyHat:
+			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
+				return false;
+			cBag->hatComponent->hats[eid].hat.hatType = hatType;
+			cBag->hatComponent->hats[eid].hat.eid = hatEid;
 			Sound_Play(SoundCache_GetSound("hop"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "bunny", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "2x Jump!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
@@ -43,6 +45,10 @@ void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			break;
 		case HatTypes_HardHat:
+			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
+				return false;
+			cBag->hatComponent->hats[eid].hat.hatType = hatType;
+			cBag->hatComponent->hats[eid].hat.eid = hatEid;
 			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "construction", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Take Half Damage!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
@@ -50,6 +56,10 @@ void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			break;
 		case HatTypes_Cowboy:
+			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
+				return false;
+			cBag->hatComponent->hats[eid].hat.hatType = hatType;
+			cBag->hatComponent->hats[eid].hat.eid = hatEid;
 			Sound_Play(SoundCache_GetSound("western"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "cowboy", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to shoot bulelts at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
@@ -72,13 +82,17 @@ void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Miner;
 			break;
 	    case HatTypes_Propeller:
+	    	if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
+				return false;
+			cBag->hatComponent->hats[eid].hat.hatType = hatType;
+			cBag->hatComponent->hats[eid].hat.eid = hatEid;
 	    	Sound_Play(SoundCache_GetSound("heli"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "propeller", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Fly with W and S!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
-			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			cBag->movementComponent->movementValues[eid].flying = true;
 			cBag->movementComponent->movementValues[eid].maxXVelocity *= MaxYVelocityEnchancement_;
 			cBag->movementComponent->movementValues[eid].maxYVelocity *= MaxYVelocityReduction_;
+			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			break;
 	  case HatTypes_Beer:
 	 		Sound_Play(SoundCache_GetSound("beer"), 0);
@@ -90,8 +104,9 @@ void Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			break;
 		default:
 			std::cerr << "Error: Unknown hat type given." << std::endl;
-			break;
+			return false;
 	}
+	return true;
 }
 
 void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
@@ -117,20 +132,25 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 			cBag->movementComponent->movementValues[eid].accelX /= -1;
 			cBag->movementComponent->movementValues[eid].accelY /= -1;
 			break;
+		case HatTypes_Cowboy:
+			break;
 		default:
 			return;
 	}
+
 	Component_EnableEntity(cBag, hatEid);
 	Rectangle dropperRect = cBag->rectangleComponent->entityRectangles[eid];
-	if (cBag->movementComponent->movementValues[eid].left)
-		cBag->rectangleComponent->entityRectangles[hatEid].x = dropperRect.x - cBag->rectangleComponent->entityRectangles[hatEid].w;
-	else
-		cBag->rectangleComponent->entityRectangles[hatEid].x = dropperRect.x + dropperRect.w;
-	cBag->rectangleComponent->entityRectangles[hatEid].y = dropperRect.y - cBag->rectangleComponent->entityRectangles[hatEid].h;
+	cBag->rectangleComponent->entityRectangles[hatEid].x = (dropperRect.w / 2 - cBag->rectangleComponent->entityRectangles[hatEid].w / 2) + dropperRect.x;
 
-  	cBag->hatComponent->hats[eid].hat.id = -1;
-  	cBag->hatComponent->hats[eid].hat.hatType = -1;
-    cBag->hatComponent->hats[eid].hat.eid = -1;
+	cBag->rectangleComponent->entityRectangles[hatEid].y = dropperRect.y - cBag->rectangleComponent->entityRectangles[hatEid].h;
+	cBag->movementComponent->movementValues[hatEid].yVelocity = cBag->movementComponent->movementValues[eid].yVelocity - cBag->movementComponent->movementValues[hatEid].accelY;
+	int dir = 1;
+	if (cBag->movementComponent->movementValues[eid].left)
+		dir = -1;
+	cBag->movementComponent->movementValues[hatEid].xAccel = cBag->movementComponent->movementValues[eid].xVelocity + cBag->movementComponent->movementValues[hatEid].accelX * dir;
+
+  	cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+  	cBag->hatComponent->hats[eid].hat.hatType = HatTypes_Empty;
     memcpy(hat->name, "", sizeof(String128));
     memcpy(hat->effect, "", sizeof(String128));
 }
@@ -150,8 +170,7 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 
 	Hat* hat = &cBag->hatComponent->hats[eid].hat;
 	switch (hat->hatType) {
-		case HatTypes_Cowboy:
-			{ // Scoped for C reasons...
+		case HatTypes_Cowboy: {
 				Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
 				Entity* newBullet = EntityCache_GetNewEntity();
 				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,

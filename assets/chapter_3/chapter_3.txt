@@ -3,6 +3,8 @@ zone=
 	tileset=assets/chapter_3/chapter_3_tileset.png;
 	tilemap=assets/chapter_3/chapter_3_level.csv;
 	music=assets/chapter_1/chapter_1.ogg;
+	dimensions=5040,1470;
+	cutstart=assets/chapter_3/cutscene-1.png,;
 	entity=
 		animation(4,150.0,48,87,)
 		health(100,)
@@ -17,13 +19,14 @@ zone=
 	entity=
 		animation(4,150.0,125,71,)
 		health(100,)
-		movement(4.0,4.0,1.0,1.0,)
+		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)
 		rectangle(1000,1353,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
-		fai(20,1,)
+		ai(3,20,1,)
 		alive();
 	entity=
+		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
 		physics(0,)
 		interactable(E to Put On,0,6, FLYYYYYYYY!,)
@@ -36,9 +39,18 @@ zone=
 		rectangle(10,910,85,60,)
 		alive();
 	entity=
+		movement(3.0,14.0,1.0,5.0,)
+		texture(assets/hats/cowboy-hat.png,cowboy,)
+		physics(0,)
+		interactable(E to Put On,0,5,)
+		rectangle(400,120,85,60,)
+		alive();
+	entity=
+		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_3/hats-chap3.png,beer,0,0,85,60,)
 		physics(0,)
 		interactable(E to Put On,0,7, Oh no! Didn't your mom tell you to never drink and fly!,)
-		rectangle(3416,920,85,60,)
+		rectangle(4120,120,85,60,)
+
 		alive();
 END=

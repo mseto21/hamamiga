@@ -4,14 +4,16 @@
 #include "AliveComponent.h"
 #include "GoalComponent.h"
 #include "RectangleComponent.h"
+#include "Zone.h"
 
 #include <iostream>
 
-void GoalSystem_Initialize(GoalSystem* goalSystem, ComponentBag* cBag) {
+void GoalSystem_Initialize(GoalSystem* goalSystem, ComponentBag* cBag, Zone* zone) {
 	goalSystem->healthComponent 	= cBag->healthComponent;
 	goalSystem->aliveComponent 		= cBag->aliveComponent;
 	goalSystem->goalComponent 		= cBag->goalComponent;
-	goalSystem->rectangleComponent = cBag->rectangleComponent;
+	goalSystem->rectangleComponent  = cBag->rectangleComponent;
+    goalSystem->zone                = zone;
 }
 
 
@@ -39,7 +41,7 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
     	}
 
     	if (Component_HasIndex(rectangleComponent, eid)) {
-    		if (rectangleComponent->entityRectangles[eid].y >= Constants::LevelHeight_) {
+    		if (rectangleComponent->entityRectangles[eid].y >= goalSystem->zone->levelHeight) {
     			if (Component_HasIndex(aliveComponent, eid)) {
 				 	aliveComponent->alive[eid] = false;
 				}

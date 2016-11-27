@@ -14,11 +14,19 @@ void RenderTitle(Game* game) {
 	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
 		Texture* selection;
 		if (selectionIndex == game->titleState.selection) {
-			std::string base = game->titleState.selectionStrings[selectionIndex];
+			std::string base;
+			if (selectionIndex == 0 && game->playState.currentLevel > 1)
+				base = game->titleState.selectionStrings[Constants::TitleScreenSelections_];
+			else
+				base = game->titleState.selectionStrings[selectionIndex];
 			base.append("_base");
 			selection = TextureCache_GetTexture(base.c_str());
 		} else {
-			std::string select = game->titleState.selectionStrings[selectionIndex];
+			std::string select;
+			if (selectionIndex == 0 && game->playState.currentLevel > 1)
+				select = game->titleState.selectionStrings[Constants::TitleScreenSelections_];
+			else
+				select = game->titleState.selectionStrings[selectionIndex];
 			select.append("_select");
 			selection = TextureCache_GetTexture(select.c_str());
 		}
@@ -196,6 +204,9 @@ void RenderPauseState(Game* game, uint32  elapsed) {
 	RenderSystem_Update(&game->playState.renderSystem, game->renderer, 0);
 	Texture* texture = game->pauseState.pauseTextures[game->pauseState.pauseIndex];
 	Texture* speech = TextureCache_GetTexture("speech-bubble");
+	if (speech == NULL) {
+		return;
+	}
 	if (texture != NULL) {
 		int bubbleX = Constants::ScreenWidth_ / 2 - speech->w / 2;
 		int bubbleY = Constants::ScreenHeight_ / 2 - speech->h / 2;

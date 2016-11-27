@@ -5,8 +5,6 @@ namespace Constants {
 	const uint16 	ScreenWidth_ 	= 	1080;
 	const uint16 	ScreenHeight_ 	= 	760;
 
-	const uint16 	LevelWidth_ 		= 	5040;
-	const uint16 	LevelHeight_ 		= 	1470;
 	const float   	StepSize_ 			= 	8.f;
 	const uint32  	NumKeys_			=	323;
 	const uint32	MaxEntities_  		=   128;
@@ -18,7 +16,8 @@ namespace Constants {
 	const uint32	IntroTime_			= 	5000;
 
 	// Title State
-	const uint8	 	TitleScreenSelections_	=	4;
+	const uint8	 	TitleScreenSelections_	=	5;
+	const uint8	 	TitleScreenTextures_	=	6;
 	
 	// Option State
 	const uint8	 	OptionScreenSelections_	=	1;
@@ -42,7 +41,7 @@ namespace Constants {
 	const uint8		PlayerIndex_		= 0;
 	const uint16  	XRange_           	= 300;
 	const uint16  	YRange_           	= 168;
-	const uint8 	MaximumLevels_ 		= 3;
+	const uint8 	MaximumLevels_ 		= 4;
 	const uint16	MaxMapWidth_		= 256; // In number of tiles
 	const uint16	MaxMapHeight_		= 256;
 	const uint16	TileSize_			= 48;

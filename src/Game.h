@@ -4,7 +4,6 @@
 #include "Zone.h"
 
 #include "AISystem.h"
-#include "FAISystem.h"
 #include "CameraSystem.h"
 #include "InputSystem.h"
 #include "MovementSystem.h"
@@ -32,6 +31,7 @@ enum GameState {
 	GameState_Title,
 	GameState_ZoneIntro,
 	GameState_LoadPlay,
+	GameState_LoadTutorial,
 	GameState_Play,
 	GameState_HighScore,
 	GameState_Options,
@@ -48,7 +48,7 @@ struct IntroState {
 };
 
 struct TitleState {
-	const char* selectionStrings[Constants::TitleScreenSelections_];
+	const char* selectionStrings[Constants::TitleScreenTextures_];
 	uint8 selection;
 	_TTF_Font* titleFont;
 	_Mix_Music* titleMusic;
@@ -66,6 +66,7 @@ struct OptionState {
 	uint8 selection;
 	_TTF_Font* font;
 };
+
 
 struct ZoneIntroState {
 	float alpha;
@@ -90,7 +91,6 @@ struct PlayState {
 
 	/* Systems */
 	AISystem aiSystem;
-	FAISystem faiSystem;
 	CameraSystem cameraSystem;
 	InputSystem inputSystem;
 	MovementSystem movementSystem;
