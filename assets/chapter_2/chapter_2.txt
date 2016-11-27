@@ -77,7 +77,7 @@ zone=
 	entity=
 		texture(assets/hats/cowboy-hat.png,cowboy,)
 		physics(0,)
-		interactable(E to Put On,0,5,)
+		interactable(E to Put On,0,5, YeeHaw! Press 'SPACE' to shoot enemies. Ammo is displayed in the top left.,)
 		rectangle(400,120,85,60,)
 		alive();
 	entity=

@@ -8,7 +8,7 @@ Gavi Rawson (grawson)
 
 The Fat Hactory Game! Yay!
 
-To run just make clean && make then ./fathactory and you may enjoy the
+To run just make clean && make, then ./fathactory and you may enjoy the
 splendor that is our game.
 
 General Controls:
@@ -22,6 +22,7 @@ Game Controls:
 'I' to make Kevin INVINCIBLE (so you don't die)
 'U' to cheat and Auto-Win the level
 'E' to pick up hat and wear it
+'SPACE' to close the pop-up notifications after picking up a hat
 'SPACE' to shoot enemies when wearing the "Cowboy" hat
 'WASD' to move, 'W' to jump
 
@@ -104,6 +105,16 @@ After obtaining the propellor hat, move around to reach the beer hat. Be careful
 Press 'E' to equip the propellor hat and beer hat when Kevin is standing over it.
 
 ---------------
+Things to fix for Assignment 9:
+---------------
+- Demon collision/movement
+- Decoupling hat-specific code (removing where it shouldn't be)
+- Add messages for hats so the player knows what each hat does
+- Add more sound effects for the hats
+- Add artwork for the messages
+- General bug fixes, improvements to game state changes
+
+---------------
 Breakdown of what each member achieved:
 ---------------
 Harry: Fixed the demon to demon collision (no longer hurt each other and turn around now) improved the flying demon movement system (still not perfect)
@@ -113,6 +124,6 @@ you picked up. Also, I cleaned up some of the code in the input, physics and mov
 code to a separate area. Essentially just decoupling some things that shouldn't be checked on every update. I also
 added the ability to take off your current hat, although it is not by any means a perfected system at the moment.
 
-Mindy: Logic for cowboy hat (BulletSystem, BulletComponent, can kill enemies now)
+Mindy: Added more sound effects for the game + messages for some hats
 
 Gavi: Designed slides for presentation, creates speech bubble.

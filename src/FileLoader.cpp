@@ -606,5 +606,50 @@ bool FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Rende
 	return true;
 }
 
+/* Read in a Scores file */
+bool FileLoader_LoadScores(const char* path, int[] stats, SDL_Renderer* renderer) {
+FILE* scoreFile = fopen(path, "r");
+	if (scoreFile == NULL) {
+		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
+		return false;
+	}
 
+	int c;
+	char str[MaxBuffSize_];
+	memset(&str, 0, MaxBuffSize_);
+	uint8 pos = 0;
+	int lineNumber = 1; // For debugging purposes.
+	int index = 0;
+
+	while ((c=fgetc(scoreFile)) != EOF) {
+		if (c =='=') {
+			if (strcmp(str, "time") == 0) {
+				stats[index] = 50;//get param somehow
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
+			} else if (strcmp(str, "hats") == 0) {
+			
+			} else if (strcmp(str, "levels") == 0) {
+			
+			} else if (strcmp(str, "END") == 0) {
+				lineNumber++;
+				cout << "SUCCESS: Scores uccessfully loaded!" << endl;
+				//return lineNumber;
+			} else {
+				std::cerr << "Error: Invalid token. Read " << str << " at line " << lineNumber << std::endl;
+			}
+
+		} else {
+			if (c == '\n') {
+				lineNumber++;
+			} else {
+				str[pos] = c;
+				pos++;
+			}
+		}
+	}
+	cout << "SUCCESS: Score file successfully loaded!" << endl;
+	fclose (scoreFile);
+	return true;
+}
 

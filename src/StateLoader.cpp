@@ -71,6 +71,12 @@ void LoadHighScoreStateAssets(Game* game) {
 		return;
 	}
 	// TO-DO: Read this in from a file.
+	std::string scorePath = "assets/score/score.txt";
+	// Load file
+	if (!FileLoader_LoadScores(scorePath.c_str(), &game->highScoreState.scores, game->renderer)) {
+		std::cerr << "Error: Unable to load from path " << chapterPath << std::endl;
+		return false;
+	}
 	// Create textures for the current high scores
 	SDL_Color scoreColor = {255, 255, 255, 255};
 	for (int highScoreIndex = 0; highScoreIndex < Constants::MaxHighScores_; highScoreIndex++) {
