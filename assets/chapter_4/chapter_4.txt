@@ -17,6 +17,27 @@ zone=
 		camera()
 		goal();
 	entity=
+		movement(3.0,14.0,1.0,5.0,)
+		texture(assets/hats/cowboy-hat.png,cowboy,)
+		physics(0,)
+		interactable(E to Put On,0,5, YeeHaw! Press 'SPACE' to shoot enemies. Ammo is displayed in the top left.,)
+		rectangle(400,120,85,60,)
+		alive();
+	entity=
+		movement(3.0,14.0,1.0,5.0,)
+		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
+		physics(0,)
+		interactable(E to Put On,0,6, FLYYYYYYYY!,)
+		rectangle(4550,745,85,60,)
+		alive();
+	entity=
+		movement(3.0,14.0,1.0,5.0,)
+		texture(assets/hats/crown.png,crown,)
+		physics(0,)
+		interactable(E to Win,0,2,)
+		rectangle(4900,1350,85,60,)
+		alive();
+	entity=
 		movement(3.0,0.0,1.0,5.0,)
 		health(20,)
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
@@ -50,5 +71,33 @@ zone=
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1200,48,48,)
+		alive();
+	entity=
+		movement(3.0,0.0,1.0,5.0,)
+		health(20,)
+		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
+		physics(0,)
+		rectangle(4850,1151,48,48,)
+		alive();
+	entity=
+		movement(3.0,0.0,1.0,5.0,)
+		health(20,)
+		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
+		physics(0,)
+		rectangle(4850,1102,48,48,)
+		alive();
+	entity=
+		movement(3.0,0.0,1.0,5.0,)
+		health(20,)
+		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
+		physics(0,)
+		rectangle(4850,1053,48,48,)
+		alive();
+	entity=
+		movement(3.0,0.0,1.0,5.0,)
+		health(20,)
+		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
+		physics(0,)
+		rectangle(4850,1004,48,48,)
 		alive();
 END=
