@@ -196,7 +196,7 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 				DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
 			}
 			break;
-	       case HatTypes_Chef: {	 
+	       case HatTypes_Chef: {
 				Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
 				Entity* newBullet = EntityCache_GetNewEntity();
 				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
