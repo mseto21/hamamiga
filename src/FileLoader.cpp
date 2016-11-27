@@ -667,8 +667,33 @@ bool FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Rende
 	return true;
 }
 
+int ReadScore(FILE* scoreFile, float stat[], int index) {
+	char str[MaxBuffSize_];
+	memset(&str, 0, MaxBuffSize_);
+	uint8 pos = 0;
+	int lineNumber = 0;
+
+	int c;
+	// Loop until we reach an end of line.
+	while ((c=fgetc(scoreFile)) != ';') {
+		if (c == '\n') {
+			lineNumber++;
+		} else {
+			if (c != '\t')
+				str[pos++] = c;
+		}
+	}
+	stat[index] = atof(str);
+	if (stat[index] == 0) {
+		cerr << "Unable to initialize highscore screen! SDL_Error: " << endl;
+	} else {
+		cout << "SUCCESS: Highscore file " << str << " successfully loaded!" << endl;
+	}
+	return lineNumber;
+}
+
 /* Read in a Scores file */
-bool FileLoader_LoadScores(const char* path, int[] stats, SDL_Renderer* renderer) {
+bool FileLoader_LoadScores(const char* path, float stats[]) {
 FILE* scoreFile = fopen(path, "r");
 	if (scoreFile == NULL) {
 		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
@@ -679,23 +704,28 @@ FILE* scoreFile = fopen(path, "r");
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
 	uint8 pos = 0;
-	int lineNumber = 1; // For debugging purposes.
+	int lineNumber = 0; // For debugging purposes.
 	int index = 0;
 
 	while ((c=fgetc(scoreFile)) != EOF) {
 		if (c =='=') {
 			if (strcmp(str, "time") == 0) {
-				stats[index] = 50;//get param somehow
+				lineNumber += ReadScore(scoreFile, stats, index);
+				index++;
 				pos = 0;
 				memset(&str, 0, MaxBuffSize_);
 			} else if (strcmp(str, "hats") == 0) {
-			
+				lineNumber += ReadScore(scoreFile, stats, index);
+				index++;
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
 			} else if (strcmp(str, "levels") == 0) {
-			
+				lineNumber += ReadScore(scoreFile, stats, index);
+				index++;
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
 			} else if (strcmp(str, "END") == 0) {
-				lineNumber++;
-				cout << "SUCCESS: Scores uccessfully loaded!" << endl;
-				//return lineNumber;
+				break;
 			} else {
 				std::cerr << "Error: Invalid token. Read " << str << " at line " << lineNumber << std::endl;
 			}
@@ -709,7 +739,7 @@ FILE* scoreFile = fopen(path, "r");
 			}
 		}
 	}
-	cout << "SUCCESS: Score file successfully loaded!" << endl;
+	cout << "SUCCESS: Scorefile successfully loaded!" << endl;
 	fclose (scoreFile);
 	return true;
 }
