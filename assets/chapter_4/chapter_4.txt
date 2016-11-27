@@ -16,40 +16,4 @@ zone=
 		hat()
 		camera()
 		goal();
-	entity=
-		animation(4,150.0,125,71,)
-		health(100,)
-		movement(4.0,4.0,1.0,1.0,1,)
-		physics(100,)
-		rectangle(1000,1353,125,71,)
-		texture(assets/enemies/flying-demon.png,fdemon,)
-		ai(3,20,1,)
-		alive();
-	entity=
-		movement(3.0,14.0,1.0,5.0,)
-		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
-		physics(0,)
-		interactable(E to Put On,0,6,)
-		rectangle(4900,1000,85,60,)
-		alive();
-	entity=
-		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
-		physics(0,)
-		interactable(E to Put On,0,2,)
-		rectangle(10,910,85,60,)
-		alive();
-	entity=
-		movement(3.0,14.0,1.0,5.0,)
-		texture(assets/hats/cowboy-hat.png,cowboy,)
-		physics(0,)
-		interactable(E to Put On,0,5,)
-		rectangle(400,120,85,60,)
-		alive();
-	entity=
-		movement(3.0,14.0,1.0,5.0,)
-		texture(assets/chapter_3/hats-chap3.png,beer,0,0,85,60,)
-		physics(0,)
-		interactable(E to Put On,0,7,)
-		rectangle(4120,120,85,60,)
-		alive();
 END=
