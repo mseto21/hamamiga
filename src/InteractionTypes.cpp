@@ -103,6 +103,16 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->movementComponent->movementValues[eid].accelY *= -1;
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Beer;
 			break;
+	  case HatTypes_Chef:
+	                if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
+			      return false;
+			cBag->hatComponent->hats[eid].hat.hatType = hatType;
+			cBag->hatComponent->hats[eid].hat.eid = hatEid;
+			Sound_Play(SoundCache_GetSound("western"), 0);
+			memcpy(&cBag->hatComponent->hats[eid].hat.name, "chef", sizeof(cBag->hatComponent->hats[eid].hat.name));
+			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to throw your knives at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
+			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			break;
 		default:
 			std::cerr << "Error: Unknown hat type given." << std::endl;
 			return false;
@@ -124,7 +134,7 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 		case HatTypes_HardHat:
 			cBag->healthComponent->damageReduction[eid] = 0;
 			break;
-	    case HatTypes_Propeller:
+	        case HatTypes_Propeller:
 			cBag->movementComponent->movementValues[eid].flying = false;
 			cBag->movementComponent->movementValues[eid].maxXVelocity /= MaxYVelocityEnchancement_;
 			cBag->movementComponent->movementValues[eid].maxYVelocity /= MaxYVelocityReduction_;
@@ -135,6 +145,8 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 			break;
 		case HatTypes_Cowboy:
 			break;
+	        case HatTypes_Chef:
+	                break;
 		default:
 			return;
 	}
@@ -177,10 +189,20 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
 					cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
 					cBag->rectangleComponent, rect, newBullet->eid, true,
-						    cBag->movementComponent->movementValues[eid].left);
+						    cBag->movementComponent->movementValues[eid].left, 1);
 				DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
 			}
 			break;
+	       case HatTypes_Chef: {	 
+				Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
+				Entity* newBullet = EntityCache_GetNewEntity();
+				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
+					cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
+					cBag->rectangleComponent, rect, newBullet->eid, true,
+						    cBag->movementComponent->movementValues[eid].left, 1);
+				DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
+	                }
+	                break;
 		default:
 			break;
 	}

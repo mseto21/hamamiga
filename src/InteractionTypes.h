@@ -20,6 +20,7 @@ enum HatTypes {
 	HatTypes_Cowboy, 		//5
 	HatTypes_Propeller,		//6
 	HatTypes_Beer,      	//7
+	HatTypes_Chef,		//8
 	HatTypes_Empty,			// Leave at end please.
 };
 
