@@ -1,10 +1,10 @@
-bunny=1;
+bunny=0;
 hard=0;
-cowboy=1;
-crown=1;
-disco=1;
-miner=1;
-prop=1;
+cowboy=0;
+crown=0;
+disco=0;
+miner=0;
+prop=0;
 beer=0;
-total=6;
+total=0;
 END=;

@@ -100,4 +100,15 @@ zone=
 		physics(0,)
 		rectangle(4850,1004,48,48,)
 		alive();
+	entity=
+		name(Mr. Muffin,)
+		animation(4,150.0,71,72,)
+		damage(20,)
+		health(100,)
+		movement(3.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(800,1350,71,72,)
+		texture(assets/enemies/muffin.png,muffin,)
+		ai(0,500,1,)
+		alive();
 END=
