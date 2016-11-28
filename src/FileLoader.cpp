@@ -667,10 +667,10 @@ bool FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Rende
 	return true;
 }
 
-int ReadScore(FILE* scoreFile, float stat[], int index) {
+int ReadScore(FILE* scoreFile, int stat[], int index) {
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
-	uint8 pos = 0;
+	int pos = 0;
 	int lineNumber = 0;
 
 	int c;
@@ -683,9 +683,9 @@ int ReadScore(FILE* scoreFile, float stat[], int index) {
 				str[pos++] = c;
 		}
 	}
-	stat[index] = atof(str);
+	stat[index] = atoi(str);
 	if (stat[index] == 0) {
-		cerr << "Unable to initialize highscore screen! SDL_Error: " << endl;
+		cout << "No scores yet." << endl;
 	} else {
 		cout << "SUCCESS: Highscore file " << str << " successfully loaded!" << endl;
 	}
@@ -693,7 +693,7 @@ int ReadScore(FILE* scoreFile, float stat[], int index) {
 }
 
 /* Read in a Scores file */
-bool FileLoader_LoadScores(const char* path, float stats[]) {
+bool FileLoader_LoadScores(const char* path, int stats[]) {
 FILE* scoreFile = fopen(path, "r");
 	if (scoreFile == NULL) {
 		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
@@ -703,13 +703,13 @@ FILE* scoreFile = fopen(path, "r");
 	int c;
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
-	uint8 pos = 0;
+	int pos = 0;
 	int lineNumber = 0; // For debugging purposes.
 	int index = 0;
 
 	while ((c=fgetc(scoreFile)) != EOF) {
 		if (c =='=') {
-			if (strcmp(str, "time") == 0) {
+			if (strcmp(str, "deaths") == 0) {
 				lineNumber += ReadScore(scoreFile, stats, index);
 				index++;
 				pos = 0;

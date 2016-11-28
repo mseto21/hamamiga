@@ -3,6 +3,7 @@
 #include "SoundCache.h"
 #include "StateLoader.h"
 #include "UIRenderSystem.h"
+#include "StatSystem.h"
 
 #include <iostream>
 #include <cstdio>
@@ -13,6 +14,8 @@
 #include <SDL_mixer.h>
 
 using namespace std;
+const char * lval = "1";
+
 bool Game_Initialize(Game* game) {
 	// Initialize sdl
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
@@ -193,6 +196,22 @@ void UpdatePlay(Game* game) {
 			game->gameState = GameState_Lose;
 			break;
 		case GameResult_Won:
+			switch (game->playState.currentLevel){
+				case 1:
+					Scores_Update("assets/score/levels.txt", (char*)"one", lval);
+					break;
+				case 2:
+				Scores_Update("assets/score/levels.txt", (char*)"two", lval);
+					break;
+				case 3:
+				Scores_Update("assets/score/levels.txt", (char*)"three", lval);
+					break;
+				case 4:
+				Scores_Update("assets/score/levels.txt", (char*)"four", lval);
+					break;
+				default:
+					break;
+			}
 			game->playState.currentLevel++;
 			if (game->playState.currentLevel > Constants::MaximumLevels_) {
 				game->playState.currentLevel = 1;

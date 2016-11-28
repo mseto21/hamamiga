@@ -1,4 +1,5 @@
 #include "GoalSystem.h"
+#include "StatSystem.h"
 #include "ComponentBag.h"
 #include "HealthComponent.h"
 #include "AliveComponent.h"
@@ -7,6 +8,11 @@
 #include "Zone.h"
 
 #include <iostream>
+
+//constants for death score file
+const char * deathpath = "assets/score/deaths.txt";
+const char * levelspath = "assets/score/levels.txt";
+const char * dval = "1";
 
 void GoalSystem_Initialize(GoalSystem* goalSystem, ComponentBag* cBag, Zone* zone) {
 	goalSystem->healthComponent 	= cBag->healthComponent;
@@ -35,6 +41,7 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
 					 	aliveComponent->alive[eid] = false;
 					}
 				 	if (eid == Constants::PlayerIndex_) {
+                        Scores_Update(deathpath, (char*)"killed", dval);
 					 	return GameResult_Killed;
 					 }
 				}
@@ -46,14 +53,17 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
 				 	aliveComponent->alive[eid] = false;
 				}
     			if (eid == Constants::PlayerIndex_) {
+                    Scores_Update(deathpath, (char*)"fallen", dval);
 	    			return GameResult_Fell;
 	    		}
     		}
     	}
 
     	if (goalComponent->winGoal[eid]) {
-    		if (eid == Constants::PlayerIndex_)
+    		if (eid == Constants::PlayerIndex_){
+                Scores_Update(levelspath, (char*)"fallen", dval);
     			return GameResult_Won;
+            }
     	}
 
     	goalComponent->points[eid] += elapsed;

@@ -188,7 +188,7 @@ void RenderHighScore(Game* game, uint32 elapsed) {
 	if (background) RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	for (int highScoreIndex = 0; highScoreIndex < Constants::MaxHighScores_; highScoreIndex++) {
 		std::string name = "high_score_";
-		name.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
+		name.append(std::to_string(highScoreIndex));
 		Texture* score = TextureCache_GetTexture(name.c_str());
 		int renderX = Constants::ScreenWidth_ / 2 - score->w / 2;
 		int renderY = highScoreIndex * (Constants::ScreenHeight_ / Constants::MaxHighScores_);

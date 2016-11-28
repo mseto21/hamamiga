@@ -5,6 +5,8 @@
 #include "SoundCache.h"
 #include "HealthComponent.h"
 #include "EntityCache.h"
+#include "InteractionTypes.h"
+#include "Constants.h"
 
 #include <iostream>
 #include <cstdio>
@@ -80,19 +82,27 @@ void LoadHighScoreStateAssets(Game* game) {
 		return;
 	}
 	
- 	game->highScoreState.scoreType[0]= "GameTime: ";
- 	game->highScoreState.scoreType[1]= "Hats Collected: ";
- 	game->highScoreState.scoreType[2]= "Levels Won: ";
- 	game->highScoreState.scoreType[3]= "";
- 	game->highScoreState.scoreType[4]= "";
+ 	game->highScoreState.scoreType[0]= "Hats Collected: ";
+ 	game->highScoreState.scoreType[1]= "Levels Won: ";
+ 	game->highScoreState.scoreType[2]= "Total Deaths: ";
+ 	game->highScoreState.scoreType[3]= "-coming soon-";
+ 	game->highScoreState.scoreType[4]= "-coming soon-";
 	
 	// Create textures for the current high scores
 	SDL_Color scoreColor = {255, 255, 255, 255};
 	for (int highScoreIndex = 0; highScoreIndex < Constants::MaxHighScores_; highScoreIndex++) {
 		std::string msg = game->highScoreState.scoreType[highScoreIndex];
 		msg.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
+		if (highScoreIndex == 0){
+			std::string totalHats = std::to_string(HatTypes_Empty);
+			msg.append("/"+ totalHats);
+		}
+		if (highScoreIndex == 1){
+			std::string totalLevels = std::to_string(Constants::MaximumLevels_);
+			msg.append("/"+ totalLevels);
+		}
 		std::string name = "high_score_";
-		name.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
+		name.append(std::to_string(highScoreIndex));
 		TextureCache_CreateTextureFromFont(game->renderer, game->highScoreState.font, scoreColor, msg.c_str(), name.c_str());
 	}
 	TTF_CloseFont(game->highScoreState.font);

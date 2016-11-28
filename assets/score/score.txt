@@ -1,4 +1,4 @@
-time= 0;
-hats= 0;
-levels= 0;
+hats=0;
+levels=0;
+deaths=0;
 END=

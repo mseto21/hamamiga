@@ -17,6 +17,7 @@
 #include "SoundCache.h"
 #include "GlamourHatEnum.h"
 #include "EntityCache.h"
+#include "StatSystem.h"
 
 #include "Game.h"
 
@@ -29,6 +30,9 @@ const float JumpEnhancement_ = 1.41;
 const float MaxYVelocityReduction_ = 0.5f;
 const float MaxYVelocityEnchancement_ = 1.5f;
 
+//constants for hat score file
+const char * hatpath = "assets/score/hats.txt";
+const char * val = "1";
 
 bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag) {
 	switch (hatType)  {
@@ -43,6 +47,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->movementComponent->movementValues[eid].accelY *= JumpEnhancement_;
 			cBag->movementComponent->movementValues[eid].maxYVelocity *= JumpEnhancement_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			Scores_Update(hatpath, (char*)"bunny", val);
 			break;
 		case HatTypes_HardHat:
 			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
@@ -54,6 +59,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Take Half Damage!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->healthComponent->damageReduction[eid] = DamageReduction_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			Scores_Update(hatpath, (char*)"hard", val);
 			break;
 		case HatTypes_Cowboy:
 			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
@@ -64,22 +70,26 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "cowboy", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to shoot bulelts at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			Scores_Update(hatpath, (char*)"cowboy", val);
 			break;
 		case HatTypes_Crown:
 			cBag->goalComponent->winGoal[eid] = true;
+			Scores_Update(hatpath, (char*)"crown", val);
 			break;
 		case HatTypes_Disco:
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "disco", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Strobe Lights!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Disco;
 			Mix_VolumeMusic(MIX_MAX_VOLUME/4);
-      		Sound_Play(SoundCache_GetSound("disco"), -1);
+      Sound_Play(SoundCache_GetSound("disco"), -1);
+      Scores_Update(hatpath, (char*)"disco", val);
 			break;
 		case HatTypes_Miner:
 			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "miner", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Let There be light!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Miner;
+			Scores_Update(hatpath, (char*)"miner", val);
 			break;
 	    case HatTypes_Propeller:
 	    	if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
@@ -93,6 +103,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->movementComponent->movementValues[eid].maxXVelocity *= MaxYVelocityEnchancement_;
 			cBag->movementComponent->movementValues[eid].maxYVelocity *= MaxYVelocityReduction_;
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
+			Scores_Update(hatpath, (char*)"prop", val);
 			break;
 	  case HatTypes_Beer:
 	 		Sound_Play(SoundCache_GetSound("beer"), 0);
@@ -101,6 +112,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->movementComponent->movementValues[eid].accelX *= -1;
 			cBag->movementComponent->movementValues[eid].accelY *= -1;
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Beer;
+			Scores_Update(hatpath, (char*)"beer", val);
 			break;
 		default:
 			std::cerr << "Error: Unknown hat type given." << std::endl;
