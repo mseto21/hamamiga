@@ -382,6 +382,8 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 								int range = int_parameters.front();
 								int_parameters.pop();
 								int facing = int_parameters.front();
+								if (facing > 1)
+									facing = -1;
 								int_parameters.pop();
 								cout << "Adding AI to entity " << eid << ":(Marcher," << range << ", " << facing << ")" << endl;
 								AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
@@ -401,6 +403,8 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 								int range = int_parameters.front();
 								int_parameters.pop();
 								int facing = int_parameters.front();
+								if (facing > 1)
+									facing = -1;
 								int_parameters.pop();
 								cout << "Adding AI to entity " << eid << ":(" << "Flyer" << ")" << endl;
 								AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
