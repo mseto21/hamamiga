@@ -406,7 +406,7 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 								if (facing > 1)
 									facing = -1;
 								int_parameters.pop();
-								cout << "Adding AI to entity " << eid << ":(" << "Flyer" << ")" << endl;
+								cout << "Adding AI to entity " << eid << ":(Flyer," << range << ", " << facing << ")" << endl;
 								AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
 							}
 							break;
