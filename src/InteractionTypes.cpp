@@ -202,7 +202,7 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 	Hat* hat = &cBag->hatComponent->hats[eid].hat;
 	switch (hat->hatType) {
 		case HatTypes_Cowboy: {
-				if (CowboyHatAdd()) {
+		        if (CowboyHatAdd()) {
 					Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
 					Entity* newBullet = EntityCache_GetNewEntity();
 					BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
@@ -214,14 +214,16 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 			}
 			break;
 	       case HatTypes_Chef: {
-				Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
-				Entity* newBullet = EntityCache_GetNewEntity();
-				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
-					cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
-					cBag->rectangleComponent, rect, newBullet->eid, true,
-						    cBag->movementComponent->movementValues[eid].left, 1);
-				DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
-	                }
+		        if (ChefHatAdd()) {
+			          	Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
+					Entity* newBullet = EntityCache_GetNewEntity();
+					BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
+					        cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
+							    cBag->rectangleComponent, rect, newBullet->eid, true,
+							    cBag->movementComponent->movementValues[eid].left, 1);
+					DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
+				  }
+			 }
 	                break;
 		default:
 			break;

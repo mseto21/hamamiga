@@ -45,6 +45,9 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	  MovementComponent_Add(movementComponent, eid, 7, 0, 1.5, 1.0);//default bullet speed
 	} else {
 	  MovementComponent_Add(movementComponent, eid, 9, 14, 1.5, 1.0);
-	  movementComponent->movementValues[eid].yVelocity = -7;
+	  movementComponent->movementValues[eid].yVelocity = -7
+	    + movementComponent->movementValues[Constants::PlayerIndex_].yVelocity;
+	  movementComponent->movementValues[eid].xVelocity +=
+	    movementComponent->movementValues[Constants::PlayerIndex_].xVelocity;
 	}
 }

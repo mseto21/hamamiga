@@ -17,6 +17,26 @@ zone=
 		camera()
 		goal();
 	entity=
+		animation(4,150.0,88,87,)
+		health(100,)
+		damage(20,)
+		movement(0.0,0.0,1.0,1.0,)
+		physics(100,)
+		rectangle(240,1250,88,87,)
+		texture(assets/enemies/demon.png,demon,)
+		ai(0,0,1,)
+		alive();
+	entity=
+		animation(4,150.0,88,87,)
+		health(100,)
+		damage(20,)
+		movement(0.0,0.0,1.0,1.0,)
+		physics(100,)
+		rectangle(400,1250,88,87,)
+		texture(assets/enemies/demon.png,demon,)
+		ai(0,0,1,)
+		alive();
+	entity=
 		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_4/hats-chap4.png,chef,)
 		physics(0,)
@@ -32,7 +52,7 @@ zone=
 		alive();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
-		texture(assets/hats/crown.png,crown,)
+		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
 		physics(0,)
 		interactable(E to Win,0,2,)
 		rectangle(4900,1350,85,60,)

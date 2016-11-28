@@ -37,6 +37,26 @@ bool CowboyHatAdd() {
 	}
 }
 
+uint8 ChefHat::knifeCount = 0;
+
+void ChefHatInit() {
+	ChefHat::knifeCount = 0;
+}
+
+bool ChefHatAdd() {
+  if (ChefHat::knifeCount < 3) {
+    ChefHat::knifeCount++;
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void ChefHatSubtract() {
+  if (ChefHat::knifeCount > 0)
+    ChefHat::knifeCount--;
+}
+
 void CowboyHatSubtract() {
 	if (CowboyHat::bulletCount > 0)
 		CowboyHat::bulletCount--;

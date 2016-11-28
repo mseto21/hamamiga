@@ -1,4 +1,4 @@
-one=0;
+one=1;
 two=0;
 three=0;
 four=0;
