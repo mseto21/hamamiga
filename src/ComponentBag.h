@@ -16,6 +16,7 @@ struct AliveComponent;
 struct GoalComponent;
 struct InteractableComponent;
 struct NameComponent;
+struct DamageComponent;
 
 struct ComponentBag {
 	RectangleComponent* rectangleComponent;
@@ -33,6 +34,7 @@ struct ComponentBag {
 	GoalComponent* 		goalComponent;
 	InteractableComponent * interactableComponent;
 	NameComponent* nameComponent;
+	DamageComponent* damageComponent;
 };
 
 void ComponentBag_Malloc(ComponentBag* bag);

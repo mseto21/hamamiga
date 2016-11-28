@@ -19,6 +19,7 @@ zone=
 	entity=
 		name(James from Marketing,)
 		animation(4,150.0,88,87,)
+		damage(20,)
 		health(100,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
@@ -30,6 +31,7 @@ zone=
 	entity=
 		name(Harry,)
 		animation(4,150.0,88,87,)
+		damage(20,)
 		health(100,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
@@ -40,6 +42,7 @@ zone=
 	entity=
 		animation(4,150.0,88,87,)
 		health(100,)
+		damage(20,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(2200,1350,88,87,)
@@ -49,6 +52,7 @@ zone=
 	entity=
 		animation(4,150.0,88,87,)
 		movement(3.0,20.0,1.0,1.0,)
+		damage(20,)
 		health(100,)
 		physics(100,)
 		rectangle(1970,210,88,87,)
@@ -58,6 +62,7 @@ zone=
 	entity=
 		animation(4,150.0,88,87,)
 		health(100,)
+		damage(20,)
 		movement(3.0,20.0,1.0,1.0,)
 		physics(100,)
 		rectangle(3980,1350,88,87,)

@@ -11,6 +11,7 @@
 #include "HatComponent.h"
 #include "AIComponent.h"
 #include "AliveComponent.h"
+#include "DamageComponent.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
 #include "NameComponent.h"
@@ -30,6 +31,7 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->hatComponent 			= (HatComponent*)malloc(sizeof(*bag->hatComponent));
 	bag->aiComponent 			= (AIComponent*)malloc(sizeof(*bag->aiComponent));
 	bag->aliveComponent 		= (AliveComponent*)malloc(sizeof(*bag->aliveComponent));
+	bag->damageComponent            = (DamageComponent*)malloc(sizeof(*bag->damageComponent));
 	bag->goalComponent 			= (GoalComponent*)malloc(sizeof(*bag->goalComponent));
 	bag->interactableComponent 	= (InteractableComponent*)malloc(sizeof(*bag->interactableComponent));
 	bag->nameComponent 			= (NameComponent*)malloc(sizeof(*bag->nameComponent));
@@ -50,6 +52,7 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->aiComponent);
 	Component_Initialize(bag->aliveComponent);
 	Component_Initialize(bag->goalComponent);
+	Component_Initialize(bag->damageComponent);
 	InteractableComponent_Initialize(bag->interactableComponent);
 	NameComponent_Initialize(bag->nameComponent);
 }
@@ -100,6 +103,9 @@ void ComponentBag_Check(ComponentBag* bag) {
 	if (!bag->nameComponent) {
 	  std::cout << "Error: Uninitialized aliveComponent" << std::endl;
 	}
+	if (!bag->damageComponent) {
+	  std::cout << "Error: Uninitialized damageComponent" << std::endl;
+	}
 }
 
 void ComponentBag_Free(ComponentBag* bag) {
@@ -136,6 +142,8 @@ void ComponentBag_Free(ComponentBag* bag) {
 	free(bag->nameComponent);
 	bag->nameComponent = nullptr;
 	NameComponent_Free(bag->nameComponent);
+	free(bag->damageComponent);
+	bag->damageComponent = nullptr;
 }
 
 void Component_DisableEntity(ComponentBag* bag, uint32 eid) {
@@ -187,6 +195,9 @@ void Component_DisableEntity(ComponentBag* bag, uint32 eid) {
 	if (Component_HasIndex(bag->nameComponent, eid)) {
 		Component_Disable(bag->nameComponent, eid);
 	}
+	if (Component_HasIndex(bag->damageComponent, eid)) {
+	        Component_Disable(bag->damageComponent, eid);
+	}
 }
 
 void Component_EnableEntity(ComponentBag* bag, uint32 eid) {
@@ -236,6 +247,9 @@ void Component_EnableEntity(ComponentBag* bag, uint32 eid) {
 	if (Component_HadIndex(bag->nameComponent, eid)) {
 		Component_Enable(bag->nameComponent, eid);
 	}
+	if (Component_HadIndex(bag->damageComponent, eid)) {
+	        Component_Enable(bag->damageComponent, eid);
+	}
 }
 
 void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid) {
@@ -284,6 +298,9 @@ void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HasIndex(bag->nameComponent, eid)) {
 		Component_ForceRemove(bag->nameComponent, eid);
+	}
+	if (Component_HasIndex(bag->damageComponent, eid)) {
+	        Component_ForceRemove(bag->damageComponent, eid);
 	}
 }
 

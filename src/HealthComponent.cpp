@@ -20,7 +20,7 @@ int HealthComponent_Lerp(HealthComponent* healthComponent, uint32 eid, uint32 el
 	healthComponent->elapsed[eid] += elapsed;
 	float t = (float)healthComponent->elapsed[eid] / TimeToUpdate;
 	int lerp =  (1 - t) * (healthComponent->startHealth[eid]) + t * healthComponent->health[eid];
-	if (lerp == healthComponent->health[eid])  {
+	if (lerp <= healthComponent->health[eid])  {
 		healthComponent->elapsed[eid] = 0;
 		healthComponent->startHealth[eid] = healthComponent->health[eid];
 	}

@@ -19,9 +19,60 @@ zone=
 	entity=
 		animation(4,150.0,125,71,)
 		health(100,)
+		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)
-		rectangle(1000,1353,125,71,)
+		rectangle(800,550,125,71,)
+		texture(assets/enemies/flying-demon.png,fdemon,)
+		ai(3,20,1,)
+		alive();
+	entity=
+		animation(4,150.0,125,71,)
+		health(100,)
+		damage(10,)
+		movement(4.0,4.0,1.0,1.0,1,)
+		physics(100,)
+		rectangle(1400,1240,125,71,)
+		texture(assets/enemies/flying-demon.png,fdemon,)
+		ai(3,20,1,)
+		alive();
+	entity=
+		animation(4,150.0,125,71,)
+		health(100,)
+		damage(10,)
+		movement(4.0,4.0,1.0,1.0,1,)
+		physics(100,)
+		rectangle(1400,870,125,71,)
+		texture(assets/enemies/flying-demon.png,fdemon,)
+		ai(3,20,1,)
+		alive();
+	entity=
+		animation(4,150.0,125,71,)
+		health(100,)
+		damage(10,)
+		movement(4.0,4.0,1.0,1.0,1,)
+		physics(100,)
+		rectangle(2000,353,125,71,)
+		texture(assets/enemies/flying-demon.png,fdemon,)
+		ai(3,20,1,)
+		alive();
+	entity=
+		animation(4,150.0,125,71,)
+		health(100,)
+		damage(10,)
+		movement(4.0,4.0,1.0,1.0,1,)
+		physics(100,)
+		rectangle(3000,753,125,71,)
+		texture(assets/enemies/flying-demon.png,fdemon,)
+		ai(3,20,1,)
+		alive();
+	entity=
+		animation(4,150.0,125,71,)
+		health(100,)
+		damage(10,)
+		movement(4.0,4.0,1.0,1.0,1,)
+		physics(100,)
+		rectangle(4000,653,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
 		alive();
@@ -51,6 +102,5 @@ zone=
 		physics(0,)
 		interactable(E to Put On,0,7, Oh no! Didn't your mom tell you to never drink and fly!,)
 		rectangle(4120,120,85,60,)
-
 		alive();
 END=
