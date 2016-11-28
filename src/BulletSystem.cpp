@@ -10,6 +10,7 @@
 #include "MovementComponent.h"
 #include "ComponentBag.h"
 #include "Zone.h"
+#include "HatMethods.h"
 
 #include <SDL.h>
 #include <iostream>
@@ -65,7 +66,7 @@ void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
       if (bX > bulletSystem->zone->levelWidth || bX < 0 || bX < minScreenX || bX > maxScreenX ||
         bulletComponent->bullet[eid].collided == true) {
         ComponentBag_ForceRemove(bulletSystem->cBag, eid);
-        bulletComponent->bulletCount--;
+        CowboyHatSubtract();
       }
     }
   }

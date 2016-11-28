@@ -18,7 +18,6 @@ struct Bullet {
 
 struct BulletComponent : public Component {
 	Bullet bullet[Constants::MaxEntities_]; //bullet information for this bullet entity
-	static int bulletCount;
 };
 
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent*,

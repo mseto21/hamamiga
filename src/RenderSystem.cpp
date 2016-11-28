@@ -16,6 +16,7 @@
 #include "HatComponent.h"
 #include "HealthComponent.h"
 #include "GlamourHatEnum.h"
+#include "HatMethods.h"
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
 #include "NameComponent.h"
@@ -129,12 +130,12 @@ void RenderGlamourEffect(SDL_Renderer* renderer, uint8 hatId, uint32 elapsed, Re
 
 // --------------------------------------------------------------------
 void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentBag* cBag) {
+	(void) cBag;
 	(void) elapsed;
 	switch (hatId) {
-		case HatTypes_Cowboy: 
-			{
+		case HatTypes_Cowboy: {
 				Texture* texture = TextureCache_GetTexture("bullet");
-				for (int bulletIndex = cBag->bulletComponent->bulletCount; bulletIndex < Constants::MaxBullets_; bulletIndex++) {
+				for (int bulletIndex = CowboyHat::bulletCount; bulletIndex < Constants::MaxBullets_; bulletIndex++) {
 					RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + (texture->h * bulletIndex), texture->w, texture->h, NULL, texture);
 				}
 			}

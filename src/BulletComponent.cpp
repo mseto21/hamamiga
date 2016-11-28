@@ -8,15 +8,10 @@
 
 #include <SDL.h>
 
-int BulletComponent::bulletCount = 0;
 
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* physicsComponent,
 	AliveComponent* aliveComponent, TextureComponent* textureComponent, MovementComponent* movementComponent,
 			 RectangleComponent* rect, Rectangle rectPos, uint32 eid, bool team, bool left, int txtr) {
-
-	if (bulletComponent->bulletCount == Constants::MaxBullets_) {
-		return;
-	}
 
 	//Adding relevant components to a bullet entity
 	Component_Add(bulletComponent, eid);
@@ -28,7 +23,7 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	Texture* texture;
 	if (txtr == 0) {
 	  texture = TextureCache_GetTexture("bullet");
-	}else {
+	} else {
 	  texture = TextureCache_GetTexture("knife");
 	}
 	if (left == true) {
@@ -52,5 +47,4 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	  MovementComponent_Add(movementComponent, eid, 9, 14, 1.5, 1.0);
 	  movementComponent->movementValues[eid].yVelocity = -7;
 	}
-	bulletComponent->bulletCount++;
 }

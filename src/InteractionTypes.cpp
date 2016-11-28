@@ -19,6 +19,7 @@
 #include "GlamourHatEnum.h"
 #include "EntityCache.h"
 #include "StatSystem.h"
+#include "HatMethods.h"
 
 #include "Game.h"
 #include <iostream>
@@ -70,6 +71,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to shoot bulelts at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			Scores_Update(hatpath, (char*)"cowboy", val);
+			CowboyHatInit();
 			break;
 		case HatTypes_Crown:
 			cBag->goalComponent->winGoal[eid] = true;
@@ -200,13 +202,15 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 	Hat* hat = &cBag->hatComponent->hats[eid].hat;
 	switch (hat->hatType) {
 		case HatTypes_Cowboy: {
-				Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
-				Entity* newBullet = EntityCache_GetNewEntity();
-				BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
-					cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
-					cBag->rectangleComponent, rect, newBullet->eid, true,
-						    cBag->movementComponent->movementValues[eid].left, 0);
-				DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
+				if (CowboyHatAdd()) {
+					Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
+					Entity* newBullet = EntityCache_GetNewEntity();
+					BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
+						cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
+						cBag->rectangleComponent, rect, newBullet->eid, true,
+							    cBag->movementComponent->movementValues[eid].left, 0);
+					DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
+				}
 			}
 			break;
 	       case HatTypes_Chef: {

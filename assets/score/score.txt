@@ -1,4 +1,4 @@
-hats=0;
+hats=2;
 levels=0;
-deaths=0;
+deaths=1;
 END=
