@@ -20,7 +20,14 @@ struct CowboyHat {
 	static uint8 bulletCount;
 };
 
+struct ChefHat {
+	static uint8 knifeCount;
+};
+
 void DiscoHatUpdate(int elapsed);
 void CowboyHatInit();
 bool CowboyHatAdd();
+void ChefHatInit();
+bool ChefHatAdd();
+void ChefHatSubtract();
 void CowboyHatSubtract();
