@@ -17,6 +17,7 @@ zone=
 		camera()
 		goal();
 	entity=
+		name(Tall Karen,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -27,14 +28,26 @@ zone=
 		ai(0,0,1,)
 		alive();
 	entity=
+		name(Flirtatious Matt,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
 		movement(0.0,0.0,1.0,1.0,)
 		physics(100,)
-		rectangle(400,1250,88,87,)
+		rectangle(580,1250,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,0,1,)
+		ai(0,0,2,)
+		alive();
+	entity=
+		name(Mr. Muffin,)
+		animation(4,150.0,71,72,)
+		damage(20,)
+		health(100,)
+		movement(4.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(730,1350,71,72,)
+		texture(assets/enemies/muffin.png,muffin,)
+		ai(0,30,1,)
 		alive();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
@@ -119,16 +132,5 @@ zone=
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1004,48,48,)
-		alive();
-	entity=
-		name(Mr. Muffin,)
-		animation(4,150.0,71,72,)
-		damage(20,)
-		health(100,)
-		movement(3.0,20.0,1.0,1.0,)
-		physics(100,)
-		rectangle(800,1350,71,72,)
-		texture(assets/enemies/muffin.png,muffin,)
-		ai(0,500,1,)
 		alive();
 END=
