@@ -271,12 +271,18 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				if (map->map[tileY][tileHeadX].solid || map->map[tileY][tileEndHeadX].solid) {
 					r1->y = tileY * Constants::TileSize_ + Constants::TileSize_;
 					moveValues->yVelocity = 0;
+					if (Component_HasIndex(bulletComponent, eid)){
+							bulletComponent->bullet[eid].collided = true;
+					}
 				} 
 			} else if (moveValues->yVelocity >= 0) {
 				if (map->map[tileEndY][tileFootX].solid || map->map[tileEndY][tileEndFootX].solid) {
 					r1->y = tileEndY * Constants::TileSize_ - r1->h;
 					moveValues->yVelocity = 0;
 					moveValues->grounded = true;
+					if (Component_HasIndex(bulletComponent, eid)){
+							bulletComponent->bullet[eid].collided = true;
+					}
 					if (map->map[tileEndY][tileFootX].speed > 0) {
 						moveValues->xVelocity += map->map[tileEndY][tileFootX].speed;
 					} else if (map->map[tileEndY][tileEndFootX].speed > 0) {
@@ -290,6 +296,12 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid) {
 						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
 						moveValues->xVelocity = 0;
+						if (Component_HasIndex(aiComponent, eid)) {
+						  aiComponent->marchValues[eid].facing *= -1;
+						}
+					}
+					if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileX].solid) {
+					  aiComponent->marchValues[eid].facing *= -1;
 					}
 				} else {
 					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
@@ -305,6 +317,12 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid) {
 						r1->x = tileEndX * Constants::TileSize_ - r1->w;
 						moveValues->xVelocity = 0;
+						if (Component_HasIndex(aiComponent, eid)) {
+						  aiComponent->marchValues[eid].facing *= -1;
+						}
+					}
+     					if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileEndX].solid) {
+					  aiComponent->marchValues[eid].facing *= -1;
 					}
 				} else {
 					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
