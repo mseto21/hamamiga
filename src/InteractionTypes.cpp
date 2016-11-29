@@ -211,6 +211,9 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 						cBag->rectangleComponent, rect, newBullet->eid, true,
 							    cBag->movementComponent->movementValues[eid].left, 0);
 					DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
+					Animation animation;
+					Animation_Initialize(&animation, 1, 150.0, 52, 12);
+					AnimationComponent_Add(cBag->animationComponent, newBullet->eid, animation);
 				}
 			}
 			break;
@@ -223,6 +226,9 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 							    cBag->rectangleComponent, rect, newBullet->eid, true,
 							    cBag->movementComponent->movementValues[eid].left, 1);
 					DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
+					Animation animation;
+					Animation_Initialize(&animation, 1, 150.0, 34, 12);
+					AnimationComponent_Add(cBag->animationComponent, newBullet->eid, animation);
 				  }
 			 }
 	                break;
