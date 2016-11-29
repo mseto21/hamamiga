@@ -274,7 +274,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				if (movementComponent->movementValues[eid].xVelocity == 0) {
 				        if (Component_HasIndex(aiComponent, eid) && aiComponent->marchValues[eid].facing < 0) {
 				            texture->flip = SDL_FLIP_HORIZONTAL;
-				        }
+				        } else if (Component_HasIndex(aiComponent, eid) && aiComponent->marchValues[eid].facing > 0) {
+					  texture->flip = SDL_FLIP_NONE;
+					}
 					clip = {0, 0, animation->spriteW, animation->spriteH};
 				} else if (movementComponent->movementValues[eid].xVelocity > 0) {
 					texture->flip = SDL_FLIP_NONE;

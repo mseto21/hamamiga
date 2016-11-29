@@ -1,4 +1,4 @@
-fallen=2;
-killed=5;
-total=7;
+fallen=18
+killed=22
+total198
 END=;
