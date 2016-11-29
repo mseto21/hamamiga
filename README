@@ -125,12 +125,12 @@ Press 'E' to equip the propellor hat and chef hat when Kevin is standing over it
 ---------------
 Breakdown of what each member achieved:
 ---------------
-Harry: Designed level 4, implemented the chef hat, created apple wall, added a damage component so damage is no longer a constant, added the super cool parallax effect, fixed the lighting on level 2
+Harry: Designed level 4, implemented the chef hat, created apple wall, added a 
+damage component so damage is no longer a constant, added the super cool 
+parallax effect, fixed the lighting on level 2
 
-Matt: I added the ability for messages when you interact with an object, so that now you can get an idea of what
-you picked up. Also, I cleaned up some of the code in the input, physics and movement systems by moving hat-specific
-code to a separate area. Essentially just decoupling some things that shouldn't be checked on every update. I also
-added the ability to take off your current hat, although it is not by any means a perfected system at the moment.
+Matt: Gave enemies names, created the tutorial zone, fixed a lot of bugs with the bullet system, made the health bar prettier, 
+allowed specifying of different heights for different levels.
 
 Mindy: Added more sound effects for the game + messages for some hats
 
