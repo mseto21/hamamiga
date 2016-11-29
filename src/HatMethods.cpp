@@ -29,12 +29,12 @@ void CowboyHatInit() {
 }
 
 bool CowboyHatAdd() {
-	if (CowboyHat::bulletCount < 3) {
+  if (CowboyHat::bulletCount < Constants::MaxBullets_) {
 		CowboyHat::bulletCount++;
 		return true;
-	} else {
+  } else {
 		return false;
-	}
+  }
 }
 
 uint8 ChefHat::knifeCount = 0;
@@ -44,17 +44,17 @@ void ChefHatInit() {
 }
 
 bool ChefHatAdd() {
-  if (ChefHat::knifeCount < 3) {
-    ChefHat::knifeCount++;
-    return true;
+  if (ChefHat::knifeCount < Constants::MaxKnives_) {
+                 ChefHat::knifeCount++;
+		 return true;
   } else {
-    return false;
+                 return false;
   }
 }
 
 void ChefHatSubtract() {
-  if (ChefHat::knifeCount > 0)
-    ChefHat::knifeCount--;
+        if (ChefHat::knifeCount > 0)
+                ChefHat::knifeCount--;
 }
 
 void CowboyHatSubtract() {

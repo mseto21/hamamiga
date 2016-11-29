@@ -20,6 +20,7 @@
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
 #include "NameComponent.h"
+#include "AIComponent.h"
 
 #include <cstring>
 #include <math.h>
@@ -48,6 +49,7 @@ void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, Til
 	renderSystem->goalComponent 		= cBag->goalComponent;
 	renderSystem->interactableComponent = cBag->interactableComponent;
 	renderSystem->nameComponent 		= cBag->nameComponent;
+	renderSystem->aiComponent               = cBag->aiComponent;
 	renderSystem->defaultFont 		 	= defaultFont;
 	renderSystem->map 					= tileMap;
 	renderSystem->cBag 					= cBag;
@@ -133,13 +135,21 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
 	(void) cBag;
 	(void) elapsed;
 	switch (hatId) {
-		case HatTypes_Cowboy: {
-				Texture* texture = TextureCache_GetTexture("bullet");
-				for (int bulletIndex = CowboyHat::bulletCount; bulletIndex < Constants::MaxBullets_; bulletIndex++) {
-					RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + (texture->h * bulletIndex), texture->w, texture->h, NULL, texture);
-				}
+	        case HatTypes_Cowboy: {
+			Texture* texture = TextureCache_GetTexture("bullet");
+			for (int bulletIndex = CowboyHat::bulletCount; bulletIndex < Constants::MaxBullets_; bulletIndex++) {
+			      	RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + (texture->h * bulletIndex), texture->w, texture->h, NULL, texture); 
 			}
 			break;
+		}
+	        case HatTypes_Chef: {
+	                Texture* texture = TextureCache_GetTexture("knife");
+	                for (int knifeIndex = ChefHat::knifeCount; knifeIndex < Constants::MaxKnives_; knifeIndex++) {
+	                        RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + texture->h * knifeIndex,
+							 texture->w, texture->h, NULL, texture);
+			}
+			break;
+		}
 		default:
 			break;
 	}
@@ -159,6 +169,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	InteractableComponent* interactableComponent = renderSystem->interactableComponent;
  	//GoalComponent* goalComponent = renderSystem->goalComponent;
  	NameComponent* nameComponent = renderSystem->nameComponent;
+	AIComponent* aiComponent = renderSystem->aiComponent;
  	TileMap* map = renderSystem->map;
 
 
@@ -261,6 +272,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			// Check for movement
 			if (Component_HasIndex(movementComponent, eid)) {
 				if (movementComponent->movementValues[eid].xVelocity == 0) {
+				        if (Component_HasIndex(aiComponent, eid) && aiComponent->marchValues[eid].facing < 0) {
+				            texture->flip = SDL_FLIP_HORIZONTAL;
+				        }
 					clip = {0, 0, animation->spriteW, animation->spriteH};
 				} else if (movementComponent->movementValues[eid].xVelocity > 0) {
 					texture->flip = SDL_FLIP_NONE;

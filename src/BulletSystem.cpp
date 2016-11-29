@@ -21,8 +21,8 @@ void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag, Zon
   bulletSystem->physicsComponent    = cBag->physicsComponent;
   bulletSystem->rectangleComponent  = cBag->rectangleComponent;
   bulletSystem->bulletComponent     = cBag->bulletComponent;
-  bulletSystem->aliveComponent  		= cBag->aliveComponent;
-  bulletSystem->textureComponent  	= cBag->textureComponent;
+  bulletSystem->aliveComponent      = cBag->aliveComponent;
+  bulletSystem->textureComponent    = cBag->textureComponent;
   bulletSystem->movementComponent   = cBag->movementComponent;
   bulletSystem->cBag                = cBag;
   bulletSystem->zone                = zone;
@@ -30,11 +30,11 @@ void BulletSystem_Initialize(BulletSystem* bulletSystem, ComponentBag* cBag, Zon
 
 void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
 	PhysicsComponent* physicsComponent  	 	= bulletSystem->physicsComponent;
-  RectangleComponent* rectangleComponent  = bulletSystem->rectangleComponent;
-  BulletComponent* bulletComponent  			= bulletSystem->bulletComponent;
-  AliveComponent* aliveComponent  				= bulletSystem->aliveComponent;
-  TextureComponent* textureComponent  		= bulletSystem->textureComponent;
-  MovementComponent* movementComponent    = bulletSystem->movementComponent;
+	RectangleComponent* rectangleComponent          = bulletSystem->rectangleComponent;
+	BulletComponent* bulletComponent  		= bulletSystem->bulletComponent;
+	AliveComponent* aliveComponent  		= bulletSystem->aliveComponent;
+	TextureComponent* textureComponent  		= bulletSystem->textureComponent;
+	MovementComponent* movementComponent            = bulletSystem->movementComponent;
 
   for (uint32 entityIndex = 0; entityIndex < bulletComponent->count; entityIndex++) {
     uint32 eid = bulletComponent->entityArray[entityIndex];
@@ -47,30 +47,30 @@ void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
     bulletComponent->bullet[eid].life += elapsed;
 
     //Getting player's information
-    if (Component_HasIndex(rectangleComponent, Constants::PlayerIndex_)){
+    if (Component_HasIndex(rectangleComponent, Constants::PlayerIndex_)) {
     	Rectangle* playerRect = &rectangleComponent->entityRectangles[Constants::PlayerIndex_];
     	float maxScreenX = playerRect->x + Constants::ScreenWidth_;
     	float minScreenX = playerRect->x - Constants::ScreenWidth_;
     	float bX = rectangleComponent->entityRectangles[eid].x;
-      MovementValues* moveValues = &movementComponent->movementValues[eid];
-      if (!moveValues) {
-        std::cerr << "Error: No movement values for the input system to use." << std::endl;
-        continue;
-      }
-      moveValues->xAccel = 0;
-      moveValues->yAccel = 0;
-      if (bulletComponent->bullet[eid].left == true){
-        moveValues->xAccel = -moveValues->accelX;
-      } else {
-        moveValues->xAccel = moveValues->accelX;
-      }
-
-      if (bX > bulletSystem->zone->levelWidth || bX < 0 || bX < minScreenX || bX > maxScreenX 
-        || bulletComponent->bullet[eid].collided == true) {
-        EntityCache_Remove(eid);
-        ComponentBag_ForceRemove(bulletSystem->cBag, eid);
-
-        switch(bulletComponent->type[eid]) {
+	MovementValues* moveValues = &movementComponent->movementValues[eid];
+	if (!moveValues) {
+	  std::cerr << "Error: No movement values for the input system to use." << std::endl;
+	  continue;
+	}
+	moveValues->xAccel = 0;
+	moveValues->yAccel = 0;
+	if (bulletComponent->bullet[eid].left == true){
+	  moveValues->xAccel = -moveValues->accelX;
+	} else {
+	  moveValues->xAccel = moveValues->accelX;
+	}
+	
+	if (bX > bulletSystem->zone->levelWidth || bX < 0 || bX < minScreenX || bX > maxScreenX 
+	    || bulletComponent->bullet[eid].collided == true) {
+	  EntityCache_Remove(eid);
+	  ComponentBag_ForceRemove(bulletSystem->cBag, eid);
+	  
+	  switch(bulletComponent->type[eid]) {
           case HatTypes_Chef:
             ChefHatSubtract();
             break;
@@ -79,8 +79,8 @@ void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
             break;
           default:
             break;
-        }
-      }
+	  }
+	}
     }
   }
 }
