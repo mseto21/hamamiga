@@ -135,7 +135,7 @@ zone=
 		physics(100,)
 		rectangle(1470,824,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
-		ai(0,200,1,)
+		ai(0,150,1,)
 		alive();
 	entity=
 		name(Mindy from Marketing,)
