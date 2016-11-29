@@ -138,6 +138,72 @@ zone=
 		ai(0,200,1,)
 		alive();
 	entity=
+		name(Mindy from Marketing,)
+		animation(4,150.0,88,87,)
+		health(100,)
+		damage(20,)
+		movement(0.0,14.0,1.0,1.0,)
+		physics(100,)
+		rectangle(4000,1256,88,87,)
+		texture(assets/enemies/demon.png,demon,)
+		ai(0,0,2,)
+		alive();
+	entity=
+		name(Frau Muffin II,)
+		animation(4,150.0,71,72,)
+		damage(20,)
+		health(100,)
+		movement(4.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(2783,1352,71,72,)
+		texture(assets/enemies/muffin.png,muffin,)
+		ai(0,150,1,)
+		alive();
+	entity=
+		name(Frau Muffin,)
+		animation(4,150.0,71,72,)
+		damage(20,)
+		health(100,)
+		movement(4.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(4160,1353,71,72,)
+		texture(assets/enemies/muffin.png,muffin,)
+		ai(0,200,1,)
+		alive();
+	entity=
+		name(Senora Muffin,)
+		animation(4,150.0,71,72,)
+		damage(20,)
+		health(100,)
+		movement(4.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(3472,825,71,72,)
+		texture(assets/enemies/muffin.png,muffin,)
+		ai(0,150,1,)
+		alive();
+	entity=
+		name(Mrs. Muffin,)
+		animation(4,150.0,71,72,)
+		damage(20,)
+		health(100,)
+		movement(4.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(3700,825,71,72,)
+		texture(assets/enemies/muffin.png,muffin,)
+		ai(0,150,1,)
+		alive();
+	entity=
+		name(Corny Caroline,)
+		animation(4,150.0,88,87,)
+		health(100,)
+		damage(20,)
+		movement(0.0,14.0,1.0,1.0,)
+		physics(100,)
+		rectangle(2965,728,88,87,)
+		texture(assets/enemies/demon.png,demon,)
+		ai(0,0,1,)
+		alive();
+	entity=
 		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_4/hats-chap4.png,chef,)
 		physics(0,)

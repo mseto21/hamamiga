@@ -331,9 +331,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				moveValues->yVelocity = 0;
 			}
 		}
-		if (eid == Constants::PlayerIndex_) {
-		  std::cout << "x: " << r1->x << " y: " << r1->y << std::endl;
-		}
 	}
 }
 
