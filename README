@@ -117,7 +117,9 @@ Things to fix for Assignment 9:
 ---------------
 Breakdown of what each member achieved:
 ---------------
-Harry: Designed level 4, implemented the chef hat, created apple wall, added a damage component so damage is no longer a constant, added the super cool parallax effect, fixed the lighting on level 2
+Harry: Designed level 4, implemented the chef hat, created apple wall, added a 
+damage component so damage is no longer a constant, added the super cool 
+parallax effect, fixed the lighting on level 2
 
 Matt: Gave enemies names, created the tutorial zone, fixed a lot of bugs with the bullet system, made the health bar prettier, 
 allowed specifying of different heights for different levels.
