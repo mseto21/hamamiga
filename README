@@ -132,7 +132,7 @@ parallax effect, fixed the lighting on level 2
 Matt: Gave enemies names, created the tutorial zone, fixed a lot of bugs with the bullet system, made the health bar prettier, 
 allowed specifying of different heights for different levels.
 
-Mindy: Added more sound effects for the game + messages for some hats
+Mindy: Added StatSystem allowing player to now have saved scores (persists after game exits), scores screen now has 3 stats: Number of hats collected, number of levels cleared (using the cheat doesn't count!), number of deaths
 
 Gavi: cutscenes for level 2, 3, and 4, level 4 background and tile set.
 designed artwork for: muffin enemy, NPC, chef hat and knife projectile, apple,
