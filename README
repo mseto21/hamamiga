@@ -117,7 +117,9 @@ Things to fix for Assignment 9:
 ---------------
 Breakdown of what each member achieved:
 ---------------
-Harry: Designed level 4, implemented the chef hat, created apple wall, added a damage component so damage is no longer a constant, added the super cool parallax effect, fixed the lighting on level 2
+Harry: Designed level 4, implemented the chef hat, created apple wall, added a 
+damage component so damage is no longer a constant, added the super cool 
+parallax effect, fixed the lighting on level 2
 
 Matt: I added the ability for messages when you interact with an object, so that now you can get an idea of what
 you picked up. Also, I cleaned up some of the code in the input, physics and movement systems by moving hat-specific
