@@ -24,7 +24,15 @@ Entity* EntityCache_GetNewEntity() {
 	if (((uint)eCache->index) < Constants::MaxEntities_) {
 		eCache->entities[eCache->index].eid = eCache->index;
 		result = &eCache->entities[eCache->index];
+		eCache->claimed[eCache->index] = true;
 		eCache->index++;
+	} else {
+		for (uint eIndex = 0; eIndex < Constants::MaxEntities_; eIndex++) {
+			if (eCache->claimed[eIndex] == false) {
+				result = &eCache->entities[eCache->index];
+				eCache->claimed[eCache->index] = true;
+			}
+		}
 	}
 	if (!result) {
 		std::cerr << "Error: The entity could not be initialized." << std::endl;
@@ -34,13 +42,10 @@ Entity* EntityCache_GetNewEntity() {
 
 /* Returns the entity at a specific eid. */
 Entity* EntityCache_GetNewEntityAtIndex(uint32 eid) {
-	if (eid > Constants::MaxEntities_) {
+	if (eid > Constants::MaxEntities_)
 		return nullptr;
-	}
-	if (eCache->entities[eid].eid != eid) {
+	if (eCache->entities[eid].eid != eid) 
 		eCache->entities[eid].eid = eid;
-		eCache->index++;
-	}
 	return &eCache->entities[eid];
 }
 
@@ -49,7 +54,13 @@ void EntityCache_RemoveAll() {
 	eCache->index = 0;
 	for (uint32 e = 0; e < Constants::MaxEntities_; e++) {
 		eCache->entities[e].eid = 0;
+		eCache->claimed[eCache->index] = false;
 	}
+}
+
+/* Removes this entiy from the list. */
+void EntityCache_Remove(uint32 eid) {
+	eCache->claimed[eid] = false;
 }
 
 /* Frees the ecache. */

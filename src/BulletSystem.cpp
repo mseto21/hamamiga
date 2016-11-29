@@ -11,6 +11,8 @@
 #include "ComponentBag.h"
 #include "Zone.h"
 #include "HatMethods.h"
+#include "InteractionTypes.h"
+#include "EntityCache.h"
 
 #include <SDL.h>
 #include <iostream>
@@ -63,10 +65,21 @@ void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
         moveValues->xAccel = moveValues->accelX;
       }
 
-      if (bX > bulletSystem->zone->levelWidth || bX < 0 || bX < minScreenX || bX > maxScreenX ||
-        bulletComponent->bullet[eid].collided == true) {
+      if (bX > bulletSystem->zone->levelWidth || bX < 0 || bX < minScreenX || bX > maxScreenX 
+        || bulletComponent->bullet[eid].collided == true) {
+        EntityCache_Remove(eid);
         ComponentBag_ForceRemove(bulletSystem->cBag, eid);
-        CowboyHatSubtract();
+
+        switch(bulletComponent->type[eid]) {
+          case HatTypes_Chef:
+            ChefHatSubtract();
+            break;
+          case HatTypes_Cowboy:
+            CowboyHatSubtract();
+            break;
+          default:
+            break;
+        }
       }
     }
   }

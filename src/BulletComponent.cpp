@@ -5,6 +5,7 @@
 #include "MovementComponent.h"
 #include "RectangleComponent.h"
 #include "TextureCache.h"
+#include "InteractionTypes.h"
 
 #include <SDL.h>
 
@@ -23,8 +24,10 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	Texture* texture;
 	if (txtr == 0) {
 	  texture = TextureCache_GetTexture("bullet");
+	  bulletComponent->type[eid] = HatTypes_Cowboy;
 	} else {
 	  texture = TextureCache_GetTexture("knife");
+	  bulletComponent->type[eid] = HatTypes_Chef;
 	}
 	if (left == true) {
 		texture->flip = SDL_FLIP_HORIZONTAL;
