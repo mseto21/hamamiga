@@ -15,6 +15,7 @@ General Controls:
 'ESC' at any time will exit the game.
 'M' to return to the Main menu, or to skip the fade in intro (go to Main screen anytime)
 'P' to skip the game backstory/intro cut scene
+'SPACE' to scroll read through the cut scenes
 'Enter' to select menu options
 
 
@@ -104,15 +105,22 @@ After obtaining the propellor hat, move around to reach the beer hat. Be careful
 
 Press 'E' to equip the propellor hat and beer hat when Kevin is standing over it.
 
----------------
-Things to fix for Assignment 9:
----------------
-- Demon collision/movement
-- Decoupling hat-specific code (removing where it shouldn't be)
-- Add messages for hats so the player knows what each hat does
-- Add more sound effects for the hats
-- Add artwork for the messages
-- General bug fixes, improvements to game state changes
+--------
+Chapter 4: Breakroom Brawl
+--------
+Hats:
+-----
+Propellor Hat: FLYYYYY! (second level, very right)
+Chef Hat: Throws knives (third level, very left) !!!!Need propellor hat to get!!!!
+Crown: Escape! (first level, very right)
+
+
+Kevin is now in the break room! Avoid the demon muffins and try not to collide into the demons that are on a date! They won't hurt you unless you try to third wheel them!
+
+After obtaining the propellor hat, fly to the third level to get the chef hat! After obtaining the chef hat, press 'SPACE' to throw knives and defeat the enemies. You may have noticed that there is an apple wall blocking the crown. Defeat the apples by throwing knives at them!
+
+Press 'E' to equip the propellor hat and chef hat when Kevin is standing over it.
+
 
 ---------------
 Breakdown of what each member achieved:
