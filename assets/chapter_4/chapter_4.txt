@@ -25,7 +25,7 @@ zone=
 		physics(100,)
 		rectangle(255,1250,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,30,1,)
+		ai(0,30000,1,)
 		alive();
 	entity=
 		name(Samantha from Shipping,)
@@ -36,7 +36,7 @@ zone=
 		physics(100,)
 		rectangle(580,1250,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,30,2,)
+		ai(0,30000,2,)
 		alive();
 	entity=
 		name(Monsieur Muffin,)
@@ -58,7 +58,7 @@ zone=
 		physics(100,)
 		rectangle(1694,1256,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,30,2,)
+		ai(0,30000,1,)
 		alive();
 	entity=
 		name(Aaron From Accounting,)
@@ -69,7 +69,7 @@ zone=
 		physics(100,)
 		rectangle(255,700,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,30,1,)
+		ai(0,30000,1,)
 		alive();
 	entity=
 		name(Paul,)
@@ -80,7 +80,7 @@ zone=
 		physics(100,)
 		rectangle(580,700,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,30,2,)
+		ai(0,30000,2,)
 		alive();
 	entity=
 		name(Senor Muffin,)
@@ -102,7 +102,7 @@ zone=
 		physics(100,)
 		rectangle(255,220,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,30,1,)
+		ai(0,30000,1,)
 		alive();
 	entity=
 		name(Mr. Muffin,)
@@ -113,7 +113,7 @@ zone=
 		physics(100,)
 		rectangle(730,320,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
-		ai(0,30,1,)
+		ai(0,30000,1,)
 		alive();
 	entity=
 		name(Graphics Gavi,)
@@ -124,7 +124,7 @@ zone=
 		physics(100,)
 		rectangle(1310,728,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,30,2,)
+		ai(0,30000,2,)
 		alive();
 	entity=
 		name(Herr Muffin,)
@@ -146,7 +146,7 @@ zone=
 		physics(100,)
 		rectangle(4000,1256,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,30,2,)
+		ai(0,30000,2,)
 		alive();
 	entity=
 		name(Frau Muffin II,)
@@ -201,7 +201,7 @@ zone=
 		physics(100,)
 		rectangle(2965,728,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,30,1,)
+		ai(0,30000,1,)
 		alive();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)

@@ -137,6 +137,7 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
 	switch (hatId) {
 	        case HatTypes_Cowboy: {
 			Texture* texture = TextureCache_GetTexture("bullet");
+			texture->flip = SDL_FLIP_NONE;
 			for (int bulletIndex = CowboyHat::bulletCount; bulletIndex < Constants::MaxBullets_; bulletIndex++) {
 			      	RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + (texture->h * bulletIndex), texture->w, texture->h, NULL, texture); 
 			}
@@ -144,6 +145,7 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
 		}
 	        case HatTypes_Chef: {
 	                Texture* texture = TextureCache_GetTexture("knife");
+			texture->flip = SDL_FLIP_NONE;
 	                for (int knifeIndex = ChefHat::knifeCount; knifeIndex < Constants::MaxKnives_; knifeIndex++) {
 	                        RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + texture->h * knifeIndex,
 							 texture->w, texture->h, NULL, texture);
