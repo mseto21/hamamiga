@@ -7,7 +7,7 @@
 #include <iostream>
 
 void MovementSystem_Initialize(MovementSystem* movementSystem, ComponentBag* cBag) {
-	movementSystem->movementComponent 	=	cBag->movementComponent;
+	movementSystem->movementComponent   =	cBag->movementComponent;
 	movementSystem->rectangleComponent  =	cBag->rectangleComponent;
 	movementSystem->hatComponent        =   cBag->hatComponent;
 }

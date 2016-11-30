@@ -19,7 +19,7 @@ void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag) {
 
 void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysUp[]) {
 	InputComponent* inputComponent = inputSystem->inputComponent;
-	MovementComponent* movementComponent = inputSystem->movementComponent;;
+	MovementComponent* movementComponent = inputSystem->movementComponent;
 	HealthComponent* healthComponent = inputSystem->healthComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
@@ -39,36 +39,37 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		}
 		moveValues->xAccel = 0;
 		moveValues->yAccel = 0;
-		if (keysPressed[SDLK_w] && (moveValues->grounded || moveValues->flying)) {
+		if ((keysPressed[SDLK_UP % Constants::NumKeys_]  || keysPressed[SDLK_SPACE])
+		    && (moveValues->grounded || moveValues->flying)) {
 			moveValues->yAccel = -moveValues->accelY;
 		}
-		if (keysPressed[SDLK_a]) {
+		if (keysPressed[SDLK_LEFT % Constants::NumKeys_]) {
 		    moveValues->xAccel = -moveValues->accelX;
 		}
 		if (keysPressed[SDLK_i]) {
 		    healthComponent->invincible[eid] = !(healthComponent->invincible[eid]);
 		}
-		if (keysPressed[SDLK_d]) {
+		if (keysPressed[SDLK_RIGHT % Constants::NumKeys_]) {
 			moveValues->xAccel = moveValues->accelX;
 		}
 		if (keysPressed[SDLK_s] && moveValues->flying) {
 		    moveValues->yAccel = moveValues->accelY;
 		}
 		
-		if (keysPressed[SDLK_e]) {
+		if (keysPressed[SDLK_x]) {
 			inputComponent->interact[eid] = true;
-		} else if (keysUp[SDLK_e]) {
+		} else if (keysUp[SDLK_x]) {
 			inputComponent->interact[eid] = false;
 		}
 
-		if (keysPressed[SDLK_SPACE] && keysUp[SDLK_SPACE]) {
+		if (keysPressed[SDLK_z] && keysUp[SDLK_z]) {
 			Interaction_PlayEventInteraction(eid, inputSystem->cBag);
-			keysUp[SDLK_SPACE % Constants::NumKeys_] = false;
+			keysUp[SDLK_z % Constants::NumKeys_] = false;
 		}
 
-		if (keysPressed[SDLK_q] && keysUp[SDLK_q]) {
+		if (keysPressed[SDLK_c] && keysUp[SDLK_c]) {
 			Interaction_RemoveHatInteraction(eid, inputSystem->cBag);
-			keysUp[SDLK_q] = false;
+			keysUp[SDLK_c] = false;
 		}
 	}
 }

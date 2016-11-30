@@ -83,14 +83,14 @@ bool Game_Initialize(Game* game) {
 
 
 void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
-	if (keysdown[SDLK_w] && keysup[SDLK_w]) {
+        if (keysdown[SDLK_UP % Constants::NumKeys_] && keysup[SDLK_UP & Constants::NumKeys_]) {
 			game->titleState.selection--;
 			game->titleState.selection %= Constants::TitleScreenSelections_;
-			keysup[SDLK_w] = false;
-	} else if (keysdown[SDLK_s] && keysup[SDLK_s]) {
+			keysup[SDLK_UP % Constants::NumKeys_] = false;
+	} else if (keysdown[SDLK_DOWN % Constants::NumKeys_] && keysup[SDLK_DOWN % Constants::NumKeys_]) {
 		game->titleState.selection++;
 		game->titleState.selection %= Constants::TitleScreenSelections_;
-		keysup[SDLK_s] = false;
+		keysup[SDLK_DOWN % Constants::NumKeys_] = false;
 	}
 
 	// Check for music playing
@@ -132,26 +132,26 @@ void UpdateHighScore(Game* game, bool* keysdown) {
 
 void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 	// Update their options
-	if (keysdown[SDLK_w] && keysup[SDLK_w]) {
+	if (keysdown[SDLK_UP % Constants::NumKeys_] && keysup[SDLK_UP % Constants::NumKeys_]) {
 			game->optionState.selection--;
 			game->optionState.selection %= Constants::OptionScreenSelections_;
-			keysup[SDLK_w] = false;
+			keysup[SDLK_UP % Constants::NumKeys_] = false;
 	}
 
-	if (keysdown[SDLK_s] && keysup[SDLK_s]) {
+	if (keysdown[SDLK_DOWN % Constants::NumKeys_] && keysup[SDLK_DOWN % Constants::NumKeys_]) {
 		game->optionState.selection++;
 		game->optionState.selection %= Constants::OptionScreenSelections_;
-		keysup[SDLK_s] = false;
+		keysup[SDLK_DOWN % Constants::NumKeys_] = false;
 	}
 
 	// Set the next state
 	switch (game->optionState.selection) {
 		case 0:
-			if (keysdown[SDLK_d]){
+			if (keysdown[SDLK_RIGHT % Constants::NumKeys_]){
 				if (game->optionState.musicVolume < Constants::MaxVolume_) {
 					game->optionState.musicVolume += Constants::VolumeUnit_;
 				}
-			} else if (keysdown[SDLK_a]){
+			} else if (keysdown[SDLK_LEFT % Constants::NumKeys_]){
 				if (game->optionState.musicVolume > 0){
 					game->optionState.musicVolume -= Constants::VolumeUnit_;
 				}

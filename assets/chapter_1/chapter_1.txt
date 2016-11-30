@@ -72,20 +72,20 @@ zone=
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
 		physics(0,)
-		interactable(E to Win,0,2,)
+		interactable('x' to Win,0,2,)
 		rectangle(48,200,85,60,)
 		alive();
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,disco,85,0,85,60,)
 		physics(0,)
-		interactable(E to Put On,0,3, PARTY TIME!,)
+		interactable('x' to Put On,0,3, PARTY TIME!,)
 		rectangle(4800,1350,85,60,)
 		alive();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_1/hats-chap1.png,bunny,0,0,85,60,)
 		physics(0,)
-		interactable(E to Put On,0,0,This is the bunny hat! It gives you the ability to jump twice as high!,)
+		interactable('x' to Put On,0,0,This is the bunny hat! It gives you the ability to jump twice as high!,)
 		rectangle(3980,1350,85,60,)
 		alive();
 END=
