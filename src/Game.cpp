@@ -179,6 +179,7 @@ void UpdatePause(Game* game, bool* keysdown, bool* keysup) {
 	if (keysdown[SDLK_SPACE] && keysup[SDLK_SPACE]) {
 		game->pauseState.pauseIndex++;
 		keysup[SDLK_SPACE] = false;
+		keysdown[SDLK_SPACE] = false;
 	}
 }
 

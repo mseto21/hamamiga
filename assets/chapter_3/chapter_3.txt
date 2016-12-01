@@ -80,13 +80,13 @@ zone=
 		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
 		physics(0,)
-		interactable(E to Put On,0,6, FLYYYYYYYY!,)
+		interactable('x' to Put On,0,6, FLYYYYYYYY!,)
 		rectangle(4900,1000,85,60,)
 		alive();
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
 		physics(0,)
-		interactable(E to Put On,0,2,)
+		interactable('x' to Put On,0,2,)
 		rectangle(10,910,85,60,)
 		alive();
 	entity=
