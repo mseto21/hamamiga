@@ -144,6 +144,20 @@ void ThrowerUpdate(AISystem* aiSystem, uint32 eid) {
 }
 
 
+void JumperUpdate(AISystem* aiSystem, uint32 eid) {
+  MovementComponent* movementComponent = aiSystem->movementComponent;
+  if (!Component_HasIndex(movementComponent, eid)) {
+    return;
+  }
+
+  MovementValues* moveValues = &movementComponent->movementValues[eid];
+  if (moveValues->grounded)
+    moveValues->yAccel = -moveValues->accelY;
+  else
+    moveValues->yAccel = 0;
+}
+
+
 void AISystem_Update(AISystem* aiSystem) {
   AIComponent* aiComponent = aiSystem->aiComponent;
   for (uint32 entityIndex = 0; entityIndex < aiComponent->count; entityIndex++) {
@@ -160,6 +174,9 @@ void AISystem_Update(AISystem* aiSystem) {
         break;
       case AIType_Flyer:
         FlyerUpdate(aiSystem, eid);
+        break;
+      case AIType_Jumper:
+        JumperUpdate(aiSystem, eid);
         break;
     } 
   }

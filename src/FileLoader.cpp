@@ -410,6 +410,16 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 								AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
 							}
 							break;
+						case AIType_Jumper: {
+							int range = int_parameters.front();
+								int_parameters.pop();
+								int facing = int_parameters.front();
+								if (facing > 1)
+									facing = -1;
+								int_parameters.pop();
+								cout << "Adding AI to entity " << eid << ":(Jumper," << range << ", " << facing << ")" << endl;
+								AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
+						}
 					}
 
 				} else if (strcmp(cmd, "alive") == 0) {
@@ -609,7 +619,7 @@ int ReadZone(Zone* zone, FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* re
 			} else if (strcmp(str, "cutstart") == 0) {
 				lineNumber += ReadCutSceneStart(chapterFile, renderer, zoneIntroState);
 			} else if (strcmp(str, "zone") == 0) {
-				// Embedded zone, won't worry about that right now.
+				// TO-DO: Embedded zones.
 			} else if (strcmp(str, "dimensions") == 0) {
 				lineNumber += ReadDimensions(chapterFile, zone);
 			} else if (strcmp(str, "END") == 0) {
