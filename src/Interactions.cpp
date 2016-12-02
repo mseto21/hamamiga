@@ -1,4 +1,4 @@
-#include "InteractionTypes.h"
+#include "Interactions.h"
 #include "ComponentBag.h"
 #include "RectangleComponent.h"
 #include "MovementComponent.h"
@@ -35,6 +35,9 @@ const char * hatpath = "assets/score/hats.txt";
 const char * val = "1";
 
 bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag) {
+	if (!Component_HasIndex(cBag->hatComponent, eid)){
+		return false;
+	}
 	switch (hatType)  {
 		case HatTypes_BunnyHat:
 			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)

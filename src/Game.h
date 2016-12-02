@@ -13,6 +13,7 @@
 #include "SoundSystem.h"
 #include "KillSystem.h"
 #include "BulletSystem.h"
+#include "InteractionSystem.h"
 
 // Forward Declarations
 struct SDL_Window;
@@ -104,6 +105,7 @@ struct PlayState {
 	SoundSystem soundSystem;
 	KillSystem killSystem;
 	BulletSystem bulletSystem;
+	InteractionSystem interactionSystem;
 };
 
 struct Game {

@@ -11,7 +11,7 @@
 #include "ComponentBag.h"
 #include "Zone.h"
 #include "HatMethods.h"
-#include "InteractionTypes.h"
+#include "Interactions.h"
 #include "EntityCache.h"
 
 #include <SDL.h>

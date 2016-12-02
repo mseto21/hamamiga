@@ -1,5 +1,5 @@
 #include "HatComponent.h"
-#include "InteractionTypes.h"
+#include "Interactions.h"
 
 
 void HatComponent_Add(HatComponent* hatComponent, uint32 eid, Hat hat, Hat gHat) {

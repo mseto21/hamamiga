@@ -5,7 +5,7 @@
 #include "InputComponent.h"
 #include "HealthComponent.h"
 #include "ComponentBag.h"
-#include "InteractionTypes.h"
+#include "Interactions.h"
 
 #include <SDL.h>
 #include <iostream>

@@ -4,7 +4,7 @@
 #include "Types.h"
 #include "ComponentBag.h"
 #include "Game.h"
-#include "InteractionTypes.h"
+#include "Interactions.h"
 
 #include "RectangleComponent.h"
 #include "TextureComponent.h"

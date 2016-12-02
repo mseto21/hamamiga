@@ -5,7 +5,7 @@
 #include "SoundCache.h"
 #include "HealthComponent.h"
 #include "EntityCache.h"
-#include "InteractionTypes.h"
+#include "Interactions.h"
 #include "Constants.h"
 
 #include <iostream>
@@ -221,12 +221,13 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag, &game->playState.chapter);
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
 	MovementSystem_Initialize(&game->playState.movementSystem, &game->playState.cBag);
-	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap, game, &game->playState.chapter);
+	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap, &game->playState.chapter);
 	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.scoreFont);
 	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag, &game->playState.chapter);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
 	BulletSystem_Initialize(&game->playState.bulletSystem, &game->playState.cBag, &game->playState.chapter);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
+	InteractionSystem_Initialize(&game->playState.interactionSystem, &game->playState.cBag, game);
 
 	// Pause state
 	TextureCache_CreateTexture(game->renderer, "assets/interactables/speech-bubble.png", "speech-bubble");
@@ -283,6 +284,7 @@ void FreePlay(Game* game) {
 	//	SoundSystem_Free(&game->playState.soundSystem);
 	BulletSystem_Free(&game->playState.bulletSystem);
 	KillSystem_Free(&game->playState.killSystem);
+	InteractionSystem_Free(&game->playState.interactionSystem);
 
 	// Set loaded variable.
 	game->playState.loaded = false;
