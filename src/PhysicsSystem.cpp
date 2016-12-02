@@ -144,7 +144,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 				int type = interactableComponent->types[otherEid];
 				switch (type) {
-					case InteractionType_Hat: {
+					case InteractionTypes_Hat: {
 						int hattype = interactableComponent->hattypes[otherEid];
 						if (Component_HasIndex(hatComponent, eid)){
 							if (!interactableComponent->interacted[otherEid]) {
@@ -159,6 +159,10 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						}
 						continue;
 					}
+					case InteractionTypes_Coin:
+						if (Component_HasIndex(aliveComponent, otherEid)) {
+							aliveComponent->alive[otherEid] = false;
+						}
 					default:
 						continue;
 				}

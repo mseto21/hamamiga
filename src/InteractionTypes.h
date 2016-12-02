@@ -5,9 +5,10 @@ struct Game;
 struct Texture;
 
 enum InteractionTypes {
-	InteractionType_Hat = 0,
+	InteractionTypes_Hat = 0,
 	InteractionTypes_Dialogue,
 	InteractionTypes_Cutscene,
+	InteractionTypes_Coin,
 	InteractionTypes_None
 };
 

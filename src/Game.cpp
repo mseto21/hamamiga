@@ -83,10 +83,10 @@ bool Game_Initialize(Game* game) {
 
 
 void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
-        if (keysdown[SDLK_UP % Constants::NumKeys_] && keysup[SDLK_UP & Constants::NumKeys_]) {
-			game->titleState.selection--;
-			game->titleState.selection %= Constants::TitleScreenSelections_;
-			keysup[SDLK_UP % Constants::NumKeys_] = false;
+    if (keysdown[SDLK_UP % Constants::NumKeys_] && keysup[SDLK_UP % Constants::NumKeys_]) {
+		game->titleState.selection--;
+		game->titleState.selection %= Constants::TitleScreenSelections_;
+		keysup[SDLK_UP % Constants::NumKeys_] = false;
 	} else if (keysdown[SDLK_DOWN % Constants::NumKeys_] && keysup[SDLK_DOWN % Constants::NumKeys_]) {
 		game->titleState.selection++;
 		game->titleState.selection %= Constants::TitleScreenSelections_;
