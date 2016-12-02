@@ -28,4 +28,14 @@ zone=
 		interactable('x' to Put On,0,8, Welcome to the Kitchen! Press 'z' to shoot enemies. Ammo is displayed in the top left.,)
 		rectangle(153,634,85,60,)
 		alive();
+	entity=
+		name(James from Marketing,)
+		animation(4,150.0,88,87,)
+		damage(20,)
+		health(100,)
+		movement(3.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(250,634,88,87,)
+		texture(assets/enemies/demon.png,demon,)
+		ai(0,200,1,);
 END=

@@ -53,12 +53,12 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	PhysicsComponent* physicsComponent = physicsSystem->physicsComponent;
 	MovementComponent* movementComponent = physicsSystem->movementComponent;
 	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;
-	HealthComponent* healthComponent = physicsSystem->healthComponent;
+	//HealthComponent* healthComponent = physicsSystem->healthComponent;
 	BulletComponent* bulletComponent = physicsSystem->bulletComponent;
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
-	AliveComponent * aliveComponent = physicsSystem->aliveComponent;
+	//AliveComponent * aliveComponent = physicsSystem->aliveComponent;
 	AIComponent * aiComponent = physicsSystem->aiComponent;
-	DamageComponent * damageComponent = physicsSystem->damageComponent;
+	//DamageComponent * damageComponent = physicsSystem->damageComponent;
 	TileMap* map = physicsSystem->map;
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
@@ -77,29 +77,28 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		// Retrieve necessary values.
 		MovementValues* moveValues = &movementComponent->movementValues[eid];
 		Rectangle* r1 = &rectangleComponent->entityRectangles[eid];
-		const Rectangle left 	= {r1->x, r1->y, 1, r1->h};
+		/*const Rectangle left 	= {r1->x, r1->y, 1, r1->h};
 		const Rectangle right 	= {r1->x + r1->w, r1->y, 1, r1->h};
 		const Rectangle up 		= {r1->x, r1->y, r1->w, 1};
-		const Rectangle down 	= {r1->x+12, r1->y + r1->h, r1->w-13, 1};
+		const Rectangle down 	= {r1->x+12, r1->y + r1->h, r1->w-13, 1};*/
 
-		// 
 		if (Component_HasIndex(interactableComponent, eid)) {
 			goto world_physics;
 		}
 
 		// Check collisions with entities
-entity_physics:
 		for (uint32 j = 0; j < physicsComponent->count; j++) {
 			uint32 otherEid = physicsComponent->entityArray[j];
-			if (eid ==  otherEid) {
+			if (eid == otherEid) {
 				continue;
 			}
 			if (!Component_HasIndex(rectangleComponent, otherEid)) {
 				continue;
 			}
 			if (Component_HasIndex(interactableComponent, otherEid)) {
-				break;
+				continue;
 			}
+
 			//Don't collide with bullets on your team
 			if (Component_HasIndex(bulletComponent, otherEid)){
 				if (eid == Constants::PlayerIndex_&&
@@ -127,13 +126,33 @@ entity_physics:
 				}
 			}
 
-
 			// Enemy collisions
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
-			bool cllsn = false;
-			bool cllsnD = false;
+			//bool cllsn = false;
+			//bool cllsnD = false;
 
-			if (Collision(left, r2)) {
+			if (Collision(*r1, r2)) {
+				if (eid == Constants::PlayerIndex_ && Component_HasIndex(aiComponent, otherEid)) {
+					int xVelocity = 0;
+					int yVelocity = 0;
+					int collisionXVelocity = movementComponent->movementValues[otherEid].xVelocity;
+
+					if (collisionXVelocity != 0)
+						xVelocity = 15 * ((collisionXVelocity > 0) - (collisionXVelocity < 0));
+					else
+						xVelocity = -2 * moveValues->xVelocity;
+					moveValues->xVelocity = xVelocity;
+
+					if (moveValues->yVelocity > 0)
+						yVelocity = -5;
+					else if (moveValues->yVelocity < 0)
+						yVelocity = 0;
+					moveValues->yVelocity = yVelocity;
+				}
+			}
+
+
+			/*if (Collision(left, r2)) {
 				r1->x -= (moveValues->xVelocity);
 				cllsn = true;
 				if (eid == Constants::PlayerIndex_ && Component_HasIndex(aiComponent, physicsComponent->entityArray[j])) {
@@ -190,7 +209,7 @@ entity_physics:
 			    	aiComponent->marchValues[eid].facing *= -1;
 			    }
 			  }
-			}
+			}*/
 		}
 
 world_physics:
