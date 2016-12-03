@@ -26,9 +26,9 @@ void MovementSystem_Update(MovementSystem* movementSystem) {
 		}
 		
 		// Get movement values for the entity
-		MovementValues* moveValue = &movementComponent->movementValues[eid];
-		moveValue->xVelocity 	+= moveValue->xAccel;
-		moveValue->yVelocity    += moveValue->yAccel;
+		MovementValues* moveValue 	= &movementComponent->movementValues[eid];
+		moveValue->xVelocity 		+= moveValue->xAccel;
+		moveValue->yVelocity    	+= moveValue->yAccel;
 
 		// Check XVelocity Maximum
 		if (moveValue->xVelocity >= moveValue->maxXVelocity) {
