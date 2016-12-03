@@ -73,15 +73,9 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		if (!Component_HasIndex(rectangleComponent, eid)) {
 			continue;
 		}
-
-		// Retrieve necessary values.
+		
 		MovementValues* moveValues = &movementComponent->movementValues[eid];
 		Rectangle* r1 = &rectangleComponent->entityRectangles[eid];
-		/*const Rectangle left 	= {r1->x, r1->y, 1, r1->h};
-		const Rectangle right 	= {r1->x + r1->w, r1->y, 1, r1->h};
-		const Rectangle up 		= {r1->x, r1->y, r1->w, 1};
-		const Rectangle down 	= {r1->x+12, r1->y + r1->h, r1->w-13, 1};*/
-
 		if (Component_HasIndex(interactableComponent, eid)) {
 			goto world_physics;
 		}
@@ -158,66 +152,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			    }
 			    bulletComponent->bullet[otherEid].collided = true;
 			}
-
-
-			/*if (Collision(left, r2)) {
-				r1->x -= (moveValues->xVelocity);
-				cllsn = true;
-				if (eid == Constants::PlayerIndex_ && Component_HasIndex(aiComponent, physicsComponent->entityArray[j])) {
-					moveValues->xVelocity = 15;
-					if (!Collision(down, r2)) {
-						moveValues->yVelocity = -5;
-						r1->y += moveValues->yVelocity;
-					} else {
-						cllsnD = true;
-					}
-					r1->x += moveValues->xVelocity;
-				}
-			} else if (Collision(right, r2)) {
-				r1->x -= (moveValues->xVelocity);
-				cllsn = true;
-				//kickback for player
-				if (eid == Constants::PlayerIndex_ && Component_HasIndex(aiComponent, physicsComponent->entityArray[j])) {
-					moveValues->xVelocity = -15;
-					if (!Collision(down, r2)) {
-						moveValues->yVelocity = -5;
-						r1->y += moveValues->yVelocity;
-					} else {
-						cllsnD = true;
-					}
-					r1->x += moveValues->xVelocity;
-				}
-			}
-			if (Collision(up, r2)) {
-				moveValues->yVelocity = 0;
-				cllsn = true;
-			} else if (cllsnD || Collision(down, r2)) {
-				moveValues->yVelocity *= -1;
-				r1->y += moveValues->yVelocity;
-				cllsn = true;
-			}
-
-			//if bullet has collided, kill it
-			if (cllsn && Component_HasIndex(bulletComponent, physicsComponent->entityArray[j])){
-				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
-				
-			}
-			if (cllsn) {
-			  if (Component_HasIndex(healthComponent, eid) && Component_HasIndex(damageComponent, physicsComponent->entityArray[j])) {
-			    if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, physicsComponent->entityArray[j]))){
-			      	if (!healthComponent->invincible[eid]) {
-						healthComponent->startHealth[eid] = healthComponent->health[eid];
-						healthComponent->health[eid] -= damageComponent->damageValues[physicsComponent->entityArray[j]].damage / healthComponent->damageReduction[eid];
-						if (Component_HasIndex(aliveComponent, eid)) {
-							if (healthComponent->health[eid] <= 0)
-						  		aliveComponent->alive[eid] = false;
-						}
-			      	}
-			    } else {
-			    	aiComponent->marchValues[eid].facing *= -1;
-			    }
-			  }
-			}*/
 		}
 
 world_physics:

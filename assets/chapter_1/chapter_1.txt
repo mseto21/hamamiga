@@ -73,6 +73,17 @@ zone=
 		ai(0,120,1,)
 		alive();
 	entity=
+		name(Jumpy,)
+		animation(4,150.0,88,87,)
+		movement(0.0,20.0,0.0,20.0,)
+		damage(20,)
+		health(100,)
+		physics(100,)
+		rectangle(1000,210,88,87,)
+		texture(assets/enemies/demon.png,demon,)
+		ai(4,120,1,)
+		alive();
+	entity=
 		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
 		physics(0,)
 		interactable('x' to Win,0,2,)
