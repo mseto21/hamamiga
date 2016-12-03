@@ -36,9 +36,11 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 	for (uint32 entityIndex = 0; entityIndex < interactableComponent->count; entityIndex++) {
 		uint32 eid = interactableComponent->entityArray[entityIndex];
 		if (!Collision(r1, rectangleComponent->entityRectangles[eid])) {
+			interactableComponent->canBeInteractedWith[eid] = false;
 			continue;
 		}
 
+		interactableComponent->canBeInteractedWith[eid] = true;
 		bool interact = inputComponent->interact[Constants::PlayerIndex_];
 
 		int type = interactableComponent->types[eid];
