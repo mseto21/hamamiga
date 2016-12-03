@@ -20,6 +20,8 @@
 #include "EntityCache.h"
 #include "StatSystem.h"
 #include "HatMethods.h"
+#include "StateLoader.h"
+
 
 #include "Game.h"
 #include <iostream>
@@ -239,3 +241,11 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 			break;
 	}
 }
+
+
+void Interaction_EnterDoor(Game* game, uint32 level) {
+	game->playState.currentLevel = level;
+	game->gameState = GameState_ReturnAndEnterLevel;
+}
+
+

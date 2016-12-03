@@ -32,7 +32,6 @@ enum GameState {
 	GameState_Title,
 	GameState_ZoneIntro,
 	GameState_LoadPlay,
-	GameState_LoadTutorial,
 	GameState_Play,
 	GameState_HighScore,
 	GameState_Options,
@@ -40,6 +39,7 @@ enum GameState {
 	GameState_Win,
 	GameState_Lose,
 	GameState_Returning,
+	GameState_ReturnAndEnterLevel,
 	GameState_Closing,
 };
 

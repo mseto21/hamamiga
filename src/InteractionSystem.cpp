@@ -45,7 +45,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 		switch (type) {
 			case InteractionTypes_Hat: {
 				if (interact) {
-					int hattype = interactableComponent->hattypes[eid];
+					int hattype = interactableComponent->datafield[eid];
 					if (!interactableComponent->interacted[eid]) {
 						if (Interaction_ApplyHatInteraction(hattype, Constants::PlayerIndex_, eid, interactionSystem->cBag)) {
 							Interaction_DisplayMessage(interactionSystem->game, interactableComponent->txt[eid]);
@@ -65,7 +65,9 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				}
 				break;
 			case InteractionTypes_Door:
-				
+				if (interact)
+					Interaction_EnterDoor(interactionSystem->game, interactableComponent->datafield[eid]);
+				break;
 			default:
 				continue;
 		}

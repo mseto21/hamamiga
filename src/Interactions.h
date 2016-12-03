@@ -30,3 +30,4 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag);
 void Interaction_DisplayMessage(Game* game, Texture** txt);
 void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag);
+void Interaction_EnterDoor(Game* game, uint32 level);
