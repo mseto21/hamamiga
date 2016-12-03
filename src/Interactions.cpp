@@ -244,7 +244,7 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 
 
 void Interaction_EnterDoor(Game* game, uint32 level) {
-	game->playState.currentLevel = level;
+	game->playState.levelSelection = level;
 	game->gameState = GameState_ReturnAndEnterLevel;
 }
 

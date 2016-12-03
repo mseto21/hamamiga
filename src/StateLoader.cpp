@@ -33,12 +33,12 @@ void LoadIntroStateAssets(Game* game) {
 void LoadTitleStateAssets(Game* game) {
 	// Load font textures
 	game->titleState.selection = 0;
-	game->titleState.titleFont = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
-	if (!game->titleState.titleFont) {
+	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
+	if (!font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
-	TTF_SetFontHinting(game->titleState.titleFont, TTF_HINTING_MONO);
+	TTF_SetFontHinting(font, TTF_HINTING_MONO);
 	game->titleState.selectionStrings[0] = "New Game";
 	game->titleState.selectionStrings[1] = "Controls";
 	game->titleState.selectionStrings[2] = "Options";
@@ -51,12 +51,12 @@ void LoadTitleStateAssets(Game* game) {
 	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenTextures_; selectionIndex++) {
 		std::string base = game->titleState.selectionStrings[selectionIndex];
 		base.append("_base");
-		TextureCache_CreateTextureFromFont(game->renderer, game->titleState.titleFont, baseColor, game->titleState.selectionStrings[selectionIndex], base.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, font, baseColor, game->titleState.selectionStrings[selectionIndex], base.c_str());
 		std::string select = game->titleState.selectionStrings[selectionIndex];
 		select.append("_select");
-		TextureCache_CreateTextureFromFont(game->renderer, game->titleState.titleFont, selectedColor, game->titleState.selectionStrings[selectionIndex], select.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, font, selectedColor, game->titleState.selectionStrings[selectionIndex], select.c_str());
 	}
-	TTF_CloseFont(game->titleState.titleFont);
+	TTF_CloseFont(font);
 
 	// Load title music
 	game->titleState.titleMusic = Mix_LoadMUS("assets/music/themesong.ogg");
@@ -69,8 +69,8 @@ void LoadTitleStateAssets(Game* game) {
 
 void LoadHighScoreStateAssets(Game* game) {
 	// Load font
-	game->highScoreState.font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
-	if (!game->highScoreState.font) {
+	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
+	if (!font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
@@ -103,21 +103,40 @@ void LoadHighScoreStateAssets(Game* game) {
 		}
 		std::string name = "high_score_";
 		name.append(std::to_string(highScoreIndex));
-		TextureCache_CreateTextureFromFont(game->renderer, game->highScoreState.font, scoreColor, msg.c_str(), name.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, msg.c_str(), name.c_str());
 	}
-	TTF_CloseFont(game->highScoreState.font);
+	TTF_CloseFont(font);
+}
+
+
+void LoadLevelSelectAssets(Game* game) {
+	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 48);
+	if (!font) {
+		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+		return;
+	}
+	SDL_Color fontColor = {255, 255, 255, 255};
+
+	for (int levelIndex = 0; levelIndex <= game->playState.unlockedLevels; levelIndex++) {
+		std::string lvl = "";
+		lvl.append(std::to_string(levelIndex));
+		std::string name = lvl;
+		name.append("_level");
+		TextureCache_CreateTextureFromFont(game->renderer, font, fontColor, lvl.c_str(), name.c_str());
+	}
+	TTF_CloseFont(font);
 }
 
 
 void LoadOptionStateAssets(Game* game) {
 	// Load font
-	game->optionState.font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
-	if (!game->optionState.font) {
+	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
+	if (!font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
 	//Game options
-	TTF_SetFontHinting(game->optionState.font, TTF_HINTING_MONO);
+	TTF_SetFontHinting(font, TTF_HINTING_MONO);
 	game->optionState.selectionStrings[0] = "Background Music";
 	game->optionState.selectionStrings[1] = "Brightness";
 	//game->optionState.selectionStrings[2] = "Options";
@@ -128,12 +147,12 @@ void LoadOptionStateAssets(Game* game) {
 	for (int selectionIndex = 0; selectionIndex < Constants::OptionScreenSelections_; selectionIndex++) {
 		std::string base = game->optionState.selectionStrings[selectionIndex];
 		base.append("_base");
-		TextureCache_CreateTextureFromFont(game->renderer, game->optionState.font, baseColor, game->optionState.selectionStrings[selectionIndex], base.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, font, baseColor, game->optionState.selectionStrings[selectionIndex], base.c_str());
 		std::string select = game->optionState.selectionStrings[selectionIndex];
 		select.append("_select");
-		TextureCache_CreateTextureFromFont(game->renderer, game->optionState.font, selectedColor, game->optionState.selectionStrings[selectionIndex], select.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, font, selectedColor, game->optionState.selectionStrings[selectionIndex], select.c_str());
 	}
-	TTF_CloseFont(game->highScoreState.font);
+	TTF_CloseFont(font);
 }
 
 
@@ -142,15 +161,15 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 	game->zoneIntroState.alpha = 0.f;
 	game->zoneIntroState.elapsed = 0;
 	game->zoneIntroState.startScene.current = 0;
-	game->zoneIntroState.font = TTF_OpenFont("assets/fonts/BadMofo.ttf", 50);
-	if (!game->zoneIntroState.font) {
+	TTF_Font* font = TTF_OpenFont("assets/fonts/BadMofo.ttf", 50);
+	if (!font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
 
 	SDL_Color color = {255, 255, 255, 255};
-	TextureCache_CreateTextureFromFont(game->renderer, game->zoneIntroState.font, color, name, Constants::ZoneName_);
-	TTF_CloseFont(game->zoneIntroState.font);
+	TextureCache_CreateTextureFromFont(game->renderer, font, color, name, Constants::ZoneName_);
+	TTF_CloseFont(font);
 }
 
 

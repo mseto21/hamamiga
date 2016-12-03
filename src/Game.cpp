@@ -73,7 +73,7 @@ bool Game_Initialize(Game* game) {
 	LoadTitleStateAssets(game);
 	memset(&game->highScoreState.scores, 0, sizeof(game->highScoreState.scores));
 	game->playState.loaded = false;
-	game->playState.currentLevel = 1;
+	game->playState.unlockedLevels = 1;
 
 	// Enter title state
 	game->gameState = GameState_Intro;
@@ -102,10 +102,11 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 	if (keysdown[SDLK_RETURN]) {
 		switch (game->titleState.selection) {
 			case 0:
-				game->gameState = GameState_LoadPlay;
+				game->gameState = GameState_LevelSelect;
+				LoadLevelSelectAssets(game);
 				break;
 			case 1:
-				game->playState.currentLevel = 0;
+				game->playState.levelSelection = 0;
 				game->gameState = GameState_LoadPlay;
 				break;
 			case 2:
@@ -199,26 +200,23 @@ void UpdatePlay(Game* game) {
 			game->gameState = GameState_Lose;
 			break;
 		case GameResult_Won:
-			switch (game->playState.currentLevel){
+			switch (game->playState.levelSelection){
 				case 1:
 					Scores_Update("assets/score/levels.txt", (char*)"one", lval);
 					break;
 				case 2:
-				Scores_Update("assets/score/levels.txt", (char*)"two", lval);
+					Scores_Update("assets/score/levels.txt", (char*)"two", lval);
 					break;
 				case 3:
-				Scores_Update("assets/score/levels.txt", (char*)"three", lval);
+					Scores_Update("assets/score/levels.txt", (char*)"three", lval);
 					break;
 				case 4:
-				Scores_Update("assets/score/levels.txt", (char*)"four", lval);
+					Scores_Update("assets/score/levels.txt", (char*)"four", lval);
 					break;
 				default:
 					break;
 			}
-			game->playState.currentLevel++;
-			if (game->playState.currentLevel > Constants::MaximumLevels_) {
-				game->playState.currentLevel = 1;
-			}
+			game->playState.unlockedLevels++;
 			game->gameState = GameState_Win;
 		default:
 			break;
@@ -293,10 +291,7 @@ void Game_RunLoop(Game* game) {
 						case SDLK_u:
 							if (game->gameState == GameState_Play) {
 								game->gameState = GameState_Win;
-								game->playState.currentLevel++;
-								if (game->playState.currentLevel > Constants::MaximumLevels_) {
-									game->playState.currentLevel = 1;
-								}
+								game->playState.unlockedLevels++;
 							}
 							break;
 						default:
@@ -351,9 +346,9 @@ void Game_RunLoop(Game* game) {
 		switch(game->gameState) {
 			case GameState_LoadPlay:
 				Mix_HaltMusic();
-				LoadPlayStateAssets(game, game->playState.currentLevel);
+				LoadPlayStateAssets(game, game->playState.levelSelection);
 				if (!game->playState.loaded) {
-					std::cerr << "Error: Unable to find game with level " << game->playState.currentLevel << std::endl;
+					std::cerr << "Error: Unable to find game with level " << game->playState.levelSelection << std::endl;
 					game->gameState = GameState_Title;
 				} else {
 					LoadZoneIntroAssets(game, game->playState.chapter.name);

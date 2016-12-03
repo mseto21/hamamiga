@@ -35,6 +35,7 @@ enum GameState {
 	GameState_Play,
 	GameState_HighScore,
 	GameState_Options,
+	GameState_LevelSelect,
 	GameState_Pause,
 	GameState_Win,
 	GameState_Lose,
@@ -51,14 +52,12 @@ struct IntroState {
 struct TitleState {
 	const char* selectionStrings[Constants::TitleScreenTextures_];	/* Strings of title options. */
 	uint8 selection;		/* Current title selection. */
-	_TTF_Font* titleFont;	/* Used title font. */
 	_Mix_Music* titleMusic;	/* Title music. */
 };
 
 struct HighScoreState {
 	const char* scoreType[Constants::MaxHighScores_];
 	int scores[Constants::MaxHighScores_];
-	_TTF_Font* font;
 };
 
 struct OptionState {
@@ -66,13 +65,11 @@ struct OptionState {
 	float windowBrightness = 1.0f;	/* Current window brightness. */
 	const char* selectionStrings[Constants::TitleScreenSelections_]; /* Options strings. */
 	uint8 selection;				/* Current selection. */
-	_TTF_Font* font;				/* Font used by options. */
 };
 
 struct ZoneIntroState {
 	float alpha;			/* Opacity of intro. */
 	uint32 elapsed;			/* Time elapsed in intro state. */
-	_TTF_Font* font;		/* Font for chapter name. */
 
 	bool sliding;			/* Check if we're in transition. */
 	CutScene startScene;	/* Scenes at start of chapter. */
@@ -89,10 +86,11 @@ struct PlayState {
 	_TTF_Font* scoreFont;
 	_TTF_Font* healthFont;
 
-	bool loaded; 		/* Ensure file loaded properly. */
-	uint8 currentLevel; /* Keeps track of player progress. TO-DO: Read from file! */
-	Zone chapter;		/* The current level, loaded by FileLoader. */
-	ComponentBag cBag;	/* All components. */
+	bool loaded; 			/* Ensure file loaded properly. */
+	uint8 unlockedLevels; 	/* Keeps track of player progress. TO-DO: Read from file! */
+	uint8 levelSelection; 	/* Current Level selection. */
+	Zone chapter;			/* The current level, loaded by FileLoader. */
+	ComponentBag cBag;		/* All components. */
 
 	/* Systems */
 	AISystem aiSystem;
