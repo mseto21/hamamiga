@@ -159,6 +159,8 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	// Initialize caches
 	TextureCache* tcache = TextureCache_GetCache();
 	tcache->levelIndex = tcache->index;
+	SoundCache* scache = SoundCache_GetCache();
+	scache->levelIndex = scache->index;
 	if (EntityCache_GetCache() == NULL) {
 		EntityCache_Free();
 		std::cerr << "Error: The entity cache was already loaded!" << std::endl;
@@ -240,38 +242,23 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 
 
 void FreePlay(Game* game) {
-	// Free sounds
-	//Mix_FreeMusic(game->playState.chapter.music);
-	//game->playState.chapter.music = nullptr;
-	Mix_HaltChannel(Constants::DiscoChannel_);
 	// Free caches
 	EntityCache_Free();
 	ComponentBag_Free(&game->playState.cBag);
 	TextureCache_FreeLevel();
+	SoundCache_FreeLevel();
+	Mix_HaltChannel(Constants::DiscoChannel_);
 
 	// Free cutscenes
 	strcpy(game->playState.chapter.name, "");
-	//for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
-	//	game->playState.chapter.startScene.slides[i] = nullptr;
-	//}
 	game->zoneIntroState.startScene.slideCount = 0;
 	game->zoneIntroState.startScene.current = 0;
-
-	//for (int i = 0; i < game->playState.chapter.endScene.slideCount; i++) {
-	//	game->playState.chapter.endScene.slides[i] = nullptr;
-	//}
 	game->zoneIntroState.endScene.slideCount = 0;
 	game->zoneIntroState.endScene.current = 0;
 
 	// Free fonts
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);
-
-	// Free sounds
-	//SoundCache_FreeSound("hatpickup");
-	////SoundCache_FreeSound("disco");
-	//SoundCache_FreeSound("ow");
-	//SoundCache_FreeSound("nj");
 
 	// Delete all pointers in ai system
 	AISystem_Free(&game->playState.aiSystem);
