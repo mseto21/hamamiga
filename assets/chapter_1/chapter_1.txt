@@ -75,8 +75,8 @@ zone=
 	entity=
 		name(Jumpy,)
 		animation(4,150.0,88,87,)
-		movement(0.0,20.0,0.0,20.0,)
-		damage(20,)
+		movement(0.0,16.0,0.0,16.0,)
+		damage(5,)
 		health(100,)
 		physics(100,)
 		rectangle(1000,210,88,87,)

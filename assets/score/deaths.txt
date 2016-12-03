@@ -1,4 +1,4 @@
 fallen=28
-killed=49
+killed=51
 total198
 END=;

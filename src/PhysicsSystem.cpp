@@ -124,7 +124,13 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				if (!Component_HasIndex(aiComponent, eid)) {
 					int xVelocity = 0;
 					int yVelocity = 0;
+
 					int collisionXVelocity = movementComponent->movementValues[otherEid].xVelocity;
+					float* collisionYVelocity = &movementComponent->movementValues[otherEid].yVelocity;
+
+					if (*collisionYVelocity > 0) {
+						*collisionYVelocity = -*collisionYVelocity;
+					}
 
 					if (collisionXVelocity != 0)
 						xVelocity = 2 * collisionXVelocity;
