@@ -46,10 +46,11 @@ namespace Constants {
 	const uint16	MaxMapHeight_		= 256;
 	const uint16	TileSize_			= 48;
 	const uint16	MaxTileAnimations_	= 8;
-	const uint16	DiscoChannel_		= 2;//channel for disco/overlay sounds
-	const uint16  	SoundChannel_		= 3; //arbitrary channel for rest of sounds
-	const uint16	MaxBullets_			= 3; //max number of alive bullets at a time
-	const uint16    MaxKnives_			= 3; //max number of alive knives at a time
+	const uint16	DiscoChannel_		= 2; // Channel for disco/overlay sounds
+	const uint16  	SoundChannel_		= 3; // Arbitrary channel for rest of sounds
+	const uint16	MaxBullets_			= 3; // Max number of alive bullets at a time
+	const uint16    MaxKnives_			= 3; // Max number of alive knives at a time
+	const uint8		CoinValue_			= 5; // Points allocated for one coin.
 
 	// Pause State
 	const uint16	MaxInteractableMessages_	= 12;

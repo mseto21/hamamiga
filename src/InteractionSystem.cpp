@@ -4,6 +4,7 @@
 #include "InputComponent.h"
 #include "InteractableComponent.h"
 #include "AliveComponent.h"
+#include "GoalComponent.h"
 #include "ComponentBag.h"
 
 void InteractionSystem_Initialize(InteractionSystem* interactionSystem, ComponentBag* cBag, Game* game) {
@@ -11,6 +12,7 @@ void InteractionSystem_Initialize(InteractionSystem* interactionSystem, Componen
 	interactionSystem->inputComponent 			= cBag->inputComponent;
 	interactionSystem->rectangleComponent 		= cBag->rectangleComponent;
 	interactionSystem->aliveComponent 			= cBag->aliveComponent;
+	interactionSystem->goalComponent 			= cBag->goalComponent;
 	interactionSystem->cBag 					= cBag;
 	interactionSystem->game 					= game;
 }
@@ -27,6 +29,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 	InputComponent* inputComponent = interactionSystem->inputComponent;
 	RectangleComponent* rectangleComponent = interactionSystem->rectangleComponent;
 	AliveComponent* aliveComponent = interactionSystem->aliveComponent;
+	GoalComponent* goalComponent = interactionSystem->goalComponent;
 
 	Rectangle r1 = rectangleComponent->entityRectangles[Constants::PlayerIndex_];
 
@@ -56,6 +59,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				continue;
 			}
 			case InteractionTypes_Coin:
+				goalComponent->points[eid] += Constants::CoinValue_;
 				if (Component_HasIndex(aliveComponent, eid)) {
 					aliveComponent->alive[eid] = false;
 				}
