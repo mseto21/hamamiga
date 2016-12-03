@@ -10,7 +10,6 @@ struct TileMap;
 struct ComponentBag;
 struct ComponentBag;
 struct InteractableComponent;
-struct AliveComponent;
 struct AIComponent;
 struct DamageComponent;
 struct BulletComponent;
@@ -24,7 +23,6 @@ struct PhysicsSystem {
 	BulletComponent* bulletComponent;
 	InputComponent* inputComponent;
 	InteractableComponent* interactableComponent;
-	AliveComponent* aliveComponent;
 	AIComponent* aiComponent;
 	DamageComponent* damageComponent;
 	TileMap* map;

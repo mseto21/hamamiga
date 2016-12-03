@@ -7,7 +7,6 @@
 #include "HealthComponent.h"
 #include "BulletComponent.h"
 #include "InputComponent.h"
-#include "AliveComponent.h"
 #include "AIComponent.h"
 #include "DamageComponent.h"
 #include "GoalComponent.h"
@@ -32,7 +31,6 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->bulletComponent  	= cBag->bulletComponent;
 	physicsSystem->inputComponent		= cBag->inputComponent;
 	physicsSystem->interactableComponent = cBag->interactableComponent;
-	physicsSystem->aliveComponent 		= cBag->aliveComponent;
 	physicsSystem->aiComponent          = cBag->aiComponent;
 	physicsSystem->damageComponent      = cBag->damageComponent;
 	physicsSystem->map 					= tileMap;
@@ -56,7 +54,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	HealthComponent* healthComponent = physicsSystem->healthComponent;
 	BulletComponent* bulletComponent = physicsSystem->bulletComponent;
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
-	AliveComponent * aliveComponent = physicsSystem->aliveComponent;
 	AIComponent * aiComponent = physicsSystem->aiComponent;
 	DamageComponent * damageComponent = physicsSystem->damageComponent;
 	TileMap* map = physicsSystem->map;
@@ -147,10 +144,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					if (!healthComponent->invincible[eid]) {
 						healthComponent->startHealth[eid] = healthComponent->health[eid];
 						healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage / healthComponent->damageReduction[eid];
-						if (Component_HasIndex(aliveComponent, eid)) {
-							if (healthComponent->health[eid] <= 0)
-						  		aliveComponent->alive[eid] = false;
-						}
 			      	}
 				} else {
 			    	aiComponent->marchValues[eid].facing *= -1;
@@ -292,7 +285,6 @@ void PhysicsSystem_Free(PhysicsSystem* physicsSystem) {
 	physicsSystem->bulletComponent = nullptr;
 	physicsSystem->inputComponent = nullptr;
 	physicsSystem->interactableComponent = nullptr;
-	physicsSystem->aliveComponent = nullptr;
 	physicsSystem->map = nullptr;
 	physicsSystem->componentBag = nullptr;
 }
