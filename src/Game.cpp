@@ -301,6 +301,14 @@ void Game_RunLoop(Game* game) {
 								game->gameState = GameState_Title;
 							}
 							break;
+					        case SDLK_r:
+						        if (game->gameState == GameState_Win || game->gameState == GameState_Lose
+							    || game->gameState == GameState_Play
+
+							    || game->gameState == GameState_Pause) {
+						                 FreePlay(game);
+						                 game->gameState = GameState_LoadPlay;
+						  }
 						case SDLK_n:
 							if (game->gameState == GameState_Win || game->gameState == GameState_Lose 
 								|| game->gameState == GameState_Play || game->gameState == GameState_ZoneIntro) {
