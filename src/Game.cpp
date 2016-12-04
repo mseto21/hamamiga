@@ -303,6 +303,8 @@ void Game_RunLoop(Game* game) {
 						case SDLK_n:
 							if (game->gameState == GameState_Win || game->gameState == GameState_Lose 
 								|| game->gameState == GameState_Play || game->gameState == GameState_ZoneIntro) {
+								if (game->playState.levelSelection == game->playState.unlockedLevels)
+									game->playState.unlockedLevels++;
 								FreePlay(game);
 								game->gameState = GameState_LoadPlay;
 							} 
