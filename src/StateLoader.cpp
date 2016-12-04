@@ -17,6 +17,16 @@
 #include <SDL_mixer.h>
 
 
+// TO-DO: This is temporary until we can save files!
+std::string LevelNames[] = {
+	"Tutorial",
+	"The Mysterious, Murderous Memo",
+	"Into the Vents!",
+	"Scurry Out of Shipping",
+	"Breakroom Brawl"
+};
+
+
 void LoadIntroStateAssets(Game* game) {
 	game->introState.elapsed = 0;
 	game->introState.alpha = 0.f;
@@ -111,7 +121,7 @@ void LoadHighScoreStateAssets(Game* game) {
 
 void LoadLevelSelectAssets(Game* game) {
 	game->levelSelectState.selection = 0;
-	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 48);
+	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 36);
 	if (!font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
@@ -120,10 +130,12 @@ void LoadLevelSelectAssets(Game* game) {
 	SDL_Color baseColor = {100, 100, 100, 100};
 
 	for (int levelIndex = 0; levelIndex <= game->playState.unlockedLevels; levelIndex++) {
-		std::string lvl = "LEVEL NAME: ";
-		lvl.append(std::to_string(levelIndex));
-		std::string name = lvl;
+		std::string name = std::to_string(levelIndex);
 		name.append("_level");
+		std::string lvl = "Chapter ";
+		lvl.append(std::to_string(levelIndex));
+		lvl.append(": ");
+		lvl.append(LevelNames[levelIndex]);
 		TextureCache_CreateTextureFromFont(game->renderer, font, baseColor, lvl.c_str(), name.c_str());
 		name.append("_select");
 		TextureCache_CreateTextureFromFont(game->renderer, font, fontColor, lvl.c_str(), name.c_str());

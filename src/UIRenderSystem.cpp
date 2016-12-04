@@ -235,7 +235,7 @@ void RenderLevelSelect(Game* game, uint32 elapsed) {
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
 	for (int i = 0; i <= game->playState.unlockedLevels; i++) {
-		std::string lvl = "LEVEL NAME: ";
+		std::string lvl = "";
 		lvl.append(std::to_string(i));
 		lvl.append("_level");
 		Texture* texture = TextureCache_GetTexture(lvl.c_str());
