@@ -110,18 +110,22 @@ void LoadHighScoreStateAssets(Game* game) {
 
 
 void LoadLevelSelectAssets(Game* game) {
+	game->levelSelectState.selection = 0;
 	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 48);
 	if (!font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
 	SDL_Color fontColor = {255, 255, 255, 255};
+	SDL_Color baseColor = {100, 100, 100, 100};
 
 	for (int levelIndex = 0; levelIndex <= game->playState.unlockedLevels; levelIndex++) {
-		std::string lvl = "";
+		std::string lvl = "LEVEL NAME: ";
 		lvl.append(std::to_string(levelIndex));
 		std::string name = lvl;
 		name.append("_level");
+		TextureCache_CreateTextureFromFont(game->renderer, font, baseColor, lvl.c_str(), name.c_str());
+		name.append("_select");
 		TextureCache_CreateTextureFromFont(game->renderer, font, fontColor, lvl.c_str(), name.c_str());
 	}
 	TTF_CloseFont(font);

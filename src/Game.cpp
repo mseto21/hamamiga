@@ -74,6 +74,7 @@ bool Game_Initialize(Game* game) {
 	memset(&game->highScoreState.scores, 0, sizeof(game->highScoreState.scores));
 	game->playState.loaded = false;
 	game->playState.unlockedLevels = 1;
+	game->playState.levelSelection = 1;
 
 	// Enter title state
 	game->gameState = GameState_Intro;
@@ -100,6 +101,7 @@ void UpdateTitle(Game* game, bool* keysdown, bool* keysup) {
 
 	// Set the next state
 	if (keysdown[SDLK_RETURN]) {
+		keysup[SDLK_RETURN % Constants::NumKeys_] = false;
 		switch (game->titleState.selection) {
 			case 0:
 				game->gameState = GameState_LevelSelect;
@@ -135,9 +137,9 @@ void UpdateHighScore(Game* game, bool* keysdown) {
 void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 	// Update their options
 	if (keysdown[SDLK_UP % Constants::NumKeys_] && keysup[SDLK_UP % Constants::NumKeys_]) {
-			game->optionState.selection--;
-			game->optionState.selection %= Constants::OptionScreenSelections_;
-			keysup[SDLK_UP % Constants::NumKeys_] = false;
+		game->optionState.selection--;
+		game->optionState.selection %= Constants::OptionScreenSelections_;
+		keysup[SDLK_UP % Constants::NumKeys_] = false;
 	}
 
 	if (keysdown[SDLK_DOWN % Constants::NumKeys_] && keysup[SDLK_DOWN % Constants::NumKeys_]) {
@@ -160,7 +162,7 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 			}
 			Mix_VolumeMusic(game->optionState.musicVolume);
 			break;
-		/*case 1:
+			/*case 1:
 			if (keysdown[SDLK_d]){
 				if (game->optionState.windowBrightness < Constants::MaxBrightness_) {
 					game->optionState.windowBrightness += Constants::BrightnessUnit_;
@@ -177,6 +179,27 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 	}
 }
 
+void UpdateLevelSelect(Game* game, bool* keysdown, bool* keysup) {
+	if (keysdown[SDLK_UP % Constants::NumKeys_] && keysup[SDLK_UP % Constants::NumKeys_]) {
+		game->levelSelectState.selection--;
+		game->levelSelectState.selection %= (game->playState.unlockedLevels + 1);
+		keysup[SDLK_UP % Constants::NumKeys_] = false;
+	}
+
+	if (keysdown[SDLK_DOWN % Constants::NumKeys_] && keysup[SDLK_DOWN % Constants::NumKeys_]) {
+		game->levelSelectState.selection++;
+		game->levelSelectState.selection %= (game->playState.unlockedLevels + 1);
+		keysup[SDLK_DOWN % Constants::NumKeys_] = false;
+	}
+
+	if (keysdown[SDLK_RETURN % Constants::NumKeys_] && keysup[SDLK_RETURN % Constants::NumKeys_]) {
+		game->playState.levelSelection = game->levelSelectState.selection;
+		std::cout << game->playState.levelSelection << std::endl;
+		game->gameState = GameState_LoadPlay;
+		keysup[SDLK_RETURN % Constants::NumKeys_] = false;
+	}
+}
+
 void UpdatePause(Game* game, bool* keysdown, bool* keysup) {
 	if (keysdown[SDLK_SPACE] && keysup[SDLK_SPACE]) {
 		game->pauseState.pauseIndex++;
@@ -184,7 +207,6 @@ void UpdatePause(Game* game, bool* keysdown, bool* keysup) {
 		keysdown[SDLK_SPACE] = false;
 	}
 }
-
 
 void UpdatePlay(Game* game) {
 	AISystem_Update(&game->playState.aiSystem);
@@ -334,6 +356,9 @@ void Game_RunLoop(Game* game) {
 					break;
 				case GameState_HighScore:
 					UpdateHighScore(game, keysdown);
+					break;
+				case GameState_LevelSelect:
+					UpdateLevelSelect(game, keysdown, keysup);
 					break;
 				default:
 					lag = Constants::OptimalTime_;

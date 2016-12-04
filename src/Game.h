@@ -67,6 +67,10 @@ struct OptionState {
 	uint8 selection;				/* Current selection. */
 };
 
+struct LevelSelectState {
+	uint8 selection;				/* Current selection. */
+};
+
 struct ZoneIntroState {
 	float alpha;			/* Opacity of intro. */
 	uint32 elapsed;			/* Time elapsed in intro state. */
@@ -118,6 +122,7 @@ struct Game {
 	IntroState introState;
 	TitleState titleState;
 	HighScoreState highScoreState;
+	LevelSelectState levelSelectState;
 	PlayState playState;
 	OptionState optionState;
 	PauseState pauseState;
