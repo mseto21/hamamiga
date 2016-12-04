@@ -1,1 +1,4 @@
-ÿÿÿÿÿÿÿ
+fallen=8;
+killed=8;
+total=16;
+END=;

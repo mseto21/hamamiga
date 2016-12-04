@@ -89,17 +89,14 @@ void Scoreboard_Update(){
 int Add(FILE* scoreFile, const char* value){
 	int add = atoi(value);
 	int total = ReadTotal(scoreFile);
-	cout << "adding " << add << "to total of " << total << endl;
 	total += add;
-	cout << "total is now " << total << endl;
 	return total;
 }
 
-void Copy(const char* path, int pos, std::string value){
+void Copy(const char* path, int pos, const char * value, bool add){
 	//copies file into another file up to position, writes the value
 	///then copies the rest of the file over
-	cout << "in copy" << endl;
-	FILE* scoreFile = fopen(path, "r+");
+	FILE* scoreFile = fopen(path, "r");
 	if (scoreFile == NULL) {
 		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
 		return;
@@ -109,12 +106,11 @@ void Copy(const char* path, int pos, std::string value){
 	newpath.append("1");
 	const char* newPath = newpath.c_str();
 
-	FILE* newScoreFile = fopen(path, "w");
+	FILE* newScoreFile = fopen(newPath, "w");
 	if (newScoreFile == NULL) {
 		std::cerr << "Error: The score file " << newPath << " was NULL" << std::endl;
 		return;
 	}
-	cout << "after file opening" << endl;
 
 	int c = 0;
 	int filepos = 0;	
@@ -124,71 +120,48 @@ void Copy(const char* path, int pos, std::string value){
 		fputc(c, newScoreFile);
 		filepos++;
 	}
-	cout << "writing to positioons" << endl;
-	//write the value over
-	fseek(newScoreFile, filepos-1, SEEK_SET);
-	fputs(value.c_str(), newScoreFile);
-	//start copying from the ';'
-	while ((c=fgetc(scoreFile)) != ';') {
-		//run to ignore the previous value
+	if (add == true){
+		int currentTotal = Add(scoreFile,value);
+		std::string total = std::to_string(currentTotal);
+		//write the value over
+		fseek(newScoreFile, filepos, SEEK_SET);
+		fputs(total.c_str(), newScoreFile);
+	} else { //just write the value if we're not adding to total
+		Add(scoreFile,value); //removing the ';'
+		fseek(newScoreFile, filepos, SEEK_SET);
+		fputs(value, newScoreFile);
 	}
-	cout << "after the ; " << endl;
-	fputc(c, newScoreFile);
+	//start copying from the ';'
+	fputc((int) ';', newScoreFile);
 	while ((c=fgetc(scoreFile)) != EOF) {
 		fputc(c, newScoreFile);
 	}
+	
+	fclose(scoreFile);
+	fclose(newScoreFile);
+
+	remove(path);
+	rename(newPath, path);
 
 }
 
-void Scores_Update(const char* path, const char* type, const char* value) {
-FILE* scoreFile = fopen(path, "r+");
+int GetPosNum(const char* path, const char* type){
+FILE* scoreFile = fopen(path, "r");
 	if (scoreFile == NULL) {
 		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
-		return;
+		return -1;
 	}
 	int c = 0;
-	bool addTotal = false;
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
 	int pos = 0;
+	int typePos = 0;
 	pp = 0;
-	read = false;
+
 	while ((c=fgetc(scoreFile)) != EOF) {
 		if (c =='=') {
 			if (strcmp(str, type) == 0) {
-				if (strcmp(path, levelpath)==0 || strcmp(path, hatspath) == 0 ||
-					strcmp(path, scorepath) == 0){
-					c = fgetc(scoreFile);
-					pp++;
-					if ((char)c == '0'){//We add to the total
-						addTotal = true;
-					}
-					std::string total = value;
-					total.append(";");
-					//pp++;
-					fseek(scoreFile, pp, SEEK_SET);
-					fputs(total.c_str(), scoreFile); //writing value to text file
-				} else {
-					addTotal = true;
-					int currentTotal = Add(scoreFile,value);
-					std::string total = std::to_string(currentTotal);
-
-					//total.append(";");
-
-					//fseek(scoreFile, pp - 1, SEEK_SET);
-					//fputs(total.c_str(), scoreFile);
-					Copy(path, pp -1 , total);
-				}
-			} else if (strcmp(str, "total") == 0) {
-				if (addTotal == true){
-					cout << "PP IS: " << pp << " FOR WORD total " << endl;
-					int currentTotal = Add(scoreFile,value);
-					std::string total = std::to_string(currentTotal);
-					total.append(";");
-					fseek(scoreFile, pp -1, SEEK_SET);
-					fputs(total.c_str(), scoreFile); //writing value to text file
-					break;
-				}
+				typePos = pp+1;
 			}
 		} else {
 			if (c == '\n') {
@@ -200,16 +173,31 @@ FILE* scoreFile = fopen(path, "r+");
 			}
 		}
 		pp++;
-		cout << "pp is " << pp << endl;
 	}
-	cout << "SUCCESS: Stored value in file." << endl;
 	fclose (scoreFile);
-	//Format(path);
-	//update scores now 
+	return typePos;
+}
+
+void Scores_Update(const char* path, const char* type, const char* value) {
+	bool add = true;
+	const char * total = "total";
+	int typePos = GetPosNum(path, type);
+	int totalPos = GetPosNum(path, total);
+	//update scores now
+	//If we don't want to add to the total set the position to zero
+	if (strcmp(path, levelpath)==0 || strcmp(path, hatspath) == 0 ||
+					strcmp(path, scorepath) == 0){
+		add = false;
+	}
+	Copy(path, typePos, value, add);
+	if (add == true){
+		Copy(path, totalPos, value, add);
+	}
+
 	if (strcmp(path, scorepath) != 0){
 		Scoreboard_Update();
 	}
-	//remove("assets/score/hats.txt");
+
 	return;
 }
 
