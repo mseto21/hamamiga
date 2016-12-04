@@ -2,6 +2,7 @@
 #include "Constants.h"
 
 #include <cstdio>
+#include <stdio.h>
 #include <iostream>
 
 using namespace std;
@@ -10,6 +11,9 @@ const uint32 MaxBuffSize_ = 128;
 const char* scorepath = "assets/score/score.txt";
 const char* levelpath = "assets/score/levels.txt";
 const char* hatspath = "assets/score/hats.txt";
+
+int pp = 0; //reset whenever reading from file
+bool read = false; //flag for checking if read from total
 
 int ReadTotal(FILE* scoreFile) {
 	char str[MaxBuffSize_];
@@ -23,7 +27,10 @@ int ReadTotal(FILE* scoreFile) {
 			if (c != '\t')
 				str[pos++] = c;
 		}
+		pp++;
 	}
+	pp++;
+	read = true;
 	return atoi(str);
 }
 
@@ -88,6 +95,23 @@ int Add(FILE* scoreFile, const char* value){
 	return total;
 }
 
+/*void Copy(const char* path, int pos, const char * value){
+	//copies file into another file up to position, writes the value
+	///then copies the rest of the file over
+	FILE* scoreFile = fopen(path, "r+");
+	if (scoreFile == NULL) {
+		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
+		return;
+	}
+	int c = 0;
+	int filepos = 0;
+	while (filepos < pos){
+		c = fgetc(scoreFile);
+
+		filepos++;
+	}
+}*/
+
 void Scores_Update(const char* path, const char* type, const char* value) {
 FILE* scoreFile = fopen(path, "r+");
 	if (scoreFile == NULL) {
@@ -99,37 +123,41 @@ FILE* scoreFile = fopen(path, "r+");
 	char str[MaxBuffSize_];
 	memset(&str, 0, MaxBuffSize_);
 	int pos = 0;
-	int pp = 0;
+	pp = 0;
+	read = false;
 	while ((c=fgetc(scoreFile)) != EOF) {
 		if (c =='=') {
 			if (strcmp(str, type) == 0) {
 				if (strcmp(path, levelpath)==0 || strcmp(path, hatspath) == 0 ||
 					strcmp(path, scorepath) == 0){
 					c = fgetc(scoreFile);
+					pp++;
 					if ((char)c == '0'){//We add to the total
 						addTotal = true;
 					}
-					pos = pp +1;
-					fseek(scoreFile, pos, SEEK_SET);
-					fputs(value, scoreFile); //writing value to text file
+					std::string total = value;
+					total.append(";");
+					//pp++;
+					fseek(scoreFile, pp, SEEK_SET);
+					fputs(total.c_str(), scoreFile); //writing value to text file
 				} else {
 					addTotal = true;
-					pos = pp +1;
 					int currentTotal = Add(scoreFile,value);
 					std::string total = std::to_string(currentTotal);
-					cout << "writing value " << currentTotal << "to total" << endl;
-					fseek(scoreFile, pos, SEEK_SET);
+
+					total.append(";");
+
+					fseek(scoreFile, pp - 1, SEEK_SET);
 					fputs(total.c_str(), scoreFile);
 				}
 			} else if (strcmp(str, "total") == 0) {
 				if (addTotal == true){
-					pos = pp +2;
+					cout << "PP IS: " << pp << " FOR WORD total " << endl;
 					int currentTotal = Add(scoreFile,value);
 					std::string total = std::to_string(currentTotal);
-					cout << "writing value " << currentTotal << "to total" << endl;
-					fseek(scoreFile, pos, SEEK_SET);
+					total.append(";");
+					fseek(scoreFile, pp -1, SEEK_SET);
 					fputs(total.c_str(), scoreFile); //writing value to text file
-					cout << "puts at pos " << pos << endl;
 					break;
 				}
 			}
@@ -143,13 +171,16 @@ FILE* scoreFile = fopen(path, "r+");
 			}
 		}
 		pp++;
+		cout << "pp is " << pp << endl;
 	}
 	cout << "SUCCESS: Stored value in file." << endl;
 	fclose (scoreFile);
+	//Format(path);
 	//update scores now 
 	if (strcmp(path, scorepath) != 0){
 		Scoreboard_Update();
 	}
+	remove("assets/score/hats.txt");
 	return;
 }
 
