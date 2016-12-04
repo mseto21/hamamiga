@@ -306,6 +306,9 @@ void Game_RunLoop(Game* game) {
 								|| game->gameState == GameState_Play || game->gameState == GameState_ZoneIntro) {
 								if (game->playState.levelSelection == game->playState.unlockedLevels)
 									game->playState.unlockedLevels++;
+								if (game->playState.levelSelection == game->playState.unlockedLevels)
+									game->playState.unlockedLevels++;
+								game->playState.levelSelection = game->playState.unlockedLevels;
 								FreePlay(game);
 								game->gameState = GameState_LoadPlay;
 							} 
