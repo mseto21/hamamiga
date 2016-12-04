@@ -181,6 +181,8 @@ void UpdateOptions(Game* game, bool* keysdown, bool* keysup) {
 
 void UpdateLevelSelect(Game* game, bool* keysdown, bool* keysup) {
 	if (keysdown[SDLK_UP % Constants::NumKeys_] && keysup[SDLK_UP % Constants::NumKeys_]) {
+		if (game->levelSelectState.selection == 0)
+			game->levelSelectState.selection = game->playState.unlockedLevels + 1;
 		game->levelSelectState.selection--;
 		game->levelSelectState.selection %= (game->playState.unlockedLevels + 1);
 		keysup[SDLK_UP % Constants::NumKeys_] = false;
