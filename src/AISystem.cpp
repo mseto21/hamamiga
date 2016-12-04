@@ -144,6 +144,28 @@ void ThrowerUpdate(AISystem* aiSystem, uint32 eid) {
 }
 
 
+void JumperUpdate(AISystem* aiSystem, uint32 eid) {
+  AIComponent* aiComponent = aiSystem->aiComponent;
+  RectangleComponent* rectangleComponent = aiSystem->rectangleComponent;
+  MovementComponent* movementComponent = aiSystem->movementComponent;
+
+  if (!Component_HasIndex(movementComponent, eid)) {
+    return;
+  }
+
+  Rectangle pRect = rectangleComponent->entityRectangles[Constants::PlayerIndex_];
+  Rectangle eRect = rectangleComponent->entityRectangles[eid];
+  MovementValues* moveValues = &movementComponent->movementValues[eid];
+  if (close(&pRect, &eRect))
+    aiComponent->marchValues[eid].facing = (pRect.x > eRect.x) - (pRect.x < eRect.x);
+
+  if (moveValues->grounded)
+    moveValues->yAccel = -moveValues->accelY;
+  else
+    moveValues->yAccel = 0;
+}
+
+
 void AISystem_Update(AISystem* aiSystem) {
   AIComponent* aiComponent = aiSystem->aiComponent;
   for (uint32 entityIndex = 0; entityIndex < aiComponent->count; entityIndex++) {
@@ -160,6 +182,9 @@ void AISystem_Update(AISystem* aiSystem) {
         break;
       case AIType_Flyer:
         FlyerUpdate(aiSystem, eid);
+        break;
+      case AIType_Jumper:
+        JumperUpdate(aiSystem, eid);
         break;
     } 
   }

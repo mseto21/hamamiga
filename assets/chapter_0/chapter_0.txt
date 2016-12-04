@@ -14,18 +14,4 @@ zone=
 		hat()
 		camera()
 		goal();
-	entity=
-		movement(3.0,14.0,1.0,5.0,)
-		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
-		physics(0,)
-		interactable('x' to Put On,0,6,)
-		rectangle(250,634,85,60,)
-		alive();
-	entity=
-		movement(3.0,14.0,1.0,5.0,)
-		texture(assets/chapter_4/hats-chap4.png,chef,)
-		physics(0,)
-		interactable('x' to Put On,0,8, Welcome to the Kitchen! Press 'z' to shoot enemies. Ammo is displayed in the top left.,)
-		rectangle(153,634,85,60,)
-		alive();
 END=

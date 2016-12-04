@@ -4,7 +4,7 @@
 #include "Types.h"
 #include "ComponentBag.h"
 #include "Game.h"
-#include "InteractionTypes.h"
+#include "Interactions.h"
 
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
@@ -244,7 +244,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		// Otherwise, render at the rectangle
 		Rectangle rect = rectangleComponent->entityRectangles[eid];
 		if (rect.x + rect.w < cameraComponent->camera.x || rect.x > cameraComponent->camera.x + cameraComponent->camera.w
-			|| rect.y > cameraComponent->camera.y + cameraComponent->camera.h || rect.y < cameraComponent->camera.y) {
+			|| rect.y > cameraComponent->camera.y + cameraComponent->camera.h || rect.y + rect.h < cameraComponent->camera.y) {
 			continue;
 		}
 		rect.x -= cameraComponent->camera.x;

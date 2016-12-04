@@ -36,15 +36,15 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
         }
     	if (Component_HasIndex(healthComponent, eid)) {
     		int health = healthComponent->health[eid];
-				if (health <= 0) {
-					if (Component_HasIndex(aliveComponent, eid)) {
-					 	aliveComponent->alive[eid] = false;
-					}
-				 	if (eid == Constants::PlayerIndex_) {
-                        Scores_Update(deathpath, (char*)"killed", dval);
-					 	return GameResult_Killed;
-					 }
+			if (health <= 0) {
+				if (Component_HasIndex(aliveComponent, eid)) {
+				 	aliveComponent->alive[eid] = false;
 				}
+			 	if (eid == Constants::PlayerIndex_) {
+                    Scores_Update(deathpath, (char*)"killed", dval);
+				 	return GameResult_Killed;
+				 }
+			}
     	}
 
     	if (Component_HasIndex(rectangleComponent, eid)) {
@@ -67,7 +67,6 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
     	}
 
     	goalComponent->points[eid] += elapsed;
-    	
 	}	
 
 	return GameResult_Running;

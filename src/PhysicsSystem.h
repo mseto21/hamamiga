@@ -5,17 +5,14 @@ struct PhysicsComponent;
 struct MovementComponent;
 struct RectangleComponent;
 struct HealthComponent;
-struct HatComponent;
 struct InputComponent;
 struct TileMap;
 struct ComponentBag;
 struct ComponentBag;
 struct InteractableComponent;
-struct AliveComponent;
 struct AIComponent;
 struct DamageComponent;
 struct BulletComponent;
-struct Game;
 struct Zone;
 
 struct PhysicsSystem {
@@ -23,19 +20,16 @@ struct PhysicsSystem {
 	MovementComponent* movementComponent; 
 	RectangleComponent* rectangleComponent; 
 	HealthComponent* healthComponent; 
-	HatComponent* hatComponent;
 	BulletComponent* bulletComponent;
 	InputComponent* inputComponent;
 	InteractableComponent* interactableComponent;
-	AliveComponent* aliveComponent;
 	AIComponent* aiComponent;
 	DamageComponent* damageComponent;
 	TileMap* map;
 	ComponentBag* componentBag;
-	Game* game;
 	Zone* zone;
 };
 
-void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Game* game, Zone* zone);
+void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap,Zone* zone);
 void PhysicsSystem_Update(PhysicsSystem* physicsSystem);
 void PhysicsSystem_Free(PhysicsSystem* physicsSystem);

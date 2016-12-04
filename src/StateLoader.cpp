@@ -5,7 +5,7 @@
 #include "SoundCache.h"
 #include "HealthComponent.h"
 #include "EntityCache.h"
-#include "InteractionTypes.h"
+#include "Interactions.h"
 #include "Constants.h"
 
 #include <iostream>
@@ -15,6 +15,16 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+
+
+// TO-DO: This is temporary until we can save files!
+std::string LevelNames[] = {
+	"Tutorial",
+	"The Mysterious, Murderous Memo",
+	"Into the Vents!",
+	"Scurry Out of Shipping",
+	"Breakroom Brawl"
+};
 
 
 void LoadIntroStateAssets(Game* game) {
@@ -33,12 +43,12 @@ void LoadIntroStateAssets(Game* game) {
 void LoadTitleStateAssets(Game* game) {
 	// Load font textures
 	game->titleState.selection = 0;
-	game->titleState.titleFont = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
-	if (!game->titleState.titleFont) {
+	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
+	if (!font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
-	TTF_SetFontHinting(game->titleState.titleFont, TTF_HINTING_MONO);
+	TTF_SetFontHinting(font, TTF_HINTING_MONO);
 	game->titleState.selectionStrings[0] = "New Game";
 	game->titleState.selectionStrings[1] = "Controls";
 	game->titleState.selectionStrings[2] = "Options";
@@ -51,12 +61,12 @@ void LoadTitleStateAssets(Game* game) {
 	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenTextures_; selectionIndex++) {
 		std::string base = game->titleState.selectionStrings[selectionIndex];
 		base.append("_base");
-		TextureCache_CreateTextureFromFont(game->renderer, game->titleState.titleFont, baseColor, game->titleState.selectionStrings[selectionIndex], base.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, font, baseColor, game->titleState.selectionStrings[selectionIndex], base.c_str());
 		std::string select = game->titleState.selectionStrings[selectionIndex];
 		select.append("_select");
-		TextureCache_CreateTextureFromFont(game->renderer, game->titleState.titleFont, selectedColor, game->titleState.selectionStrings[selectionIndex], select.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, font, selectedColor, game->titleState.selectionStrings[selectionIndex], select.c_str());
 	}
-	TTF_CloseFont(game->titleState.titleFont);
+	TTF_CloseFont(font);
 
 	// Load title music
 	game->titleState.titleMusic = Mix_LoadMUS("assets/music/themesong.ogg");
@@ -69,8 +79,8 @@ void LoadTitleStateAssets(Game* game) {
 
 void LoadHighScoreStateAssets(Game* game) {
 	// Load font
-	game->highScoreState.font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
-	if (!game->highScoreState.font) {
+	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
+	if (!font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
@@ -103,21 +113,46 @@ void LoadHighScoreStateAssets(Game* game) {
 		}
 		std::string name = "high_score_";
 		name.append(std::to_string(highScoreIndex));
-		TextureCache_CreateTextureFromFont(game->renderer, game->highScoreState.font, scoreColor, msg.c_str(), name.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, msg.c_str(), name.c_str());
 	}
-	TTF_CloseFont(game->highScoreState.font);
+	TTF_CloseFont(font);
+}
+
+
+void LoadLevelSelectAssets(Game* game) {
+	game->levelSelectState.selection = 0;
+	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 36);
+	if (!font) {
+		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+		return;
+	}
+	SDL_Color fontColor = {255, 255, 255, 255};
+	SDL_Color baseColor = {100, 100, 100, 100};
+
+	for (int levelIndex = 0; levelIndex <= game->playState.unlockedLevels; levelIndex++) {
+		std::string name = std::to_string(levelIndex);
+		name.append("_level");
+		std::string lvl = "Chapter ";
+		lvl.append(std::to_string(levelIndex));
+		lvl.append(": ");
+		lvl.append(LevelNames[levelIndex]);
+		TextureCache_CreateTextureFromFont(game->renderer, font, baseColor, lvl.c_str(), name.c_str());
+		name.append("_select");
+		TextureCache_CreateTextureFromFont(game->renderer, font, fontColor, lvl.c_str(), name.c_str());
+	}
+	TTF_CloseFont(font);
 }
 
 
 void LoadOptionStateAssets(Game* game) {
 	// Load font
-	game->optionState.font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
-	if (!game->optionState.font) {
+	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
+	if (!font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
 	//Game options
-	TTF_SetFontHinting(game->optionState.font, TTF_HINTING_MONO);
+	TTF_SetFontHinting(font, TTF_HINTING_MONO);
 	game->optionState.selectionStrings[0] = "Background Music";
 	game->optionState.selectionStrings[1] = "Brightness";
 	//game->optionState.selectionStrings[2] = "Options";
@@ -128,12 +163,12 @@ void LoadOptionStateAssets(Game* game) {
 	for (int selectionIndex = 0; selectionIndex < Constants::OptionScreenSelections_; selectionIndex++) {
 		std::string base = game->optionState.selectionStrings[selectionIndex];
 		base.append("_base");
-		TextureCache_CreateTextureFromFont(game->renderer, game->optionState.font, baseColor, game->optionState.selectionStrings[selectionIndex], base.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, font, baseColor, game->optionState.selectionStrings[selectionIndex], base.c_str());
 		std::string select = game->optionState.selectionStrings[selectionIndex];
 		select.append("_select");
-		TextureCache_CreateTextureFromFont(game->renderer, game->optionState.font, selectedColor, game->optionState.selectionStrings[selectionIndex], select.c_str());
+		TextureCache_CreateTextureFromFont(game->renderer, font, selectedColor, game->optionState.selectionStrings[selectionIndex], select.c_str());
 	}
-	TTF_CloseFont(game->highScoreState.font);
+	TTF_CloseFont(font);
 }
 
 
@@ -142,15 +177,15 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 	game->zoneIntroState.alpha = 0.f;
 	game->zoneIntroState.elapsed = 0;
 	game->zoneIntroState.startScene.current = 0;
-	game->zoneIntroState.font = TTF_OpenFont("assets/fonts/BadMofo.ttf", 50);
-	if (!game->zoneIntroState.font) {
+	TTF_Font* font = TTF_OpenFont("assets/fonts/BadMofo.ttf", 50);
+	if (!font) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
 
 	SDL_Color color = {255, 255, 255, 255};
-	TextureCache_CreateTextureFromFont(game->renderer, game->zoneIntroState.font, color, name, Constants::ZoneName_);
-	TTF_CloseFont(game->zoneIntroState.font);
+	TextureCache_CreateTextureFromFont(game->renderer, font, color, name, Constants::ZoneName_);
+	TTF_CloseFont(font);
 }
 
 
@@ -159,6 +194,8 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	// Initialize caches
 	TextureCache* tcache = TextureCache_GetCache();
 	tcache->levelIndex = tcache->index;
+	SoundCache* scache = SoundCache_GetCache();
+	scache->levelIndex = scache->index;
 	if (EntityCache_GetCache() == NULL) {
 		EntityCache_Free();
 		std::cerr << "Error: The entity cache was already loaded!" << std::endl;
@@ -221,12 +258,13 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	CameraSystem_Initialize(&game->playState.cameraSystem, &game->playState.cBag, &game->playState.chapter);
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
 	MovementSystem_Initialize(&game->playState.movementSystem, &game->playState.cBag);
-	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap, game, &game->playState.chapter);
+	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap, &game->playState.chapter);
 	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.scoreFont);
 	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag, &game->playState.chapter);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
 	BulletSystem_Initialize(&game->playState.bulletSystem, &game->playState.cBag, &game->playState.chapter);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
+	InteractionSystem_Initialize(&game->playState.interactionSystem, &game->playState.cBag, game);
 
 	// Pause state
 	TextureCache_CreateTexture(game->renderer, "assets/interactables/speech-bubble.png", "speech-bubble");
@@ -239,38 +277,23 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 
 
 void FreePlay(Game* game) {
-	// Free sounds
-	//Mix_FreeMusic(game->playState.chapter.music);
-	//game->playState.chapter.music = nullptr;
-	Mix_HaltChannel(Constants::DiscoChannel_);
 	// Free caches
 	EntityCache_Free();
 	ComponentBag_Free(&game->playState.cBag);
 	TextureCache_FreeLevel();
+	SoundCache_FreeLevel();
+	Mix_HaltChannel(Constants::DiscoChannel_);
 
 	// Free cutscenes
 	strcpy(game->playState.chapter.name, "");
-	//for (int i = 0; i < game->playState.chapter.startScene.slideCount; i++) {
-	//	game->playState.chapter.startScene.slides[i] = nullptr;
-	//}
 	game->zoneIntroState.startScene.slideCount = 0;
 	game->zoneIntroState.startScene.current = 0;
-
-	//for (int i = 0; i < game->playState.chapter.endScene.slideCount; i++) {
-	//	game->playState.chapter.endScene.slides[i] = nullptr;
-	//}
 	game->zoneIntroState.endScene.slideCount = 0;
 	game->zoneIntroState.endScene.current = 0;
 
 	// Free fonts
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);
-
-	// Free sounds
-	//SoundCache_FreeSound("hatpickup");
-	////SoundCache_FreeSound("disco");
-	//SoundCache_FreeSound("ow");
-	//SoundCache_FreeSound("nj");
 
 	// Delete all pointers in ai system
 	AISystem_Free(&game->playState.aiSystem);
@@ -283,6 +306,7 @@ void FreePlay(Game* game) {
 	//	SoundSystem_Free(&game->playState.soundSystem);
 	BulletSystem_Free(&game->playState.bulletSystem);
 	KillSystem_Free(&game->playState.killSystem);
+	InteractionSystem_Free(&game->playState.interactionSystem);
 
 	// Set loaded variable.
 	game->playState.loaded = false;

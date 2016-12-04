@@ -11,7 +11,7 @@
 #include "ComponentBag.h"
 #include "Zone.h"
 #include "HatMethods.h"
-#include "InteractionTypes.h"
+#include "Interactions.h"
 #include "EntityCache.h"
 
 #include <SDL.h>
@@ -52,18 +52,18 @@ void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
     	float maxScreenX = playerRect->x + Constants::ScreenWidth_;
     	float minScreenX = playerRect->x - Constants::ScreenWidth_;
     	float bX = rectangleComponent->entityRectangles[eid].x;
-	MovementValues* moveValues = &movementComponent->movementValues[eid];
-	if (!moveValues) {
-	  std::cerr << "Error: No movement values for the input system to use." << std::endl;
-	  continue;
-	}
-	moveValues->xAccel = 0;
-	moveValues->yAccel = 0;
-	if (bulletComponent->bullet[eid].left == true){
-	  moveValues->xAccel = -moveValues->accelX;
-	} else {
-	  moveValues->xAccel = moveValues->accelX;
-	}
+    	MovementValues* moveValues = &movementComponent->movementValues[eid];
+    	if (!moveValues) {
+    	  std::cerr << "Error: No movement values for the input system to use." << std::endl;
+    	  continue;
+    	}
+    	moveValues->xAccel = 0;
+    	moveValues->yAccel = 0;
+    	if (bulletComponent->bullet[eid].left == true){
+    	  moveValues->xAccel = -moveValues->accelX;
+    	} else {
+    	  moveValues->xAccel = moveValues->accelX;
+    	}
 	
 	if (bX > bulletSystem->zone->levelWidth || bX < 0 || bX < minScreenX || bX > maxScreenX 
 	    || bulletComponent->bullet[eid].collided == true) {

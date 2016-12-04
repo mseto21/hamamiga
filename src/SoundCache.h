@@ -7,10 +7,12 @@ const int MaxSounds_ = 100;
 struct SoundCache {
 	Sound sounds[MaxSounds_];
 	int index;
+	int levelIndex;
 };
 
 SoundCache* SoundCache_GetCache();
 Sound* SoundCache_CreateSound(const char* path, const char* name);
 Sound* SoundCache_GetSound(const char* path);
 void SoundCache_FreeSound(const char* path);
+void SoundCache_FreeLevel();
 void SoundCache_Free();

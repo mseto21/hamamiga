@@ -16,7 +16,7 @@ void RenderTitle(Game* game) {
 		Texture* selection;
 		if (selectionIndex == game->titleState.selection) {
 			std::string base;
-			if (selectionIndex == 0 && game->playState.currentLevel > 1)
+			if (selectionIndex == 0 && game->playState.unlockedLevels > 1)
 				base = game->titleState.selectionStrings[Constants::TitleScreenSelections_];
 			else
 				base = game->titleState.selectionStrings[selectionIndex];
@@ -24,7 +24,7 @@ void RenderTitle(Game* game) {
 			selection = TextureCache_GetTexture(base.c_str());
 		} else {
 			std::string select;
-			if (selectionIndex == 0 && game->playState.currentLevel > 1)
+			if (selectionIndex == 0 && game->playState.unlockedLevels > 1)
 				select = game->titleState.selectionStrings[Constants::TitleScreenSelections_];
 			else
 				select = game->titleState.selectionStrings[selectionIndex];
@@ -229,6 +229,28 @@ void RenderPauseState(Game* game, uint32  elapsed) {
 }
 
 
+void RenderLevelSelect(Game* game, uint32 elapsed) {
+	(void) elapsed;
+	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
+	SDL_RenderClear(game->renderer);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
+	for (int i = 0; i <= game->playState.unlockedLevels; i++) {
+		std::string lvl = "";
+		lvl.append(std::to_string(i));
+		lvl.append("_level");
+		Texture* texture = TextureCache_GetTexture(lvl.c_str());
+		if (game->levelSelectState.selection == i) {
+			lvl.append("_select");
+			texture = TextureCache_GetTexture(lvl.c_str());
+		}
+		int renderX = (Constants::ScreenWidth_ - texture->w) / 2;
+		int renderY = i * texture->h;
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, texture->w, texture->h, NULL, texture);
+	}
+	SDL_RenderPresent(game->renderer);
+}
+
+
 /* Select the correct render based on state. */
 void UIRenderSystem_Render(int gameState, Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 	switch (gameState) {
@@ -255,6 +277,10 @@ void UIRenderSystem_Render(int gameState, Game* game, uint32 elapsed, bool* keys
   			break;
   		case GameState_Pause:
   			RenderPauseState(game, elapsed);
+  			break;
+  		case GameState_LevelSelect:
+  			RenderLevelSelect(game, elapsed);
+  			break;
   		default:
 			break;
 	}

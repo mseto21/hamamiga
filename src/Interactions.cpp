@@ -1,4 +1,4 @@
-#include "InteractionTypes.h"
+#include "Interactions.h"
 #include "ComponentBag.h"
 #include "RectangleComponent.h"
 #include "MovementComponent.h"
@@ -20,6 +20,8 @@
 #include "EntityCache.h"
 #include "StatSystem.h"
 #include "HatMethods.h"
+#include "StateLoader.h"
+
 
 #include "Game.h"
 #include <iostream>
@@ -35,6 +37,9 @@ const char * hatpath = "assets/score/hats.txt";
 const char * val = "1";
 
 bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, ComponentBag* cBag) {
+	if (!Component_HasIndex(cBag->hatComponent, eid)){
+		return false;
+	}
 	switch (hatType)  {
 		case HatTypes_BunnyHat:
 			if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
@@ -236,3 +241,11 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 			break;
 	}
 }
+
+
+void Interaction_EnterDoor(Game* game, uint32 level) {
+	game->playState.levelSelection = level;
+	game->gameState = GameState_ReturnAndEnterLevel;
+}
+
+
