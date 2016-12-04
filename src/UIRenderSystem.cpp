@@ -243,7 +243,9 @@ void RenderLevelSelect(Game* game, uint32 elapsed) {
 			lvl.append("_select");
 			texture = TextureCache_GetTexture(lvl.c_str());
 		}
-		RenderSystem_Render_xywh(game->renderer, 0, i * texture->h, texture->w, texture->h, NULL, texture);
+		int renderX = (Constants::ScreenWidth_ - texture->w) / 2;
+		int renderY = i * texture->h;
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, texture->w, texture->h, NULL, texture);
 	}
 	SDL_RenderPresent(game->renderer);
 }
@@ -275,8 +277,10 @@ void UIRenderSystem_Render(int gameState, Game* game, uint32 elapsed, bool* keys
   			break;
   		case GameState_Pause:
   			RenderPauseState(game, elapsed);
+  			break;
   		case GameState_LevelSelect:
   			RenderLevelSelect(game, elapsed);
+  			break;
   		default:
 			break;
 	}
