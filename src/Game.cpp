@@ -385,6 +385,7 @@ void Game_RunLoop(Game* game) {
 				break;
 			case GameState_Returning:
 				FreePlay(game);
+				LoadLevelSelectAssets(game);
 				game->gameState = GameState_LevelSelect;
 				break;
 			case GameState_ReturnAndEnterLevel:
