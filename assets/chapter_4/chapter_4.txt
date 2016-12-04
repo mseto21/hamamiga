@@ -18,12 +18,12 @@ zone=
 		goal();
 	entity=
 		name(Jumpy John,)
-		animation(3,150.0,55,87,)
+		animation(3,150.0,60,75,)
 		health(100,)
 		damage(5,)
 		movement(0.0,16.0,0.0,10.0,)
 		physics(100,)
-		rectangle(255,1250,55,87,)
+		rectangle(255,1250,60,75,)
 		texture(assets/enemies/jumping-demon.png,jdemon,)
 		ai(4,120,1,)
 		alive()
@@ -54,12 +54,12 @@ zone=
 		goal();
 	entity=
 		name(Blaze Johnson Jr.,)
-		animation(3,150.0,55,87,)
+		animation(3,150.0,60,75,)
 		health(100,)
 		damage(5,)
 		movement(0.0,16.0,0.0,12.0,)
 		physics(100,)
-		rectangle(1694,1256,55,87,)
+		rectangle(1694,1256,60,75,)
 		texture(assets/enemies/jumping-demon.png,jdemon,)
 		ai(4,120,1,)
 		alive()
@@ -209,12 +209,12 @@ zone=
 		goal();
 	entity=
 		name(Gluttonous Gale,)
-		animation(3,150.0,55,87,)
+		animation(3,150.0,60,75,)
 		health(100,)
 		damage(5,)
 		movement(0.0,16.0,0.0,12.0,)
 		physics(100,)
-		rectangle(2965,728,55,87,)
+		rectangle(2965,728,60,75,)
 		texture(assets/enemies/jumping-demon.png,jdemon,)
 		ai(4,120,1,)
 		alive()
