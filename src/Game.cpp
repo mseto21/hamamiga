@@ -313,7 +313,8 @@ void Game_RunLoop(Game* game) {
 						case SDLK_u:
 							if (game->gameState == GameState_Play) {
 								game->gameState = GameState_Win;
-								game->playState.unlockedLevels++;
+								if (game->playState.levelSelection == game->playState.unlockedLevels)
+									game->playState.unlockedLevels++;
 							}
 							break;
 						default:
