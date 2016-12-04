@@ -334,6 +334,9 @@ void Game_RunLoop(Game* game) {
 									game->playState.unlockedLevels++;
 							}
 							break;
+						case SDLK_1:
+							game->playState.unlockedLevels = 16;
+							break;
 						default:
 							keysdown[event.key.keysym.sym % Constants::NumKeys_] = true;
 							break;
