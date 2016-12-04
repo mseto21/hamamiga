@@ -140,22 +140,28 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						yVelocity = -10;
 					moveValues->yVelocity = yVelocity;
 					r1->y += moveValues->yVelocity;
-				} else {
-			    	aiComponent->marchValues[eid].facing *= -1;
-			    	aiComponent->marchValues[otherEid].facing *= -1;
-			    }
-			    if (Component_HasIndex(healthComponent, eid)) {
-				    if (!healthComponent->invincible[eid]) {
-						healthComponent->startHealth[eid] = healthComponent->health[eid];
-						if (Component_HasIndex(damageComponent, otherEid))
-							healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage / healthComponent->damageReduction[eid];
-			      	}
 				}
-			    bulletComponent->bullet[otherEid].collided = true;
+				if (Component_HasIndex(healthComponent, eid)) {
+				  if (!healthComponent->invincible[eid]) {
+				    healthComponent->startHealth[eid] = healthComponent->health[eid];
+				    if (Component_HasIndex(damageComponent, otherEid)) {
+				      if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, otherEid))) {
+					healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage
+					  / healthComponent->damageReduction[eid];
+				      } else {
+					aiComponent->marchValues[eid].facing *= -1;
+					aiComponent->marchValues[eid].distance = 0;
+					movementComponent->movementValues[eid].xAccel *= -1;
+					r1->x += movementComponent->movementValues[eid].xAccel*10;
+				      }
+				    }
+				  }
+				  bulletComponent->bullet[otherEid].collided = true;
+				}
 			}
 		}
 
-world_physics:
+	world_physics:
 		// Move player based on physics
 		if (!moveValues->grounded) {
 			if (moveValues->flying) {
@@ -224,10 +230,12 @@ world_physics:
 						moveValues->xVelocity = 0;
 						if (Component_HasIndex(aiComponent, eid)) {
 						  aiComponent->marchValues[eid].facing *= -1;
+						  aiComponent->marchValues[eid].distance = 0;
 						}
 					}
 					if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileX].solid) {
 					  aiComponent->marchValues[eid].facing *= -1;
+					  aiComponent->marchValues[eid].distance = 0;
 					}
 				} else {
 					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
@@ -245,10 +253,12 @@ world_physics:
 						moveValues->xVelocity = 0;
 						if (Component_HasIndex(aiComponent, eid)) {
 						  aiComponent->marchValues[eid].facing *= -1;
+						  aiComponent->marchValues[eid].distance = 0;
 						}
 					}
      					if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileEndX].solid) {
 					  aiComponent->marchValues[eid].facing *= -1;
+					  aiComponent->marchValues[eid].distance = 0;
 					}
 				} else {
 					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
