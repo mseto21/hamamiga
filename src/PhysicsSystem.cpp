@@ -144,10 +144,13 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			    	aiComponent->marchValues[eid].facing *= -1;
 			    	aiComponent->marchValues[otherEid].facing *= -1;
 			    }
-			    if (!healthComponent->invincible[eid]) {
-					healthComponent->startHealth[eid] = healthComponent->health[eid];
-					healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage / healthComponent->damageReduction[eid];
-		      	}
+			    if (Component_HasIndex(healthComponent, eid)) {
+				    if (!healthComponent->invincible[eid]) {
+						healthComponent->startHealth[eid] = healthComponent->health[eid];
+						if (Component_HasIndex(damageComponent, otherEid))
+							healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage / healthComponent->damageReduction[eid];
+			      	}
+				}
 			    bulletComponent->bullet[otherEid].collided = true;
 			}
 		}
