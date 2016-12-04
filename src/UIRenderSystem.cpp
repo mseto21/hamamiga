@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "TextureCache.h"
 #include "RenderSystem.h"
+#include "StateLoader.h"
 
 #include <SDL.h>
 #include <string>
@@ -239,6 +240,8 @@ void RenderLevelSelect(Game* game, uint32 elapsed) {
 		lvl.append(std::to_string(i));
 		lvl.append("_level");
 		Texture* texture = TextureCache_GetTexture(lvl.c_str());
+		if (!texture)
+			LoadLevelSelectAssets(game);
 		if (game->levelSelectState.selection == i) {
 			lvl.append("_select");
 			texture = TextureCache_GetTexture(lvl.c_str());
