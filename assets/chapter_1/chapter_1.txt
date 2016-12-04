@@ -17,7 +17,7 @@ zone=
 		camera()
 		goal();
 	entity=
-		name(Matty Kæ,)
+		name(Matty Kæ from Marketing,)
 		animation(4,150.0,88,87,)
 		damage(20,)
 		health(100,)
@@ -29,7 +29,7 @@ zone=
 		alive()
 		goal();
 	entity=
-		name(Harry,)
+		name(Harry from HR,)
 		animation(4,150.0,88,87,)
 		damage(20,)
 		health(100,)
@@ -53,7 +53,7 @@ zone=
 		alive()
 		goal();
 	entity=
-		name(Mindy,)
+		name(Mindy from Manufacturing,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -74,18 +74,6 @@ zone=
 		rectangle(1970,210,88,87,)
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,120,1,)
-		alive()
-		goal();
-	entity=
-		name(Jumpy,)
-		animation(4,150.0,88,87,)
-		movement(0.0,16.0,0.0,16.0,)
-		damage(5,)
-		health(100,)
-		physics(100,)
-		rectangle(1000,210,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		ai(4,120,1,)
 		alive()
 		goal();
 	entity=
