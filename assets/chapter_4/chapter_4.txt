@@ -18,7 +18,7 @@ zone=
 		goal();
 	entity=
 		name(Jumpy John,)
-		animation(3,150.0,88,87,)
+		animation(3,150.0,55,87,)
 		health(100,)
 		damage(5,)
 		movement(0.0,16.0,0.0,10.0,)
@@ -54,7 +54,7 @@ zone=
 		goal();
 	entity=
 		name(Blaze Johnson Jr.,)
-		animation(3,150.0,88,87,)
+		animation(3,150.0,55,87,)
 		health(100,)
 		damage(5,)
 		movement(0.0,16.0,0.0,12.0,)
@@ -209,7 +209,7 @@ zone=
 		goal();
 	entity=
 		name(Gluttonous Gale,)
-		animation(3,150.0,88,87,)
+		animation(3,150.0,55,87,)
 		health(100,)
 		damage(5,)
 		movement(0.0,16.0,0.0,12.0,)
