@@ -1,4 +1,1 @@
-fallen=7;
-killed=2;
-total=9;
-END=;
+ÿÿÿÿÿÿÿ

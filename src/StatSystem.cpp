@@ -95,22 +95,50 @@ int Add(FILE* scoreFile, const char* value){
 	return total;
 }
 
-/*void Copy(const char* path, int pos, const char * value){
+void Copy(const char* path, int pos, std::string value){
 	//copies file into another file up to position, writes the value
 	///then copies the rest of the file over
+	cout << "in copy" << endl;
 	FILE* scoreFile = fopen(path, "r+");
 	if (scoreFile == NULL) {
 		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
 		return;
 	}
+	//newfile name
+	std::string newpath = path;
+	newpath.append("1");
+	const char* newPath = newpath.c_str();
+
+	FILE* newScoreFile = fopen(path, "w");
+	if (newScoreFile == NULL) {
+		std::cerr << "Error: The score file " << newPath << " was NULL" << std::endl;
+		return;
+	}
+	cout << "after file opening" << endl;
+
 	int c = 0;
-	int filepos = 0;
+	int filepos = 0;	
+	//copy everything before the position
 	while (filepos < pos){
 		c = fgetc(scoreFile);
-
+		fputc(c, newScoreFile);
 		filepos++;
 	}
-}*/
+	cout << "writing to positioons" << endl;
+	//write the value over
+	fseek(newScoreFile, filepos-1, SEEK_SET);
+	fputs(value.c_str(), newScoreFile);
+	//start copying from the ';'
+	while ((c=fgetc(scoreFile)) != ';') {
+		//run to ignore the previous value
+	}
+	cout << "after the ; " << endl;
+	fputc(c, newScoreFile);
+	while ((c=fgetc(scoreFile)) != EOF) {
+		fputc(c, newScoreFile);
+	}
+
+}
 
 void Scores_Update(const char* path, const char* type, const char* value) {
 FILE* scoreFile = fopen(path, "r+");
@@ -145,10 +173,11 @@ FILE* scoreFile = fopen(path, "r+");
 					int currentTotal = Add(scoreFile,value);
 					std::string total = std::to_string(currentTotal);
 
-					total.append(";");
+					//total.append(";");
 
-					fseek(scoreFile, pp - 1, SEEK_SET);
-					fputs(total.c_str(), scoreFile);
+					//fseek(scoreFile, pp - 1, SEEK_SET);
+					//fputs(total.c_str(), scoreFile);
+					Copy(path, pp -1 , total);
 				}
 			} else if (strcmp(str, "total") == 0) {
 				if (addTotal == true){
@@ -180,7 +209,7 @@ FILE* scoreFile = fopen(path, "r+");
 	if (strcmp(path, scorepath) != 0){
 		Scoreboard_Update();
 	}
-	remove("assets/score/hats.txt");
+	//remove("assets/score/hats.txt");
 	return;
 }
 
