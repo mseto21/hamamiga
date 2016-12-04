@@ -95,11 +95,4 @@ zone=
 		interactable('x' to Put On,0,0,This is the bunny hat! It gives you the ability to jump twice as high!,)
 		rectangle(3980,1350,85,60,)
 		alive();
-	entity=
-		movement(3.0,14.0,1.0,5.0,)
-		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
-		physics(0,)
-		interactable('x' to Put On,0,6,)
-		rectangle(85,1350,85,60,)
-		alive();
 END=
