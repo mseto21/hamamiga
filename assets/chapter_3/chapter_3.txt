@@ -25,7 +25,8 @@ zone=
 		rectangle(800,550,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		animation(4,150.0,125,71,)
 		health(100,)
@@ -35,7 +36,8 @@ zone=
 		rectangle(1400,1240,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		animation(4,150.0,125,71,)
 		health(100,)
@@ -45,7 +47,8 @@ zone=
 		rectangle(1400,870,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		animation(4,150.0,125,71,)
 		health(100,)
@@ -55,7 +58,8 @@ zone=
 		rectangle(2000,353,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		animation(4,150.0,125,71,)
 		health(100,)
@@ -65,7 +69,8 @@ zone=
 		rectangle(3000,753,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		animation(4,150.0,125,71,)
 		health(100,)
@@ -75,7 +80,8 @@ zone=
 		rectangle(4000,653,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)

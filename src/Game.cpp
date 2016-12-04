@@ -238,7 +238,8 @@ void UpdatePlay(Game* game) {
 				default:
 					break;
 			}
-			game->playState.unlockedLevels++;
+			if (game->playState.levelSelection == game->playState.unlockedLevels)
+				game->playState.unlockedLevels++;
 			game->gameState = GameState_Win;
 		default:
 			break;
@@ -308,6 +309,7 @@ void Game_RunLoop(Game* game) {
 								FreePlay(game);
 								game->gameState = GameState_LoadPlay;
 							} 
+							break;
 						case SDLK_p:
 							if (game->gameState == GameState_ZoneIntro)
 								game->gameState = GameState_Play;
