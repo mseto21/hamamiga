@@ -144,7 +144,6 @@ FILE* scoreFile = fopen(path, "r");
 					c = fgetc(scoreFile);
 					if ((char)c == '0'){//We add to the total
 						*addTotal = true;
-						cout << "true now " << endl;
 					}
 				}
 			}
