@@ -153,8 +153,7 @@ Breakdown of what each member achieved:
 ---------------
 Harry: Changed around some demons on level 4, enemies no longer walk straight off of edges, fixed enemy-enemy collisions, changed controls to something that makes sense for a 2D platformer
 
-Matt: Gave enemies names, created the tutorial zone, fixed a lot of bugs with the bullet system, made the health bar prettier, 
-allowed specifying of different heights for different levels.
+Matt: Added level select screen, fixed up some things with level 1, made physics a lot faster by reducing the number of collisions per frame, implemented coins and doors, created a new entity AI that jumps in place.
 
 Mindy: Added StatSystem allowing player to now have saved scores (persists after game exits), scores screen now has 3 stats: Number of hats collected, number of levels cleared (using the cheat doesn't count!), number of deaths
 

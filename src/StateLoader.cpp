@@ -282,7 +282,7 @@ void FreePlay(Game* game) {
 	EntityCache_Free();
 	ComponentBag_Free(&game->playState.cBag);
 	TextureCache_FreeLevel();
-	SoundCache_FreeLevel();
+	//SoundCache_FreeLevel();
 	Mix_HaltChannel(Constants::DiscoChannel_);
 
 	// Free cutscenes
