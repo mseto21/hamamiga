@@ -155,7 +155,7 @@ Harry: Changed around some demons on level 4, enemies no longer walk straight of
 
 Matt: Added level select screen, fixed up some things with level 1, made physics a lot faster by reducing the number of collisions per frame, implemented coins and doors, created a new entity AI that jumps in place.
 
-Mindy: Added StatSystem allowing player to now have saved scores (persists after game exits), scores screen now has 3 stats: Number of hats collected, number of levels cleared (using the cheat doesn't count!), number of deaths
+Mindy: Fixed bugs in the Statsystem for keeping saved scores. Added additional stats to the scores screen which now has 5 stats: Number of hats collected, number of levels cleared (using the cheat doesn't count!), number of times killed by demons, fallen, and demons killed
 
 Gavi: cutscenes for level 2, 3, and 4, level 4 background and tile set.
 designed artwork for: muffin enemy, NPC, chef hat and knife projectile, apple,
