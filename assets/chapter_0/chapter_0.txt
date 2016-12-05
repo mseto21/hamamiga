@@ -3,6 +3,7 @@ zone=
 	tileset=assets/chapter_1/chapter_1_tileset.png;
 	tilemap=assets/chapter_0/chapter_0_level.csv;
 	dimensions=1080,760;
+	music=assets/chapter_1/chapter_1.ogg;
 	entity=
 		animation(4,150.0,48,87,)
 		health(100,)
