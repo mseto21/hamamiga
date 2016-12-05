@@ -11,9 +11,9 @@ const uint32 MaxBuffSize_ = 128;
 const char* scorepath = "assets/score/score.txt";
 const char* levelpath = "assets/score/levels.txt";
 const char* hatspath = "assets/score/hats.txt";
+const char* deathspath = "assets/score/deaths.txt";
 
 int pp = 0; //reset whenever reading from file
-bool read = false; //flag for checking if read from total
 
 int ReadTotal(FILE* scoreFile) {
 	char str[MaxBuffSize_];
@@ -30,13 +30,12 @@ int ReadTotal(FILE* scoreFile) {
 		pp++;
 	}
 	pp++;
-	read = true;
 	return atoi(str);
 }
 
 int totalFromFile(const char * path){
 	int total = -1;
-FILE* scoreFile = fopen(path, "r+");
+FILE* scoreFile = fopen(path, "r");
 	if (scoreFile == NULL) {
 		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
 		return total;
@@ -61,29 +60,7 @@ FILE* scoreFile = fopen(path, "r+");
 		}
 	}
 	fclose (scoreFile);
-	//update scores now 
 	return total;;
-}
-
-//Calculates total scores for scoreboard
-void Scoreboard_Update(){
-//Getting total from hat
-	int hatTotal = totalFromFile("assets/score/hats.txt");
-	std::string hatT = std::to_string(hatTotal);
-	cout << "hat total is: " << hatT << endl;
-//Getting total from level
-	int levelTotal = totalFromFile("assets/score/levels.txt");
-	std::string levelT = std::to_string(levelTotal);
-	cout << "level total is: " << levelT << endl;
-//Getting total from deaths
-	int deathTotal = totalFromFile("assets/score/deaths.txt");
-	std::string deathT = std::to_string(deathTotal);
-	cout << "death total is: " << deathT << endl;
-//Storing in scoreboard
-	Scores_Update(scorepath, (char*) "hats", hatT.c_str());
-	Scores_Update(scorepath, (char*) "levels", levelT.c_str());
-	Scores_Update(scorepath, (char*) "deaths", deathT.c_str());
-
 }
 
 int Add(FILE* scoreFile, const char* value){
@@ -145,7 +122,7 @@ void Copy(const char* path, int pos, const char * value, bool add){
 
 }
 
-int GetPosNum(const char* path, const char* type){
+int GetPosNum(const char* path, const char* type, bool * addTotal){
 FILE* scoreFile = fopen(path, "r");
 	if (scoreFile == NULL) {
 		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
@@ -160,8 +137,17 @@ FILE* scoreFile = fopen(path, "r");
 
 	while ((c=fgetc(scoreFile)) != EOF) {
 		if (c =='=') {
+			cout << "COMPARING " << type << " AND " << str << endl;
 			if (strcmp(str, type) == 0) {
 				typePos = pp+1;
+				cout << "FOUND " << type << " IN " << path << " AT POSITION " << typePos << endl;
+				if (strcmp(path, levelpath)==0 || strcmp(path, hatspath) == 0){
+					c = fgetc(scoreFile);
+					if ((char)c == '0'){//We add to the total
+						*addTotal = true;
+						cout << "true now " << endl;
+					}
+				}
 			}
 		} else {
 			if (c == '\n') {
@@ -178,20 +164,47 @@ FILE* scoreFile = fopen(path, "r");
 	return typePos;
 }
 
+//Calculates total scores for scoreboard
+void Scoreboard_Update(){
+	bool add = false;
+//Getting total from hat
+	int hatTotal = totalFromFile(hatspath);
+	std::string hatT = std::to_string(hatTotal);
+	cout << "hat total is: " << hatT << endl;
+//Getting total from level
+	int levelTotal = totalFromFile(levelpath);
+	std::string levelT = std::to_string(levelTotal);
+	cout << "level total is: " << levelT << endl;
+//Getting total from deaths
+	int deathTotal = totalFromFile(deathspath);
+	std::string deathT = std::to_string(deathTotal);
+	cout << "death total is: " << deathT << endl;
+//Storing in scoreboard
+	Copy(scorepath, GetPosNum(scorepath, "hats", &add),  hatT.c_str(), add);
+	Copy(scorepath, GetPosNum(scorepath, "levels", &add), levelT.c_str(), add);
+	Copy(scorepath, GetPosNum(scorepath, "deaths", &add), deathT.c_str(), add);
+
+}
+
 void Scores_Update(const char* path, const char* type, const char* value) {
-	bool add = true;
+	bool add = false;
 	const char * total = "total";
-	int typePos = GetPosNum(path, type);
-	int totalPos = GetPosNum(path, total);
+	cout << "LOOKING FOR ---------------" <<type <<endl;
+	int typePos = GetPosNum(path, type, &add);
+	int totalPos = GetPosNum(path, total, &add);
+	cout << type << " is at pos: " << typePos << endl;
 	//update scores now
 	//If we don't want to add to the total set the position to zero
-	if (strcmp(path, levelpath)==0 || strcmp(path, hatspath) == 0 ||
-					strcmp(path, scorepath) == 0){
-		add = false;
+	if (strcmp(path, levelpath)==0 || strcmp(path, hatspath) == 0){
+		GetPosNum(path, total, &add);
+	} else {
+		add = true;
 	}
 	Copy(path, typePos, value, add);
 	if (add == true){
+		if (totalPos!= 0){
 		Copy(path, totalPos, value, add);
+		}
 	}
 
 	if (strcmp(path, scorepath) != 0){

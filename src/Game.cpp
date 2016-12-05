@@ -198,16 +198,16 @@ void UpdatePlay(Game* game) {
 		case GameResult_Won:
 			switch (game->playState.currentLevel){
 				case 1:
-					Scores_Update("assets/score/levels.txt", (char*)"one", lval);
+					Scores_Update("assets/score/levels.txt", "one", lval);
 					break;
 				case 2:
-				Scores_Update("assets/score/levels.txt", (char*)"two", lval);
+				Scores_Update("assets/score/levels.txt", "two", lval);
 					break;
 				case 3:
-				Scores_Update("assets/score/levels.txt", (char*)"three", lval);
+				Scores_Update("assets/score/levels.txt", "three", lval);
 					break;
 				case 4:
-				Scores_Update("assets/score/levels.txt", (char*)"four", lval);
+				Scores_Update("assets/score/levels.txt", "four", lval);
 					break;
 				default:
 					break;

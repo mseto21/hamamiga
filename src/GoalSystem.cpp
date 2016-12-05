@@ -61,7 +61,6 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
 
     	if (goalComponent->winGoal[eid]) {
     		if (eid == Constants::PlayerIndex_){
-                Scores_Update(levelspath, (char*)"fallen", dval);
     			return GameResult_Won;
             }
     	}
