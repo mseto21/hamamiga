@@ -61,7 +61,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				continue;
 			}
 			case InteractionTypes_Coin:
-				goalComponent->points[eid] += Constants::CoinValue_;
+				goalComponent->points[Constants::PlayerIndex_] += Constants::CoinValue_;
 				if (Component_HasIndex(aliveComponent, eid)) {
 					aliveComponent->alive[eid] = false;
 				}

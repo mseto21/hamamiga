@@ -66,7 +66,7 @@ void BulletSystem_Update(BulletSystem* bulletSystem, uint32 elapsed) {
     	}
 	
 	if (bX > bulletSystem->zone->levelWidth || bX < 0 || bX < minScreenX || bX > maxScreenX 
-	    || bulletComponent->bullet[eid].collided == true) {
+	    || bulletComponent->bullet[eid].collided == true || bulletComponent->bullet[eid].life > MaxBulletLife_) {
 	  EntityCache_Remove(eid);
 	  ComponentBag_ForceRemove(bulletSystem->cBag, eid);
 	  
