@@ -95,9 +95,9 @@ void LoadHighScoreStateAssets(Game* game) {
 	
  	game->highScoreState.scoreType[0]= "Hats Collected: ";
  	game->highScoreState.scoreType[1]= "Levels Won: ";
- 	game->highScoreState.scoreType[2]= "Total Deaths: ";
- 	game->highScoreState.scoreType[3]= "-coming soon-";
- 	game->highScoreState.scoreType[4]= "-coming soon-";
+ 	game->highScoreState.scoreType[2]= "Times Murdered: ";
+ 	game->highScoreState.scoreType[3]= "Fallen to Hell: ";
+ 	game->highScoreState.scoreType[4]= "Demons Killed: ";
 	
 	// Create textures for the current high scores
 	SDL_Color scoreColor = {255, 255, 255, 255};

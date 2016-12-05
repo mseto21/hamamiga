@@ -10,6 +10,7 @@
 #include <iostream>
 
 //constants for death score file
+const char * killspath = "assets/score/kills.txt";
 const char * deathpath = "assets/score/deaths.txt";
 const char * levelspath = "assets/score/levels.txt";
 const char * dval = "1";
@@ -39,6 +40,7 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
 			if (health <= 0) {
 				if (Component_HasIndex(aliveComponent, eid)) {
 				 	aliveComponent->alive[eid] = false;
+                    Scores_Update(killspath, (char*)"kills", dval);
 				}
 			 	if (eid == Constants::PlayerIndex_) {
                     Scores_Update(deathpath, (char*)"killed", dval);
@@ -51,6 +53,7 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
     		if (rectangleComponent->entityRectangles[eid].y >= goalSystem->zone->levelHeight) {
     			if (Component_HasIndex(aliveComponent, eid)) {
 				 	aliveComponent->alive[eid] = false;
+                    Scores_Update(killspath, (char*)"fallen", dval);
 				}
     			if (eid == Constants::PlayerIndex_) {
                     Scores_Update(deathpath, (char*)"fallen", dval);

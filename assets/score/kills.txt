@@ -1,0 +1,4 @@
+kills=0;
+fallen=0;
+total=0;
+END=;

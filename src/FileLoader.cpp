@@ -744,6 +744,16 @@ FILE* scoreFile = fopen(path, "r");
 				index++;
 				pos = 0;
 				memset(&str, 0, MaxBuffSize_);
+			} else if (strcmp(str, "fallen") == 0) {
+				lineNumber += ReadScore(scoreFile, stats, index);
+				index++;
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
+			} else if (strcmp(str, "kills") == 0) {
+				lineNumber += ReadScore(scoreFile, stats, index);
+				index++;
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
 			} else if (strcmp(str, "END") == 0) {
 				break;
 			} else {

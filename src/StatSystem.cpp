@@ -12,6 +12,7 @@ const char* scorepath = "assets/score/score.txt";
 const char* levelpath = "assets/score/levels.txt";
 const char* hatspath = "assets/score/hats.txt";
 const char* deathspath = "assets/score/deaths.txt";
+const char* killpath = "assets/score/kills.txt";
 
 int pp = 0; //reset whenever reading from file
 
@@ -33,7 +34,7 @@ int ReadTotal(FILE* scoreFile) {
 	return atoi(str);
 }
 
-int totalFromFile(const char * path){
+int totalFromFile(const char * path, const char * type){
 	int total = -1;
 FILE* scoreFile = fopen(path, "r");
 	if (scoreFile == NULL) {
@@ -46,7 +47,7 @@ FILE* scoreFile = fopen(path, "r");
 	int pos = 0;
 	while ((c=fgetc(scoreFile)) != EOF) {
 		if (c =='=') {
-			if (strcmp(str, "total") == 0) {
+			if (strcmp(str, type) == 0) {
 				total = ReadTotal(scoreFile);
 			}
 		} else {
@@ -166,18 +167,25 @@ FILE* scoreFile = fopen(path, "r");
 void Scoreboard_Update(){
 	bool add = false;
 //Getting total from hat
-	int hatTotal = totalFromFile(hatspath);
+	int hatTotal = totalFromFile(hatspath, "total");
 	std::string hatT = std::to_string(hatTotal);
 //Getting total from level
-	int levelTotal = totalFromFile(levelpath);
+	int levelTotal = totalFromFile(levelpath, "total");
 	std::string levelT = std::to_string(levelTotal);
 //Getting total from deaths
-	int deathTotal = totalFromFile(deathspath);
+	int deathTotal = totalFromFile(deathspath, "killed");
 	std::string deathT = std::to_string(deathTotal);
+	int fallenTotal = totalFromFile(deathspath, "fallen");
+	std::string fallenT = std::to_string(fallenTotal);
+//Getting total from kills
+	int killTotal = totalFromFile(killpath, "total");
+	std::string killT = std::to_string(killTotal);
 //Storing in scoreboard
 	Copy(scorepath, GetPosNum(scorepath, "hats", &add),  hatT.c_str(), add);
 	Copy(scorepath, GetPosNum(scorepath, "levels", &add), levelT.c_str(), add);
 	Copy(scorepath, GetPosNum(scorepath, "deaths", &add), deathT.c_str(), add);
+	Copy(scorepath, GetPosNum(scorepath, "fallen", &add), fallenT.c_str(), add);
+	Copy(scorepath, GetPosNum(scorepath, "kills", &add), killT.c_str(), add);
 
 }
 
