@@ -137,10 +137,8 @@ FILE* scoreFile = fopen(path, "r");
 
 	while ((c=fgetc(scoreFile)) != EOF) {
 		if (c =='=') {
-			cout << "COMPARING " << type << " AND " << str << endl;
 			if (strcmp(str, type) == 0) {
 				typePos = pp+1;
-				cout << "FOUND " << type << " IN " << path << " AT POSITION " << typePos << endl;
 				if (strcmp(path, levelpath)==0 || strcmp(path, hatspath) == 0){
 					c = fgetc(scoreFile);
 					if ((char)c == '0'){//We add to the total
@@ -170,15 +168,12 @@ void Scoreboard_Update(){
 //Getting total from hat
 	int hatTotal = totalFromFile(hatspath);
 	std::string hatT = std::to_string(hatTotal);
-	cout << "hat total is: " << hatT << endl;
 //Getting total from level
 	int levelTotal = totalFromFile(levelpath);
 	std::string levelT = std::to_string(levelTotal);
-	cout << "level total is: " << levelT << endl;
 //Getting total from deaths
 	int deathTotal = totalFromFile(deathspath);
 	std::string deathT = std::to_string(deathTotal);
-	cout << "death total is: " << deathT << endl;
 //Storing in scoreboard
 	Copy(scorepath, GetPosNum(scorepath, "hats", &add),  hatT.c_str(), add);
 	Copy(scorepath, GetPosNum(scorepath, "levels", &add), levelT.c_str(), add);
@@ -189,10 +184,8 @@ void Scoreboard_Update(){
 void Scores_Update(const char* path, const char* type, const char* value) {
 	bool add = false;
 	const char * total = "total";
-	cout << "LOOKING FOR ---------------" <<type <<endl;
 	int typePos = GetPosNum(path, type, &add);
 	int totalPos = GetPosNum(path, total, &add);
-	cout << type << " is at pos: " << typePos << endl;
 	//update scores now
 	//If we don't want to add to the total set the position to zero
 	if (strcmp(path, levelpath)==0 || strcmp(path, hatspath) == 0){

@@ -17,16 +17,17 @@ zone=
 		camera()
 		goal();
 	entity=
-		name(Tall Karen,)
-		animation(4,150.0,88,87,)
+		name(Jumpy John,)
+		animation(3,150.0,60,75,)
 		health(100,)
-		damage(20,)
-		movement(0.0,14.0,1.0,1.0,)
+		damage(5,)
+		movement(0.0,16.0,0.0,10.0,)
 		physics(100,)
-		rectangle(255,1250,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		ai(0,3,1,)
-		alive();
+		rectangle(255,1250,60,75,)
+		texture(assets/enemies/jumping-demon.png,jdemon,)
+		ai(4,120,1,)
+		alive()
+		goal();
 	entity=
 		name(Samantha from Shipping,)
 		animation(4,150.0,88,87,)
@@ -36,8 +37,9 @@ zone=
 		physics(100,)
 		rectangle(580,1250,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,0,2,)
-		alive();
+		ai(0,30000,2,)
+		alive()
+		goal();
 	entity=
 		name(Monsieur Muffin,)
 		animation(4,150.0,71,72,)
@@ -48,18 +50,20 @@ zone=
 		rectangle(730,1350,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,200,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		name(Blaze Johnson Jr.,)
-		animation(4,150.0,88,87,)
+		animation(3,150.0,60,75,)
 		health(100,)
-		damage(20,)
-		movement(0.0,14.0,1.0,1.0,)
+		damage(5,)
+		movement(0.0,16.0,0.0,12.0,)
 		physics(100,)
-		rectangle(1694,1256,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		ai(0,0,2,)
-		alive();
+		rectangle(1694,1256,60,75,)
+		texture(assets/enemies/jumping-demon.png,jdemon,)
+		ai(4,120,1,)
+		alive()
+		goal();
 	entity=
 		name(Aaron From Accounting,)
 		animation(4,150.0,88,87,)
@@ -69,10 +73,11 @@ zone=
 		physics(100,)
 		rectangle(255,700,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,0,1,)
-		alive();
+		ai(0,30000,1,)
+		alive()
+		goal();
 	entity=
-		name(Paul,)
+		name(VP Paul,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -80,8 +85,9 @@ zone=
 		physics(100,)
 		rectangle(580,700,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,0,2,)
-		alive();
+		ai(0,30000,2,)
+		alive()
+		goal();
 	entity=
 		name(Senor Muffin,)
 		animation(4,150.0,71,72,)
@@ -92,7 +98,8 @@ zone=
 		rectangle(730,800,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,30,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		name(Leo the Loner,)
 		animation(4,150.0,88,87,)
@@ -102,8 +109,9 @@ zone=
 		physics(100,)
 		rectangle(255,220,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,0,1,)
-		alive();
+		ai(0,30000,1,)
+		alive()
+		goal();
 	entity=
 		name(Mr. Muffin,)
 		animation(4,150.0,71,72,)
@@ -113,7 +121,7 @@ zone=
 		physics(100,)
 		rectangle(730,320,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
-		ai(0,30,1,)
+		ai(0,30000,1,)
 		alive();
 	entity=
 		name(Graphics Gavi,)
@@ -124,8 +132,9 @@ zone=
 		physics(100,)
 		rectangle(1310,728,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,0,2,)
-		alive();
+		ai(0,30000,2,)
+		alive()
+		goal();
 	entity=
 		name(Herr Muffin,)
 		animation(4,150.0,71,72,)
@@ -136,7 +145,8 @@ zone=
 		rectangle(1470,824,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,150,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		name(Mindy from Marketing,)
 		animation(4,150.0,88,87,)
@@ -146,8 +156,9 @@ zone=
 		physics(100,)
 		rectangle(4000,1256,88,87,)
 		texture(assets/enemies/demon.png,demon,)
-		ai(0,0,2,)
-		alive();
+		ai(0,30000,2,)
+		alive()
+		goal();
 	entity=
 		name(Frau Muffin II,)
 		animation(4,150.0,71,72,)
@@ -158,7 +169,8 @@ zone=
 		rectangle(2783,1352,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,150,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		name(Frau Muffin,)
 		animation(4,150.0,71,72,)
@@ -169,7 +181,8 @@ zone=
 		rectangle(4160,1353,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,200,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		name(Senora Muffin,)
 		animation(4,150.0,71,72,)
@@ -180,7 +193,8 @@ zone=
 		rectangle(3472,825,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,150,1,)
-		alive();
+		alive()
+		goal();
 	entity=
 		name(Mrs. Muffin,)
 		animation(4,150.0,71,72,)
@@ -191,37 +205,39 @@ zone=
 		rectangle(3700,825,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,150,1,)
-		alive();
+		alive()
+		goal();
 	entity=
-		name(Corny Caroline,)
-		animation(4,150.0,88,87,)
+		name(Gluttonous Gale,)
+		animation(3,150.0,60,75,)
 		health(100,)
-		damage(20,)
-		movement(0.0,14.0,1.0,1.0,)
+		damage(5,)
+		movement(0.0,16.0,0.0,12.0,)
 		physics(100,)
-		rectangle(2965,728,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		ai(0,0,1,)
-		alive();
+		rectangle(2965,728,60,75,)
+		texture(assets/enemies/jumping-demon.png,jdemon,)
+		ai(4,120,1,)
+		alive()
+		goal();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_4/hats-chap4.png,chef,)
 		physics(0,)
-		interactable(E to Put On,0,8, Welcome to the Kitchen! Press 'SPACE' to shoot enemies. Ammo is displayed in the top left.,)
+		interactable('x' to Put On,0,8, Welcome to the Kitchen! Press 'z' to shoot enemies. Ammo is displayed in the top left.,)
 		rectangle(400,120,85,60,)
 		alive();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
 		physics(0,)
-		interactable(E to Put On,0,6, FLYYYYYYYY!,)
+		interactable('x' to Put On,0,6, FLYYYYYYYY!,)
 		rectangle(4550,745,85,60,)
 		alive();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)
 		physics(0,)
-		interactable(E to Win,0,2,)
+		interactable('x' to Win,0,2,)
 		rectangle(4900,1350,85,60,)
 		alive();
 	entity=
@@ -230,68 +246,78 @@ zone=
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1396,48,48,)
-		alive();
+		alive()
+		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
 		health(20,)
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1347,48,48,)
-		alive();
+		alive()
+		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
 		health(20,)
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1298,48,48,)
-		alive();
+		alive()
+		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
 		health(20,)
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1249,48,48,)
-		alive();
+		alive()
+		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
 		health(20,)
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1200,48,48,)
-		alive();
+		alive()
+		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
 		health(20,)
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1151,48,48,)
-		alive();
+		alive()
+		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
 		health(20,)
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1102,48,48,)
-		alive();
+		alive()
+		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
 		health(20,)
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1053,48,48,)
-		alive();
+		alive()
+		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
 		health(20,)
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1004,48,48,)
-		alive();
+		alive()
+		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
 		health(20,)
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(1843,1249,48,48,)
-		alive();
+		alive()
+		goal();
 END=

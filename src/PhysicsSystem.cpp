@@ -6,9 +6,7 @@
 #include "RectangleComponent.h"
 #include "HealthComponent.h"
 #include "BulletComponent.h"
-#include "HatComponent.h"
 #include "InputComponent.h"
-#include "AliveComponent.h"
 #include "AIComponent.h"
 #include "DamageComponent.h"
 #include "GoalComponent.h"
@@ -16,7 +14,7 @@
 #include "TileMap.h"
 #include "ComponentBag.h"
 #include "SoundCache.h"
-#include "InteractionTypes.h"
+#include "Interactions.h"
 #include "Texture.h"
 #include "Zone.h"
 
@@ -25,26 +23,23 @@
 #include <iostream>
 
 // Physics Constants
-void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Game* game, Zone* zone) {
+void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, TileMap* tileMap, Zone* zone) {
 	physicsSystem->physicsComponent 	= cBag->physicsComponent;
 	physicsSystem->movementComponent 	= cBag->movementComponent;
 	physicsSystem->rectangleComponent 	= cBag->rectangleComponent;
 	physicsSystem->healthComponent 		= cBag->healthComponent;
 	physicsSystem->bulletComponent  	= cBag->bulletComponent;
-	physicsSystem->hatComponent 		= cBag->hatComponent;
 	physicsSystem->inputComponent		= cBag->inputComponent;
 	physicsSystem->interactableComponent = cBag->interactableComponent;
-	physicsSystem->aliveComponent 		= cBag->aliveComponent;
 	physicsSystem->aiComponent          = cBag->aiComponent;
 	physicsSystem->damageComponent      = cBag->damageComponent;
 	physicsSystem->map 					= tileMap;
 	physicsSystem->componentBag 		= cBag;
-	physicsSystem->game 				= game;
 	physicsSystem->zone 				= zone;
 }
 
 
-bool Collision(const Rectangle r1, const Rectangle r2) {
+static bool Collision(const Rectangle r1, const Rectangle r2) {
   return r1.x <= r2.x + r2.w 
   		&& r1.x + r1.w >= r2.x 
   		&& r1.y <= r2.y + r2.h 
@@ -57,11 +52,8 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	MovementComponent* movementComponent = physicsSystem->movementComponent;
 	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;
 	HealthComponent* healthComponent = physicsSystem->healthComponent;
-	HatComponent* hatComponent = physicsSystem->hatComponent;
 	BulletComponent* bulletComponent = physicsSystem->bulletComponent;
-	InputComponent* inputComponent = physicsSystem->inputComponent;
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
-	AliveComponent * aliveComponent = physicsSystem->aliveComponent;
 	AIComponent * aiComponent = physicsSystem->aiComponent;
 	DamageComponent * damageComponent = physicsSystem->damageComponent;
 	TileMap* map = physicsSystem->map;
@@ -78,33 +70,32 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		if (!Component_HasIndex(rectangleComponent, eid)) {
 			continue;
 		}
+		
 		MovementValues* moveValues = &movementComponent->movementValues[eid];
 		Rectangle* r1 = &rectangleComponent->entityRectangles[eid];
+		if (Component_HasIndex(interactableComponent, eid)) {
+			goto world_physics;
+		}
 
 		// Check collisions with entities
-		const Rectangle left 	= {r1->x, r1->y, 1, r1->h};
-		const Rectangle right 	= {r1->x + r1->w, r1->y, 1, r1->h};
-		const Rectangle up 		= {r1->x, r1->y, r1->w, 1};
-		const Rectangle down 	= {r1->x+12, r1->y + r1->h, r1->w-13, 1};
 		for (uint32 j = 0; j < physicsComponent->count; j++) {
-			if (Component_HasIndex(interactableComponent, eid)) {
-				break;
-			}
 			uint32 otherEid = physicsComponent->entityArray[j];
-			if (eid ==  otherEid) {
+			if (eid == otherEid) {
 				continue;
 			}
 			if (!Component_HasIndex(rectangleComponent, otherEid)) {
 				continue;
 			}
+			if (Component_HasIndex(interactableComponent, otherEid)) {
+				continue;
+			}
+
 			//Don't collide with bullets on your team
 			if (Component_HasIndex(bulletComponent, otherEid)){
-				if (eid == Constants::PlayerIndex_&&
-					bulletComponent->bullet[otherEid].friendly == true){
+				if (eid == Constants::PlayerIndex_ && bulletComponent->bullet[otherEid].friendly == true){
 					continue;//player cannot collide with own bullets
 				}
-				if (eid != Constants::PlayerIndex_&& 
-					bulletComponent->bullet[otherEid].friendly != true){
+				if (eid != Constants::PlayerIndex_ && bulletComponent->bullet[otherEid].friendly != true){
 					continue;//enemy cannot collide with own bullets
 				}
 				if (Component_HasIndex(bulletComponent, eid)){
@@ -123,120 +114,61 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					continue;//enemy cannot collide with own bullets
 				}
 			}
-			
-
-			// Interaction collisions
-			if (Component_HasIndex(interactableComponent, otherEid)) {
- 				if (!Collision(*r1, rectangleComponent->entityRectangles[otherEid])) {
- 					if (eid == Constants::PlayerIndex_)
- 						interactableComponent->canBeInteractedWith[otherEid] = false;
- 					continue;
- 				}
-
- 				if (eid == Constants::PlayerIndex_)
- 					interactableComponent->canBeInteractedWith[otherEid] = true;
- 				
- 				if (Component_HasIndex(inputComponent, eid)) {
-	 		  		if(!inputComponent->interact[eid]) {
-	 		  			continue;
-	 		  		}
-	 		  	}
-
-				int type = interactableComponent->types[otherEid];
-				switch (type) {
-					case InteractionType_Hat: {
-						int hattype = interactableComponent->hattypes[otherEid];
-						if (Component_HasIndex(hatComponent, eid)){
-							if (!interactableComponent->interacted[otherEid]) {
-								if (Interaction_ApplyHatInteraction(hattype, eid, otherEid, physicsSystem->componentBag)) {
-									Interaction_DisplayMessage(physicsSystem->game, interactableComponent->txt[otherEid]);
-									interactableComponent->interacted[otherEid] = true;
-									if (Component_HasIndex(aliveComponent, otherEid)) {
-								  		aliveComponent->alive[otherEid] = false;
-							  	}
-							  }
-							}
-						}
-						continue;
-					}
-					default:
-						continue;
-				}
-			}
-
 
 			// Enemy collisions
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
-			bool cllsn = false;
-			bool cllsnD = false;
+			if (Collision(*r1, r2)) {
+				if (!Component_HasIndex(aiComponent, eid)) {
+					int xVelocity = 0;
+					int yVelocity = 0;
 
-			if (Collision(left, r2)) {
-				r1->x -= (moveValues->xVelocity);
-				cllsn = true;
-				if (eid == Constants::PlayerIndex_ && Component_HasIndex(aiComponent, physicsComponent->entityArray[j])) {
-					moveValues->xVelocity = 15;
-					if (!Collision(down, r2)) {
-						moveValues->yVelocity = -5;
-						r1->y += moveValues->yVelocity;
-					} else {
-						cllsnD = true;
-					}
-					r1->x += moveValues->xVelocity;
-				}
-			} else if (Collision(right, r2)) {
-				r1->x -= (moveValues->xVelocity);
-				cllsn = true;
-				//kickback for player
-				if (eid == Constants::PlayerIndex_ && Component_HasIndex(aiComponent, physicsComponent->entityArray[j])) {
-					moveValues->xVelocity = -15;
-					if (!Collision(down, r2)) {
-						moveValues->yVelocity = -5;
-						r1->y += moveValues->yVelocity;
-					} else {
-						cllsnD = true;
-					}
-					r1->x += moveValues->xVelocity;
-				}
-			}
-			if (Collision(up, r2)) {
-				moveValues->yVelocity = 0;
-				cllsn = true;
-			} else if (cllsnD || Collision(down, r2)) {
-				moveValues->yVelocity *= -1;
-				r1->y += moveValues->yVelocity;
-				cllsn = true;
-			}
+					int collisionXVelocity = movementComponent->movementValues[otherEid].xVelocity;
+					float* collisionYVelocity = &movementComponent->movementValues[otherEid].yVelocity;
 
-			//if bullet has collided, kill it
-			if (cllsn && Component_HasIndex(bulletComponent, physicsComponent->entityArray[j])){
-				bulletComponent->bullet[physicsComponent->entityArray[j]].collided = true;
-				
-			}
-			if (cllsn) {
-			  if (Component_HasIndex(healthComponent, eid) && Component_HasIndex(damageComponent, physicsComponent->entityArray[j])) {
-			    if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, physicsComponent->entityArray[j]))){
-			      if (!healthComponent->invincible[eid]) {
-			      	        healthComponent->startHealth[eid] = healthComponent->health[eid];
-					healthComponent->health[eid] -= damageComponent->damageValues[physicsComponent->entityArray[j]].damage / healthComponent->damageReduction[eid];
-					if (Component_HasIndex(aliveComponent, eid)) {
-						if (healthComponent->health[eid] <= 0)
-					  		aliveComponent->alive[eid] = false;
+					if (*collisionYVelocity > 0) {
+						*collisionYVelocity = -*collisionYVelocity;
 					}
-			      }
-			    } else {
-			                aiComponent->marchValues[eid].facing *= -1;
-			    }
-			  }
+
+					if (collisionXVelocity != 0)
+						xVelocity = 2 * collisionXVelocity;
+					else
+						xVelocity = -2 * moveValues->xVelocity;
+					moveValues->xVelocity = xVelocity;
+					r1->x += moveValues->xVelocity;
+
+					if (moveValues->yVelocity > 0)
+						yVelocity = -10;
+					moveValues->yVelocity = yVelocity;
+					r1->y += moveValues->yVelocity;
+				}
+				if (Component_HasIndex(healthComponent, eid)) {
+				  if (!healthComponent->invincible[eid]) {
+				    healthComponent->startHealth[eid] = healthComponent->health[eid];
+				    if (Component_HasIndex(damageComponent, otherEid)) {
+				      if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, otherEid))) {
+					healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage
+					  / healthComponent->damageReduction[eid];
+				      } else {
+					aiComponent->marchValues[eid].facing *= -1;
+					aiComponent->marchValues[eid].distance = 0;
+					movementComponent->movementValues[eid].xAccel *= -1;
+					r1->x += movementComponent->movementValues[eid].xAccel*10;
+				      }
+				    }
+				  }
+				  bulletComponent->bullet[otherEid].collided = true;
+				}
 			}
 		}
 
+	world_physics:
 		// Move player based on physics
 		if (!moveValues->grounded) {
-		  if (moveValues->flying) {
-		        moveValues->yVelocity += Constants::Gravity_ / 2;
-		  } else {
-		  	moveValues->yVelocity += Constants::Gravity_;
-		  }
+			if (moveValues->flying) {
+			    moveValues->yVelocity += Constants::Gravity_ / 2;
+			} else {
+				moveValues->yVelocity += Constants::Gravity_;
+			}
 		  	moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
 		  	moveValues->xAccel -= moveValues->xAccel*Constants::AirRes_;
 			
@@ -245,7 +177,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		 	moveValues->xVelocity -= moveValues->xVelocity*Constants::Friction_;
 		}
 		if (moveValues->xVelocity < 0.2 && moveValues->xVelocity > -0.2) {
-		  moveValues->xVelocity = 0;
+			moveValues->xVelocity = 0;
 		}
 
 		// Tiilemap collisions
@@ -271,12 +203,18 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				if (map->map[tileY][tileHeadX].solid || map->map[tileY][tileEndHeadX].solid) {
 					r1->y = tileY * Constants::TileSize_ + Constants::TileSize_;
 					moveValues->yVelocity = 0;
+					if (Component_HasIndex(bulletComponent, eid)){
+							bulletComponent->bullet[eid].collided = true;
+					}
 				} 
 			} else if (moveValues->yVelocity >= 0) {
 				if (map->map[tileEndY][tileFootX].solid || map->map[tileEndY][tileEndFootX].solid) {
 					r1->y = tileEndY * Constants::TileSize_ - r1->h;
 					moveValues->yVelocity = 0;
 					moveValues->grounded = true;
+					if (Component_HasIndex(bulletComponent, eid)){
+							bulletComponent->bullet[eid].collided = true;
+					}
 					if (map->map[tileEndY][tileFootX].speed > 0) {
 						moveValues->xVelocity += map->map[tileEndY][tileFootX].speed;
 					} else if (map->map[tileEndY][tileEndFootX].speed > 0) {
@@ -290,6 +228,14 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid) {
 						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
 						moveValues->xVelocity = 0;
+						if (Component_HasIndex(aiComponent, eid)) {
+						  aiComponent->marchValues[eid].facing *= -1;
+						  aiComponent->marchValues[eid].distance = 0;
+						}
+					}
+					if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileX].solid) {
+					  aiComponent->marchValues[eid].facing *= -1;
+					  aiComponent->marchValues[eid].distance = 0;
 					}
 				} else {
 					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
@@ -305,6 +251,14 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid) {
 						r1->x = tileEndX * Constants::TileSize_ - r1->w;
 						moveValues->xVelocity = 0;
+						if (Component_HasIndex(aiComponent, eid)) {
+						  aiComponent->marchValues[eid].facing *= -1;
+						  aiComponent->marchValues[eid].distance = 0;
+						}
+					}
+     					if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileEndX].solid) {
+					  aiComponent->marchValues[eid].facing *= -1;
+					  aiComponent->marchValues[eid].distance = 0;
 					}
 				} else {
 					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
@@ -340,11 +294,9 @@ void PhysicsSystem_Free(PhysicsSystem* physicsSystem) {
 	physicsSystem->movementComponent = nullptr;
 	physicsSystem->rectangleComponent = nullptr;
 	physicsSystem->healthComponent = nullptr;
-	physicsSystem->hatComponent = nullptr;
 	physicsSystem->bulletComponent = nullptr;
 	physicsSystem->inputComponent = nullptr;
 	physicsSystem->interactableComponent = nullptr;
-	physicsSystem->aliveComponent = nullptr;
 	physicsSystem->map = nullptr;
 	physicsSystem->componentBag = nullptr;
 }

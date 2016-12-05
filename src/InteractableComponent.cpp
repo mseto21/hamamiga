@@ -16,11 +16,11 @@ void InteractableComponent_Initialize(InteractableComponent* interactableCompone
 	interactableComponent->b = 220;
 }
 
- void InteractableComponent_Add(InteractableComponent* interactableComponent, uint32 eid, Texture* texture, int type, int hattype, Texture** txt) {
+ void InteractableComponent_Add(InteractableComponent* interactableComponent, uint32 eid, Texture* texture, int type, int datafield, Texture** txt) {
   	Component_Add(interactableComponent, eid);
   	interactableComponent->msgs[eid] = texture;
  	interactableComponent->types[eid] = type;
- 	interactableComponent->hattypes[eid] = hattype;
+ 	interactableComponent->datafield[eid] = datafield;
 	interactableComponent->canBeInteractedWith[eid] = false;
  	interactableComponent->interacted[eid] = false;
 

@@ -53,6 +53,14 @@ void SoundCache_FreeSound(const char* path) {
 }
 
 
+void SoundCache_FreeLevel() {
+	for (int i = scache->levelIndex; i < scache->index; i++) {
+		Sound_Free(&scache->sounds[i]);
+		return;
+	}
+}
+
+
 /* Frees the sound cache. */
 void SoundCache_Free() {
 	for (int soundIndex = 0; soundIndex < scache->index; soundIndex++) {

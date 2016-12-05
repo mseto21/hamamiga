@@ -19,6 +19,7 @@ struct HealthComponent;
 struct GoalComponent;
 struct InteractableComponent;
 struct NameComponent;
+struct AIComponent;
 struct ComponentBag;
 struct _TTF_Font;
 struct Game;
@@ -35,6 +36,7 @@ struct RenderSystem {
 	GoalComponent* goalComponent;
 	InteractableComponent* interactableComponent;
 	NameComponent* nameComponent;
+	AIComponent* aiComponent;
 	TileMap* map;
 	_TTF_Font* defaultFont;
 	ComponentBag* cBag;

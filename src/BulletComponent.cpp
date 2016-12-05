@@ -5,7 +5,7 @@
 #include "MovementComponent.h"
 #include "RectangleComponent.h"
 #include "TextureCache.h"
-#include "InteractionTypes.h"
+#include "Interactions.h"
 
 #include <SDL.h>
 
