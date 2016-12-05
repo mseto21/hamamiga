@@ -146,8 +146,12 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				    healthComponent->startHealth[eid] = healthComponent->health[eid];
 				    if (Component_HasIndex(damageComponent, otherEid)) {
 				      if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, otherEid))) {
-					healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage
-					  / healthComponent->damageReduction[eid];
+					if (!((Component_HasIndex(aiComponent, eid) || Component_HasIndex(interactableComponent, eid))
+					      && (Component_HasIndex(aiComponent, otherEid) || Component_HasIndex(interactableComponent, otherEid
+														  )))) {
+					  healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage
+					    / healthComponent->damageReduction[eid];
+					}
 				      } else {
 					aiComponent->marchValues[eid].facing *= -1;
 					aiComponent->marchValues[eid].distance = 0;
