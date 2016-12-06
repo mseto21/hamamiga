@@ -17,6 +17,13 @@ zone=
 		camera()
 		goal();
 	entity=
+		animation(1,150.0,48,87,)
+		health(100,)
+		physics(100,)
+		rectangle(60,1350,48,87,)
+		texture(assets/kevin/tinykev.png,player,)
+		interactable(Grab the coin!,3,0,This is a coin!,)
+	entity=
 		name(Matty Kæ from Marketing,)
 		animation(4,150.0,88,87,)
 		damage(20,)
