@@ -17,6 +17,55 @@ zone=
 		camera()
 		goal();
 	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(4485,350,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(3765,350,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(3038,350,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(430,680,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(122,825,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(56,825,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(995,729,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
 		name(Jumpy John,)
 		animation(3,150.0,60,75,)
 		health(100,)
@@ -310,14 +359,6 @@ zone=
 		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
 		physics(0,)
 		rectangle(4850,1004,48,48,)
-		alive()
-		goal();
-	entity=
-		movement(3.0,0.0,1.0,5.0,)
-		health(20,)
-		texture(assets/chapter_4/apple.png,apple,0,0,48,48,)
-		physics(0,)
-		rectangle(1843,1249,48,48,)
 		alive()
 		goal();
 END=

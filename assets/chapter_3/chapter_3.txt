@@ -17,6 +17,55 @@ zone=
 		camera()
 		goal();
 	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(525,150,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(180,105,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(125,105,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(4200,750,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(70,105,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(4990,1370,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(15,105,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
 		animation(4,150.0,125,71,)
 		health(100,)
 		damage(10,)

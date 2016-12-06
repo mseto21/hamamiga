@@ -17,45 +17,59 @@ zone=
 		camera()
 		goal();
 	entity=
-		animation(1,150.0,48,48,)
+		animation(5,150.0,48,60,)
 		physics(100,)
-		rectangle(3870,300,48,48,)
-		texture(assets/kevin/tinykev.png,player,)
+		rectangle(1470,1160,48,60,)
+		texture(assets/interactables/coin.png,coin,)
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
-		animation(1,150.0,48,48,)
+		animation(5,150.0,48,60,)
 		physics(100,)
-		rectangle(2420,1160,48,48,)
-		texture(assets/kevin/tinykev.png,player,)
+		rectangle(2345,250,48,60,)
+		texture(assets/interactables/coin.png,coin,)
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
-		animation(1,150.0,48,48,)
+		animation(5,150.0,48,60,)
 		physics(100,)
-		rectangle(3175,1160,48,48,)
-		texture(assets/kevin/tinykev.png,player,)
+		rectangle(3870,300,48,60,)
+		texture(assets/interactables/coin.png,coin,)
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
-		animation(1,150.0,48,48,)
+		animation(5,150.0,48,60,)
 		physics(100,)
-		rectangle(4772,1020,48,48,)
-		texture(assets/kevin/tinykev.png,player,)
+		rectangle(2420,1160,48,60,)
+		texture(assets/interactables/coin.png,coin,)
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
-		animation(1,150.0,48,48,)
+		animation(5,150.0,48,60,)
 		physics(100,)
-		rectangle(4290,780,48,48,)
-		texture(assets/kevin/tinykev.png,player,)
+		rectangle(3145,1160,48,60,)
+		texture(assets/interactables/coin.png,coin,)
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
-		animation(1,150.0,48,48,)
+		animation(5,150.0,48,60,)
 		physics(100,)
-		rectangle(4767,780,48,48,)
-		texture(assets/kevin/tinykev.png,player,)
+		rectangle(4772,1020,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(4290,780,48,60,)
+		texture(assets/interactables/coin.png,coin,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(5,150.0,48,60,)
+		physics(100,)
+		rectangle(4767,780,48,60,)
+		texture(assets/interactables/coin.png,coin,)
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=

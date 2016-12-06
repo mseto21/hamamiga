@@ -17,24 +17,24 @@ zone=
 		camera()
 		goal();
 	entity=
-		animation(1,150.0,48,48,)
+		animation(5,150.0,48,60,)
 		physics(100,)
-		rectangle(1460,1160,48,48,)
-		texture(assets/kevin/tinykev.png,player,)
+		rectangle(1680,1160,48,60,)
+		texture(assets/interactables/coin.png,coin,)
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
-		animation(1,150.0,48,48,)
+		animation(5,150.0,48,60,)
 		physics(100,)
-		rectangle(2370,250,48,48,)
-		texture(assets/kevin/tinykev.png,player,)
+		rectangle(2433,1160,48,60,)
+		texture(assets/interactables/coin.png,coin,)
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
-		animation(1,150.0,48,48,)
+		animation(5,150.0,48,60,)
 		physics(100,)
-		rectangle(2405,1355,48,48,)
-		texture(assets/kevin/tinykev.png,player,)
+		rectangle(3178,1160,48,60,)
+		texture(assets/interactables/coin.png,coin,)
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=

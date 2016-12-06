@@ -1,6 +1,6 @@
-hats=5;
-levels=1;
-deaths=4;
-fallen=2;
-kills=6;
+hats=6;
+levels=3;
+deaths=9;
+fallen=7;
+kills=-1;
 END=;
