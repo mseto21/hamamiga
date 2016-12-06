@@ -17,6 +17,48 @@ zone=
 		camera()
 		goal();
 	entity=
+		animation(1,150.0,48,48,)
+		physics(100,)
+		rectangle(3870,300,48,48,)
+		texture(assets/kevin/tinykev.png,player,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(1,150.0,48,48,)
+		physics(100,)
+		rectangle(2420,1160,48,48,)
+		texture(assets/kevin/tinykev.png,player,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(1,150.0,48,48,)
+		physics(100,)
+		rectangle(3175,1160,48,48,)
+		texture(assets/kevin/tinykev.png,player,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(1,150.0,48,48,)
+		physics(100,)
+		rectangle(4772,1020,48,48,)
+		texture(assets/kevin/tinykev.png,player,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(1,150.0,48,48,)
+		physics(100,)
+		rectangle(4290,780,48,48,)
+		texture(assets/kevin/tinykev.png,player,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(1,150.0,48,48,)
+		physics(100,)
+		rectangle(4767,780,48,48,)
+		texture(assets/kevin/tinykev.png,player,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)

@@ -17,12 +17,26 @@ zone=
 		camera()
 		goal();
 	entity=
-		animation(1,150.0,48,87,)
-		health(100,)
+		animation(1,150.0,48,48,)
 		physics(100,)
-		rectangle(60,1350,48,87,)
+		rectangle(1460,1160,48,48,)
 		texture(assets/kevin/tinykev.png,player,)
-		interactable(Grab the coin!,3,0,This is a coin!,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(1,150.0,48,48,)
+		physics(100,)
+		rectangle(2370,250,48,48,)
+		texture(assets/kevin/tinykev.png,player,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
+	entity=
+		animation(1,150.0,48,48,)
+		physics(100,)
+		rectangle(2405,1355,48,48,)
+		texture(assets/kevin/tinykev.png,player,)
+		alive()
+		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
 		name(Matty Kæ from Marketing,)
 		animation(4,150.0,88,87,)
