@@ -287,8 +287,14 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 					texture->flip = SDL_FLIP_HORIZONTAL;
 					movementComponent->movementValues[eid].left = true; //facing left
 				}
-				if (!movementComponent->movementValues[eid].grounded && eid == Constants::PlayerIndex_){
-					clip = {animation->spriteW * 4, 0, animation->spriteW, animation->spriteH};
+
+				if (eid == Constants::PlayerIndex_) {
+					if (!movementComponent->movementValues[eid].grounded) {
+						if (movementComponent->movementValues[eid].yVelocity > 0)
+							clip = {animation->spriteW * 5, 0, animation->spriteW, animation->spriteH};
+						else
+							clip = {animation->spriteW * 4, 0, animation->spriteW, animation->spriteH};
+					}
 				}
 			}	  
 		}
