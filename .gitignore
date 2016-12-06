@@ -3,5 +3,4 @@
 *.o
 *.d
 fathactory
-assets/score/*
 !assets/chapter_*
