@@ -1,4 +1,0 @@
-kills=5;
-fallen=2;
-total=7;
-END=;
