@@ -74,6 +74,7 @@ void LoadTitleStateAssets(Game* game) {
 	if (game->titleState.titleMusic == NULL) {
 		std::cerr << "Unable to initialize titlescreen music! SDL_Error: " << Mix_GetError() << std::endl;
 	}
+	SoundCache_CreateSound("assets/sounds/menu.ogg", "menu");
 }
 
 
@@ -248,6 +249,8 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/heli.ogg", "heli");
 	SoundCache_CreateSound("assets/sounds/beer.ogg", "beer");
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
+	SoundCache_CreateSound("assets/sounds/thud.ogg", "thud");
+	SoundCache_CreateSound("assets/sounds/coin.ogg", "coin");
 	TextureCache_CreateTexture(game->renderer, "assets/hats/bullet.png", "bullet");
 	TextureCache_CreateTexture(game->renderer, "assets/hats/knife.png", "knife");
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/hats/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_MOD);
