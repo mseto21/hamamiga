@@ -49,3 +49,4 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uint32 delta);
 void RenderSystem_CompleteRender(SDL_Renderer* renderer);
 void RenderSystem_Free(RenderSystem* renderSystem);
+bool ShouldDraw(uint32 eid, HealthComponent** hComponent);

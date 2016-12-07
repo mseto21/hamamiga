@@ -298,8 +298,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				}
 			}	  
 		}
-
-		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
+		if (ShouldDraw(eid, &healthComponent))
+		    RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 
 		// Display interaction message
 		if (Component_HasIndex(interactableComponent, eid)) {
@@ -431,6 +431,37 @@ void RenderSystem_Free(RenderSystem* renderSystem) {
 	renderSystem->interactableComponent = nullptr;
 	renderSystem->map = nullptr;
 	renderSystem->defaultFont = nullptr;
+}
+
+bool ShouldDraw(uint32 eid, HealthComponent** hComponent) {
+  HealthComponent* healthComponent = *hComponent;
+  if (eid != Constants::PlayerIndex_ || !Component_HasIndex(healthComponent, eid))
+    return true;
+  if (healthComponent->invincible[eid] <= 0)
+    return true;
+  if (healthComponent->invincible[eid] <= 20)
+    return false;
+  if (healthComponent->invincible[eid] <= 40)
+    return true;
+  if (healthComponent->invincible[eid] <= 60)
+    return false;
+  if (healthComponent->invincible[eid] <= 80)
+    return true;
+  if (healthComponent->invincible[eid] <= 160)
+    return false;
+  if (healthComponent->invincible[eid] <= 240)
+    return true;
+  if (healthComponent->invincible[eid] <= 320)
+    return false;
+  if (healthComponent->invincible[eid] <= 400)
+    return true;
+  if (healthComponent->invincible[eid] <= 480)
+    return false;
+  if (healthComponent->invincible[eid] <= 560)
+    return true;
+  if (healthComponent->invincible[eid] <= 640)
+    return false;
+  return true;
 }
 
 
