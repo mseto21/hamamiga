@@ -73,6 +73,7 @@ zone=
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
+		name(Charlie,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -84,6 +85,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Air Vent Andy,)
 		animation(4,150.0,88,87,)
 		health(100,)		
 		damage(20,)
@@ -95,6 +97,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Lost for Years Louie,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -106,6 +109,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Ceiling Resident Rebecca,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -117,6 +121,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Dirty Dan,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -128,6 +133,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Jonathon the Janitor,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
