@@ -40,13 +40,6 @@ zone=
 	entity=
 		animation(5,150.0,48,60,)
 		physics(100,)
-		rectangle(430,680,48,60,)
-		texture(assets/interactables/coin.png,coin,)
-		alive()
-		interactable(Grab the coin!,3,0,This is a coin!,);
-	entity=
-		animation(5,150.0,48,60,)
-		physics(100,)
 		rectangle(122,825,48,60,)
 		texture(assets/interactables/coin.png,coin,)
 		alive()
@@ -281,6 +274,13 @@ zone=
 		physics(0,)
 		interactable('x' to Put On,0,6, FLYYYYYYYY!,)
 		rectangle(4550,745,85,60,)
+		alive();
+	entity=
+		movement(3.0,14.0,1.0,5.0,)
+		texture(assets/chapter_4/hats-chap4.png,circus,85,0,85,60,)
+		physics(0,)
+		interactable('x' to Put On,0,9, Welcome to the Big Top. Try Jumping!,)
+		rectangle(410,634,85,60,)
 		alive();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
