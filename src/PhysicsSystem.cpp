@@ -96,7 +96,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			        healthComponent->invincible[eid]--;
 			        continue;
 			}
-			if (Component_HasIndex(healthComponent, eid) && healthComponent->invincible[otherEid] > 0) {
+			if (Component_HasIndex(healthComponent, otherEid) && healthComponent->invincible[otherEid] > 0) {
 			        continue;
 			}
 
