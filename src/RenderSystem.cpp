@@ -334,14 +334,17 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				float ratio = (float) current / max;
 				int r;
 				int g;
+				int b;
 				if (ratio > 0.5f) {
-					r = 255 * (1 - ((float)current / max));
+					r = 167 * (1 - ((float)current / max));
 					g = 255;
+					b = 131* (1 - ((float)current / max));
 				} else {
 					r = 255;
 					g = 255 * (1 - (float)current / max);
+					b = 131;
 				}
-				SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
+				SDL_SetRenderDrawColor(renderer, r, g, b, 1);
 				SDL_RenderFillRect(renderer, &currentRect);
 				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 			}
@@ -411,16 +414,19 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		float ratio = (float) current / max;
 		int r;
 		int g;
+		int b;
 		if (ratio > 0.5f) {
-			r = 2 * 255 * (1 - ((float)current / max));
+			r = 2 * 167 * (1 - ((float)current / max));
 			g = 255;
+			b = 2 * 131 * (1 - ((float)current / max));
 		} else {
 			r = 255;
-			g = 2 * 255 * ((float)current / max);
+			g = 2* 255 * ((float)current / max);
+			b = 131;
 		}
 		Texture* hBar = TextureCache_GetTexture(Constants::HealthBar_);
 		RenderSystem_Render_xywh(renderer, XRightRender_ - 8, YTopRender_ - 44, hBar->w, hBar->h, NULL, hBar);
-		SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
+		SDL_SetRenderDrawColor(renderer, r, g, b, 1);
 		SDL_RenderFillRect(renderer, &currentRect);
 	}
 

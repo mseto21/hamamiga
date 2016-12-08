@@ -1,6 +1,6 @@
 hats=7;
 levels=4;
-deaths=30;
+deaths=31;
 fallen=15;
 kills=-1;
 END=;
