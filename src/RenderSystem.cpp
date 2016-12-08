@@ -269,6 +269,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				animation->currentFrame %= animation->frames;
 				animation->currentFrameTime = 0;
 			}
+			if (!ShouldDraw(eid, &healthComponent))
+			  animation->currentFrame += 6;
 			clip = {animation->spriteW * animation->currentFrame, 0, animation->spriteW, animation->spriteH};
 
 			// Check for movement
@@ -290,16 +292,22 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 				if (eid == Constants::PlayerIndex_) {
 					if (!movementComponent->movementValues[eid].grounded) {
+					        int invc = 0;
+						if (!ShouldDraw(eid, &healthComponent))
+						        invc = 6;
 						if (movementComponent->movementValues[eid].yVelocity > 0)
-							clip = {animation->spriteW * 5, 0, animation->spriteW, animation->spriteH};
+						        clip = {animation->spriteW * (5+invc), 0, animation->spriteW, animation->spriteH};
 						else
-							clip = {animation->spriteW * 4, 0, animation->spriteW, animation->spriteH};
+						        clip = {animation->spriteW * (4+invc), 0, animation->spriteW, animation->spriteH};
 					}
 				}
-			}	  
+			}
+			
+			if (!ShouldDraw(eid, &healthComponent))
+			  animation->currentFrame -= 6;
 		}
-		if (ShouldDraw(eid, &healthComponent))
-		    RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
+		
+		  RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 
 		// Display interaction message
 		if (Component_HasIndex(interactableComponent, eid)) {

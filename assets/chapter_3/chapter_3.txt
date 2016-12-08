@@ -66,6 +66,7 @@ zone=
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
+		name(Darryl Philbin,)
 		animation(4,150.0,125,71,)
 		health(100,)
 		damage(10,)
@@ -77,6 +78,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Glenn,)
 		animation(4,150.0,125,71,)
 		health(100,)
 		damage(10,)
@@ -88,6 +90,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Hidetoshi Hasagawa,)
 		animation(4,150.0,125,71,)
 		health(100,)
 		damage(10,)
@@ -99,6 +102,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Madge Madsen,)
 		animation(4,150.0,125,71,)
 		health(100,)
 		damage(10,)
@@ -110,6 +114,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Roy Anderson,)
 		animation(4,150.0,125,71,)
 		health(100,)
 		damage(10,)
@@ -121,6 +126,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Val,)
 		animation(4,150.0,125,71,)
 		health(100,)
 		damage(10,)

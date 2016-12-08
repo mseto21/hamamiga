@@ -73,6 +73,7 @@ zone=
 		alive()
 		interactable(Grab the coin!,3,0,This is a coin!,);
 	entity=
+		name(Charlie,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -84,6 +85,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Air Vent Andy,)
 		animation(4,150.0,88,87,)
 		health(100,)		
 		damage(20,)
@@ -95,6 +97,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Lost for Years Louie,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -106,6 +109,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Ceiling Resident Rebecca,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -117,6 +121,7 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(Dirty Dan,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -128,6 +133,19 @@ zone=
 		alive()
 		goal();
 	entity=
+		name(In the Way Ivan,)
+		animation(4,150.0,88,87,)
+		health(100,)
+		damage(20,)
+		movement(3.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(2350,585,88,87,)
+		texture(assets/enemies/demon.png,demon,)
+		ai(0,70,1,)
+		alive()
+		goal();
+	entity=
+		name(Jonathon the Janitor,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -142,7 +160,7 @@ zone=
 		texture(assets/chapter_2/hats-chap2.png,miner,85,0,85,60,)
 		physics(0,)
 		interactable('x' to Put On,0,4,)
-		rectangle(140,1350,48,48,)
+		rectangle(255,970,48,48,)
 		alive();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
