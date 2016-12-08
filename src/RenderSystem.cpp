@@ -282,6 +282,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 					  texture->flip = SDL_FLIP_NONE;
 					}
 					clip = {0, 0, animation->spriteW, animation->spriteH};
+					if (!ShouldDraw(eid, &healthComponent)) {
+					  clip = {animation->spriteW*6, 0, animation->spriteW, animation->spriteH};
+					}
 				} else if (movementComponent->movementValues[eid].xVelocity > 0) {
 					texture->flip = SDL_FLIP_NONE;
 					movementComponent->movementValues[eid].left = false;
