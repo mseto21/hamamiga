@@ -263,14 +263,14 @@ zone=
 		goal();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
-		texture(assets/chapter_4/hats-chap4.png,chef,)
+		texture(assets/chapter_4/hats-chap4.png,chef,0,0,85,71,)
 		physics(0,)
 		interactable('x' to Put On,0,8, Welcome to the Kitchen! Press 'z' to shoot enemies. Ammo is displayed in the top left.,)
 		rectangle(400,120,85,60,)
 		alive();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
-		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,60,)
+		texture(assets/chapter_3/hats-chap3.png,propeller,85,0,85,71,)
 		physics(0,)
 		interactable('x' to Put On,0,6, FLYYYYYYYY!,)
 		rectangle(4550,745,85,60,)

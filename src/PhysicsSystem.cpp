@@ -148,16 +148,13 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					moveValues->yVelocity = yVelocity;
 					r1->y += moveValues->yVelocity;
 				}
-				if (Component_HasIndex(healthComponent, eid)) {
-				  if (healthComponent->invincible[eid] <= 0) {
+				if (Component_HasIndex(healthComponent, eid) && healthComponent->invincible[eid] <= 0) {
 				    healthComponent->startHealth[eid] = healthComponent->health[eid];
 				    if (Component_HasIndex(damageComponent, otherEid)) {
 				      if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, otherEid))) {
 					if (!((Component_HasIndex(aiComponent, eid) || Component_HasIndex(interactableComponent, eid))
-					      && (Component_HasIndex(aiComponent, otherEid) || Component_HasIndex(interactableComponent, otherEid
-														  )))) {
-					  healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage
-					    / healthComponent->damageReduction[eid];
+					      && (Component_HasIndex(aiComponent, otherEid) || Component_HasIndex(interactableComponent, otherEid )))) {
+					  healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage / healthComponent->damageReduction[eid];
 					  if (eid == Constants::PlayerIndex_) {
 					    healthComponent->invincible[eid] = 640;
 					  }
@@ -169,7 +166,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					r1->x += movementComponent->movementValues[eid].xAccel*10;
 				      }
 				    }
-				  }
 				  bulletComponent->bullet[otherEid].collided = true;
 				}
 			}
