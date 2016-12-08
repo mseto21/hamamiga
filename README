@@ -157,5 +157,4 @@ Matt: Added level select screen, fixed up some things with level 1, made physics
 
 Mindy: Fixed bugs in the Statsystem for keeping saved scores. Added additional stats to the scores screen which now has five stats: Number of hats collected, number of levels cleared (using the cheat doesn't count!), number of times killed by demons, fallen, and demons killed
 
-Gavi: Changed graphics to reflect new controls setup,
-designed bouncing orange enemies and tutorial screen
+Gavi: Designed speech bubble, invincible and falling Kevin
