@@ -237,7 +237,7 @@ void UpdatePlay(Game* game) {
 					Scores_Update("assets/score/levels.txt", "three", lval);
 					break;
 				case 4:
-				Scores_Update("assets/score/levels.txt", "four", lval);
+				        Scores_Update("assets/score/levels.txt", "four", lval);
 					break;
 				default:
 					break;
@@ -337,7 +337,7 @@ void Game_RunLoop(Game* game) {
 							}
 							break;
 						case SDLK_1:
-							game->playState.unlockedLevels = 16;
+						        game->playState.unlockedLevels = Constants::MaximumLevels_ + 1;
 							if (game->gameState == GameState_LevelSelect)
 								LoadLevelSelectAssets(game);
 							break;
