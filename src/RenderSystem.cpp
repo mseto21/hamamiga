@@ -336,8 +336,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				int g = 255;
 				int b = 131;
 				int r2 = 255;
-				int g2 = 96;
-				int b2 = 96;
+				int g2 = 92;
+				int b2 = 78;
 				r = r2 + (r - r2)*ratio;
 				g = g2 + (g - g2)*ratio;
 				b = b2 + (b - b2)*ratio;
@@ -413,8 +413,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		int g = 255;
 		int b = 131;
 		int r2 = 255;
-		int g2 = 96;
-		int b2 = 96;
+		int g2 = 92;
+		int b2 = 78;
 		r = r2 + (r - r2)*ratio;
 		g = g2 + (g - g2)*ratio;
 		b = b2 + (b - b2)*ratio;
