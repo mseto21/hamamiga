@@ -71,4 +71,5 @@ namespace Constants {
 	const String128 TilesetName_ 		= 	"tileset";
 	const String128 ZoneName_ 			=	"zone_name";
 	const String128 HealthBar_			= 	"health_bar";
+	const String128 MainMenuO_		=      "main_menu_overlay";
 }

@@ -11,8 +11,10 @@
 /* Render main menu. */
 void RenderTitle(Game* game) {
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
+	Texture* overlay = TextureCache_GetTexture(Constants::MainMenuO_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, overlay->w, overlay->h, NULL, overlay);
 	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
 		Texture* selection;
 		if (selectionIndex == game->titleState.selection) {
@@ -33,7 +35,7 @@ void RenderTitle(Game* game) {
 			selection = TextureCache_GetTexture(select.c_str());
 		}
 		int renderX = Constants::ScreenWidth_ / 2 - selection->w / 2;
-		int renderY = 45 + selectionIndex * (Constants::ScreenHeight_ / Constants::TitleScreenSelections_);
+		int renderY = (selectionIndex + 2)* (selection->h + 35) - 50;
 		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, NULL, selection);
 	}
 	SDL_RenderPresent(game->renderer);
