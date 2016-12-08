@@ -28,9 +28,9 @@
 #include <iostream>
 
 // Render constants
-const int XRightRender_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4;
+const int XRightRender_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4 - 80;
 const int XLeftRender_ = Constants::ScreenWidth_ / 24;
-const int YTopRender_ = Constants::ScreenHeight_ / 16;
+const int YTopRender_ = Constants::ScreenHeight_ / 16 + 3;
 const int WHealth_ = Constants::ScreenWidth_/ 5;
 const int HHealth_ = Constants::ScreenHeight_ / 16;
 const int HealthBarHeight_ = 8;
@@ -412,6 +412,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			r = 255;
 			g = 2 * 255 * ((float)current / max);
 		}
+		Texture* hBar = TextureCache_GetTexture(Constants::HealthBar_);
+		RenderSystem_Render_xywh(renderer, XRightRender_ - 8, YTopRender_ - 44, hBar->w, hBar->h, NULL, hBar);
 		SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
 		SDL_RenderFillRect(renderer, &currentRect);
 	}
