@@ -38,7 +38,7 @@ void LoadIntroStateAssets(Game* game) {
 	TextureCache_CreateTexture(game->renderer, "assets/screens/win-screen.png", Constants::WinBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/screens/lose-screen.png", Constants::LoseBackground_);
 	TextureCache_CreateTexture(game->renderer, "assets/menu-overlays/main-menu.png", Constants::MainMenuO_);
-	TextureCache_CreateTexture(game->renderer, "assets/menu-overlays/high-scores.png", Constants::StatsO_);
+	TextureCache_CreateTexture(game->renderer, "assets/menu-overlays/stats.png", Constants::StatsO_);
 	TextureCache_CreateTexture(game->renderer, "assets/menu-overlays/levels.png", Constants::LevelsO_);
 	TextureCache_CreateTexture(game->renderer, "assets/menu-overlays/options.png", Constants::OptionsO_);
 }
