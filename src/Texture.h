@@ -13,6 +13,7 @@ struct Texture {
 	String128 name;
 	bool isAnimation;
 	int flip;
+	float rotation;
 
 	int clipX, clipY, clipW, clipH;
 };

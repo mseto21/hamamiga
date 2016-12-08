@@ -23,6 +23,7 @@ enum HatTypes {
 	HatTypes_Propeller,		//6
 	HatTypes_Beer,      	//7
 	HatTypes_Chef,			//8
+	HatTypes_Circus,		//9
 	HatTypes_Empty,			// Leave at end please.
 };
 

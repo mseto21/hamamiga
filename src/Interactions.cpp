@@ -127,7 +127,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			Scores_Update(hatpath, (char*)"beer", val);
 			break;
 	  case HatTypes_Chef:
-	                if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
+	        if (cBag->hatComponent->hats[eid].hat.hatType != HatTypes_Empty)
 			      return false;
 			cBag->hatComponent->hats[eid].hat.hatType = hatType;
 			cBag->hatComponent->hats[eid].hat.eid = hatEid;
@@ -136,6 +136,14 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to throw your knives at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			ChefHatInit();
+			break;
+		case HatTypes_Circus:
+			cBag->hatComponent->hats[eid].gHat.hatType = hatType;
+			cBag->hatComponent->hats[eid].gHat.eid = hatEid;
+			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
+			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "circus", sizeof(cBag->hatComponent->hats[eid].gHat.name));
+			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Press [SPACE] to spin", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
+			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Circus;
 			break;
 		default:
 			std::cerr << "Error: Unknown hat type given." << std::endl;
@@ -169,8 +177,8 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 			break;
 		case HatTypes_Cowboy:
 			break;
-	        case HatTypes_Chef:
-	                break;
+        case HatTypes_Chef:
+            break;
 		default:
 			return;
 	}

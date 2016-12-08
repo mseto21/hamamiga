@@ -39,6 +39,7 @@ bool Texture_LoadTexture(Texture* texture, SDL_Renderer* renderer, const char* p
 	texture->clipH = 0;
 
 	texture->flip = SDL_FLIP_NONE;
+	texture->rotation = 0;
 	strcpy(texture->name, name);
 	SDL_FreeSurface(surface);
 
@@ -89,6 +90,7 @@ bool Texture_CreateTextureFromFont(Texture* texture, SDL_Renderer* renderer, TTF
 	texture->w = surface->w;
 	texture->h = surface->h;
 	texture->flip = SDL_FLIP_NONE;
+	texture->rotation = 0;
 	strcpy(texture->name, name);
 	SDL_FreeSurface(surface);
 
@@ -123,6 +125,7 @@ bool Texture_CreateTextureFromFontWithWidth(Texture* texture, SDL_Renderer* rend
 	texture->w = surface->w;
 	texture->h = surface->h;
 	texture->flip = SDL_FLIP_NONE;
+	texture->rotation = 0;
 	strcpy(texture->name, name);
 	SDL_FreeSurface(surface);
 

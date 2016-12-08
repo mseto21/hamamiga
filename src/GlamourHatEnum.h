@@ -5,4 +5,5 @@ enum GlamourHatId {
 	GlamourHatId_Disco,
 	GlamourHatId_Miner,
 	GlamourHatId_Beer,
+	GlamourHatId_Circus,
 };

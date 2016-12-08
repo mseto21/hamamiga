@@ -75,7 +75,7 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 		rquad.h = clip->h;
 	}
 
-	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, 0.0, NULL, (SDL_RendererFlip)texture->flip);
+	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, texture->rotation, NULL, (SDL_RendererFlip)texture->flip);
 }
 
 // --------------------------------------------------------------------
@@ -105,7 +105,7 @@ void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect*
 		return;
 	}
 
-	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, 0.0, NULL, (SDL_RendererFlip)texture->flip);
+	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, texture->rotation, NULL, (SDL_RendererFlip)texture->flip);
 }
 
 // --------------------------------------------------------------------
@@ -292,13 +292,19 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 				if (eid == Constants::PlayerIndex_) {
 					if (!movementComponent->movementValues[eid].grounded) {
-					        int invc = 0;
+						int invc = 0;
 						if (!ShouldDraw(eid, &healthComponent))
-						        invc = 6;
+							invc = 6;
 						if (movementComponent->movementValues[eid].yVelocity > 0)
-						        clip = {animation->spriteW * (5+invc), 0, animation->spriteW, animation->spriteH};
+							clip = {animation->spriteW * (5+invc), 0, animation->spriteW, animation->spriteH};
 						else
-						        clip = {animation->spriteW * (4+invc), 0, animation->spriteW, animation->spriteH};
+							clip = {animation->spriteW * (4+invc), 0, animation->spriteW, animation->spriteH};
+
+						if (hatComponent->hats[eid].gHat.hatType == HatTypes_Circus) {
+							texture->rotation += Constants::OptimalTime_ / 5;
+						}
+					} else {
+						texture->rotation = 0;
 					}
 				}
 			}
