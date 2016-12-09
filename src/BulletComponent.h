@@ -5,6 +5,7 @@ struct AliveComponent;
 struct TextureComponent;
 struct MovementComponent;
 struct RectangleComponent;
+struct TeamComponent;
 struct Rectangle;
 
 const int MaxBulletLife_ = 2500;
@@ -22,5 +23,5 @@ struct BulletComponent : public Component {
 };
 
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent*,
-	AliveComponent*, TextureComponent*, MovementComponent*, RectangleComponent*,
+	AliveComponent*, TextureComponent*, MovementComponent*, RectangleComponent*, TeamComponent* teamComponent, 
 	 Rectangle, uint32 eid, bool, bool, int);

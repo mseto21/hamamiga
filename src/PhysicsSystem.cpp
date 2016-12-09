@@ -162,7 +162,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					  			if (eid == Constants::PlayerIndex_)
 					    			healthComponent->invincible[eid] = 640;
 					    	}
-					    } else if (teamComponent->team[eid] == teamComponent->team[otherEid]) {
+					    } else {
 							aiComponent->marchValues[eid].facing *= -1;
 							aiComponent->marchValues[eid].distance = 0;
 							movementComponent->movementValues[eid].xAccel *= -1;

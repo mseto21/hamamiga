@@ -4,6 +4,7 @@
 #include "TextureComponent.h"
 #include "MovementComponent.h"
 #include "RectangleComponent.h"
+#include "TeamComponent.h"
 #include "TextureCache.h"
 #include "Interactions.h"
 
@@ -12,7 +13,7 @@
 
 void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* physicsComponent,
 	AliveComponent* aliveComponent, TextureComponent* textureComponent, MovementComponent* movementComponent,
-			 RectangleComponent* rect, Rectangle rectPos, uint32 eid, bool team, bool left, int txtr) {
+			 RectangleComponent* rect, TeamComponent* teamComponent, Rectangle rectPos, uint32 eid, bool team, bool left, int txtr) {
 
 	//Adding relevant components to a bullet entity
 	Component_Add(bulletComponent, eid);
@@ -53,4 +54,5 @@ void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent* phy
 	  movementComponent->movementValues[eid].xVelocity +=
 	    movementComponent->movementValues[Constants::PlayerIndex_].xVelocity;
 	}
+	TeamComponent_Add(teamComponent, eid, 0);
 }
