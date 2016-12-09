@@ -71,6 +71,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			continue;
 		}
 		
+		physicsComponent->physicsValues[eid].collided = false;
 		MovementValues* moveValues = &movementComponent->movementValues[eid];
 		Rectangle* r1 = &rectangleComponent->entityRectangles[eid];
 		if (Component_HasIndex(interactableComponent, eid)) {
@@ -97,7 +98,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			        continue;
 			}
 
-
+			physicsComponent->physicsValues[otherEid].collided = false;
 			// Enemy collisions
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			if (Collision(*r1, r2)) {
@@ -124,7 +125,8 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						yVelocity = -10;
 					moveValues->yVelocity = yVelocity;
 					r1->y += moveValues->yVelocity;
-				} else if (teamComponent->team[eid] == teamComponent->team[otherEid] && Component_HasIndex(aiComponent, eid)) {
+				} else if (teamComponent->team[eid] == teamComponent->team[otherEid] 
+					&& Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, otherEid)) {
 					aiComponent->marchValues[eid].facing *= -1;
 					aiComponent->marchValues[eid].distance = 0;
 					movementComponent->movementValues[eid].xAccel *= -1;
@@ -155,8 +157,10 @@ world_physics:
 			} else {
 				moveValues->yVelocity += Constants::Gravity_;
 			}
-		  	moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
-		  	moveValues->xAccel -= moveValues->xAccel*Constants::AirRes_;
+			if (moveValues->accelY != 0) {
+			  	moveValues->xVelocity -= moveValues->xVelocity*Constants::AirRes_;
+			  	moveValues->xAccel -= moveValues->xAccel*Constants::AirRes_;
+			}
 			
 		} else {
 			moveValues->xAccel -= moveValues->xAccel*Constants::Friction_;

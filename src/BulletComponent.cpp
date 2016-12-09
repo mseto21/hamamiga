@@ -59,13 +59,11 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 	}
 
 	if (!bulletComponent->bulletValues[eid].initialized[index]) {
-		MovementComponent_Add(cBag->movementComponent, bulletEid, xVelocity, yVelocity, 1.5, 1.0);
+		MovementComponent_Add(cBag->movementComponent, bulletEid, xVelocity, yVelocity, xVelocity, yVelocity);
 		TeamComponent_Add(cBag->teamComponent, bulletEid, 0);
 		DamageComponent_Add(cBag->damageComponent, bulletEid, damage);
 		AIComponent_Add(cBag->aiComponent, bulletEid, 1);
-		if (type == HatTypes_Chef) {
-			PhysicsComponent_Add(cBag->physicsComponent, bulletEid, 1);
-		}
+		PhysicsComponent_Add(cBag->physicsComponent, bulletEid, 1);
 		InteractableComponent_Add(cBag->interactableComponent, bulletEid, TextureCache_GetTexture("bullet-pickup"), t, 0, 0);
 		AliveComponent_Add(cBag->aliveComponent, bulletEid);
 		AnimationComponent_Add(cBag->animationComponent, bulletEid, animation);

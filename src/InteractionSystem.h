@@ -6,6 +6,7 @@ struct RectangleComponent;
 struct AliveComponent;
 struct GoalComponent;
 struct BulletComponent;
+struct PhysicsComponent;
 struct ComponentBag;
 struct Game;
 
@@ -16,6 +17,7 @@ struct InteractionSystem {
 	AliveComponent* aliveComponent;
 	GoalComponent* goalComponent;
 	BulletComponent* bulletComponent;
+	PhysicsComponent* physicsComponent;
 	ComponentBag* cBag;
 	Game* game;
 };

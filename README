@@ -153,7 +153,7 @@ Breakdown of what each member achieved:
 ---------------
 Harry: Changed around some demons on level 4, enemies no longer walk straight off of edges, fixed enemy-enemy collisions, changed controls to something that makes sense for a 2D platformer
 
-Matt: Added level select screen, fixed up some things with level 1, made physics a lot faster by reducing the number of collisions per frame, implemented coins and doors, created a new entity AI that jumps in place.
+Matt: Huge bullet overhaul, added the concept of a team, circus hat tech
 
 Mindy: Fixed bugs in the Statsystem for keeping saved scores. Added additional stats to the scores screen which now has five stats: Number of hats collected, number of levels cleared (using the cheat doesn't count!), number of times killed by demons, fallen, and demons killed
 

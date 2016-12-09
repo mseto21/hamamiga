@@ -5,6 +5,7 @@
 #include "InteractableComponent.h"
 #include "BulletComponent.h"
 #include "AliveComponent.h"
+#include "PhysicsComponent.h"
 #include "GoalComponent.h"
 #include "ComponentBag.h"
 #include "SoundCache.h"
@@ -19,6 +20,7 @@ void InteractionSystem_Initialize(InteractionSystem* interactionSystem, Componen
 	interactionSystem->aliveComponent 			= cBag->aliveComponent;
 	interactionSystem->goalComponent 			= cBag->goalComponent;
 	interactionSystem->bulletComponent 			= cBag->bulletComponent;
+	interactionSystem->physicsComponent 		= cBag->physicsComponent;
 	interactionSystem->cBag 					= cBag;
 	interactionSystem->game 					= game;
 }
@@ -63,6 +65,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 						  		aliveComponent->alive[eid] = false;
 					  		}
 					  	}
+					  	inputComponent->interact[Constants::PlayerIndex_] = false;
 					}
 				}
 				continue;
@@ -75,20 +78,31 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				}
 				continue;
 			case InteractionTypes_Door:
-				if (interact)
+				if (interact) {
+					inputComponent->interact[Constants::PlayerIndex_] = false;
 					Interaction_EnterDoor(interactionSystem->game, interactableComponent->datafield[eid]);
+				}
 				continue;
 			case InteractionTypes_Chef:
+				if (!interactableComponent->interacted[eid]) {
+					if (bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets < 3)
+						bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
+					interactableComponent->interacted[eid] = true;
+					if (Component_HasIndex(aliveComponent, eid)) {
+				  		aliveComponent->alive[eid] = false;
+			  		}
+			  		inputComponent->interact[Constants::PlayerIndex_] = false;
+				}
+				continue;
 			case InteractionTypes_Cowboy:
-				if (interact) {
-					if (!interactableComponent->interacted[eid]) {
-						if (bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets < 3)
-							bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
-						interactableComponent->interacted[eid] = true;
-						if (Component_HasIndex(aliveComponent, eid)) {
-					  		aliveComponent->alive[eid] = false;
-				  		}
-					}
+				if (!interactableComponent->interacted[eid]) {
+					if (bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets < 3)
+						bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
+					interactableComponent->interacted[eid] = true;
+					if (Component_HasIndex(aliveComponent, eid)) {
+				  		aliveComponent->alive[eid] = false;
+			  		}
+			  		inputComponent->interact[Constants::PlayerIndex_] = false;
 				}
 				continue;
 			default:
@@ -101,5 +115,6 @@ void InteractionSystem_Free(InteractionSystem* interactionSystem) {
 	interactionSystem->interactableComponent = nullptr;
 	interactionSystem->inputComponent = nullptr;
 	interactionSystem->rectangleComponent = nullptr;
+	interactionSystem->physicsComponent = nullptr;
 	interactionSystem->game = nullptr;
 }

@@ -119,13 +119,16 @@ void FlyerUpdate(AISystem* aiSystem, uint32 eid) {
 
 void ProjectileUpdate(AISystem* aiSystem, uint32 eid) {
   MovementComponent* movementComponent = aiSystem->movementComponent;
+  PhysicsComponent* physicsComponent = aiSystem->physicsComponent;
   if (!Component_HasIndex(movementComponent, eid)) {
     return;
   }
 
-
-  MovementValues* moveValues = &movementComponent->movementValues[eid];
-  moveValues->xAccel = moveValues->accelX;
+  if (!physicsComponent->physicsValues[eid].collided) {
+    MovementValues* moveValues = &movementComponent->movementValues[eid];
+    moveValues->xVelocity = moveValues->maxXVelocity;
+    moveValues->xAccel = moveValues->accelX;
+  }
 }
 
 
