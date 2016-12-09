@@ -150,7 +150,12 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						yVelocity = -10;
 					moveValues->yVelocity = yVelocity;
 					r1->y += moveValues->yVelocity;
-				}	
+				} else if (teamComponent->team[eid] == teamComponent->team[otherEid]) {
+					aiComponent->marchValues[eid].facing *= -1;
+					aiComponent->marchValues[eid].distance = 0;
+					movementComponent->movementValues[eid].xAccel *= -1;
+					r1->x += movementComponent->movementValues[eid].xAccel*10;
+			    }
 
 				if (Component_HasIndex(healthComponent, eid)) {
 					if (healthComponent->invincible[eid] <= 0) {
@@ -162,11 +167,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					  			if (eid == Constants::PlayerIndex_)
 					    			healthComponent->invincible[eid] = 640;
 					    	}
-					    } else {
-							aiComponent->marchValues[eid].facing *= -1;
-							aiComponent->marchValues[eid].distance = 0;
-							movementComponent->movementValues[eid].xAccel *= -1;
-							r1->x += movementComponent->movementValues[eid].xAccel*10;
 					    }
 					}
 					bulletComponent->bullet[otherEid].collided = true;
