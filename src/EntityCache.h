@@ -15,5 +15,3 @@ Entity* EntityCache_GetNewEntityAtIndex(uint32 eid);
 void EntityCache_RemoveAll();
 void EntityCache_Remove(uint32 eid);
 void EntityCache_Free();
-
-

@@ -174,9 +174,10 @@ zone=
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,30000,1,)
 		team(1,)
-		alive();
+		alive()
+		goal();
 	entity=
-		name(Graphics Gavi,)
+		name(Introspective Irene,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
@@ -202,7 +203,7 @@ zone=
 		team(1,)
 		goal();
 	entity=
-		name(Mindy from Marketing,)
+		name(Bob,)
 		animation(4,150.0,88,87,)
 		health(100,)
 		damage(20,)
