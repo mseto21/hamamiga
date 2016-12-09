@@ -329,6 +329,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			if (eid != Constants::PlayerIndex_) {
 				int max = healthComponent->maxHealth[eid];
 				int current = healthComponent->health[eid];
+				if (current < 0) {
+				  current = 0;
+				  healthComponent->health[eid] = 0;
+				}
 				//const SDL_Rect maxRect = {XRightRender_, YTopRender_, static_cast<int>(rect.w), HealthBarHeight_};
 				const SDL_Rect currentRect = {static_cast<int>(rect.x), static_cast<int>(rect.y) - HealthBarHeight_, static_cast<int>(rect.w * ((float) current / max)), HealthBarHeight_};
 			        float ratio = (float) current / max;
