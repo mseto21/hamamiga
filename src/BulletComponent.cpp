@@ -48,13 +48,13 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 			Animation_Initialize(&animation, 1, 150.0, 34, 12);
 			cBag->movementComponent->movementValues[bulletEid].yVelocity = yVelocity * -1 + cBag->movementComponent->movementValues[eid].yVelocity;
 			t = InteractionTypes_Chef;
-			damage = 50;
+			damage = 25;
 			break;
 		case HatTypes_Cowboy:
 			texture = TextureCache_GetTexture("bullet");
 			Animation_Initialize(&animation, 1, 150.0, 52, 12);
 			t = InteractionTypes_Cowboy;
-			damage = 100;
+			damage = 10;
 			break;
 	}
 
