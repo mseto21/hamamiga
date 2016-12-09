@@ -37,7 +37,7 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 	Texture* texture;
 	Animation animation;
 	int t;
-	int xVelocity = 10;
+	int xVelocity = 7;
 	int yVelocity = 0;
 	int damage;
 	switch (type) {

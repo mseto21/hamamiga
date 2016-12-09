@@ -39,11 +39,28 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 	AliveComponent* aliveComponent = interactionSystem->aliveComponent;
 	GoalComponent* goalComponent = interactionSystem->goalComponent;
 	BulletComponent* bulletComponent = interactionSystem->bulletComponent;
+	PhysicsComponent* physicsComponent = interactionSystem->physicsComponent;
 
 	Rectangle r1 = rectangleComponent->entityRectangles[Constants::PlayerIndex_];
 
 	for (uint32 entityIndex = 0; entityIndex < interactableComponent->count; entityIndex++) {
 		uint32 eid = interactableComponent->entityArray[entityIndex];
+
+		int type = interactableComponent->types[eid];
+		if (type == InteractionTypes_Chef || type == InteractionTypes_Cowboy) {
+			if (physicsComponent->physicsValues[eid].collided) {
+				if (bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets < 3)
+					bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
+				interactableComponent->interacted[eid] = true;
+				if (Component_HasIndex(aliveComponent, eid)) {
+			  		aliveComponent->alive[eid] = false;
+		  		}
+		  		physicsComponent->physicsValues[eid].collided = false;
+		  		inputComponent->interact[Constants::PlayerIndex_] = false;
+			}
+			continue;
+		}
+
 		if (!Collision(r1, rectangleComponent->entityRectangles[eid])) {
 			interactableComponent->canBeInteractedWith[eid] = false;
 			continue;
@@ -52,7 +69,6 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 		interactableComponent->canBeInteractedWith[eid] = true;
 		bool interact = inputComponent->interact[Constants::PlayerIndex_];
 
-		int type = interactableComponent->types[eid];
 		switch (type) {
 			case InteractionTypes_Hat: {
 				if (interact) {
@@ -84,16 +100,6 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				}
 				continue;
 			case InteractionTypes_Chef:
-				if (!interactableComponent->interacted[eid]) {
-					if (bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets < 3)
-						bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
-					interactableComponent->interacted[eid] = true;
-					if (Component_HasIndex(aliveComponent, eid)) {
-				  		aliveComponent->alive[eid] = false;
-			  		}
-			  		inputComponent->interact[Constants::PlayerIndex_] = false;
-				}
-				continue;
 			case InteractionTypes_Cowboy:
 				if (!interactableComponent->interacted[eid]) {
 					if (bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets < 3)

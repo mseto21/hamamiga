@@ -98,7 +98,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			        continue;
 			}
 
-			physicsComponent->physicsValues[otherEid].collided = false;
 			// Enemy collisions
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			if (Collision(*r1, r2)) {
@@ -222,7 +221,6 @@ world_physics:
 					if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileX].solid) {
 					  aiComponent->marchValues[eid].facing *= -1;
 					  aiComponent->marchValues[eid].distance = 0;
-					  physicsComponent->physicsValues[eid].collided = true;
 					}
 				} else if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
 					r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
@@ -244,7 +242,6 @@ world_physics:
      				if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileEndX].solid) {
 					  aiComponent->marchValues[eid].facing *= -1;
 					  aiComponent->marchValues[eid].distance = 0;
-					  physicsComponent->physicsValues[eid].collided = true;
 					}
 				} else if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
 					r1->x = tileEndX * Constants::TileSize_ - r1->w;
