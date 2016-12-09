@@ -104,7 +104,7 @@ void LoadHighScoreStateAssets(Game* game) {
  	game->highScoreState.scoreType[2]= "Times Murdered: ";
  	game->highScoreState.scoreType[3]= "Fallen to Hell: ";
  	game->highScoreState.scoreType[4]= "Demons Killed: ";
- 	game->highScoreState.scoreType[5]= "Coins Collected: ";
+ 	//game->highScoreState.scoreType[5]= "Coins Collected: ";
 	
 	// Create textures for the current high scores
 	SDL_Color scoreColor = {255, 255, 255, 255};
@@ -119,10 +119,10 @@ void LoadHighScoreStateAssets(Game* game) {
 			std::string totalLevels = std::to_string(Constants::MaximumLevels_);
 			msg.append("/"+ totalLevels);
 		}
-		if (highScoreIndex == 5){
-			std::string totalCoins = std::to_string(Constants::TotalCoins_);
-			msg.append("/"+ totalCoins);
-		}
+		//if (highScoreIndex == 5){
+			//std::string totalCoins = std::to_string(Constants::TotalCoins_);
+			//msg.append("/"+ totalCoins);
+		//}
 		std::string name = "high_score_";
 		name.append(std::to_string(highScoreIndex));
 		TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, msg.c_str(), name.c_str());

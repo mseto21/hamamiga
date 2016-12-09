@@ -58,7 +58,7 @@ namespace Constants {
 	const int		DialogSize_					= ScreenWidth_ / 4;
 
 	// High Score State
-	const int     MaxHighScores_			=		5;
+	const int     MaxHighScores_			=		5;//6;
 
 	// Constant names
 	const String128	TitleBackground_	= 	"title_background";
