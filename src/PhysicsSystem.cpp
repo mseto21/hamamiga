@@ -148,26 +148,25 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					moveValues->yVelocity = yVelocity;
 					r1->y += moveValues->yVelocity;
 				}
+				
 				if (Component_HasIndex(healthComponent, eid)) {
 				  if (healthComponent->invincible[eid] <= 0) {
 				    healthComponent->startHealth[eid] = healthComponent->health[eid];
 				    if (Component_HasIndex(damageComponent, otherEid)) {
-				      if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, otherEid))) {
-					if (!((Component_HasIndex(aiComponent, eid) || Component_HasIndex(interactableComponent, eid))
-					      && (Component_HasIndex(aiComponent, otherEid) || Component_HasIndex(interactableComponent, otherEid
-														  )))) {
-					  healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage
-					    / healthComponent->damageReduction[eid];
-					  if (eid == Constants::PlayerIndex_) {
-					    healthComponent->invincible[eid] = 640;
-					  }
-					}
-				      } else {
-					aiComponent->marchValues[eid].facing *= -1;
-					aiComponent->marchValues[eid].distance = 0;
-					movementComponent->movementValues[eid].xAccel *= -1;
-					r1->x += movementComponent->movementValues[eid].xAccel*10;
-				      }
+				    	if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, otherEid))) {
+							if (!((Component_HasIndex(aiComponent, eid) || Component_HasIndex(interactableComponent, eid))
+					      		&& (Component_HasIndex(aiComponent, otherEid) || Component_HasIndex(interactableComponent, otherEid)))) {
+					  			healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage / healthComponent->damageReduction[eid];
+					  			if (eid == Constants::PlayerIndex_) {
+					    			healthComponent->invincible[eid] = 640;
+					  			}
+							}
+				      	} else {
+							aiComponent->marchValues[eid].facing *= -1;
+							aiComponent->marchValues[eid].distance = 0;
+							movementComponent->movementValues[eid].xAccel *= -1;
+							r1->x += movementComponent->movementValues[eid].xAccel*10;
+				      	}
 				    }
 				  }
 				  bulletComponent->bullet[otherEid].collided = true;
@@ -175,7 +174,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			}
 		}
 
-	world_physics:
+world_physics:
 		// Move player based on physics
 		if (!moveValues->grounded) {
 			if (moveValues->flying) {

@@ -384,8 +384,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 					clip = {gHatTexture->clipX, gHatTexture->clipY, gHatTexture->clipW, gHatTexture->clipH};
 				}
 				gHatTexture->flip = SDL_FLIP_NONE;
+				gHatTexture->rotation = 0;
 				RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 				gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
+				gHatTexture->rotation = textureComponent->textures[Constants::PlayerIndex_]->rotation;
 				RenderSystem_Render_xywh(renderer, rect.x + (rect.w - gHatTexture->w)/2, rect.y - gHatTexture->h / 2.5, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    
