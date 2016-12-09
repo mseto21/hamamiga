@@ -86,7 +86,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			if (!Component_HasIndex(rectangleComponent, otherEid)) {
 				continue;
 			}
-			if (Component_HasIndex(interactableComponent, otherEid)) {
+			if (Component_HasIndex(interactableComponent, otherEid) && !Component_HasIndex(damageComponent, otherEid)) {
 				continue;
 			}
 			if (Component_HasIndex(healthComponent, eid) && healthComponent->invincible[eid] > 0) {
@@ -124,7 +124,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						yVelocity = -10;
 					moveValues->yVelocity = yVelocity;
 					r1->y += moveValues->yVelocity;
-				} else if (teamComponent->team[eid] == teamComponent->team[otherEid]) {
+				} else if (teamComponent->team[eid] == teamComponent->team[otherEid] && Component_HasIndex(aiComponent, eid)) {
 					aiComponent->marchValues[eid].facing *= -1;
 					aiComponent->marchValues[eid].distance = 0;
 					movementComponent->movementValues[eid].xAccel *= -1;

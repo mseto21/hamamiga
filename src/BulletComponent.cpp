@@ -37,30 +37,35 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 	Texture* texture;
 	Animation animation;
 	int t;
-	int xVelocity = 7;
+	int xVelocity = 10;
 	int yVelocity = 0;
+	int damage;
 	switch (type) {
 		case HatTypes_Chef:
-			xVelocity = 9;
-			yVelocity = 5;
+			xVelocity = 14;
+			yVelocity = 9;
 			texture = TextureCache_GetTexture("knife");
 			Animation_Initialize(&animation, 1, 150.0, 34, 12);
 			cBag->movementComponent->movementValues[bulletEid].yVelocity = yVelocity * -1 + cBag->movementComponent->movementValues[eid].yVelocity;
 			t = InteractionTypes_Chef;
+			damage = 50;
 			break;
 		case HatTypes_Cowboy:
 			texture = TextureCache_GetTexture("bullet");
 			Animation_Initialize(&animation, 1, 150.0, 52, 12);
 			t = InteractionTypes_Cowboy;
+			damage = 100;
 			break;
 	}
 
 	if (!bulletComponent->bulletValues[eid].initialized[index]) {
 		MovementComponent_Add(cBag->movementComponent, bulletEid, xVelocity, yVelocity, 1.5, 1.0);
 		TeamComponent_Add(cBag->teamComponent, bulletEid, 0);
-		DamageComponent_Add(cBag->damageComponent, bulletEid, 100);
+		DamageComponent_Add(cBag->damageComponent, bulletEid, damage);
 		AIComponent_Add(cBag->aiComponent, bulletEid, 1);
-		PhysicsComponent_Add(cBag->physicsComponent, bulletEid, 1);
+		if (type == HatTypes_Chef) {
+			PhysicsComponent_Add(cBag->physicsComponent, bulletEid, 1);
+		}
 		InteractableComponent_Add(cBag->interactableComponent, bulletEid, TextureCache_GetTexture("bullet-pickup"), t, 0, 0);
 		AliveComponent_Add(cBag->aliveComponent, bulletEid);
 		AnimationComponent_Add(cBag->animationComponent, bulletEid, animation);
@@ -73,7 +78,7 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 
 	cBag->interactableComponent->interacted[bulletEid] = false;
 	cBag->aliveComponent->alive[bulletEid] = true;
-	cBag->movementComponent->movementValues[bulletEid].xVelocity = xVelocity + cBag->movementComponent->movementValues[eid].xVelocity;
+	cBag->movementComponent->movementValues[bulletEid].xVelocity = xVelocity;
 
 	if (!left) {
 		cBag->rectangleComponent->entityRectangles[bulletEid].x = rect.x + 50;
