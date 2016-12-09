@@ -49,8 +49,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 		int type = interactableComponent->types[eid];
 		if (type == InteractionTypes_Chef || type == InteractionTypes_Cowboy) {
 			if (physicsComponent->physicsValues[eid].collided) {
-				if (bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets < 3)
-					bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
+				bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
 				interactableComponent->interacted[eid] = true;
 				if (Component_HasIndex(aliveComponent, eid)) {
 			  		aliveComponent->alive[eid] = false;
@@ -101,14 +100,12 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				continue;
 			case InteractionTypes_Chef:
 			case InteractionTypes_Cowboy:
-				if (!interactableComponent->interacted[eid]) {
-					if (bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets < 3)
-						bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
+				if (physicsComponent->physicsValues[eid].collided) {
+					bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
 					interactableComponent->interacted[eid] = true;
 					if (Component_HasIndex(aliveComponent, eid)) {
 				  		aliveComponent->alive[eid] = false;
 			  		}
-			  		inputComponent->interact[Constants::PlayerIndex_] = false;
 				}
 				continue;
 			default:

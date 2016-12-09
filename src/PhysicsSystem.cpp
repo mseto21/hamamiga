@@ -91,17 +91,19 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 				continue;
 			}
 			if (Component_HasIndex(healthComponent, eid) && healthComponent->invincible[eid] > 0) {
-			        healthComponent->invincible[eid]--;
-			        continue;
+		        healthComponent->invincible[eid]--;
+		        continue;
 			}
 			if (Component_HasIndex(healthComponent, eid) && healthComponent->invincible[otherEid] > 0) {
-			        continue;
+			    continue;
 			}
 
 			// Enemy collisions
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			if (Collision(*r1, r2)) {
 				physicsComponent->physicsValues[eid].collided = true;
+				physicsComponent->physicsValues[otherEid].collided = true;
+				
 				if (teamComponent->team[eid] != teamComponent->team[otherEid]) {
 					int xVelocity = 0;
 					int yVelocity = 0;

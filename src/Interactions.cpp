@@ -177,10 +177,6 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 			cBag->movementComponent->movementValues[eid].accelX /= -1;
 			cBag->movementComponent->movementValues[eid].accelY /= -1;
 			break;
-		case HatTypes_Cowboy:
-        case HatTypes_Chef:
-			cBag->bulletComponent->bulletValues[eid].availableBullets = 0;
-            break;
 		default:
 			return;
 	}
@@ -218,19 +214,11 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 	Hat* hat = &cBag->hatComponent->hats[eid].hat;
 	switch (hat->hatType) {
 		case HatTypes_Cowboy: {
-			BulletValues* bulletValues = &cBag->bulletComponent->bulletValues[eid];
-	      	if (bulletValues->availableBullets > 0) {
-	      		bulletValues->availableBullets --;
-	      		BulletComponent_Create(cBag->bulletComponent, eid, cBag, HatTypes_Cowboy);
-			}
+	      	BulletComponent_Create(cBag->bulletComponent, eid, cBag, HatTypes_Cowboy);
 			break;
 		}
 		case HatTypes_Chef: {
-			BulletValues* bulletValues = &cBag->bulletComponent->bulletValues[eid];
-		    if (bulletValues->availableBullets > 0) {
-		    	bulletValues->availableBullets--;
-		        BulletComponent_Create(cBag->bulletComponent, eid, cBag, HatTypes_Chef);
-			}
+		    BulletComponent_Create(cBag->bulletComponent, eid, cBag, HatTypes_Chef);
 			break;
 		}
 		default:

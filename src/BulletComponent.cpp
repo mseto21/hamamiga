@@ -19,18 +19,26 @@
 
 void BulletComponent_Add(BulletComponent* bulletComponent, uint32 eid) {
 	Component_Add(bulletComponent, eid);
+
 	for (int i = 0; i < MaxBullets_; i++) {
 		bulletComponent->bulletValues[eid].bulletEids[i] = EntityCache_GetNewEntity()->eid;
 		bulletComponent->bulletValues[eid].initialized[i] = false;
 	}
 
-	bulletComponent->bulletValues[eid].availableBullets = 3;
+	bulletComponent->bulletValues[eid].availableBullets = MaxBullets_;
 }
 
 
 void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, ComponentBag* cBag, int type) {
-	int index = bulletComponent->bulletValues[eid].availableBullets;
-	uint32 bulletEid = bulletComponent->bulletValues[eid].bulletEids[bulletComponent->bulletValues[eid].availableBullets];
+	BulletValues* bulletValues = &bulletComponent->bulletValues[eid];
+	if (bulletValues->availableBullets > 0) {
+  		bulletValues->availableBullets--;
+  	} else {
+  		return;
+  	}
+
+	int index = bulletValues->availableBullets;
+	uint32 bulletEid = bulletValues->bulletEids[index];
 	Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
 	bool left = cBag->movementComponent->movementValues[eid].left;
 
@@ -39,7 +47,8 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 	int t;
 	int xVelocity = 7;
 	int yVelocity = 0;
-	int damage;
+	int damage = 10;
+
 	switch (type) {
 		case HatTypes_Chef:
 			xVelocity = 14;
@@ -58,7 +67,7 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 			break;
 	}
 
-	if (!bulletComponent->bulletValues[eid].initialized[index]) {
+	if (!bulletValues->initialized[index]) {
 		MovementComponent_Add(cBag->movementComponent, bulletEid, xVelocity, yVelocity, xVelocity, yVelocity);
 		TeamComponent_Add(cBag->teamComponent, bulletEid, 0);
 		DamageComponent_Add(cBag->damageComponent, bulletEid, damage);
@@ -69,11 +78,10 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 		AnimationComponent_Add(cBag->animationComponent, bulletEid, animation);
 		TextureComponent_Add(cBag->textureComponent, bulletEid, texture);
 		RectangleComponent_Add(cBag->rectangleComponent, bulletEid, 0, 0, texture->w, texture->h);
-		bulletComponent->bulletValues[eid].initialized[index] = true;
-	} else {
-		Component_EnableEntity(cBag, bulletEid);
+		bulletValues->initialized[index] = true;
 	}
-
+	
+	Component_EnableEntity(cBag, bulletEid);
 	cBag->interactableComponent->interacted[bulletEid] = false;
 	cBag->aliveComponent->alive[bulletEid] = true;
 	cBag->movementComponent->movementValues[bulletEid].xVelocity = xVelocity;
