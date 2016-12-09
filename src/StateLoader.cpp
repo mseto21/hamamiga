@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "StateLoader.h"
+#include "StatSystem.h"
 #include "FileLoader.h"
 #include "TextureCache.h"
 #include "SoundCache.h"
@@ -54,7 +55,7 @@ void LoadTitleStateAssets(Game* game) {
 	game->titleState.selectionStrings[0] = "New Game";
 	game->titleState.selectionStrings[1] = "Controls";
 	game->titleState.selectionStrings[2] = "Options";
-	game->titleState.selectionStrings[3] = "High Scores";
+	game->titleState.selectionStrings[3] = "Game Stats";
 	game->titleState.selectionStrings[4] = "Quit";
 	game->titleState.selectionStrings[5] = "Continue...";
 
@@ -191,7 +192,74 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 	TTF_CloseFont(font);
 }
 
-
+//Loading the stats for the end of the level
+void LoadLevelStatAssets(Game* game) {
+	// Load font
+	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 18);
+	if (!font) {
+		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+		return;
+	}
+	//
+	std::string scorePath = "";
+	switch (game->playState.levelSelection){
+				case 1:
+					scorePath = "assets/score/one.txt";
+					break;
+				case 2:
+					scorePath = "assets/score/two.txt";
+					break;
+				case 3:
+					scorePath = "assets/score/three.txt";
+					break;
+				case 4:
+					scorePath = "assets/score/four.txt";
+					break;
+				default:
+					break;
+	}
+	// Load file
+	if (!FileLoader_LoadLevelScores(scorePath.c_str(), numPossibleScores)) {
+		std::cerr << "Error: Unable to load scores from path " << std::endl;
+		return;
+	}
+	const char * headername = "levelheader";
+	const char * header = "--------Level Stats-------- ";
+ 	scoreType[Hats_]= "Hats Collected: ";
+ 	scoreType[Coins_]= "Coins Collected: ";
+ 	scoreType[Deaths_]= "Times Murdered: ";
+ 	scoreType[Fallen_]= "Fallen to Hell: ";
+ 	scoreType[Demons_]= "Demons Killed: ";
+ 	scoreType[DemonBats_]= "Demon Bats Killed: ";
+ 	scoreType[Muffins_]= "Demon Muffins Killed: ";
+ 	scoreType[Oranges_]= "Demon Oranges Killed: ";
+ 	scoreType[Apples_]= "Apples Killed: ";
+	
+	// Create textures for the current high scores
+	SDL_Color scoreColor;
+	if (game->gameState == GameState_Win){
+		scoreColor = {0, 0, 0, 0};
+	} else if (game->gameState == GameState_Lose){
+	  scoreColor = {255, 255, 255, 255};
+	}
+	TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, header, headername);
+	for (int highScoreIndex = 0; highScoreIndex < NumScoreTypes_; highScoreIndex++) {
+		std::string msg = scoreType[highScoreIndex];
+		msg.append(std::to_string(scores[highScoreIndex]));	
+		if (highScoreIndex != Deaths_ && highScoreIndex != Fallen_){
+			std::string totalNum = std::to_string(numPossibleScores[highScoreIndex]);
+			msg.append("/"+ totalNum);
+		}
+		if (numPossibleScores[highScoreIndex] != 0 || (highScoreIndex == Deaths_ 
+			|| highScoreIndex == Fallen_)){
+			numDisplay++;
+		}
+		std::string name = "level_score_";
+		name.append(std::to_string(highScoreIndex));
+		TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, msg.c_str(), name.c_str());
+	}
+	TTF_CloseFont(font);
+}
 
 bool LoadPlayStateAssets(Game* game, int chapter) {
 	// Initialize caches

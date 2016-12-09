@@ -14,6 +14,13 @@ const char* hatspath = "assets/score/hats.txt";
 const char* deathspath = "assets/score/deaths.txt";
 const char* killpath = "assets/score/kills.txt";
 
+
+const char* scoreType[NumScoreTypes_]; //Description displayed
+int numPossibleScores[NumScoreTypes_];
+int scores[NumScoreTypes_];
+int hatsCollected[MaxHats_];
+int numDisplay = 0;
+
 int pp = 0; //reset whenever reading from file
 
 int ReadTotal(FILE* scoreFile) {
@@ -214,3 +221,14 @@ void Scores_Update(const char* path, const char* type, const char* value) {
 	return;
 }
 
+void LevelScore_Reset(){
+		//Reset any previous scores from other level
+	for (int i = 0; i < NumScoreTypes_; i++){
+		numDisplay = 0;
+		scores[i] = 0;
+		numPossibleScores[i] = 0;
+	}
+	for (int i = 0; i < MaxHats_; i++){
+		hatsCollected[i] = 0;
+	}
+}

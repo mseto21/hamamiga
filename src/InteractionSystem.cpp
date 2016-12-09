@@ -7,6 +7,7 @@
 #include "GoalComponent.h"
 #include "ComponentBag.h"
 #include "SoundCache.h"
+#include "StatSystem.h"
 
 void InteractionSystem_Initialize(InteractionSystem* interactionSystem, ComponentBag* cBag, Game* game) {
 	interactionSystem->interactableComponent 	= cBag->interactableComponent;
@@ -65,6 +66,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				goalComponent->points[Constants::PlayerIndex_] += Constants::CoinValue_;
 				if (Component_HasIndex(aliveComponent, eid)) {
 					Sound_Play(SoundCache_GetSound("coin"), 0);
+					scores[Coins_] += 1;
 					aliveComponent->alive[eid] = false;
 				}
 				break;

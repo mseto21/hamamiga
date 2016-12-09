@@ -5,3 +5,4 @@ struct ZoneIntroState;
 
 bool FileLoader_Load(Zone* zone, const char* path, ComponentBag* cBag, SDL_Renderer* renderer, ZoneIntroState* zoneIntroState);
 bool FileLoader_LoadScores(const char* path, int stats[]);
+bool FileLoader_LoadLevelScores(const char* path, int stats[]); 

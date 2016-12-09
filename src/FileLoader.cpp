@@ -7,6 +7,7 @@
 #include "Game.h"
 
 #include "ComponentBag.h"
+#include "StatSystem.h"
 #include "RectangleComponent.h"
 #include "MovementComponent.h"
 #include "TextureComponent.h"
@@ -707,11 +708,6 @@ int ReadScore(FILE* scoreFile, int stat[], int index) {
 		}
 	}
 	stat[index] = atoi(str);
-	if (stat[index] == 0) {
-		cout << "No scores yet." << endl;
-	} else {
-		cout << "SUCCESS: Highscore file " << str << " successfully loaded!" << endl;
-	}
 	return lineNumber;
 }
 
@@ -777,3 +773,67 @@ FILE* scoreFile = fopen(path, "r");
 	return true;
 }
 
+
+/* Read in a level file */
+bool FileLoader_LoadLevelScores(const char* path, int stats[]) {
+FILE* scoreFile = fopen(path, "r");
+	if (scoreFile == NULL) {
+		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
+		return false;
+	}
+
+	int c;
+	char str[MaxBuffSize_];
+	memset(&str, 0, MaxBuffSize_);
+	int pos = 0;
+	int lineNumber = 0; // For debugging purposes.
+
+	while ((c=fgetc(scoreFile)) != EOF) {
+		if (c =='=') {
+			if (strcmp(str, "hats") == 0) {
+				lineNumber += ReadScore(scoreFile, stats, Hats_);
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
+			} else if (strcmp(str, "demons") == 0) {
+				lineNumber += ReadScore(scoreFile, stats, Demons_);
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
+			} else if (strcmp(str, "coins") == 0) {
+				lineNumber += ReadScore(scoreFile, stats, Coins_);
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
+			} else if (strcmp(str, "muffins") == 0) {
+				lineNumber += ReadScore(scoreFile, stats, Muffins_);
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
+			} else if (strcmp(str, "oranges") == 0) {
+				lineNumber += ReadScore(scoreFile, stats, Oranges_);
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
+			} else if (strcmp(str, "demonbats") == 0) {
+				lineNumber += ReadScore(scoreFile, stats, DemonBats_);
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
+			} else if (strcmp(str, "apples") == 0) {
+				lineNumber += ReadScore(scoreFile, stats, Apples_);
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
+			} else if (strcmp(str, "END") == 0) {
+				break;
+			} else {
+				std::cerr << "Error: Invalid token. Read " << str << " at line " << lineNumber << std::endl;
+			}
+
+		} else {
+			if (c == '\n') {
+				lineNumber++;
+			} else {
+				str[pos] = c;
+				pos++;
+			}
+		}
+	}
+	cout << "SUCCESS: Scorefile successfully loaded!" << endl;
+	fclose (scoreFile);
+	return true;
+}

@@ -3,6 +3,7 @@
 #include "TextureCache.h"
 #include "RenderSystem.h"
 #include "StateLoader.h"
+#include "StatSystem.h"
 
 #include <SDL.h>
 #include <string>
@@ -146,25 +147,6 @@ void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 	}
 }
 
-
-/* Render lose screen. */
-void RenderLose(Game* game) {
-	Texture* background = TextureCache_GetTexture(Constants::LoseBackground_);
-	SDL_RenderClear(game->renderer);
-	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
-	SDL_RenderPresent(game->renderer);
-}
-
-
-/* Render win screen. */
-void RenderWin(Game* game) {
-	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
-	SDL_RenderClear(game->renderer);
-	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
-	SDL_RenderPresent(game->renderer);
-}
-
-
 /* Render options based on current selection. */
 void RenderOptions(Game* game, uint32 elapsed) {
 	//std::cout<< "in redner options" << std::endl;
@@ -203,6 +185,39 @@ void RenderHighScore(Game* game, uint32 elapsed) {
 		int renderX = Constants::ScreenWidth_ / 2 - score->w / 2;
 		int renderY = (3 + highScoreIndex) * (score->h + 35);
 		RenderSystem_Render_xywh(game->renderer, renderX, renderY, score->w, score->h, NULL, score);
+	}
+	SDL_RenderPresent(game->renderer);
+}
+
+/* Render level scores. */
+void RenderLevelStats(Game* game, uint32 elapsed) {
+	(void) elapsed;
+	Texture* background;
+	if (game->gameState == GameState_Win){
+		background = TextureCache_GetTexture(Constants::WinBackground_);
+	} else if (game->gameState == GameState_Lose){
+		background = TextureCache_GetTexture(Constants::LoseBackground_);
+	}
+	SDL_RenderClear(game->renderer);
+	if (background) RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
+	//Header
+	Texture* score = TextureCache_GetTexture("levelheader");
+	int renderX = (Constants::ScreenWidth_ / 8 )- score->w / 2;
+	int renderY = (0 * (Constants::ScreenHeight_ / 20)) + 300;;
+	RenderSystem_Render_xywh(game->renderer, renderX, renderY, score->w, score->h, NULL, score);
+
+	int displayed = 1;
+	for (int highScoreIndex = 0; highScoreIndex < NumScoreTypes_; highScoreIndex++) {
+		if (numPossibleScores[highScoreIndex] != 0 || (highScoreIndex == Deaths_ 
+			|| highScoreIndex == Fallen_)){
+		std::string name = "level_score_";
+		name.append(std::to_string(highScoreIndex));
+		Texture* score = TextureCache_GetTexture(name.c_str());
+		int renderX = (Constants::ScreenWidth_ / 8 )- score->w / 2;
+		int renderY = (displayed * (Constants::ScreenHeight_ / 20)) + 300;
+		RenderSystem_Render_xywh(game->renderer, renderX, renderY, score->w, score->h, NULL, score);
+		displayed++;
+		}
 	}
 	SDL_RenderPresent(game->renderer);
 }
@@ -273,10 +288,10 @@ void UIRenderSystem_Render(int gameState, Game* game, uint32 elapsed, bool* keys
 			RenderOptions(game, elapsed);
 			break;
 		case GameState_Win:
-			RenderWin(game);
+			RenderLevelStats(game,elapsed);
 			break;
   		case GameState_Lose:
-  			RenderLose(game);
+  			RenderLevelStats(game,elapsed);
   			break;
   		case GameState_Pause:
   			RenderPauseState(game, elapsed);
