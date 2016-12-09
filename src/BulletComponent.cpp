@@ -15,6 +15,7 @@
 #include "TextureCache.h"
 
 #include <iostream>
+#include <SDL.h>
 
 void BulletComponent_Add(BulletComponent* bulletComponent, uint32 eid) {
 	Component_Add(bulletComponent, eid);
@@ -36,24 +37,26 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 	Texture* texture;
 	Animation animation;
 	int t;
+	int xVelocity = 7;
+	int yVelocity = 0;
 	switch (type) {
 		case HatTypes_Chef:
+			xVelocity = 9;
+			yVelocity = 5;
 			texture = TextureCache_GetTexture("knife");
 			Animation_Initialize(&animation, 1, 150.0, 34, 12);
-			cBag->movementComponent->movementValues[bulletEid].yVelocity = -7 + cBag->movementComponent->movementValues[eid].yVelocity;
-			cBag->movementComponent->movementValues[bulletEid].xVelocity += cBag->movementComponent->movementValues[eid].xVelocity;
+			cBag->movementComponent->movementValues[bulletEid].yVelocity = yVelocity * -1 + cBag->movementComponent->movementValues[eid].yVelocity;
 			t = InteractionTypes_Chef;
 			break;
 		case HatTypes_Cowboy:
 			texture = TextureCache_GetTexture("bullet");
 			Animation_Initialize(&animation, 1, 150.0, 52, 12);
-			cBag->movementComponent->movementValues[bulletEid].xVelocity = 7;
 			t = InteractionTypes_Cowboy;
 			break;
 	}
 
 	if (!bulletComponent->bulletValues[eid].initialized[index]) {
-		MovementComponent_Add(cBag->movementComponent, bulletEid, 7, 0, 1.5, 1.0);
+		MovementComponent_Add(cBag->movementComponent, bulletEid, xVelocity, yVelocity, 1.5, 1.0);
 		TeamComponent_Add(cBag->teamComponent, bulletEid, 0);
 		DamageComponent_Add(cBag->damageComponent, bulletEid, 100);
 		AIComponent_Add(cBag->aiComponent, bulletEid, 1);
@@ -64,18 +67,22 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 		TextureComponent_Add(cBag->textureComponent, bulletEid, texture);
 		RectangleComponent_Add(cBag->rectangleComponent, bulletEid, 0, 0, texture->w, texture->h);
 		bulletComponent->bulletValues[eid].initialized[index] = true;
+	} else {
+		Component_EnableEntity(cBag, bulletEid);
 	}
 
-	Component_EnableEntity(cBag, bulletEid);
 	cBag->interactableComponent->interacted[bulletEid] = false;
 	cBag->aliveComponent->alive[bulletEid] = true;
+	cBag->movementComponent->movementValues[bulletEid].xVelocity = xVelocity + cBag->movementComponent->movementValues[eid].xVelocity;
 
 	if (!left) {
 		cBag->rectangleComponent->entityRectangles[bulletEid].x = rect.x + 50;
 		cBag->rectangleComponent->entityRectangles[bulletEid].y = rect.y + 40;
 	} else {
+		texture->flip = SDL_FLIP_HORIZONTAL;
 		cBag->rectangleComponent->entityRectangles[bulletEid].x = rect.x - texture->w;
 		cBag->rectangleComponent->entityRectangles[bulletEid].y = rect.y + 40;
+		cBag->movementComponent->movementValues[bulletEid].xVelocity *= -1;
 	}
 }
 

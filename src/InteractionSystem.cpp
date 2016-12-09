@@ -85,7 +85,9 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 						if (bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets < 3)
 							bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
 						interactableComponent->interacted[eid] = true;
-						aliveComponent->alive[eid] = false;
+						if (Component_HasIndex(aliveComponent, eid)) {
+					  		aliveComponent->alive[eid] = false;
+				  		}
 					}
 				}
 				continue;
