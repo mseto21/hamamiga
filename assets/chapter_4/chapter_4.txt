@@ -15,6 +15,7 @@ zone=
 		texture(assets/kevin/tinykev.png,player,)
 		hat()
 		camera()
+		team(0,)
 		goal();
 	entity=
 		animation(5,150.0,48,60,)
@@ -69,6 +70,7 @@ zone=
 		texture(assets/enemies/jumping-demon.png,jdemon,)
 		ai(4,120,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Samantha from Shipping,)
@@ -81,6 +83,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,30000,2,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Monsieur Muffin,)
@@ -93,6 +96,7 @@ zone=
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,200,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Blaze Johnson Jr.,)
@@ -105,6 +109,7 @@ zone=
 		texture(assets/enemies/jumping-demon.png,jdemon,)
 		ai(4,120,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Aaron From Accounting,)
@@ -117,6 +122,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,30000,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(VP Paul,)
@@ -129,6 +135,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,30000,2,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Senor Muffin,)
@@ -141,6 +148,7 @@ zone=
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,30,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Leo the Loner,)
@@ -153,6 +161,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,30000,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Mr. Muffin,)
@@ -164,6 +173,7 @@ zone=
 		rectangle(730,320,71,72,)
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,30000,1,)
+		team(1,)
 		alive();
 	entity=
 		name(Graphics Gavi,)
@@ -176,6 +186,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,30000,2,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Herr Muffin,)
@@ -188,6 +199,7 @@ zone=
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,150,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Mindy from Marketing,)
@@ -200,6 +212,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,30000,2,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Frau Muffin II,)
@@ -212,6 +225,7 @@ zone=
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,150,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Frau Muffin,)
@@ -224,6 +238,7 @@ zone=
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,100,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Senora Muffin,)
@@ -236,6 +251,7 @@ zone=
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,150,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Mrs. Muffin,)
@@ -248,6 +264,7 @@ zone=
 		texture(assets/enemies/muffin.png,muffin,)
 		ai(0,150,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Gluttonous Gale,)
@@ -260,6 +277,7 @@ zone=
 		texture(assets/enemies/jumping-demon.png,jdemon,)
 		ai(4,120,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
@@ -296,6 +314,7 @@ zone=
 		physics(0,)
 		rectangle(4850,1396,48,48,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
@@ -304,6 +323,7 @@ zone=
 		physics(0,)
 		rectangle(4850,1347,48,48,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
@@ -312,6 +332,7 @@ zone=
 		physics(0,)
 		rectangle(4850,1298,48,48,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
@@ -320,6 +341,7 @@ zone=
 		physics(0,)
 		rectangle(4850,1249,48,48,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
@@ -328,6 +350,7 @@ zone=
 		physics(0,)
 		rectangle(4850,1200,48,48,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
@@ -336,6 +359,7 @@ zone=
 		physics(0,)
 		rectangle(4850,1151,48,48,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
@@ -344,6 +368,7 @@ zone=
 		physics(0,)
 		rectangle(4850,1102,48,48,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
@@ -352,6 +377,7 @@ zone=
 		physics(0,)
 		rectangle(4850,1053,48,48,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		movement(3.0,0.0,1.0,5.0,)
@@ -360,5 +386,6 @@ zone=
 		physics(0,)
 		rectangle(4850,1004,48,48,)
 		alive()
+		team(1,)
 		goal();
 END=

@@ -17,6 +17,7 @@ struct GoalComponent;
 struct InteractableComponent;
 struct NameComponent;
 struct DamageComponent;
+struct TeamComponent;
 
 struct ComponentBag {
 	RectangleComponent* rectangleComponent;
@@ -24,7 +25,7 @@ struct ComponentBag {
 	TextureComponent*   textureComponent;
 	InputComponent* 	inputComponent;
 	AnimationComponent* animationComponent;
-	BulletComponent* bulletComponent;
+	BulletComponent* 	bulletComponent;
 	PhysicsComponent* 	physicsComponent;
 	HealthComponent* 	healthComponent;
 	CameraComponent*	cameraComponent;
@@ -33,8 +34,9 @@ struct ComponentBag {
 	AliveComponent* 	aliveComponent;
 	GoalComponent* 		goalComponent;
 	InteractableComponent * interactableComponent;
-	NameComponent* nameComponent;
-	DamageComponent* damageComponent;
+	NameComponent* 		nameComponent;
+	DamageComponent* 	damageComponent;
+	TeamComponent* 		teamComponent;
 };
 
 void ComponentBag_Malloc(ComponentBag* bag);

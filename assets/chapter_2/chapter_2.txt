@@ -15,6 +15,7 @@ zone=
 		texture(assets/kevin/tinykev.png,player,)
 		hat()
 		camera()
+		team(0,)
 		goal();
 	entity=
 		animation(5,150.0,48,60,)
@@ -83,6 +84,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,120,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Air Vent Andy,)
@@ -95,6 +97,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,100,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Lost for Years Louie,)
@@ -107,6 +110,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,250,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Ceiling Resident Rebecca,)
@@ -119,6 +123,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,210,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Dirty Dan,)
@@ -131,6 +136,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,420,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(In the Way Ivan,)
@@ -143,6 +149,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,70,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Jonathon the Janitor,)
@@ -155,6 +162,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,230,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		texture(assets/chapter_2/hats-chap2.png,miner,85,0,85,60,)

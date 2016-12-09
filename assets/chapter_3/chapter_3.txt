@@ -15,6 +15,7 @@ zone=
 		texture(assets/kevin/tinykev.png,player,)
 		hat()
 		camera()
+		team(0,)
 		goal();
 	entity=
 		animation(5,150.0,48,60,)
@@ -76,6 +77,7 @@ zone=
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Glenn,)
@@ -88,6 +90,7 @@ zone=
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Hidetoshi Hasagawa,)
@@ -100,6 +103,7 @@ zone=
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Madge Madsen,)
@@ -112,6 +116,7 @@ zone=
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Roy Anderson,)
@@ -124,6 +129,7 @@ zone=
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Val,)
@@ -136,6 +142,7 @@ zone=
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)

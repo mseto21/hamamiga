@@ -15,6 +15,7 @@ zone=
 		texture(assets/kevin/tinykev.png,player,)
 		hat()
 		camera()
+		team(0,)
 		goal();
 	entity=
 		animation(5,150.0,48,60,)
@@ -48,6 +49,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,200,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Harry from HR,)
@@ -60,6 +62,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,500,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Gavi,)
@@ -72,6 +75,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,500,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Mindy from Manufacturing,)
@@ -84,6 +88,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,30,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		name(Caroline,)
@@ -96,6 +101,7 @@ zone=
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,120,1,)
 		alive()
+		team(1,)
 		goal();
 	entity=
 		texture(assets/chapter_1/hats-chap1.png,crown,170,0,85,60,)

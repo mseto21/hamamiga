@@ -22,6 +22,7 @@
 #include "GoalComponent.h"
 #include "InteractableComponent.h"
 #include "NameComponent.h"
+#include "TeamComponent.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -131,8 +132,7 @@ int ReadTileMap(FILE* chapterFile, Zone* zone) {
 	bool getParams = false;
 
 	// LMAO THIS WHOLE THING IS A HACK AND A HALF IM SO SORRY,
-	// BUT GIRLS JUST WANNA HAVE FUN. IF ANYONE EVER SEES THIS
-	// COMMENT, THEY'LL KNOW IM LIT AF.
+	// BUT GIRLS JUST WANNA HAVE FUN.
 	while ((t=fgetc(tilemapFile)) != EOF) {
 		switch (t) {
 			case '\n': // New line
@@ -421,7 +421,6 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 								AIComponent_Add(cBag->aiComponent, eid, type, range, facing);
 						}
 					}
-
 				} else if (strcmp(cmd, "alive") == 0) {
 					cout << "Adding AliveComponent to entity " << eid << std::endl;
 					AliveComponent_Add(cBag->aliveComponent, eid);
@@ -454,6 +453,10 @@ int ReadEntity(FILE* chapterFile, ComponentBag* cBag, SDL_Renderer* renderer) {
 					cout << "Adding Name to entity " << eid << ":(" << message << ")" << endl;
 					Texture* nameTexture = TextureCache_CreateTextureFromFont(renderer, cBag->nameComponent->font, {cBag->nameComponent->r, cBag->nameComponent->g, cBag->nameComponent->b, 1}, message.c_str(), message.c_str());
 					NameComponent_Add(cBag->nameComponent, eid, nameTexture);
+				} else if (strcmp(cmd, "team") == 0) {
+					int team = int_parameters.front();
+					int_parameters.pop();
+					TeamComponent_Add(cBag->teamComponent, eid, team);
 				} else {
 					cerr << "Error: The given command is invalid: " << cmd << "." << endl;
 				}

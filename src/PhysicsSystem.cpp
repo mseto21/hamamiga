@@ -10,6 +10,7 @@
 #include "AIComponent.h"
 #include "DamageComponent.h"
 #include "GoalComponent.h"
+#include "TeamComponent.h"
 #include "InteractableComponent.h"
 #include "TileMap.h"
 #include "ComponentBag.h"
@@ -33,6 +34,7 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->interactableComponent = cBag->interactableComponent;
 	physicsSystem->aiComponent          = cBag->aiComponent;
 	physicsSystem->damageComponent      = cBag->damageComponent;
+	physicsSystem->teamComponent      	= cBag->teamComponent;
 	physicsSystem->map 					= tileMap;
 	physicsSystem->componentBag 		= cBag;
 	physicsSystem->zone 				= zone;
@@ -56,6 +58,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
 	AIComponent * aiComponent = physicsSystem->aiComponent;
 	DamageComponent * damageComponent = physicsSystem->damageComponent;
+	TeamComponent* teamComponent = physicsSystem->teamComponent;
 	TileMap* map = physicsSystem->map;
 
 	for (uint32 entityIndex = 0; entityIndex < physicsComponent->count; entityIndex++) {
@@ -125,7 +128,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			// Enemy collisions
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			if (Collision(*r1, r2)) {
-				if (!Component_HasIndex(aiComponent, eid)) {
+				if (teamComponent->team[eid] != teamComponent->team[otherEid]) {
 					int xVelocity = 0;
 					int yVelocity = 0;
 
@@ -147,27 +150,26 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						yVelocity = -10;
 					moveValues->yVelocity = yVelocity;
 					r1->y += moveValues->yVelocity;
-				}				
+				}	
+
 				if (Component_HasIndex(healthComponent, eid)) {
-				  if (healthComponent->invincible[eid] <= 0) {
-				    healthComponent->startHealth[eid] = healthComponent->health[eid];
-				    if (Component_HasIndex(damageComponent, otherEid)) {
-				    	if (!(Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, otherEid))) {
-							if (!((Component_HasIndex(aiComponent, eid) || Component_HasIndex(interactableComponent, eid))
-					      		&& (Component_HasIndex(aiComponent, otherEid) || Component_HasIndex(interactableComponent, otherEid)))) {
+					if (healthComponent->invincible[eid] <= 0) {
+					    healthComponent->startHealth[eid] = healthComponent->health[eid];
+					    if (Component_HasIndex(damageComponent, otherEid)) {
+					    	if (teamComponent->team[eid] != teamComponent->team[otherEid]) {
 					  			healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage / healthComponent->damageReduction[eid];
-					  			if (eid == Constants::PlayerIndex_) {
+					  			
+					  			if (eid == Constants::PlayerIndex_)
 					    			healthComponent->invincible[eid] = 640;
-					  			}
-							}
-				      	} else {
+					    	}
+					    } else if (teamComponent->team[eid] == teamComponent->team[otherEid]) {
 							aiComponent->marchValues[eid].facing *= -1;
 							aiComponent->marchValues[eid].distance = 0;
 							movementComponent->movementValues[eid].xAccel *= -1;
 							r1->x += movementComponent->movementValues[eid].xAccel*10;
-				      	}
-				    }
-				  bulletComponent->bullet[otherEid].collided = true;
+					    }
+					}
+					bulletComponent->bullet[otherEid].collided = true;
 				}
 			}
 		}

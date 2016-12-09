@@ -13,6 +13,7 @@ struct InteractableComponent;
 struct AIComponent;
 struct DamageComponent;
 struct BulletComponent;
+struct TeamComponent;
 struct Zone;
 
 struct PhysicsSystem {
@@ -27,6 +28,7 @@ struct PhysicsSystem {
 	DamageComponent* damageComponent;
 	TileMap* map;
 	ComponentBag* componentBag;
+	TeamComponent* teamComponent;
 	Zone* zone;
 };
 
