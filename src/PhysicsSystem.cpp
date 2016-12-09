@@ -147,8 +147,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						yVelocity = -10;
 					moveValues->yVelocity = yVelocity;
 					r1->y += moveValues->yVelocity;
-				}
-				
+				}				
 				if (Component_HasIndex(healthComponent, eid)) {
 				  if (healthComponent->invincible[eid] <= 0) {
 				    healthComponent->startHealth[eid] = healthComponent->health[eid];
@@ -168,7 +167,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 							r1->x += movementComponent->movementValues[eid].xAccel*10;
 				      	}
 				    }
-				  }
 				  bulletComponent->bullet[otherEid].collided = true;
 				}
 			}

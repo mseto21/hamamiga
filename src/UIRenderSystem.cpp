@@ -33,7 +33,7 @@ void RenderTitle(Game* game) {
 			selection = TextureCache_GetTexture(select.c_str());
 		}
 		int renderX = Constants::ScreenWidth_ / 2 - selection->w / 2;
-		int renderY = selectionIndex * (Constants::ScreenHeight_ / Constants::TitleScreenSelections_);
+		int renderY = 45 + selectionIndex * (Constants::ScreenHeight_ / Constants::TitleScreenSelections_);
 		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, NULL, selection);
 	}
 	SDL_RenderPresent(game->renderer);
@@ -182,7 +182,7 @@ void RenderOptions(Game* game, uint32 elapsed) {
 			selection = TextureCache_GetTexture(select.c_str());
 		}
 		int renderX = Constants::ScreenWidth_ / 2 - selection->w / 2;
-		int renderY = selectionIndex * (Constants::ScreenHeight_ / Constants::OptionScreenSelections_);
+		int renderY = (selectionIndex+3) * (selection->h + 35);
 		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, NULL, selection);
 	}
 	SDL_RenderPresent(game->renderer);
@@ -199,7 +199,7 @@ void RenderHighScore(Game* game, uint32 elapsed) {
 		name.append(std::to_string(highScoreIndex));
 		Texture* score = TextureCache_GetTexture(name.c_str());
 		int renderX = Constants::ScreenWidth_ / 2 - score->w / 2;
-		int renderY = highScoreIndex * (Constants::ScreenHeight_ / Constants::MaxHighScores_);
+		int renderY = (3 + highScoreIndex) * (score->h + 35);
 		RenderSystem_Render_xywh(game->renderer, renderX, renderY, score->w, score->h, NULL, score);
 	}
 	SDL_RenderPresent(game->renderer);
@@ -245,7 +245,7 @@ void RenderLevelSelect(Game* game, uint32 elapsed) {
 			texture = TextureCache_GetTexture(lvl.c_str());
 		}
 		int renderX = (Constants::ScreenWidth_ - texture->w) / 2;
-		int renderY = i * texture->h;
+		int renderY = (i+3) * (texture->h + 25);
 		RenderSystem_Render_xywh(game->renderer, renderX, renderY, texture->w, texture->h, NULL, texture);
 	}
 	SDL_RenderPresent(game->renderer);

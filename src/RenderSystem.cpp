@@ -329,19 +329,23 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			if (eid != Constants::PlayerIndex_) {
 				int max = healthComponent->maxHealth[eid];
 				int current = healthComponent->health[eid];
+				if (current < 0) {
+				  current = 0;
+				  healthComponent->health[eid] = 0;
+				}
 				//const SDL_Rect maxRect = {XRightRender_, YTopRender_, static_cast<int>(rect.w), HealthBarHeight_};
 				const SDL_Rect currentRect = {static_cast<int>(rect.x), static_cast<int>(rect.y) - HealthBarHeight_, static_cast<int>(rect.w * ((float) current / max)), HealthBarHeight_};
-				float ratio = (float) current / max;
-				int r;
-				int g;
-				if (ratio > 0.5f) {
-					r = 255 * (1 - ((float)current / max));
-					g = 255;
-				} else {
-					r = 255;
-					g = 255 * (1 - (float)current / max);
-				}
-				SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
+			        float ratio = (float) current / max;
+				int r = 167;
+				int g = 255;
+				int b = 131;
+				int r2 = 255;
+				int g2 = 92;
+				int b2 = 78;
+				r = r2 + (r - r2)*ratio;
+				g = g2 + (g - g2)*ratio;
+				b = b2 + (b - b2)*ratio;
+				SDL_SetRenderDrawColor(renderer, r, g, b, 1);
 				SDL_RenderFillRect(renderer, &currentRect);
 				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 			}
@@ -411,18 +415,18 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		//const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
 		const SDL_Rect currentRect = {XRightRender_, YTopRender_, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
 		float ratio = (float) current / max;
-		int r;
-		int g;
-		if (ratio > 0.5f) {
-			r = 2 * 255 * (1 - ((float)current / max));
-			g = 255;
-		} else {
-			r = 255;
-			g = 2 * 255 * ((float)current / max);
-		}
+		int r = 167;
+		int g = 255;
+		int b = 131;
+		int r2 = 255;
+		int g2 = 92;
+		int b2 = 78;
+		r = r2 + (r - r2)*ratio;
+		g = g2 + (g - g2)*ratio;
+		b = b2 + (b - b2)*ratio;
 		Texture* hBar = TextureCache_GetTexture(Constants::HealthBar_);
 		RenderSystem_Render_xywh(renderer, XRightRender_ - 8, YTopRender_ - 44, hBar->w, hBar->h, NULL, hBar);
-		SDL_SetRenderDrawColor(renderer, r, g, 0, 1);
+		SDL_SetRenderDrawColor(renderer, r, g, b, 1);
 		SDL_RenderFillRect(renderer, &currentRect);
 	}
 
