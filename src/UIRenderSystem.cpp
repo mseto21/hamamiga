@@ -12,9 +12,9 @@
 /* Render main menu. */
 void RenderTitle(Game* game) {
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
-	Texture* overlay = TextureCache_GetTexture(Constants::MainMenuO_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
+	Texture* overlay = TextureCache_GetTexture(Constants::MainMenuO_);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, overlay->w, overlay->h, NULL, overlay);
 	for (int selectionIndex = 0; selectionIndex < Constants::TitleScreenSelections_; selectionIndex++) {
 		Texture* selection;
@@ -154,6 +154,8 @@ void RenderOptions(Game* game, uint32 elapsed) {
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
+	Texture* overlay = TextureCache_GetTexture(Constants::OptionsO_);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, overlay->w, overlay->h, NULL, overlay);
 	for (int selectionIndex = 0; selectionIndex < Constants::OptionScreenSelections_; selectionIndex++) {
 		Texture* selection;
 		if (selectionIndex == game->optionState.selection) {
@@ -178,6 +180,8 @@ void RenderHighScore(Game* game, uint32 elapsed) {
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
 	if (background) RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
+	Texture* overlay = TextureCache_GetTexture(Constants::StatsO_);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, overlay->w, overlay->h, NULL, overlay);
 	for (int highScoreIndex = 0; highScoreIndex < Constants::MaxHighScores_; highScoreIndex++) {
 		std::string name = "high_score_";
 		name.append(std::to_string(highScoreIndex));
@@ -252,6 +256,8 @@ void RenderLevelSelect(Game* game, uint32 elapsed) {
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
+	Texture* overlay = TextureCache_GetTexture(Constants::LevelsO_);
+	RenderSystem_Render_xywh(game->renderer, 0, 0, overlay->w, overlay->h, NULL, overlay);
 	for (int i = 0; i <= game->playState.unlockedLevels; i++) {
 		std::string lvl = "";
 		lvl.append(std::to_string(i));
