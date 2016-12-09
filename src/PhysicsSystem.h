@@ -12,7 +12,6 @@ struct ComponentBag;
 struct InteractableComponent;
 struct AIComponent;
 struct DamageComponent;
-struct BulletComponent;
 struct TeamComponent;
 struct Zone;
 
@@ -21,7 +20,6 @@ struct PhysicsSystem {
 	MovementComponent* movementComponent; 
 	RectangleComponent* rectangleComponent; 
 	HealthComponent* healthComponent; 
-	BulletComponent* bulletComponent;
 	InputComponent* inputComponent;
 	InteractableComponent* interactableComponent;
 	AIComponent* aiComponent;

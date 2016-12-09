@@ -4,7 +4,6 @@
 #include "TextureComponent.h"
 #include "InputComponent.h"
 #include "AnimationComponent.h"
-#include "BulletComponent.h"
 #include "PhysicsComponent.h"
 #include "HealthComponent.h"
 #include "CameraComponent.h"
@@ -16,6 +15,7 @@
 #include "InteractableComponent.h"
 #include "NameComponent.h"
 #include "TeamComponent.h"
+#include "BulletComponent.h"
 #include <iostream>
 
 
@@ -25,18 +25,18 @@ void ComponentBag_Malloc(ComponentBag* bag) {
 	bag->textureComponent 		= (TextureComponent*)malloc(sizeof(*bag->textureComponent));
 	bag->inputComponent 		= (InputComponent*)malloc(sizeof(*bag->inputComponent));
 	bag->animationComponent 	= (AnimationComponent*)malloc(sizeof(*bag->animationComponent));
-	bag->bulletComponent 	= (BulletComponent*)malloc(sizeof(*bag->bulletComponent));
 	bag->physicsComponent 		= (PhysicsComponent*)malloc(sizeof(*bag->physicsComponent));
 	bag->healthComponent 		= (HealthComponent*)malloc(sizeof(*bag->healthComponent));
 	bag->cameraComponent 		= (CameraComponent*)malloc(sizeof(*bag->cameraComponent));
 	bag->hatComponent 			= (HatComponent*)malloc(sizeof(*bag->hatComponent));
 	bag->aiComponent 			= (AIComponent*)malloc(sizeof(*bag->aiComponent));
 	bag->aliveComponent 		= (AliveComponent*)malloc(sizeof(*bag->aliveComponent));
-	bag->damageComponent            = (DamageComponent*)malloc(sizeof(*bag->damageComponent));
+	bag->damageComponent        = (DamageComponent*)malloc(sizeof(*bag->damageComponent));
 	bag->goalComponent 			= (GoalComponent*)malloc(sizeof(*bag->goalComponent));
 	bag->interactableComponent 	= (InteractableComponent*)malloc(sizeof(*bag->interactableComponent));
 	bag->nameComponent 			= (NameComponent*)malloc(sizeof(*bag->nameComponent));
 	bag->teamComponent 			= (TeamComponent*)malloc(sizeof(*bag->teamComponent));
+	bag->bulletComponent 		= (BulletComponent*)malloc(sizeof(*bag->bulletComponent));
 	ComponentBag_Reset(bag);
 }
 
@@ -47,7 +47,6 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	Component_Initialize(bag->textureComponent);
 	Component_Initialize(bag->inputComponent);
 	Component_Initialize(bag->animationComponent);
-	Component_Initialize(bag->bulletComponent);
 	Component_Initialize(bag->healthComponent);
 	Component_Initialize(bag->cameraComponent);
 	Component_Initialize(bag->hatComponent);
@@ -58,6 +57,7 @@ void ComponentBag_Reset(ComponentBag* bag) {
 	InteractableComponent_Initialize(bag->interactableComponent);
 	NameComponent_Initialize(bag->nameComponent);
 	TeamComponent_Initialize(bag->teamComponent);
+	Component_Initialize(bag->bulletComponent);
 }
 
 void ComponentBag_Check(ComponentBag* bag) {
@@ -75,9 +75,6 @@ void ComponentBag_Check(ComponentBag* bag) {
 	}
 	if (!bag->animationComponent) {
 		std::cout << "Error: Uninitialized animationComponent" << std::endl;
-	}
-	if (!bag->bulletComponent) {
-		std::cout << "Error: Uninitialized bulletComponent" << std::endl;
 	}
 	if (!bag->physicsComponent) {
 		std::cout << "Error: Uninitialized physicsComponent" << std::endl;
@@ -112,6 +109,9 @@ void ComponentBag_Check(ComponentBag* bag) {
 	if (!bag->teamComponent) {
 	  std::cout << "Error: Uninitialized teamComponent" << std::endl;
 	}
+	if (!bag->bulletComponent) {
+	  std::cout << "Error: Uninitialized bulletComponent" << std::endl;
+	}
 }
 
 void ComponentBag_Free(ComponentBag* bag) {
@@ -125,8 +125,6 @@ void ComponentBag_Free(ComponentBag* bag) {
 	bag->inputComponent = nullptr;
 	free(bag->animationComponent);
 	bag->animationComponent = nullptr;
-	free(bag->bulletComponent);
-	bag->bulletComponent = nullptr;
 	free(bag->physicsComponent);
 	bag->physicsComponent = nullptr;
 	free(bag->healthComponent);
@@ -152,6 +150,8 @@ void ComponentBag_Free(ComponentBag* bag) {
 	bag->damageComponent = nullptr;
 	free(bag->teamComponent);
 	bag->teamComponent = nullptr;
+	free(bag->bulletComponent);
+	bag->bulletComponent = nullptr;
 }
 
 void Component_DisableEntity(ComponentBag* bag, uint32 eid) {
@@ -172,9 +172,6 @@ void Component_DisableEntity(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HasIndex(bag->animationComponent, eid)) {
 		Component_Disable(bag->animationComponent, eid);
-	}
-	if (Component_HasIndex(bag->bulletComponent, eid)) {
-		Component_Disable(bag->bulletComponent, eid);
 	}
 	if (Component_HasIndex(bag->healthComponent, eid)) {
 		Component_Disable(bag->healthComponent, eid);
@@ -209,6 +206,9 @@ void Component_DisableEntity(ComponentBag* bag, uint32 eid) {
 	if (Component_HasIndex(bag->teamComponent, eid)) {
 	    Component_Disable(bag->teamComponent, eid);
 	}
+	if (Component_HasIndex(bag->bulletComponent, eid)) {
+	    Component_Disable(bag->bulletComponent, eid);
+	}
 }
 
 void Component_EnableEntity(ComponentBag* bag, uint32 eid) {
@@ -229,9 +229,6 @@ void Component_EnableEntity(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HadIndex(bag->animationComponent, eid)) {
 		Component_Enable(bag->animationComponent, eid);
-	}
-	if (Component_HadIndex(bag->bulletComponent, eid)) {
-		Component_Enable(bag->bulletComponent, eid);
 	}
 	if (Component_HadIndex(bag->healthComponent, eid)) {
 		Component_Enable(bag->healthComponent, eid);
@@ -264,6 +261,9 @@ void Component_EnableEntity(ComponentBag* bag, uint32 eid) {
 	if (Component_HadIndex(bag->teamComponent, eid)) {
 	    Component_Enable(bag->teamComponent, eid);
 	}
+	if (Component_HadIndex(bag->bulletComponent, eid)) {
+	    Component_Enable(bag->bulletComponent, eid);
+	}
 }
 
 void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid) {
@@ -284,9 +284,6 @@ void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HasIndex(bag->animationComponent, eid)) {
 		Component_ForceRemove(bag->animationComponent, eid);
-	}
-	if (Component_HasIndex(bag->bulletComponent, eid)) {
-		Component_ForceRemove(bag->bulletComponent, eid);
 	}
 	if (Component_HasIndex(bag->healthComponent, eid)) {
 		Component_ForceRemove(bag->healthComponent, eid);
@@ -318,6 +315,9 @@ void ComponentBag_ForceRemove(ComponentBag* bag, uint32 eid) {
 	}
 	if (Component_HasIndex(bag->teamComponent, eid)) {
 	    Component_ForceRemove(bag->teamComponent, eid);
+	}
+	if (Component_HasIndex(bag->bulletComponent, eid)) {
+	    Component_ForceRemove(bag->bulletComponent, eid);
 	}
 }
 

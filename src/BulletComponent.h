@@ -1,27 +1,19 @@
+#pragma once
 #include "Component.h"
 
-struct PhysicsComponent;
-struct AliveComponent;
-struct TextureComponent;
-struct MovementComponent;
-struct RectangleComponent;
-struct TeamComponent;
-struct Rectangle;
+struct ComponentBag;
 
-const int MaxBulletLife_ = 2500;
+const uint8 MaxBullets_ = 3;
 
-struct Bullet {
-  bool friendly = false; //friendly or enemy bullet, default false?
-  bool collided; //check if bullet has died from collision
-  bool left = false; //direction bullet is heading
-  int life;
+struct BulletValues {
+	uint32 bulletEids[MaxBullets_];
+	int availableBullets;
+	bool initialized[MaxBullets_];
 };
 
 struct BulletComponent : public Component {
-	Bullet bullet[Constants::MaxEntities_]; //bullet information for this bullet entity
-	int type[Constants::MaxEntities_];
+	BulletValues bulletValues[Constants::MaxEntities_];
 };
 
-void BulletComponent_Add(BulletComponent* bulletComponent, PhysicsComponent*,
-	AliveComponent*, TextureComponent*, MovementComponent*, RectangleComponent*, TeamComponent* teamComponent, 
-	 Rectangle, uint32 eid, bool, bool, int);
+void BulletComponent_Add(BulletComponent* bulletComponent, uint32 eid);
+void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, ComponentBag* cBag, int type);

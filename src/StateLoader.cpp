@@ -4,6 +4,7 @@
 #include "TextureCache.h"
 #include "SoundCache.h"
 #include "HealthComponent.h"
+#include "InteractableComponent.h"
 #include "EntityCache.h"
 #include "Interactions.h"
 #include "Constants.h"
@@ -255,6 +256,8 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/coin.ogg", "coin");
 	TextureCache_CreateTexture(game->renderer, "assets/hats/bullet.png", "bullet");
 	TextureCache_CreateTexture(game->renderer, "assets/hats/knife.png", "knife");
+	SDL_Color color = { game->playState.cBag.interactableComponent->r, game->playState.cBag.interactableComponent->g, game->playState.cBag.interactableComponent->b, 1 };
+	TextureCache_CreateTextureFromFont(game->renderer, game->playState.cBag.interactableComponent->hoverFont, color, "'X' to Pick Up", "bullet-pickup");
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/hats/miner-shader.png", "miner-shader")->sdltexture, SDL_BLENDMODE_MOD);
 	TTF_SetFontHinting(game->playState.scoreFont, TTF_HINTING_MONO);
 	TTF_SetFontHinting(game->playState.healthFont, TTF_HINTING_MONO);
@@ -268,7 +271,6 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.scoreFont);
 	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag, &game->playState.chapter);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
-	BulletSystem_Initialize(&game->playState.bulletSystem, &game->playState.cBag, &game->playState.chapter);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
 	InteractionSystem_Initialize(&game->playState.interactionSystem, &game->playState.cBag, game);
 
@@ -310,7 +312,6 @@ void FreePlay(Game* game) {
 	RenderSystem_Free(&game->playState.renderSystem);
 	GoalSystem_Free(&game->playState.goalSystem);
 	//	SoundSystem_Free(&game->playState.soundSystem);
-	BulletSystem_Free(&game->playState.bulletSystem);
 	KillSystem_Free(&game->playState.killSystem);
 	InteractionSystem_Free(&game->playState.interactionSystem);
 

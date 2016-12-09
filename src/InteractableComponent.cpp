@@ -24,6 +24,9 @@ void InteractableComponent_Initialize(InteractableComponent* interactableCompone
 	interactableComponent->canBeInteractedWith[eid] = false;
  	interactableComponent->interacted[eid] = false;
 
+ 	if (txt == 0)
+ 		return;
+
  	for (int index = 0; index < Constants::MaxInteractableMessages_; index++) {
  		interactableComponent->txt[eid][index] = txt[index];
  	}

@@ -3,10 +3,14 @@
 #include "RectangleComponent.h"
 #include "InputComponent.h"
 #include "InteractableComponent.h"
+#include "BulletComponent.h"
 #include "AliveComponent.h"
 #include "GoalComponent.h"
 #include "ComponentBag.h"
 #include "SoundCache.h"
+#include "HatMethods.h"
+
+#include <iostream>
 
 void InteractionSystem_Initialize(InteractionSystem* interactionSystem, ComponentBag* cBag, Game* game) {
 	interactionSystem->interactableComponent 	= cBag->interactableComponent;
@@ -14,6 +18,7 @@ void InteractionSystem_Initialize(InteractionSystem* interactionSystem, Componen
 	interactionSystem->rectangleComponent 		= cBag->rectangleComponent;
 	interactionSystem->aliveComponent 			= cBag->aliveComponent;
 	interactionSystem->goalComponent 			= cBag->goalComponent;
+	interactionSystem->bulletComponent 			= cBag->bulletComponent;
 	interactionSystem->cBag 					= cBag;
 	interactionSystem->game 					= game;
 }
@@ -31,6 +36,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 	RectangleComponent* rectangleComponent = interactionSystem->rectangleComponent;
 	AliveComponent* aliveComponent = interactionSystem->aliveComponent;
 	GoalComponent* goalComponent = interactionSystem->goalComponent;
+	BulletComponent* bulletComponent = interactionSystem->bulletComponent;
 
 	Rectangle r1 = rectangleComponent->entityRectangles[Constants::PlayerIndex_];
 
@@ -67,11 +73,22 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 					Sound_Play(SoundCache_GetSound("coin"), 0);
 					aliveComponent->alive[eid] = false;
 				}
-				break;
+				continue;
 			case InteractionTypes_Door:
 				if (interact)
 					Interaction_EnterDoor(interactionSystem->game, interactableComponent->datafield[eid]);
-				break;
+				continue;
+			case InteractionTypes_Chef:
+			case InteractionTypes_Cowboy:
+				if (interact) {
+					if (!interactableComponent->interacted[eid]) {
+						if (bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets < 3)
+							bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
+						interactableComponent->interacted[eid] = true;
+						aliveComponent->alive[eid] = false;
+					}
+				}
+				continue;
 			default:
 				continue;
 		}

@@ -6,7 +6,6 @@ struct MovementComponent;
 struct TextureComponent;
 struct InputComponent;
 struct AnimationComponent;
-struct BulletComponent;
 struct PhysicsComponent;
 struct HealthComponent;
 struct CameraComponent;
@@ -18,6 +17,7 @@ struct InteractableComponent;
 struct NameComponent;
 struct DamageComponent;
 struct TeamComponent;
+struct BulletComponent;
 
 struct ComponentBag {
 	RectangleComponent* rectangleComponent;
@@ -25,7 +25,6 @@ struct ComponentBag {
 	TextureComponent*   textureComponent;
 	InputComponent* 	inputComponent;
 	AnimationComponent* animationComponent;
-	BulletComponent* 	bulletComponent;
 	PhysicsComponent* 	physicsComponent;
 	HealthComponent* 	healthComponent;
 	CameraComponent*	cameraComponent;
@@ -37,6 +36,7 @@ struct ComponentBag {
 	NameComponent* 		nameComponent;
 	DamageComponent* 	damageComponent;
 	TeamComponent* 		teamComponent;
+	BulletComponent*    bulletComponent;
 };
 
 void ComponentBag_Malloc(ComponentBag* bag);

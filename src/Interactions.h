@@ -10,6 +10,8 @@ enum InteractionTypes {
 	InteractionTypes_Cutscene,
 	InteractionTypes_Coin,
 	InteractionTypes_Door,
+	InteractionTypes_Chef,
+	InteractionTypes_Cowboy,
 	InteractionTypes_None
 };
 

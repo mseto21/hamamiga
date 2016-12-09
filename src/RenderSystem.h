@@ -10,7 +10,6 @@ struct Rectangle;
 struct TextureComponent;
 struct RectangleComponent;
 struct AnimationComponent;
-struct BulletComponent;
 struct MovementComponent;
 struct CameraComponent;
 struct HatComponent;
@@ -28,7 +27,6 @@ struct RenderSystem {
 	TextureComponent* textureComponent; 
 	RectangleComponent* rectangleComponent;
 	AnimationComponent* animationComponent;
-	BulletComponent* bulletComponent;
 	MovementComponent* movementComponent;
 	CameraComponent* cameraComponent;
 	HatComponent* hatComponent;

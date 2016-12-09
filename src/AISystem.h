@@ -5,6 +5,7 @@ struct MovementComponent;
 struct AIComponent;
 struct AnimationComponent;
 struct RectangleComponent;
+struct PhysicsComponent;
 struct ComponentBag;
 
 struct AISystem {
@@ -12,6 +13,7 @@ struct AISystem {
 	AIComponent* aiComponent;
 	AnimationComponent* animationComponent;
 	RectangleComponent* rectangleComponent;
+	PhysicsComponent* physicsComponent;
 };
 
 void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag);

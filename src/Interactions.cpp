@@ -5,7 +5,6 @@
 #include "TextureComponent.h"
 #include "InputComponent.h"
 #include "AnimationComponent.h"
-#include "BulletComponent.h"
 #include "PhysicsComponent.h"
 #include "HealthComponent.h"
 #include "CameraComponent.h"
@@ -15,12 +14,15 @@
 #include "GoalComponent.h"
 #include "DamageComponent.h"
 #include "InteractableComponent.h"
+#include "TeamComponent.h"
+#include "BulletComponent.h"
 #include "SoundCache.h"
 #include "GlamourHatEnum.h"
 #include "EntityCache.h"
 #include "StatSystem.h"
 #include "HatMethods.h"
 #include "StateLoader.h"
+#include "TextureCache.h"
 
 
 #include "Game.h"
@@ -76,7 +78,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to shoot bulelts at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			Scores_Update(hatpath, (char*)"cowboy", val);
-			CowboyHatInit();
+			BulletComponent_Add(cBag->bulletComponent, eid);
 			break;
 		case HatTypes_Crown:
 			cBag->goalComponent->winGoal[eid] = true;
@@ -89,8 +91,8 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->hatComponent->hats[eid].gHat.eid = hatEid;
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Disco;
 			Mix_VolumeMusic(MIX_MAX_VOLUME/4);
-      Sound_Play(SoundCache_GetSound("disco"), -1);
-      Scores_Update(hatpath, (char*)"disco", val);
+      		Sound_Play(SoundCache_GetSound("disco"), -1);
+      		Scores_Update(hatpath, (char*)"disco", val);
 			break;
 		case HatTypes_Miner:
 			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
@@ -135,7 +137,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "chef", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to throw your knives at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
-			ChefHatInit();
+			BulletComponent_Add(cBag->bulletComponent, eid);
 			break;
 		case HatTypes_Circus:
 			cBag->hatComponent->hats[eid].gHat.hatType = hatType;
@@ -216,35 +218,21 @@ void Interaction_PlayEventInteraction(uint32 eid, ComponentBag* cBag) {
 	Hat* hat = &cBag->hatComponent->hats[eid].hat;
 	switch (hat->hatType) {
 		case HatTypes_Cowboy: {
-		        if (CowboyHatAdd()) {
-					Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
-					Entity* newBullet = EntityCache_GetNewEntity();
-					BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
-						cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
-						cBag->rectangleComponent, cBag->teamComponent, rect, newBullet->eid, true,
-							    cBag->movementComponent->movementValues[eid].left, 0);
-					DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
-					Animation animation;
-					Animation_Initialize(&animation, 1, 150.0, 52, 12);
-					AnimationComponent_Add(cBag->animationComponent, newBullet->eid, animation);
-				}
+			BulletValues* bulletValues = &cBag->bulletComponent->bulletValues[eid];
+	      	if (bulletValues->availableBullets > 0) {
+	      		bulletValues->availableBullets --;
+	      		BulletComponent_Create(cBag->bulletComponent, eid, cBag, HatTypes_Cowboy);
 			}
 			break;
-	       case HatTypes_Chef: {
-		        if (ChefHatAdd()) {
-			          	Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
-					Entity* newBullet = EntityCache_GetNewEntity();
-					BulletComponent_Add(cBag->bulletComponent, cBag->physicsComponent,
-					        cBag->aliveComponent, cBag->textureComponent, cBag->movementComponent,
-							    cBag->rectangleComponent, cBag->teamComponent, rect, newBullet->eid, true,
-							    cBag->movementComponent->movementValues[eid].left, 1);
-					DamageComponent_Add(cBag->damageComponent, newBullet->eid, 30);
-					Animation animation;
-					Animation_Initialize(&animation, 1, 150.0, 34, 12);
-					AnimationComponent_Add(cBag->animationComponent, newBullet->eid, animation);
-				  }
-			 }
-	                break;
+		}
+		case HatTypes_Chef: {
+			BulletValues* bulletValues = &cBag->bulletComponent->bulletValues[eid];
+		    if (bulletValues->availableBullets > 0) {
+		    	bulletValues->availableBullets--;
+		        BulletComponent_Create(cBag->bulletComponent, eid, cBag, HatTypes_Chef);
+			}
+			break;
+		}
 		default:
 			break;
 	}

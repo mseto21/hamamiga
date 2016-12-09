@@ -5,6 +5,7 @@ struct InteractableComponent;
 struct RectangleComponent;
 struct AliveComponent;
 struct GoalComponent;
+struct BulletComponent;
 struct ComponentBag;
 struct Game;
 
@@ -14,6 +15,7 @@ struct InteractionSystem {
 	RectangleComponent* rectangleComponent;
 	AliveComponent* aliveComponent;
 	GoalComponent* goalComponent;
+	BulletComponent* bulletComponent;
 	ComponentBag* cBag;
 	Game* game;
 };

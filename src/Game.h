@@ -12,7 +12,6 @@
 #include "GoalSystem.h"
 #include "SoundSystem.h"
 #include "KillSystem.h"
-#include "BulletSystem.h"
 #include "InteractionSystem.h"
 
 // Forward Declarations
@@ -106,7 +105,6 @@ struct PlayState {
 	GoalSystem goalSystem;
 	SoundSystem soundSystem;
 	KillSystem killSystem;
-	BulletSystem bulletSystem;
 	InteractionSystem interactionSystem;
 };
 

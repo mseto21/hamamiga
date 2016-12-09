@@ -5,6 +5,7 @@
 #include "AIComponent.h"
 #include "RectangleComponent.h"
 #include "AnimationComponent.h"
+#include "PhysicsComponent.h"
 #include "Rectangle.h"
 #include "ComponentBag.h"
 
@@ -19,6 +20,7 @@ void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag) {
   aiSystem->aiComponent         = cBag->aiComponent;
   aiSystem->animationComponent  = cBag->animationComponent;
   aiSystem->rectangleComponent  = cBag->rectangleComponent;
+  aiSystem->physicsComponent    = cBag->physicsComponent;
 }
 
 bool close(const Rectangle* r1, const Rectangle* r2) {
@@ -116,25 +118,14 @@ void FlyerUpdate(AISystem* aiSystem, uint32 eid) {
 
 
 void ProjectileUpdate(AISystem* aiSystem, uint32 eid) {
-  AIComponent* aiComponent = aiSystem->aiComponent;
-  RectangleComponent* rectangleComponent = aiSystem->rectangleComponent;
   MovementComponent* movementComponent = aiSystem->movementComponent;
   if (!Component_HasIndex(movementComponent, eid)) {
     return;
   }
 
-  Rectangle pRect = rectangleComponent->entityRectangles[rectangleComponent->entityArray[Constants::PlayerIndex_]];
 
   MovementValues* moveValues = &movementComponent->movementValues[eid];
-  MarchValues* marchValues = &aiComponent->marchValues[eid];
-  Rectangle* eRect = &rectangleComponent->entityRectangles[eid];
-  if (close(&pRect, eRect) && !marchValues->aggrod) {
-    if (pRect.x + (pRect.w)/2 < eRect->x + (eRect->w)/2) {
-      moveValues->xAccel = -moveValues->accelX;
-    } else {
-      moveValues->xAccel = moveValues->accelX;
-    }
-  }
+  moveValues->xAccel = moveValues->accelX;
 }
 
 

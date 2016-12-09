@@ -5,7 +5,6 @@
 #include "PhysicsComponent.h"
 #include "RectangleComponent.h"
 #include "HealthComponent.h"
-#include "BulletComponent.h"
 #include "InputComponent.h"
 #include "AIComponent.h"
 #include "DamageComponent.h"
@@ -29,7 +28,6 @@ void PhysicsSystem_Initialize(PhysicsSystem* physicsSystem, ComponentBag* cBag, 
 	physicsSystem->movementComponent 	= cBag->movementComponent;
 	physicsSystem->rectangleComponent 	= cBag->rectangleComponent;
 	physicsSystem->healthComponent 		= cBag->healthComponent;
-	physicsSystem->bulletComponent  	= cBag->bulletComponent;
 	physicsSystem->inputComponent		= cBag->inputComponent;
 	physicsSystem->interactableComponent = cBag->interactableComponent;
 	physicsSystem->aiComponent          = cBag->aiComponent;
@@ -54,7 +52,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 	MovementComponent* movementComponent = physicsSystem->movementComponent;
 	RectangleComponent* rectangleComponent = physicsSystem->rectangleComponent;
 	HealthComponent* healthComponent = physicsSystem->healthComponent;
-	BulletComponent* bulletComponent = physicsSystem->bulletComponent;
 	InteractableComponent * interactableComponent = physicsSystem->interactableComponent;
 	AIComponent * aiComponent = physicsSystem->aiComponent;
 	DamageComponent * damageComponent = physicsSystem->damageComponent;
@@ -100,34 +97,11 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			        continue;
 			}
 
-			//Don't collide with bullets on your team
-			if (Component_HasIndex(bulletComponent, otherEid)){
-				if (eid == Constants::PlayerIndex_ && bulletComponent->bullet[otherEid].friendly == true){
-					continue;//player cannot collide with own bullets
-				}
-				if (eid != Constants::PlayerIndex_ && bulletComponent->bullet[otherEid].friendly != true){
-					continue;//enemy cannot collide with own bullets
-				}
-				if (Component_HasIndex(bulletComponent, eid)){
-					continue;//bullets cannot collide with other bullets
-				}
-			}
-
-			// Reverse if entity is bullet and otherEid is player, enemy
-			if (Component_HasIndex(bulletComponent, eid)){
-				if (otherEid == Constants::PlayerIndex_&&
-					bulletComponent->bullet[eid].friendly == true){
-					continue;//player cannot collide with own bullets
-				}
-				if (otherEid != Constants::PlayerIndex_&& 
-					bulletComponent->bullet[eid].friendly != true){
-					continue;//enemy cannot collide with own bullets
-				}
-			}
 
 			// Enemy collisions
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			if (Collision(*r1, r2)) {
+				physicsComponent->physicsValues[eid].collided = true;
 				if (teamComponent->team[eid] != teamComponent->team[otherEid]) {
 					int xVelocity = 0;
 					int yVelocity = 0;
@@ -169,7 +143,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					    	}
 					    }
 					}
-					bulletComponent->bullet[otherEid].collided = true;
 				}
 			}
 		}
@@ -195,7 +168,6 @@ world_physics:
 
 		// Tiilemap collisions
 		{
-			//don't collide with tiles if bullet
 			int tileX = floor(r1->x / Constants::TileSize_);
 			int tileEndX = floor((r1->x + r1->w) / Constants::TileSize_);
 			int tileY = floor((r1->y + moveValues->yVelocity) / Constants::TileSize_);
@@ -216,23 +188,19 @@ world_physics:
 				if (map->map[tileY][tileHeadX].solid || map->map[tileY][tileEndHeadX].solid) {
 					r1->y = tileY * Constants::TileSize_ + Constants::TileSize_;
 					moveValues->yVelocity = 0;
-					if (Component_HasIndex(bulletComponent, eid)){
-							bulletComponent->bullet[eid].collided = true;
-					}
+					physicsComponent->physicsValues[eid].collided = true;
 				} 
 			} else if (moveValues->yVelocity >= 0) {
 				if (map->map[tileEndY][tileFootX].solid || map->map[tileEndY][tileEndFootX].solid) {
 					r1->y = tileEndY * Constants::TileSize_ - r1->h;
 					moveValues->yVelocity = 0;
 					moveValues->grounded = true;
-					if (Component_HasIndex(bulletComponent, eid)){
-							bulletComponent->bullet[eid].collided = true;
-					}
 					if (map->map[tileEndY][tileFootX].speed > 0) {
 						moveValues->xVelocity += map->map[tileEndY][tileFootX].speed;
 					} else if (map->map[tileEndY][tileEndFootX].speed > 0) {
 						moveValues->xVelocity += map->map[tileEndY][tileEndFootX].speed;
 					}
+					physicsComponent->physicsValues[eid].collided = true;
 				}
 			}
 
@@ -245,21 +213,20 @@ world_physics:
 						  aiComponent->marchValues[eid].facing *= -1;
 						  aiComponent->marchValues[eid].distance = 0;
 						}
+						physicsComponent->physicsValues[eid].collided = true;
 					}
 					if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileX].solid) {
 					  aiComponent->marchValues[eid].facing *= -1;
 					  aiComponent->marchValues[eid].distance = 0;
+					  physicsComponent->physicsValues[eid].collided = true;
 					}
-				} else {
-					if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
-						r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
-						moveValues->xVelocity = 0;
-						if (Component_HasIndex(bulletComponent, eid)){
-							bulletComponent->bullet[eid].collided = true;
-						}
-					}
+				} else if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
+					r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
+					moveValues->xVelocity = 0;
+					physicsComponent->physicsValues[eid].collided = true;
 				}
-			} else if (moveValues->xVelocity > 0) {
+			}
+			else if (moveValues->xVelocity > 0) {
 				if (moveValues->grounded) {
 					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid) {
 						r1->x = tileEndX * Constants::TileSize_ - r1->w;
@@ -268,36 +235,35 @@ world_physics:
 						  aiComponent->marchValues[eid].facing *= -1;
 						  aiComponent->marchValues[eid].distance = 0;
 						}
+						physicsComponent->physicsValues[eid].collided = true;
 					}
-     					if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileEndX].solid) {
+     				if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileEndX].solid) {
 					  aiComponent->marchValues[eid].facing *= -1;
 					  aiComponent->marchValues[eid].distance = 0;
+					  physicsComponent->physicsValues[eid].collided = true;
 					}
-				} else {
-					if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
-						r1->x = tileEndX * Constants::TileSize_ - r1->w;
-						moveValues->xVelocity = 0;
-						if (Component_HasIndex(bulletComponent, eid)){
-							bulletComponent->bullet[eid].collided = true;
-						}
-					}
+				} else if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
+					r1->x = tileEndX * Constants::TileSize_ - r1->w;
+					moveValues->xVelocity = 0;
+					physicsComponent->physicsValues[eid].collided = true;
 				}
 			}
 		}
 
 		// World boundary collisions
-		if (!Component_HasIndex(bulletComponent, eid)){
-			if (r1->x <= 0) {
-				r1->x = 0;
-				moveValues->xVelocity = 0;
-			} else if (r1->x + r1->w >= physicsSystem->zone->levelWidth) {
-				r1->x = physicsSystem->zone->levelWidth - r1->w;
-				moveValues->xVelocity = 0;
-			}
-			if (r1->y < 0) {
-				r1->y = 0;
-				moveValues->yVelocity = 0;
-			}
+		if (r1->x <= 0) {
+			r1->x = 0;
+			moveValues->xVelocity = 0;
+			physicsComponent->physicsValues[eid].collided = true;
+		} else if (r1->x + r1->w >= physicsSystem->zone->levelWidth) {
+			r1->x = physicsSystem->zone->levelWidth - r1->w;
+			moveValues->xVelocity = 0;
+			physicsComponent->physicsValues[eid].collided = true;
+		}
+		if (r1->y < 0) {
+			r1->y = 0;
+			moveValues->yVelocity = 0;
+			physicsComponent->physicsValues[eid].collided = true;
 		}
 		//if (eid == Constants::PlayerIndex_) {
 		  //std::cout << "x: " << r1->x << " y: " << r1->y << std::endl;
@@ -310,7 +276,6 @@ void PhysicsSystem_Free(PhysicsSystem* physicsSystem) {
 	physicsSystem->movementComponent = nullptr;
 	physicsSystem->rectangleComponent = nullptr;
 	physicsSystem->healthComponent = nullptr;
-	physicsSystem->bulletComponent = nullptr;
 	physicsSystem->inputComponent = nullptr;
 	physicsSystem->interactableComponent = nullptr;
 	physicsSystem->map = nullptr;

@@ -3,6 +3,7 @@
 
 struct PhysicsValues {
 	int mass;
+	bool collided;
 };
 
 struct PhysicsComponent : public Component {

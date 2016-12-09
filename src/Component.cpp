@@ -39,6 +39,12 @@ void Component_Add(Component* component, uint32 eid) {
 		std::cerr << "Error: Attempting to add too many entities to the component!" << std::endl;
 		return;
 	}
+
+	for (uint32 i = 0; i < component->count; i++) {
+		if (component->entityArray[i] == eid)
+			return;
+	}
+
 	component->entityArray[component->count] = eid;
 	component->usedEntities[eid] = true;
 	component->count++;
