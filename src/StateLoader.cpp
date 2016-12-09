@@ -265,6 +265,8 @@ void LoadLevelStatAssets(Game* game) {
 }
 
 bool LoadPlayStateAssets(Game* game, int chapter) {
+	//Resetting level scores
+	LevelScore_Reset();
 	// Initialize caches
 	TextureCache* tcache = TextureCache_GetCache();
 	tcache->levelIndex = tcache->index;
