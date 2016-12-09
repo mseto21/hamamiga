@@ -9,4 +9,5 @@ beer=0;
 chef=0;
 circus=0;
 total=5;
+
 END=;

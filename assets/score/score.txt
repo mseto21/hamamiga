@@ -1,6 +1,7 @@
-hats=5;
-levels=2;
+hats=1;
+levels=0;
 deaths=0;
-fallen=2;
-kills=-1;
+fallen=0;
+kills=0;
+coins=0;
 END=;

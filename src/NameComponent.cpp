@@ -2,13 +2,13 @@
 #include <SDL_ttf.h>
 #include <iostream>
 
-const char* FontPath_ = "assets/fonts/newcomictitle.ttf";
+const char* FontPath_ = "assets/fonts/Gotham-Bold.otf";
 
 void NameComponent_Initialize(NameComponent* nameComponent) {
 	Component_Initialize(nameComponent);
-	nameComponent->r = 255;
-	nameComponent->g = 255;
-	nameComponent->b = 255;
+	nameComponent->r = 102;
+	nameComponent->g = 102;
+	nameComponent->b = 102;
 	nameComponent->font = TTF_OpenFont(FontPath_, 18);
 }
 

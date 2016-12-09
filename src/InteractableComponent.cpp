@@ -3,7 +3,7 @@
 #include <SDL_ttf.h>
 
 #include <iostream>
-const char* MsgFontPath_ = "assets/fonts/The_Quest_of_Discoveries.ttf";
+const char* MsgFontPath_ = "assets/fonts/Gotham-Bold.otf";
 const char* HoverFontPath_ = "assets/fonts/Coffee_with_Sugar.ttf";
 
 void InteractableComponent_Initialize(InteractableComponent* interactableComponent) {
@@ -11,9 +11,9 @@ void InteractableComponent_Initialize(InteractableComponent* interactableCompone
 	interactableComponent->msgFont = TTF_OpenFont(MsgFontPath_, 24);
 	interactableComponent->hoverFont = TTF_OpenFont(HoverFontPath_, 28);
 	
-	interactableComponent->r = 220;
-	interactableComponent->g = 220;
-	interactableComponent->b = 220;
+	interactableComponent->r = 102;
+	interactableComponent->g = 102;
+	interactableComponent->b = 102;
 }
 
  void InteractableComponent_Add(InteractableComponent* interactableComponent, uint32 eid, Texture* texture, int type, int datafield, Texture** txt) {

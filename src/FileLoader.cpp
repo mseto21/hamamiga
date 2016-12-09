@@ -753,7 +753,12 @@ FILE* scoreFile = fopen(path, "r");
 				index++;
 				pos = 0;
 				memset(&str, 0, MaxBuffSize_);
-			} else if (strcmp(str, "END") == 0) {
+			} else if (strcmp(str, "coins") == 0) {
+				lineNumber += ReadScore(scoreFile, stats, index);
+				index++;
+				pos = 0;
+				memset(&str, 0, MaxBuffSize_);
+			}else if (strcmp(str, "END") == 0) {
 				break;
 			} else {
 				std::cerr << "Error: Invalid token. Read " << str << " at line " << lineNumber << std::endl;
