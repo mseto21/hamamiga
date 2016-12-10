@@ -104,7 +104,7 @@ void LoadHighScoreStateAssets(Game* game) {
  	game->highScoreState.scoreType[2]= "Times Murdered: ";
  	game->highScoreState.scoreType[3]= "Fallen to Hell: ";
  	game->highScoreState.scoreType[4]= "Demons Killed: ";
- 	//game->highScoreState.scoreType[5]= "Coins Collected: ";
+ 	game->highScoreState.scoreType[5]= "Coins Collected: ";
 	
 	// Create textures for the current high scores
 	SDL_Color scoreColor = {255, 255, 255, 255};
@@ -119,10 +119,10 @@ void LoadHighScoreStateAssets(Game* game) {
 			std::string totalLevels = std::to_string(Constants::MaximumLevels_);
 			msg.append("/"+ totalLevels);
 		}
-		//if (highScoreIndex == 5){
-			//std::string totalCoins = std::to_string(Constants::TotalCoins_);
-			//msg.append("/"+ totalCoins);
-		//}
+		if (highScoreIndex == 5){
+			std::string totalCoins = std::to_string(Constants::TotalCoins_);
+			msg.append("/"+ totalCoins);
+		}
 		std::string name = "high_score_";
 		name.append(std::to_string(highScoreIndex));
 		TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, msg.c_str(), name.c_str());
@@ -208,24 +208,49 @@ void LoadLevelStatAssets(Game* game) {
 		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
 		return;
 	}
-	//
+	const char * coinPath = "assets/score/coins.txt";
 	std::string scorePath = "";
 	switch (game->playState.levelSelection){
 				case 1:
+				{
 					scorePath = "assets/score/one.txt";
+					int levelcoins = totalFromFile(coinPath, "one");
+					if (scores[Coins_] > levelcoins){
+						Scores_Update(coinPath, "one", std::to_string(scores[Coins_]).c_str());
+					} 
 					break;
+				}
 				case 2:
+				{
 					scorePath = "assets/score/two.txt";
+					int levelcoins = totalFromFile(coinPath, "two");
+					if (scores[Coins_] > levelcoins){
+						Scores_Update(coinPath, "two", std::to_string(scores[Coins_]).c_str());
+					} 
 					break;
+				}
 				case 3:
+				{
 					scorePath = "assets/score/three.txt";
+					int levelcoins = totalFromFile(coinPath, "three");
+					if (scores[Coins_] > levelcoins){
+						Scores_Update(coinPath, "three", std::to_string(scores[Coins_]).c_str());
+					} 
 					break;
+				}
 				case 4:
+				{
 					scorePath = "assets/score/four.txt";
+					int levelcoins = totalFromFile(coinPath, "four");
+					if (scores[Coins_] > levelcoins){
+						Scores_Update(coinPath, "four", std::to_string(scores[Coins_]).c_str());
+					} 
 					break;
+				}
 				default:
 					break;
 	}
+	CoinScore_Update();
 	// Load file
 	if (!FileLoader_LoadLevelScores(scorePath.c_str(), numPossibleScores)) {
 		std::cerr << "Error: Unable to load scores from path " << std::endl;

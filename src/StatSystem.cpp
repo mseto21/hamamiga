@@ -13,6 +13,7 @@ const char* levelpath = "assets/score/levels.txt";
 const char* hatspath = "assets/score/hats.txt";
 const char* deathspath = "assets/score/deaths.txt";
 const char* killpath = "assets/score/kills.txt";
+const char* coinpath = "assets/score/coins.txt";
 
 
 const char* scoreType[NumScoreTypes_]; //Description displayed
@@ -169,6 +170,16 @@ FILE* scoreFile = fopen(path, "r");
 	return typePos;
 }
 
+//Updates the coin total since it's different than other files
+void CoinScore_Update() {
+	int one = totalFromFile(coinpath, "one");
+	int two = totalFromFile(coinpath, "two");
+	int three = totalFromFile(coinpath, "three");
+	int four = totalFromFile(coinpath, "four");
+	int total = one + two + three + four;
+	Scores_Update(coinpath, "total", std::to_string(total).c_str());
+}
+
 //Calculates total scores for scoreboard
 void Scoreboard_Update(){
 	bool add = false;
@@ -186,12 +197,16 @@ void Scoreboard_Update(){
 //Getting total from kills
 	int killTotal = totalFromFile(killpath, "total");
 	std::string killT = std::to_string(killTotal);
+//Getting total from coins
+	int coinTotal = totalFromFile(coinpath, "total");
+	std::string coinT = std::to_string(coinTotal);
 //Storing in scoreboard
 	Copy(scorepath, GetPosNum(scorepath, "hats", &add),  hatT.c_str(), add);
 	Copy(scorepath, GetPosNum(scorepath, "levels", &add), levelT.c_str(), add);
 	Copy(scorepath, GetPosNum(scorepath, "deaths", &add), deathT.c_str(), add);
 	Copy(scorepath, GetPosNum(scorepath, "fallen", &add), fallenT.c_str(), add);
 	Copy(scorepath, GetPosNum(scorepath, "kills", &add), killT.c_str(), add);
+	Copy(scorepath, GetPosNum(scorepath, "coins", &add), coinT.c_str(), add);
 
 }
 
@@ -207,13 +222,15 @@ void Scores_Update(const char* path, const char* type, const char* value) {
 	} else {
 		add = true;
 	}
+	if (strcmp(path, coinpath) == 0){
+		add = false;
+	}
 	Copy(path, typePos, value, add);
 	if (add == true){
 		if (totalPos!= 0){
 		Copy(path, totalPos, value, add);
 		}
 	}
-
 	if (strcmp(path, scorepath) != 0){
 		Scoreboard_Update();
 	}

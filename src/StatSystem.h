@@ -22,3 +22,6 @@ extern int numDisplay;
 //Goal Data Storage
 void Scores_Update(const char* path, const char* type, const char* value);
 void LevelScore_Reset();
+void CoinScore_Update();
+void Scoreboard_Update();
+int totalFromFile(const char * path, const char * type);
