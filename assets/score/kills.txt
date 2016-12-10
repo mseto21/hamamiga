@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-kills=191;
-fallen=53;
-=======
-kills=55;
+kills=42;
 fallen=3;
->>>>>>> origin
 total1;
 END=;

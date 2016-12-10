@@ -62,7 +62,7 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 	if (!texture) {
 		return;
 	}
-
+	
 	SDL_Rect rquad;
 	rquad.x = x;
 	rquad.y = y;
@@ -75,6 +75,29 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 	}
 
 	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, texture->rotation, NULL, (SDL_RendererFlip)texture->flip);
+}
+
+// --------------------------------------------------------------------
+void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture, SDL_Point* point) {
+	if (!renderer) {
+		return;
+	}
+	if (!texture) {
+		return;
+	}
+	
+	SDL_Rect rquad;
+	rquad.x = x;
+	rquad.y = y;
+	rquad.w = w;
+	rquad.h = h;
+
+	if (clip) {
+		rquad.w = clip->w;
+		rquad.h = clip->h;
+	}
+
+	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, texture->rotation, point, (SDL_RendererFlip)texture->flip);
 }
 
 // --------------------------------------------------------------------
@@ -301,7 +324,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 							clip = {animation->spriteW * (4+invc), 0, animation->spriteW, animation->spriteH};
 
 						if (hatComponent->hats[eid].gHat.hatType == HatTypes_Circus) {
-							texture->rotation += Constants::OptimalTime_ / 5;
+							texture->rotation += 3*Constants::OptimalTime_ / 5;
+							if (texture->rotation > 360)
+							  texture->rotation = 360;
 						}
 					} else {
 						texture->rotation = 0;
@@ -386,6 +411,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 				gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
 				gHatTexture->rotation = textureComponent->textures[Constants::PlayerIndex_]->rotation;
+				//int xCor = (int)(cameraComponent->camera.x + rect.x + textureComponent->textures[Constants::PlayerIndex_]->w/2);
+				//int yCor =  (int)(cameraComponent->camera.y + rect.y + textureComponent->textures[Constants::PlayerIndex_]->h/2);
+				//std::cout << "xCor: " << xCor << " yCor: " << yCor << std::endl;
+				//SDL_Point point = {xCor, yCor};
 				RenderSystem_Render_xywh(renderer, rect.x + (rect.w - gHatTexture->w)/2, rect.y - gHatTexture->h / 2.5, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    
