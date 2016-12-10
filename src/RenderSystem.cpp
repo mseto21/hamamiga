@@ -375,8 +375,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		    	if (hatTexture->clipW || hatTexture->clipH) {
 					clip = {hatTexture->clipX, hatTexture->clipY, hatTexture->clipW, hatTexture->clipH};
 				}
-			//hatTexture->flip = SDL_FLIP_NONE;
-				//RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
+
 				hatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
 				if (!gHatTexture || strcmp(gHatTexture->name, "") == 0) {
 					RenderSystem_Render_xywh(renderer, rect.x + (rect.w - hatTexture->w)/2, rect.y - hatTexture->h / 2.5, hatTexture->w, hatTexture->h, &clip, hatTexture);
@@ -387,9 +386,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		    	if (gHatTexture->clipW || gHatTexture->clipH) {
 					clip = {gHatTexture->clipX, gHatTexture->clipY, gHatTexture->clipW, gHatTexture->clipH};
 				}
-			//gHatTexture->flip = SDL_FLIP_NONE;
-			//gHatTexture->rotation = 0;
-			//	RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+
 				gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
 				gHatTexture->rotation = textureComponent->textures[Constants::PlayerIndex_]->rotation;
 				RenderSystem_Render_xywh(renderer, rect.x + (rect.w - gHatTexture->w)/2, rect.y - gHatTexture->h / 2.5, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
@@ -404,12 +401,18 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		    if (gHatTexture) {
 		      RenderGlamourEffect(renderer, gHat->id, delta, &rect);
 		      SDL_Rect clip = {0, 0, gHatTexture->w, gHatTexture->h};
+		    	if (gHatTexture->clipW || gHatTexture->clipH) {
+					clip = {gHatTexture->clipX, gHatTexture->clipY, gHatTexture->clipW, gHatTexture->clipH};
+				}
 		      gHatTexture->flip = SDL_FLIP_NONE;
 		      gHatTexture->rotation = 0;
 		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    if (hatTexture) {
 		      SDL_Rect clip = {0, 0, hatTexture->w, hatTexture->h};
+	    	if (hatTexture->clipW || hatTexture->clipH) {
+				clip = {hatTexture->clipX, hatTexture->clipY, hatTexture->clipW, hatTexture->clipH};
+			}
 		      hatTexture->flip = SDL_FLIP_NONE;
 		      RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
 		    }

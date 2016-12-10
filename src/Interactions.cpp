@@ -101,9 +101,9 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			cBag->hatComponent->hats[eid].gHat.eid = hatEid;
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Disco;
 			Mix_VolumeMusic(MIX_MAX_VOLUME/4);
-      Sound_Play(SoundCache_GetSound("disco"), -1);
-      Scores_Update(hatpath, (char*)"disco", val);
-      AddHatScore(HatTypes_Disco);
+			Sound_Play(SoundCache_GetSound("disco"), -1);
+			Scores_Update(hatpath, (char*)"disco", val);
+			AddHatScore(HatTypes_Disco);
 			break;
 		case HatTypes_Miner:
 			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
