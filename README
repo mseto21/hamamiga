@@ -155,7 +155,7 @@ Harry: Changed around some demons on level 4, enemies no longer walk straight of
 
 Matt: Added level select screen, fixed up some things with level 1, made physics a lot faster by reducing the number of collisions per frame, implemented coins and doors, created a new entity AI that jumps in place.
 
-Mindy: Fixed bugs in the Statsystem for keeping saved scores. Added additional stats to the scores screen which now has five stats: Number of hats collected, number of levels cleared (using the cheat doesn't count!), number of times killed by demons, fallen, and demons killed
+Mindy: Added more things to the StatSystem + sound effects. Now after each level, stats are displayed after you die/win displaying what you achieved in that level. These stats are included in the overall main Game Stats in the main screen.
 
 Gavi: Designed speech bubble, invincible and falling Kevin, circus hat,
 health bar, updated keys tutorial, fixed level 2 shaders
