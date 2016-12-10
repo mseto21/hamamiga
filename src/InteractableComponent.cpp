@@ -8,7 +8,7 @@ const char* HoverFontPath_ = "assets/fonts/Coffee_with_Sugar.ttf";
 
 void InteractableComponent_Initialize(InteractableComponent* interactableComponent) {
 	Component_Initialize(interactableComponent);
-	interactableComponent->msgFont = TTF_OpenFont(MsgFontPath_, 24);
+	interactableComponent->msgFont = TTF_OpenFont(MsgFontPath_, 20);
 	interactableComponent->hoverFont = TTF_OpenFont(HoverFontPath_, 28);
 	
 	interactableComponent->r = 102;

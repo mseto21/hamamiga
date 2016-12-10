@@ -1,4 +1,4 @@
-hats=0;
+hats=3;
 levels=0;
 deaths=0;
 fallen=0;
