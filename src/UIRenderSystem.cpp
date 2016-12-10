@@ -196,7 +196,7 @@ void RenderHighScore(Game* game, uint32 elapsed) {
 /* Render level scores. */
 void RenderLevelStats(Game* game, uint32 elapsed) {
 	(void) elapsed;
-	Texture* background;
+	Texture* background = TextureCache_GetTexture(Constants::WinBackground_);
 	if (game->gameState == GameState_Win){
 		background = TextureCache_GetTexture(Constants::WinBackground_);
 	} else if (game->gameState == GameState_Lose){

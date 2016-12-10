@@ -269,7 +269,7 @@ void LoadLevelStatAssets(Game* game) {
  	scoreType[Apples_]= "Apples Killed: ";
 	
 	// Create textures for the current high scores
-	SDL_Color scoreColor;
+	SDL_Color scoreColor = {255, 255, 255, 255};
 	if (game->gameState == GameState_Win){
 		scoreColor = {0, 0, 0, 0};
 	} else if (game->gameState == GameState_Lose){
