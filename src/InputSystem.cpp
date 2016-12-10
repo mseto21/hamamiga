@@ -57,7 +57,8 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 
 			moveValues->xAccel = moveValues->accelX;
 		}
-		if (keysPressed[SDLK_DOWN % Constants::NumKeys_] && moveValues->flying) {
+		if (keysPressed[SDLK_DOWN % Constants::NumKeys_] && (moveValues->flying || (moveValues->drunk && moveValues->grounded))) {
+		  
 		    moveValues->yAccel = moveValues->accelY;
 		}
 		

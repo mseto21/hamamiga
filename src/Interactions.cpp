@@ -136,6 +136,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Tipsy at Work!", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
 			cBag->movementComponent->movementValues[eid].accelX *= -1;
 			cBag->movementComponent->movementValues[eid].accelY *= -1;
+			cBag->movementComponent->movementValues[eid].drunk = true;
 			cBag->hatComponent->hats[eid].gHat.hatType = hatType;
 			cBag->hatComponent->hats[eid].gHat.eid = hatEid;
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Beer;
@@ -194,6 +195,7 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 	  	case HatTypes_Beer:
 			cBag->movementComponent->movementValues[eid].accelX /= -1;
 			cBag->movementComponent->movementValues[eid].accelY /= -1;
+			cBag->movementComponent->movementValues[eid].drunk = false;
 			break;
 		case HatTypes_Cowboy:
 			break;
