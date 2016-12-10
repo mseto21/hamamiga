@@ -157,7 +157,7 @@ Harry: Placed coins on the levels, added brief invincibility after being hit,
        screen that Gavi so beautifully drew, and fixed a glitch in the bullet
        and knife code.
 
-Matt: Added level select screen, fixed up some things with level 1, made physics a lot faster by reducing the number of collisions per frame, implemented coins and doors, created a new entity AI that jumps in place.
+Matt: Implemented the circus hat and added "teams" to make collision checking better.
 
 Mindy: Added more things to the StatSystem + sound effects. Now after each level, stats are displayed after you die/win displaying what you achieved in that level. These stats are included in the overall main Game Stats in the main screen.
 
