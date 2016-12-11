@@ -70,7 +70,7 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 			texture = TextureCache_GetTexture("bullet");
 			Animation_Initialize(&animation, 1, 150.0, 52, 12);
 			t = InteractionTypes_Cowboy;
-			damage = 10;
+			damage = 50;
 			break;
 	}
 

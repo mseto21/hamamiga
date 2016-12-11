@@ -329,15 +329,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 		if (Component_HasIndex(healthComponent, eid)) {
 			if (eid != Constants::PlayerIndex_) {
-				int max = healthComponent->maxHealth[eid];
-				int current = healthComponent->health[eid];
-				if (current < 0) {
-				  current = 0;
-				  healthComponent->health[eid] = 0;
-				}
-				//const SDL_Rect maxRect = {XRightRender_, YTopRender_, static_cast<int>(rect.w), HealthBarHeight_};
+				int current = HealthComponent_Lerp(healthComponent, eid, delta);
+				int max = healthComponent->maxHealth[Constants::PlayerIndex_];
 				const SDL_Rect currentRect = {static_cast<int>(rect.x), static_cast<int>(rect.y) - HealthBarHeight_, static_cast<int>(rect.w * ((float) current / max)), HealthBarHeight_};
-			        float ratio = (float) current / max;
+				float ratio = (float) current / max;
 				int r = 167;
 				int g = 255;
 				int b = 131;
