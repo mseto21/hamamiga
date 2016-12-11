@@ -100,6 +100,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			// Enemy collisions
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			if (Collision(*r1, r2)) {
+				physicsComponent->physicsValues[eid].collided = true;
 				physicsComponent->physicsValues[otherEid].collided = true;
 				
 				if (teamComponent->team[eid] != teamComponent->team[otherEid]) {

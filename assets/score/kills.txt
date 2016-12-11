@@ -2,7 +2,7 @@
 kills=191;
 fallen=53;
 =======
-kills=51;
+kills=53;
 fallen=3;
 >>>>>>> origin
 total1;
