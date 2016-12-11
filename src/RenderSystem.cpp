@@ -320,8 +320,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			Texture* messageTexture;
 			if (interactableComponent->canBeInteractedWith[eid]) {
 				messageTexture = interactableComponent->msgs[eid];
-				Rectangle messageRect = {rect.x + (rect.w / 2 - messageTexture->w / 2), rect.y - messageTexture->h, messageTexture->w, messageTexture->h};
-				RenderSystem_RenderCoord(renderer, &messageRect, NULL, messageTexture);
+				if (messageTexture){
+					Rectangle messageRect = {rect.x + (rect.w / 2 - messageTexture->w / 2), rect.y - messageTexture->h, messageTexture->w, messageTexture->h};
+					RenderSystem_RenderCoord(renderer, &messageRect, NULL, messageTexture);
+				}
 			}
 		}
 

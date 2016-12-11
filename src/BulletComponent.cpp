@@ -79,7 +79,7 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 	DamageComponent_Add(cBag->damageComponent, bulletEid, damage);
 	AIComponent_Add(cBag->aiComponent, bulletEid, 1);
 	PhysicsComponent_Add(cBag->physicsComponent, bulletEid, 1);
-	InteractableComponent_Add(cBag->interactableComponent, bulletEid, TextureCache_GetTexture("bullet-pickup"), t, 0, 0);
+	InteractableComponent_Add(cBag->interactableComponent, bulletEid, 0, t, 0, 0);
 	AnimationComponent_Add(cBag->animationComponent, bulletEid, animation);
 	TextureComponent_Add(cBag->textureComponent, bulletEid, texture);
 	RectangleComponent_Add(cBag->rectangleComponent, bulletEid, 0, 0, texture->w, texture->h);

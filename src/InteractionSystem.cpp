@@ -47,17 +47,15 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 		uint32 eid = interactableComponent->entityArray[entityIndex];
 
 		int type = interactableComponent->types[eid];
-
-		if (!Collision(r1, rectangleComponent->entityRectangles[eid])) {
-			interactableComponent->canBeInteractedWith[eid] = false;
-			continue;
-		}
-
 		interactableComponent->canBeInteractedWith[eid] = true;
 		bool interact = inputComponent->interact[Constants::PlayerIndex_];
 
 		switch (type) {
 			case InteractionTypes_Hat: {
+				if (!Collision(r1, rectangleComponent->entityRectangles[eid])) {
+					interactableComponent->canBeInteractedWith[eid] = false;
+					continue;
+				}
 				if (interact) {
 					int hattype = interactableComponent->datafield[eid];
 					if (!interactableComponent->interacted[eid]) {
@@ -74,6 +72,10 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				continue;
 			}
 			case InteractionTypes_Coin:
+				if (!Collision(r1, rectangleComponent->entityRectangles[eid])) {
+					interactableComponent->canBeInteractedWith[eid] = false;
+					continue;
+				}
 				goalComponent->points[Constants::PlayerIndex_] += Constants::CoinValue_;
 				if (Component_HasIndex(aliveComponent, eid)) {
 					Sound_Play(SoundCache_GetSound("coin"), 0);
@@ -82,6 +84,10 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				}
 				continue;
 			case InteractionTypes_Door:
+				if (!Collision(r1, rectangleComponent->entityRectangles[eid])) {
+					interactableComponent->canBeInteractedWith[eid] = false;
+					continue;
+				}
 				if (interact) {
 					inputComponent->interact[Constants::PlayerIndex_] = false;
 					Interaction_EnterDoor(interactionSystem->game, interactableComponent->datafield[eid]);
@@ -89,7 +95,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				continue;
 			case InteractionTypes_Chef:
 			case InteractionTypes_Cowboy:
-				if (physicsComponent->physicsValues[eid].collided) {
+				if (Collision(r1, rectangleComponent->entityRectangles[eid]) || physicsComponent->physicsValues[eid].collided) {
 					for (int i = 0; i < MaxBullets_; i++) {
 						if (bulletComponent->bulletValues[Constants::PlayerIndex_].bulletEids[i] == eid)
 							bulletComponent->bulletValues[Constants::PlayerIndex_].available[i] = true;

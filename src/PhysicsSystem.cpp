@@ -126,8 +126,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 						yVelocity = -10;
 					moveValues->yVelocity = yVelocity;
 					r1->y += moveValues->yVelocity;
-				} else if (teamComponent->team[eid] == teamComponent->team[otherEid] 
-					&& Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, otherEid)) {
+				} else if (Component_HasIndex(aiComponent, eid) && Component_HasIndex(aiComponent, otherEid)) {
 					aiComponent->marchValues[eid].facing *= -1;
 					aiComponent->marchValues[eid].distance = 0;
 					movementComponent->movementValues[eid].xAccel *= -1;
@@ -193,7 +192,6 @@ world_physics:
 				if (map->map[tileY][tileHeadX].solid || map->map[tileY][tileEndHeadX].solid) {
 					r1->y = tileY * Constants::TileSize_ + Constants::TileSize_;
 					moveValues->yVelocity = 0;
-					physicsComponent->physicsValues[eid].collided = true;
 				} 
 			} else if (moveValues->yVelocity >= 0) {
 				if (map->map[tileEndY][tileFootX].solid || map->map[tileEndY][tileEndFootX].solid) {
@@ -205,7 +203,6 @@ world_physics:
 					} else if (map->map[tileEndY][tileEndFootX].speed > 0) {
 						moveValues->xVelocity += map->map[tileEndY][tileEndFootX].speed;
 					}
-					physicsComponent->physicsValues[eid].collided = true;
 				}
 			}
 
@@ -218,7 +215,6 @@ world_physics:
 						  aiComponent->marchValues[eid].facing *= -1;
 						  aiComponent->marchValues[eid].distance = 0;
 						}
-						physicsComponent->physicsValues[eid].collided = true;
 					}
 					if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileX].solid) {
 					  aiComponent->marchValues[eid].facing *= -1;
@@ -227,7 +223,6 @@ world_physics:
 				} else if (map->map[tileHeadY][tileX].solid || map->map[tileCenterY][tileX].solid || map->map[tileEndY][tileX].solid) {
 					r1->x = tileX * Constants::TileSize_ + Constants::TileSize_;
 					moveValues->xVelocity = 0;
-					physicsComponent->physicsValues[eid].collided = true;
 				}
 			}
 			else if (moveValues->xVelocity > 0) {
@@ -239,7 +234,6 @@ world_physics:
 						  aiComponent->marchValues[eid].facing *= -1;
 						  aiComponent->marchValues[eid].distance = 0;
 						}
-						physicsComponent->physicsValues[eid].collided = true;
 					}
      				if (Component_HasIndex(aiComponent, eid) && !map->map[tileEndY][tileEndX].solid) {
 					  aiComponent->marchValues[eid].facing *= -1;
@@ -248,7 +242,6 @@ world_physics:
 				} else if (map->map[tileHeadY][tileEndX].solid || map->map[tileCenterY][tileEndX].solid || map->map[tileEndY][tileEndX].solid) {
 					r1->x = tileEndX * Constants::TileSize_ - r1->w;
 					moveValues->xVelocity = 0;
-					physicsComponent->physicsValues[eid].collided = true;
 				}
 			}
 		}
@@ -257,16 +250,13 @@ world_physics:
 		if (r1->x <= 0) {
 			r1->x = 0;
 			moveValues->xVelocity = 0;
-			physicsComponent->physicsValues[eid].collided = true;
 		} else if (r1->x + r1->w >= physicsSystem->zone->levelWidth) {
 			r1->x = physicsSystem->zone->levelWidth - r1->w;
 			moveValues->xVelocity = 0;
-			physicsComponent->physicsValues[eid].collided = true;
 		}
 		if (r1->y < 0) {
 			r1->y = 0;
 			moveValues->yVelocity = 0;
-			physicsComponent->physicsValues[eid].collided = true;
 		}
 		//if (eid == Constants::PlayerIndex_) {
 		  //std::cout << "x: " << r1->x << " y: " << r1->y << std::endl;
