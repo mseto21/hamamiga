@@ -223,6 +223,7 @@ void UpdatePlay(Game* game) {
 			// Trigger some different animation, noise, etc.
 		case GameResult_Killed:
 			game->gameState = GameState_Lose;
+			LoadLevelStatAssets(game);
 			break;
 		case GameResult_Won:
 			switch (game->playState.levelSelection){
@@ -244,6 +245,7 @@ void UpdatePlay(Game* game) {
 			if (game->playState.levelSelection == game->playState.unlockedLevels)
 				game->playState.unlockedLevels++;
 			game->gameState = GameState_Win;
+			LoadLevelStatAssets(game);
 		default:
 			break;
 	}
@@ -331,6 +333,7 @@ void Game_RunLoop(Game* game) {
 						case SDLK_u:
 							if (game->gameState == GameState_Play) {
 								game->gameState = GameState_Win;
+								LoadLevelStatAssets(game);
 								if (game->playState.levelSelection == game->playState.unlockedLevels)
 									game->playState.unlockedLevels++;
 							}

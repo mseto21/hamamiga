@@ -1,0 +1,4 @@
+hats=3;
+coins=8;
+demons=7;
+END=;

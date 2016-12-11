@@ -7,8 +7,8 @@ const uint8 MaxBullets_ = 3;
 
 struct BulletValues {
 	uint32 bulletEids[MaxBullets_];
+	bool available[MaxBullets_];
 	int availableBullets;
-	bool initialized[MaxBullets_];
 };
 
 struct BulletComponent : public Component {

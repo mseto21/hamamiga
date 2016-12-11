@@ -12,6 +12,7 @@ struct MovementValues {
 	bool left; //direction the entity is facing
 	bool grounded;
 	bool flying;
+	bool drunk;
 };
 
 struct MovementComponent : public Component {

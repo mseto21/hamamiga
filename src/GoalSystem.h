@@ -6,6 +6,7 @@ struct HealthComponent;
 struct AliveComponent;
 struct GoalComponent;
 struct RectangleComponent;
+struct TextureComponent;
 struct Zone;
 
 enum GameResult {
@@ -20,6 +21,7 @@ struct GoalSystem {
 	AliveComponent* aliveComponent;
 	GoalComponent* goalComponent;
 	RectangleComponent* rectangleComponent;
+	TextureComponent* textureComponent;
 	Zone* zone;
 };
 

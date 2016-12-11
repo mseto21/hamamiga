@@ -152,7 +152,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 
 world_physics:
 		// Move player based on physics
-		if (!moveValues->grounded) {
+		if (!moveValues->grounded && !(Component_HasIndex(aiComponent, eid) && aiComponent->types[eid] == 3)) {
 			if (moveValues->flying) {
 			    moveValues->yVelocity += Constants::Gravity_ / 2;
 			} else {

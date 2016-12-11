@@ -1,0 +1,4 @@
+hats=4;
+coins=7;
+demonbats=6;
+END=;

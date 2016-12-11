@@ -22,7 +22,7 @@ void BulletComponent_Add(BulletComponent* bulletComponent, uint32 eid) {
 
 	for (int i = 0; i < MaxBullets_; i++) {
 		bulletComponent->bulletValues[eid].bulletEids[i] = EntityCache_GetNewEntity()->eid;
-		bulletComponent->bulletValues[eid].initialized[i] = false;
+		bulletComponent->bulletValues[eid].available[i] = true;
 	}
 
 	bulletComponent->bulletValues[eid].availableBullets = MaxBullets_;
@@ -37,8 +37,15 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
   		return;
   	}
 
-	int index = bulletValues->availableBullets;
-	uint32 bulletEid = bulletValues->bulletEids[index];
+  	int i;
+  	for (i = 0; i < MaxBullets_; i++) {
+		if (bulletComponent->bulletValues[eid].available[i]) {
+			bulletComponent->bulletValues[eid].available[i] = false;
+			break;
+		}
+	}
+
+	uint32 bulletEid = bulletValues->bulletEids[i];
 	Rectangle rect = cBag->rectangleComponent->entityRectangles[eid];
 	bool left = cBag->movementComponent->movementValues[eid].left;
 
@@ -67,23 +74,18 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 			break;
 	}
 
-	if (!bulletValues->initialized[index]) {
-		MovementComponent_Add(cBag->movementComponent, bulletEid, xVelocity, yVelocity, xVelocity, yVelocity);
-		TeamComponent_Add(cBag->teamComponent, bulletEid, 0);
-		DamageComponent_Add(cBag->damageComponent, bulletEid, damage);
-		AIComponent_Add(cBag->aiComponent, bulletEid, 1);
-		PhysicsComponent_Add(cBag->physicsComponent, bulletEid, 1);
-		InteractableComponent_Add(cBag->interactableComponent, bulletEid, TextureCache_GetTexture("bullet-pickup"), t, 0, 0);
-		AliveComponent_Add(cBag->aliveComponent, bulletEid);
-		AnimationComponent_Add(cBag->animationComponent, bulletEid, animation);
-		TextureComponent_Add(cBag->textureComponent, bulletEid, texture);
-		RectangleComponent_Add(cBag->rectangleComponent, bulletEid, 0, 0, texture->w, texture->h);
-		bulletValues->initialized[index] = true;
-	}
+	MovementComponent_Add(cBag->movementComponent, bulletEid, xVelocity, yVelocity, xVelocity, yVelocity);
+	TeamComponent_Add(cBag->teamComponent, bulletEid, 0);
+	DamageComponent_Add(cBag->damageComponent, bulletEid, damage);
+	AIComponent_Add(cBag->aiComponent, bulletEid, 1);
+	PhysicsComponent_Add(cBag->physicsComponent, bulletEid, 1);
+	InteractableComponent_Add(cBag->interactableComponent, bulletEid, TextureCache_GetTexture("bullet-pickup"), t, 0, 0);
+	AnimationComponent_Add(cBag->animationComponent, bulletEid, animation);
+	TextureComponent_Add(cBag->textureComponent, bulletEid, texture);
+	RectangleComponent_Add(cBag->rectangleComponent, bulletEid, 0, 0, texture->w, texture->h);
 	
 	Component_EnableEntity(cBag, bulletEid);
 	cBag->interactableComponent->interacted[bulletEid] = false;
-	cBag->aliveComponent->alive[bulletEid] = true;
 	cBag->movementComponent->movementValues[bulletEid].xVelocity = xVelocity;
 
 	if (!left) {

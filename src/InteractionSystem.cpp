@@ -10,8 +10,8 @@
 #include "ComponentBag.h"
 #include "SoundCache.h"
 #include "HatMethods.h"
-
 #include <iostream>
+#include "StatSystem.h"
 
 void InteractionSystem_Initialize(InteractionSystem* interactionSystem, ComponentBag* cBag, Game* game) {
 	interactionSystem->interactableComponent 	= cBag->interactableComponent;
@@ -47,18 +47,6 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 		uint32 eid = interactableComponent->entityArray[entityIndex];
 
 		int type = interactableComponent->types[eid];
-		if (type == InteractionTypes_Chef || type == InteractionTypes_Cowboy) {
-			if (physicsComponent->physicsValues[eid].collided) {
-				bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
-				interactableComponent->interacted[eid] = true;
-				if (Component_HasIndex(aliveComponent, eid)) {
-			  		aliveComponent->alive[eid] = false;
-		  		}
-		  		physicsComponent->physicsValues[eid].collided = false;
-		  		inputComponent->interact[Constants::PlayerIndex_] = false;
-			}
-			continue;
-		}
 
 		if (!Collision(r1, rectangleComponent->entityRectangles[eid])) {
 			interactableComponent->canBeInteractedWith[eid] = false;
@@ -89,6 +77,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				goalComponent->points[Constants::PlayerIndex_] += Constants::CoinValue_;
 				if (Component_HasIndex(aliveComponent, eid)) {
 					Sound_Play(SoundCache_GetSound("coin"), 0);
+					scores[Coins_] += 1;
 					aliveComponent->alive[eid] = false;
 				}
 				continue;
@@ -101,11 +90,12 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 			case InteractionTypes_Chef:
 			case InteractionTypes_Cowboy:
 				if (physicsComponent->physicsValues[eid].collided) {
+					for (int i = 0; i < MaxBullets_; i++) {
+						if (bulletComponent->bulletValues[Constants::PlayerIndex_].bulletEids[i] == eid)
+							bulletComponent->bulletValues[Constants::PlayerIndex_].available[i] = true;
+					}
 					bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
-					interactableComponent->interacted[eid] = true;
-					if (Component_HasIndex(aliveComponent, eid)) {
-				  		aliveComponent->alive[eid] = false;
-			  		}
+					ComponentBag_ForceRemove(interactionSystem->cBag , eid);
 				}
 				continue;
 			default:

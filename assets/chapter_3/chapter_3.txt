@@ -125,7 +125,7 @@ zone=
 		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)
-		rectangle(3000,353,125,71,)
+		rectangle(3000,453,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
 		alive()
@@ -138,7 +138,7 @@ zone=
 		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)
-		rectangle(4700,453,125,71,)
+		rectangle(4700,523,125,71,)
 		texture(assets/enemies/flying-demon.png,fdemon,)
 		ai(3,20,1,)
 		alive()
@@ -161,7 +161,7 @@ zone=
 		movement(3.0,14.0,1.0,5.0,)
 		texture(assets/hats/cowboy-hat.png,cowboy,)
 		physics(0,)
-		interactable('x' to Put On,0,5,)
+		interactable('x' to Put On,0,5, YeeHaw! Press 'z' to shoot enemies. Ammo is displayed in the top left.,)
 		rectangle(400,120,85,60,)
 		alive();
 	entity=

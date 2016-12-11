@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 hats=7;
 levels=4;
 deaths=29;
 fallen=17;
+=======
+hats=9;
+levels=3;
+deaths=0;
+fallen=3;
+>>>>>>> origin
 kills=-1;
+coins=22;
 END=;
