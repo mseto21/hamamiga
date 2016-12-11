@@ -71,7 +71,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			continue;
 		}
 		
-		physicsComponent->physicsValues[eid].collided = false;
 		MovementValues* moveValues = &movementComponent->movementValues[eid];
 		Rectangle* r1 = &rectangleComponent->entityRectangles[eid];
 		if (Component_HasIndex(interactableComponent, eid)) {
@@ -101,7 +100,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			// Enemy collisions
 			Rectangle r2 = rectangleComponent->entityRectangles[physicsComponent->entityArray[j]];
 			if (Collision(*r1, r2)) {
-				physicsComponent->physicsValues[eid].collided = true;
 				physicsComponent->physicsValues[otherEid].collided = true;
 				
 				if (teamComponent->team[eid] != teamComponent->team[otherEid]) {

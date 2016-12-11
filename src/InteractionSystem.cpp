@@ -96,6 +96,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 			case InteractionTypes_Chef:
 			case InteractionTypes_Cowboy:
 				if (Collision(r1, rectangleComponent->entityRectangles[eid]) || physicsComponent->physicsValues[eid].collided) {
+					physicsComponent->physicsValues[eid].collided = false;
 					for (int i = 0; i < MaxBullets_; i++) {
 						if (bulletComponent->bulletValues[Constants::PlayerIndex_].bulletEids[i] == eid)
 							bulletComponent->bulletValues[Constants::PlayerIndex_].available[i] = true;
