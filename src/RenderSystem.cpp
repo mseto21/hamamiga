@@ -6,7 +6,6 @@
 #include "ComponentBag.h"
 #include "Game.h"
 #include "Interactions.h"
-
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
 #include "AnimationComponent.h"
@@ -414,7 +413,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				}
 		      gHatTexture->flip = SDL_FLIP_NONE;
 		      gHatTexture->rotation = 0;
-		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 35, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    if (hatTexture) {
 		      SDL_Rect clip = {0, 0, hatTexture->w, hatTexture->h};
@@ -422,7 +421,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				clip = {hatTexture->clipX, hatTexture->clipY, hatTexture->clipW, hatTexture->clipH};
 			}
 		      hatTexture->flip = SDL_FLIP_NONE;
-		      RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ + 25, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
 		    }
 		    RenderHatHUD(renderer, hat->hatType, delta, renderSystem->cBag);
 		}
@@ -433,7 +432,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		int current = HealthComponent_Lerp(healthComponent, Constants::PlayerIndex_, delta);
 		int max = healthComponent->maxHealth[Constants::PlayerIndex_];
 		//const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
-		const SDL_Rect currentRect = {XRightRender_, YTopRender_, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
+		const SDL_Rect currentRect = {XRightRender_ + 50, YTopRender_ - 9, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
 		float ratio = (float) current / max;
 		int r = 167;
 		int g = 255;
@@ -445,7 +444,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		g = g2 + (g - g2)*ratio;
 		b = b2 + (b - b2)*ratio;
 		Texture* hBar = TextureCache_GetTexture(Constants::HealthBar_);
-		RenderSystem_Render_xywh(renderer, XRightRender_ - 8, YTopRender_ - 44, hBar->w, hBar->h, NULL, hBar);
+		RenderSystem_Render_xywh(renderer, XRightRender_ - 8 + 50, YTopRender_ - 44 - 9, hBar->w, hBar->h, NULL, hBar);
 		SDL_SetRenderDrawColor(renderer, r, g, b, 1);
 		SDL_RenderFillRect(renderer, &currentRect);
 	}
@@ -467,8 +466,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		}
 		std::string scoreStr = minStr + ":" + secStr;
 		SDL_Color scoreColor = {255, 255, 255, 1};
+		
 		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.c_str(), "score_string");
-		RenderSystem_Render_xywh(renderer, (Constants::ScreenWidth_ - scoreTexture.w)/2, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
+		float xPos = (Constants::ScreenWidth_ - scoreTexture.w)/2 - 10;
+		float yPos = YTopRender_;
+		Texture* tBar = TextureCache_GetTexture(Constants::TimeBar_);
+		RenderSystem_Render_xywh(renderer, xPos - 18, yPos - 44, tBar->w, tBar->h, NULL, tBar);;
+		RenderSystem_Render_xywh(renderer, xPos, yPos, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
 	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 }

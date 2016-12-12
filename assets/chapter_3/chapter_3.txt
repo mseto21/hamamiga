@@ -162,7 +162,7 @@ zone=
 		texture(assets/hats/cowboy-hat.png,cowboy,)
 		physics(0,)
 		interactable('x' to Put On,0,5, YeeHaw! Press 'z' to shoot enemies. Ammo is displayed in the top left.,)
-		rectangle(400,120,85,60,)
+		rectangle(420,420,85,60,)
 		alive();
 	entity=
 		movement(3.0,14.0,1.0,5.0,)
