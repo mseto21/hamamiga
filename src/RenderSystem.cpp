@@ -1,4 +1,5 @@
 #include "RenderSystem.h"
+#include "StatSystem.h"
 #include "TextureCache.h"
 #include "SoundCache.h"
 #include "Types.h"
@@ -470,6 +471,8 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	
 	if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
 		Texture scoreTexture;
+		//Scoretime
+		scores[GameTime_] = goalComponent->points[Constants::PlayerIndex_];
 		int score = goalComponent->points[Constants::PlayerIndex_];
 		int seconds = ((int)(score / Constants::Second_)) % 60;
 		int minutes = ((int)(score / Constants::Second_)) / 60;

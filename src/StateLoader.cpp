@@ -74,7 +74,6 @@ void LoadTitleStateAssets(Game* game) {
 		TextureCache_CreateTextureFromFont(game->renderer, font, selectedColor, game->titleState.selectionStrings[selectionIndex], select.c_str());
 	}
 	TTF_CloseFont(font);
-
 	// Load title music
 	game->titleState.titleMusic = Mix_LoadMUS("assets/music/themesong.ogg");
 	if (game->titleState.titleMusic == NULL) {
@@ -261,6 +260,7 @@ void LoadLevelStatAssets(Game* game) {
 	}
 	const char * headername = "levelheader";
 	const char * header = "--------Level Stats-------- ";
+	scoreType[GameTime_] = "Game Time: ";
  	scoreType[Hats_]= "Hats Collected: ";
  	scoreType[Coins_]= "Coins Collected: ";
  	scoreType[Deaths_]= "Times Murdered: ";
@@ -281,13 +281,29 @@ void LoadLevelStatAssets(Game* game) {
 	TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, header, headername);
 	for (int highScoreIndex = 0; highScoreIndex < NumScoreTypes_; highScoreIndex++) {
 		std::string msg = scoreType[highScoreIndex];
-		msg.append(std::to_string(scores[highScoreIndex]));	
-		if (highScoreIndex != Deaths_ && highScoreIndex != Fallen_){
+		if (highScoreIndex == GameTime_){
+			std::cout << "ACTUAL SCORETIME IS: " << scores[highScoreIndex] << std::endl;
+			int seconds = ((int)(scores[highScoreIndex] / Constants::Second_)) % 60;
+			int minutes = ((int)(scores[highScoreIndex] / Constants::Second_)) / 60;
+			std::string secStr = std::to_string(seconds);
+			std::string minStr = std::to_string(minutes);
+			if (seconds < 10) {
+			  secStr = "0" + secStr;
+			}
+			if (minutes < 10) {
+			  minStr = "0" + minStr;
+			}
+			std::string scoreStr = minStr + ":" + secStr;
+			msg.append(scoreStr);
+		} else {
+			msg.append(std::to_string(scores[highScoreIndex]));	
+		}
+		if (highScoreIndex != Deaths_ && highScoreIndex != Fallen_ && highScoreIndex != GameTime_){
 			std::string totalNum = std::to_string(numPossibleScores[highScoreIndex]);
 			msg.append("/"+ totalNum);
 		}
 		if (numPossibleScores[highScoreIndex] != 0 || (highScoreIndex == Deaths_ 
-			|| highScoreIndex == Fallen_)){
+			|| highScoreIndex == Fallen_ || highScoreIndex == GameTime_)){
 			numDisplay++;
 		}
 		std::string name = "level_score_";
@@ -299,7 +315,7 @@ void LoadLevelStatAssets(Game* game) {
 
 bool LoadPlayStateAssets(Game* game, int chapter) {
 	//Resetting level scores
-	LevelScore_Reset();
+	LevelScore_Reset(&game->playState.restarted);
 	// Initialize caches
 	TextureCache* tcache = TextureCache_GetCache();
 	tcache->levelIndex = tcache->index;
