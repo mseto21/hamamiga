@@ -5,7 +5,6 @@
 struct SDL_Renderer;
 struct SDL_Window;
 struct SDL_Rect;
-struct SDL_Point;
 struct Texture;
 struct Rectangle;
 struct TextureComponent;
@@ -44,7 +43,6 @@ struct RenderSystem {
 // Game specific rendering
 void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, TileMap* tileMap, _TTF_Font* defaultFont);
 void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture);
-void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture, SDL_Point* point);
 void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect* clip, Texture* texture);
 void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uint32 delta);
 void RenderSystem_CompleteRender(SDL_Renderer* renderer);
