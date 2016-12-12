@@ -355,6 +355,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	}
 
 	// Initialize fonts
+	game->playState.hudFont = TTF_OpenFont("assets/fonts/Gotham-Bold.otf", 30);
 	game->playState.scoreFont = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
 	game->playState.healthFont = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
 	game->zoneIntroState.sliding = false;
@@ -389,7 +390,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
 	MovementSystem_Initialize(&game->playState.movementSystem, &game->playState.cBag);
 	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap, &game->playState.chapter);
-	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.scoreFont);
+	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.hudFont);
 	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag, &game->playState.chapter);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
@@ -421,6 +422,7 @@ void FreePlay(Game* game) {
 	game->zoneIntroState.endScene.current = 0;
 
 	// Free fonts
+	TTF_CloseFont(game->playState.hudFont);
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);
 

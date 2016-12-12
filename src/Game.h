@@ -86,6 +86,7 @@ struct PauseState {
 
 struct PlayState {
 	/* Fonts */
+	_TTF_Font* hudFont;
 	_TTF_Font* scoreFont;
 	_TTF_Font* healthFont;
 
