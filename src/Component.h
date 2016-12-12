@@ -13,7 +13,7 @@ its index in 'entityArray'
 
 struct Component {
 	uint32 	count;
-	uint32 	entityArray[Constants::MaxEntities_];  // holds eid of enemies being used (0, count]
+	uint32 	entityArray[Constants::MaxEntities_];  // holds eid of enemies being used [0, count)
 	bool   	usedEntities[Constants::MaxEntities_]; // usedEntities[eid] tells whether that nemy is in use
 };
 
