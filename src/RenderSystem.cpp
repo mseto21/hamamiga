@@ -27,6 +27,8 @@
 #include <SDL.h>
 #include <iostream>
 
+#define PI 3.14159265
+
 // Render constants
 const int XRightRender_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4 - 80;
 const int XLeftRender_ = Constants::ScreenWidth_ / 24;
@@ -75,29 +77,6 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 	}
 
 	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, texture->rotation, NULL, (SDL_RendererFlip)texture->flip);
-}
-
-// --------------------------------------------------------------------
-void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture, SDL_Point* point) {
-	if (!renderer) {
-		return;
-	}
-	if (!texture) {
-		return;
-	}
-	
-	SDL_Rect rquad;
-	rquad.x = x;
-	rquad.y = y;
-	rquad.w = w;
-	rquad.h = h;
-
-	if (clip) {
-		rquad.w = clip->w;
-		rquad.h = clip->h;
-	}
-
-	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, texture->rotation, point, (SDL_RendererFlip)texture->flip);
 }
 
 // --------------------------------------------------------------------
@@ -411,11 +390,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 				gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
 				gHatTexture->rotation = textureComponent->textures[Constants::PlayerIndex_]->rotation;
-				//int xCor = (int)(cameraComponent->camera.x + rect.x + textureComponent->textures[Constants::PlayerIndex_]->w/2);
-				//int yCor =  (int)(cameraComponent->camera.y + rect.y + textureComponent->textures[Constants::PlayerIndex_]->h/2);
-				//std::cout << "xCor: " << xCor << " yCor: " << yCor << std::endl;
-				//SDL_Point point = {xCor, yCor};
-				RenderSystem_Render_xywh(renderer, rect.x + (rect.w - gHatTexture->w)/2, rect.y - gHatTexture->h / 2.5, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+				
+				float gX = rect.x + (rect.w - gHatTexture->w)/2;
+				float gY = rect.y - gHatTexture->h / 2.5;
+				float rads = (gHatTexture->rotation+90)*PI/180;
+				float gXp = -rect.h*cos(rads)/2 + gX;
+				float gYp = -rect.h*sin(rads)/2 + gY + rect.h/2;
+				RenderSystem_Render_xywh(renderer, gXp, gYp, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    
 		    Texture* pShader = TextureCache_GetTexture(Constants::PShader_);
