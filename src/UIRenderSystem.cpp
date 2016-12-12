@@ -152,10 +152,31 @@ void RenderOptions(Game* game, uint32 elapsed) {
 	//std::cout<< "in redner options" << std::endl;
 	(void) elapsed;
 	Texture* background = TextureCache_GetTexture(Constants::TitleBackground_);
+	Texture* soundBar = TextureCache_GetTexture(Constants::SoundBar_);
+
 	SDL_RenderClear(game->renderer);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, background->w, background->h, NULL, background);
+
 	Texture* overlay = TextureCache_GetTexture(Constants::OptionsO_);
 	RenderSystem_Render_xywh(game->renderer, 0, 0, overlay->w, overlay->h, NULL, overlay);
+
+	int renderX = Constants::ScreenWidth_ / 2 - soundBar->w / 2;
+	RenderSystem_Render_xywh(game->renderer, renderX, 400, soundBar->w, soundBar->h, NULL, soundBar);
+
+	//draw sound amount
+	float ratio = (float) game->optionState.musicVolume / Constants::MaxVolume_;
+	const SDL_Rect currentRect = {renderX + 8, 444, static_cast<int>((Constants::ScreenWidth_/5)*ratio), Constants::ScreenHeight_/16};
+	int r = 157;
+	int r2 = 131;
+	int g = 131;
+	int g2 = 167;
+	int b = 255;
+	r = r2 + (r - r2)*ratio;
+	g = g2 + (g - g2)*ratio;
+	SDL_SetRenderDrawColor(game->renderer, r, g, b, 1);
+	SDL_RenderFillRect(game->renderer, &currentRect);
+
+	//draw choices
 	for (int selectionIndex = 0; selectionIndex < Constants::OptionScreenSelections_; selectionIndex++) {
 		Texture* selection;
 		if (selectionIndex == game->optionState.selection) {
@@ -167,8 +188,8 @@ void RenderOptions(Game* game, uint32 elapsed) {
 			select.append("_select");
 			selection = TextureCache_GetTexture(select.c_str());
 		}
-		int renderX = Constants::ScreenWidth_ / 2 - selection->w / 2;
 		int renderY = (selectionIndex+3) * (selection->h + 35);
+		renderX = Constants::ScreenWidth_ / 2 - selection->w / 2;
 		RenderSystem_Render_xywh(game->renderer, renderX, renderY, selection->w, selection->h, NULL, selection);
 	}
 	SDL_RenderPresent(game->renderer);

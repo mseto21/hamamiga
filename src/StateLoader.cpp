@@ -158,6 +158,8 @@ void LoadLevelSelectAssets(Game* game) {
 
 
 void LoadOptionStateAssets(Game* game) {
+        // Load music bar
+        TextureCache_CreateTexture(game->renderer, "assets/hud/sound-bar.png", Constants::SoundBar_);
 	// Load font
 	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 75);
 	if (!font) {

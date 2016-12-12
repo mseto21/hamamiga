@@ -76,4 +76,5 @@ namespace Constants {
 	const String128 StatsO_				=	"stats_overlay";
 	const String128 LevelsO_			= 	"levels_overlay";
 	const String128 OptionsO_			= 	"options_overlay";
+	const String128 SoundBar_			=	"sound_bar";
 }
