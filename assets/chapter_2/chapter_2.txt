@@ -167,7 +167,7 @@ zone=
 	entity=
 		texture(assets/chapter_2/hats-chap2.png,miner,85,0,85,60,)
 		physics(0,)
-		interactable('x' to Put On,0,4,)
+		interactable('x' to Put On,0,4, Let there be light!,)
 		rectangle(255,970,48,48,)
 		alive();
 	entity=

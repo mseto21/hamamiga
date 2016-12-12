@@ -189,7 +189,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	HatComponent* hatComponent = renderSystem->hatComponent;
  	HealthComponent* healthComponent = renderSystem->healthComponent;
  	InteractableComponent* interactableComponent = renderSystem->interactableComponent;
- 	//GoalComponent* goalComponent = renderSystem->goalComponent;
+ 	GoalComponent* goalComponent = renderSystem->goalComponent;
  	NameComponent* nameComponent = renderSystem->nameComponent;
 	AIComponent* aiComponent = renderSystem->aiComponent;
  	TileMap* map = renderSystem->map;
@@ -467,14 +467,25 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		SDL_SetRenderDrawColor(renderer, r, g, b, 1);
 		SDL_RenderFillRect(renderer, &currentRect);
 	}
-
-	/*if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
+	
+	if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
 		Texture scoreTexture;
 		int score = goalComponent->points[Constants::PlayerIndex_];
-		std::string scoreStr = std::to_string(score / Constants::Second_);
-		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.substr(0, 4).c_str(), "score_string");
-		RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
-	}*/
+		int seconds = ((int)(score / Constants::Second_)) % 60;
+		int minutes = ((int)(score / Constants::Second_)) / 60;
+		std::string secStr = std::to_string(seconds);
+		std::string minStr = std::to_string(minutes);
+		if (seconds < 10) {
+		  secStr = "0" + secStr;
+		}
+		if (minutes < 10) {
+		  minStr = "0" + minStr;
+		}
+		std::string scoreStr = minStr + ":" + secStr;
+		SDL_Color scoreColor = {255, 255, 255, 1};
+		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.c_str(), "score_string");
+		RenderSystem_Render_xywh(renderer, (Constants::ScreenWidth_ - scoreTexture.w)/2, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
+	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 }
 
