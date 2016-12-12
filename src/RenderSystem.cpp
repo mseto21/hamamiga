@@ -6,7 +6,6 @@
 #include "ComponentBag.h"
 #include "Game.h"
 #include "Interactions.h"
-
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
 #include "AnimationComponent.h"
@@ -467,8 +466,12 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		}
 		std::string scoreStr = minStr + ":" + secStr;
 		SDL_Color scoreColor = {255, 255, 255, 1};
+		float xPos = (Constants::ScreenWidth_ - scoreTexture.w)/2;
+		float yPos = YTopRender_;
+		Texture* tBar = TextureCache_GetTexture(Constants::TimeBar_);
+		RenderSystem_Render_xywh(renderer, xPos - 16, yPos - 44, tBar->w, tBar->h, NULL, tBar);
 		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.c_str(), "score_string");
-		RenderSystem_Render_xywh(renderer, (Constants::ScreenWidth_ - scoreTexture.w)/2, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
+		RenderSystem_Render_xywh(renderer, xPos, yPos, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
 	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 }
