@@ -305,6 +305,7 @@ void Game_RunLoop(Game* game) {
 							if (game->gameState == GameState_Win || game->gameState == GameState_Lose 
 								|| game->gameState == GameState_Play || game->gameState == GameState_ZoneIntro
 								|| game->gameState == GameState_Pause) {
+								Mix_HaltMusic();
 								game->gameState = GameState_Returning;
 							} else {
 								game->gameState = GameState_Title;
@@ -436,7 +437,7 @@ void Game_RunLoop(Game* game) {
 			case GameState_Returning:
 				FreePlay(game);
 				LoadLevelSelectAssets(game);
-				game->gameState = GameState_LevelSelect;
+				game->gameState = GameState_Title;
 				break;
 			case GameState_ReturnAndEnterLevel:
 				FreePlay(game);
