@@ -142,13 +142,13 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
 			texture->flip = SDL_FLIP_NONE;
 			int bulletIndex = 0;
 			for (; bulletIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; bulletIndex++) {
-			    RenderSystem_Render_xywh(renderer, XRightRender_ + 115, YTopRender_ + (texture->h * bulletIndex) + 60, texture->w, texture->h, NULL, texture); 
+			    RenderSystem_Render_xywh(renderer, XRightRender_ + 137, YTopRender_ + (texture->h * bulletIndex) + 60, texture->w, texture->h, NULL, texture); 
 			}
 			for (; bulletIndex < MaxBullets_; bulletIndex++) {
 				uint32 eid = cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].bulletEids[MaxBullets_ - bulletIndex - 1];
 				if (cBag->aliveComponent->timeAlive[eid] > 0) {
 					SDL_Rect clip = { 0, 0, static_cast<int>(texture->w * ((float)cBag->aliveComponent->timeAlive[eid] / MaxBulletLife_)), texture->h };
-					RenderSystem_Render_xywh(renderer, XRightRender_ + 115, YTopRender_ + (texture->h * bulletIndex) + 60, texture->w, texture->h, &clip, texture); 
+					RenderSystem_Render_xywh(renderer, XRightRender_ + 137, YTopRender_ + (texture->h * bulletIndex) + 60, texture->w, texture->h, &clip, texture); 
 				}
 			}
 			break;
@@ -157,7 +157,7 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
             Texture* texture = TextureCache_GetTexture("knife");
 			texture->flip = SDL_FLIP_NONE;
             for (int knifeIndex = 0; knifeIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; knifeIndex++) {
-            	RenderSystem_Render_xywh(renderer, XRightRender_ + 115, YTopRender_ + texture->h * knifeIndex + 60, texture->w, texture->h, NULL, texture);
+            	RenderSystem_Render_xywh(renderer, XRightRender_ + 141, YTopRender_ + texture->h * knifeIndex + 55, texture->w, texture->h, NULL, texture);
 		}
 		break;
 	}
@@ -258,6 +258,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		rect.y -= cameraComponent->camera.y;
 		SDL_Rect clip = {0, 0, rect.w, rect.h};
 
+
 		if (texture->clipW || texture->clipH) {
 			clip = {texture->clipX, texture->clipY, texture->clipW, texture->clipH};
 		}
@@ -324,8 +325,38 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			if (!ShouldDraw(eid, &healthComponent))
 			  animation->currentFrame -= 6;
 		}
+
+		//Adds a glow around glamour and regular hats
+		//helps distinguish between them
 		
-		  RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
+		if (Component_HasIndex(interactableComponent, eid)) {
+		  if (interactableComponent->types[eid] == 0) {
+		    int ht = interactableComponent->datafield[eid];
+		    Texture* glow;
+		    switch (ht) {
+		      case 0:
+		      case 1:
+		      case 5:
+		      case 6:
+		      case 8:
+		        glow = TextureCache_GetTexture(Constants::HatGlow_);
+			RenderSystem_Render_xywh(renderer, rect.x - (glow->w - rect.w)/2,
+						 rect.y - (glow->h - rect.h)/2, glow->w, glow->h, NULL, glow);
+		        break;
+		      case 3:
+		      case 4:
+		      case 7:
+		      case 9:
+			glow = TextureCache_GetTexture(Constants::GlamourGlow_);
+			RenderSystem_Render_xywh(renderer, rect.x - (rect.w - glow->w)/2,
+						 rect.y - (-rect.h + glow->h)/2, glow->w, glow->h, NULL, glow);
+		        break;
+		    }
+		    
+		  }
+		}
+		
+		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 
 		// Display interaction message
 		if (Component_HasIndex(interactableComponent, eid)) {
@@ -412,16 +443,92 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		    if (pShader && strcmp(name, "miner") != 0) {
 		      RenderSystem_Render_xywh(renderer, rect.x + (rect.w - pShader->w)/2, rect.y + (rect.h - pShader->h)/2, pShader->w, pShader->h, NULL, pShader);
 		    }
-
 		    if (gHatTexture) {
 		      RenderGlamourEffect(renderer, gHat->id, delta, &rect);
+		    }
+		    // Render HUD
+		    if (Component_HasIndex(healthComponent, Constants::PlayerIndex_)) {
+		      int current = HealthComponent_Lerp(healthComponent, Constants::PlayerIndex_, delta);
+		      int max = healthComponent->maxHealth[Constants::PlayerIndex_];
+		      //const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
+		      const SDL_Rect currentRect = {XRightRender_ + 50, YTopRender_ - 9, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
+		      float ratio = (float) current / max;
+		      int r = 167;
+		      int g = 255;
+		      int b = 131;
+		      int r2 = 255;
+		      int g2 = 92;
+		      int b2 = 78;
+		      r = r2 + (r - r2)*ratio;
+		      g = g2 + (g - g2)*ratio;
+		      b = b2 + (b - b2)*ratio;
+		      Texture* hBar = TextureCache_GetTexture(Constants::HealthBar_);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ - 8 + 50, YTopRender_ - 44 - 9, hBar->w, hBar->h, NULL, hBar);
+		      SDL_SetRenderDrawColor(renderer, r, g, b, 1);
+		      SDL_RenderFillRect(renderer, &currentRect);
+		    }
+	
+		    if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
+		      //Scoretime
+		      scores[GameTime_] = goalComponent->points[Constants::PlayerIndex_];
+		      int score = goalComponent->points[Constants::PlayerIndex_];
+		      int seconds = ((int)(score / Constants::Second_)) % 60;
+		      int minutes = ((int)(score / Constants::Second_)) / 60;
+
+
+		      float xPos = (Constants::ScreenWidth_ - 50)/2 - 10;
+		      Texture* tBar = TextureCache_GetTexture(Constants::TimeBar_);
+		      RenderSystem_Render_xywh(renderer, xPos - 20, YTopRender_ - 44, tBar->w, tBar->h, NULL, tBar);
+
+		      Texture* texture;
+		      std::string bigKey;
+		      std::string littleKey;
+
+		      // Render Minutes
+		      littleKey = std::to_string(minutes % 10);
+		      minutes /= 10;
+		      bigKey = std::to_string(minutes % 10);
+		      texture = TextureCache_GetTexture(bigKey.c_str());
+		      RenderSystem_Render_xywh(renderer, xPos, YTopRender_, texture->w, texture->h, NULL, texture);
+		      xPos += texture->w;
+		      texture = TextureCache_GetTexture(littleKey.c_str());
+		      RenderSystem_Render_xywh(renderer, xPos, YTopRender_, texture->w, texture->h, NULL, texture);
+		      xPos += texture->w;
+
+		      // Render Colon
+		      texture = TextureCache_GetTexture(":");
+		      RenderSystem_Render_xywh(renderer, xPos, YTopRender_, texture->w, texture->h, NULL, texture);
+		      xPos += TextureCache_GetTexture(":")->w;
+
+		      // Render Seconds
+		      littleKey = std::to_string(seconds % 10);
+		      seconds /= 10;
+		      bigKey = std::to_string(seconds % 10);
+		      texture = TextureCache_GetTexture(bigKey.c_str());
+		      RenderSystem_Render_xywh(renderer, xPos, YTopRender_, texture->w, texture->h, NULL, texture);
+		      xPos += texture->w;
+		      texture = TextureCache_GetTexture(littleKey.c_str());
+		      RenderSystem_Render_xywh(renderer, xPos, YTopRender_, texture->w, texture->h, NULL, texture);
+
+		      // Render Coins
+		      Texture* coinTexture = TextureCache_GetTexture(Constants::CoinBar_);
+		      SDL_Color scoreColor = {255, 255, 255, 1};
+		      if (coinTexture) {
+			RenderSystem_Render_xywh(renderer, XLeftRender_ - 20, YTopRender_ - 44, coinTexture->w, coinTexture->h, NULL, coinTexture);
+			Texture coinNumT;
+			std::string coinStr = std::to_string(scores[Coins_]) + "/" + std::to_string(levelcoins[level]);
+			Texture_CreateTextureFromFont(&coinNumT, renderer, renderSystem->defaultFont, scoreColor, coinStr.c_str(), "coin_string");
+			RenderSystem_Render_xywh(renderer, XLeftRender_ + 57, YTopRender_ - 14, coinNumT.w, coinNumT.h, NULL, &coinNumT);
+		      }
+		    }
+		    if (gHatTexture) {
 		      SDL_Rect clip = {0, 0, gHatTexture->w, gHatTexture->h};
 		    	if (gHatTexture->clipW || gHatTexture->clipH) {
 					clip = {gHatTexture->clipX, gHatTexture->clipY, gHatTexture->clipW, gHatTexture->clipH};
 				}
 		      gHatTexture->flip = SDL_FLIP_NONE;
 		      gHatTexture->rotation = 0;
-		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 75, YTopRender_ + HHealth_ + 2, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 89, YTopRender_ + HHealth_ + - 3, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    if (hatTexture) {
 		      SDL_Rect clip = {0, 0, hatTexture->w, hatTexture->h};
@@ -429,68 +536,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				clip = {hatTexture->clipX, hatTexture->clipY, hatTexture->clipW, hatTexture->clipH};
 			}
 		      hatTexture->flip = SDL_FLIP_NONE;
-		      RenderSystem_Render_xywh(renderer, XRightRender_ + 30, YTopRender_ + HHealth_ + 2, hatTexture->w, hatTexture->h, &clip, hatTexture);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ + 47, YTopRender_ + HHealth_ + 2, hatTexture->w, hatTexture->h, &clip, hatTexture);
 		    }
 		    RenderHatHUD(renderer, hat->hatType, delta, renderSystem->cBag);
 		}
 	}
 	
-	// Render HUD
-	if (Component_HasIndex(healthComponent, Constants::PlayerIndex_)) {
-		int current = HealthComponent_Lerp(healthComponent, Constants::PlayerIndex_, delta);
-		int max = healthComponent->maxHealth[Constants::PlayerIndex_];
-		//const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
-		const SDL_Rect currentRect = {XRightRender_ + 50, YTopRender_ - 9, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
-		float ratio = (float) current / max;
-		int r = 167;
-		int g = 255;
-		int b = 131;
-		int r2 = 255;
-		int g2 = 92;
-		int b2 = 78;
-		r = r2 + (r - r2)*ratio;
-		g = g2 + (g - g2)*ratio;
-		b = b2 + (b - b2)*ratio;
-		Texture* hBar = TextureCache_GetTexture(Constants::HealthBar_);
-		RenderSystem_Render_xywh(renderer, XRightRender_ - 8 + 50, YTopRender_ - 44 - 9, hBar->w, hBar->h, NULL, hBar);
-		SDL_SetRenderDrawColor(renderer, r, g, b, 1);
-		SDL_RenderFillRect(renderer, &currentRect);
-	}
 	
-	if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
-		Texture scoreTexture;
-		//Scoretime
-		scores[GameTime_] = goalComponent->points[Constants::PlayerIndex_];
-		int score = goalComponent->points[Constants::PlayerIndex_];
-		int seconds = ((int)(score / Constants::Second_)) % 60;
-		int minutes = ((int)(score / Constants::Second_)) / 60;
-		std::string secStr = std::to_string(seconds);
-		std::string minStr = std::to_string(minutes);
-		if (seconds < 10) {
-		  secStr = "0" + secStr;
-		}
-		if (minutes < 10) {
-		  minStr = "0" + minStr;
-		}
-		std::string scoreStr = minStr + ":" + secStr;
-		SDL_Color scoreColor = {255, 255, 255, 1};
-		
-		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.c_str(), "score_string");
-		float xPos = (Constants::ScreenWidth_ - 100)/2 - 10;
-		Texture* tBar = TextureCache_GetTexture(Constants::TimeBar_);
-		RenderSystem_Render_xywh(renderer, xPos - 20, YTopRender_ - 44, tBar->w, tBar->h, NULL, tBar);
-		RenderSystem_Render_xywh(renderer, xPos, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
-
-		//coins
-		Texture* coinTexture = TextureCache_GetTexture(Constants::CoinBar_);
-		if (coinTexture) {
-		  RenderSystem_Render_xywh(renderer, XLeftRender_ - 20, YTopRender_ - 44, coinTexture->w, coinTexture->h, NULL, coinTexture);
-		  Texture coinNumT;
-		  std::string coinStr = std::to_string(scores[Coins_]) + "/" + std::to_string(levelcoins[level]);
-		  Texture_CreateTextureFromFont(&coinNumT, renderer, renderSystem->defaultFont, scoreColor, coinStr.c_str(), "coin_string");
-		  RenderSystem_Render_xywh(renderer, XLeftRender_ + 57, YTopRender_ - 14, coinNumT.w, coinNumT.h, NULL, &coinNumT);
-		}
-	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 }
 

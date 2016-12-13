@@ -354,6 +354,8 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	TextureCache_CreateTexture(game->renderer, "assets/hud/health-bar.png", Constants::HealthBar_);
 	TextureCache_CreateTexture(game->renderer, "assets/hud/time-bar.png", Constants::TimeBar_);
 	TextureCache_CreateTexture(game->renderer, "assets/hud/coin-bar.png", Constants::CoinBar_);
+	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/hats/glamour-hat-glow.png", Constants::GlamourGlow_)->sdltexture, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/hats/hat-glow.png", Constants::HatGlow_)->sdltexture, SDL_BLENDMODE_BLEND);
 	
 	// Load file
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer, &game->zoneIntroState)) {
@@ -422,6 +424,13 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 
 	// Pause state
 	TextureCache_CreateTexture(game->renderer, "assets/interactables/speech-bubble.png", "speech-bubble");
+
+	// Load score fonts
+	SDL_Color scoreColor = {255, 255, 255, 1};
+	for (int i = 0; i < 10; i++) {
+		TextureCache_CreateTextureFromFont(game->renderer, game->playState.renderSystem.defaultFont, scoreColor, std::to_string(i).c_str(), std::to_string(i).c_str());
+	}
+	TextureCache_CreateTextureFromFont(game->renderer, game->playState.renderSystem.defaultFont, scoreColor, ":", ":");
 
 	// Set loaded variable
 	game->playState.loaded = true;
