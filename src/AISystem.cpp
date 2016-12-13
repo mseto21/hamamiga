@@ -180,6 +180,8 @@ void AISystem_Update(AISystem* aiSystem) {
       case AIType_Jumper:
         JumperUpdate(aiSystem, eid);
         break;
+      default:
+        break;
     } 
   }
 }

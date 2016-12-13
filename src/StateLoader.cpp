@@ -413,6 +413,13 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	// Pause state
 	TextureCache_CreateTexture(game->renderer, "assets/interactables/speech-bubble.png", "speech-bubble");
 
+	// Load score fonts
+	SDL_Color scoreColor = {255, 255, 255, 1};
+	for (int i = 0; i < 10; i++) {
+		TextureCache_CreateTextureFromFont(game->renderer, game->playState.renderSystem.defaultFont, scoreColor, std::to_string(i).c_str(), std::to_string(i).c_str());
+	}
+	TextureCache_CreateTextureFromFont(game->renderer, game->playState.renderSystem.defaultFont, scoreColor, ":", ":");
+
 	// Set loaded variable
 	game->playState.loaded = true;
 

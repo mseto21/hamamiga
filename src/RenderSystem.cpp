@@ -458,31 +458,50 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 	}
 	
 	if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
-		Texture scoreTexture;
 		//Scoretime
 		scores[GameTime_] = goalComponent->points[Constants::PlayerIndex_];
 		int score = goalComponent->points[Constants::PlayerIndex_];
 		int seconds = ((int)(score / Constants::Second_)) % 60;
 		int minutes = ((int)(score / Constants::Second_)) / 60;
-		std::string secStr = std::to_string(seconds);
-		std::string minStr = std::to_string(minutes);
-		if (seconds < 10) {
-		  secStr = "0" + secStr;
-		}
-		if (minutes < 10) {
-		  minStr = "0" + minStr;
-		}
-		std::string scoreStr = minStr + ":" + secStr;
-		SDL_Color scoreColor = {255, 255, 255, 1};
-		
-		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.c_str(), "score_string");
-		float xPos = (Constants::ScreenWidth_ - 100)/2 - 10;
+
+
+		float xPos = (Constants::ScreenWidth_ - 50)/2 - 10;
 		Texture* tBar = TextureCache_GetTexture(Constants::TimeBar_);
 		RenderSystem_Render_xywh(renderer, xPos - 20, YTopRender_ - 44, tBar->w, tBar->h, NULL, tBar);
-		RenderSystem_Render_xywh(renderer, xPos, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
 
-		//coins
+		Texture* texture;
+		std::string bigKey;
+		std::string littleKey;
+
+		// Render Minutes
+		littleKey = std::to_string(minutes % 10);
+		minutes /= 10;
+		bigKey = std::to_string(minutes % 10);
+		texture = TextureCache_GetTexture(bigKey.c_str());
+		RenderSystem_Render_xywh(renderer, xPos, YTopRender_, texture->w, texture->h, NULL, texture);
+		xPos += texture->w;
+		texture = TextureCache_GetTexture(littleKey.c_str());
+		RenderSystem_Render_xywh(renderer, xPos, YTopRender_, texture->w, texture->h, NULL, texture);
+		xPos += texture->w;
+
+		// Render Colon
+		texture = TextureCache_GetTexture(":");
+		RenderSystem_Render_xywh(renderer, xPos, YTopRender_, texture->w, texture->h, NULL, texture);
+		xPos += TextureCache_GetTexture(":")->w;
+
+		// Render Seconds
+		littleKey = std::to_string(seconds % 10);
+		seconds /= 10;
+		bigKey = std::to_string(seconds % 10);
+		texture = TextureCache_GetTexture(bigKey.c_str());
+		RenderSystem_Render_xywh(renderer, xPos, YTopRender_, texture->w, texture->h, NULL, texture);
+		xPos += texture->w;
+		texture = TextureCache_GetTexture(littleKey.c_str());
+		RenderSystem_Render_xywh(renderer, xPos, YTopRender_, texture->w, texture->h, NULL, texture);
+
+		// Render Coins
 		Texture* coinTexture = TextureCache_GetTexture(Constants::CoinBar_);
+		SDL_Color scoreColor = {255, 255, 255, 1};
 		if (coinTexture) {
 		  RenderSystem_Render_xywh(renderer, XLeftRender_ - 20, YTopRender_ - 44, coinTexture->w, coinTexture->h, NULL, coinTexture);
 		  Texture coinNumT;
