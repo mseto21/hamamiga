@@ -258,6 +258,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		rect.y -= cameraComponent->camera.y;
 		SDL_Rect clip = {0, 0, rect.w, rect.h};
 
+
 		if (texture->clipW || texture->clipH) {
 			clip = {texture->clipX, texture->clipY, texture->clipW, texture->clipH};
 		}
@@ -324,8 +325,35 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			if (!ShouldDraw(eid, &healthComponent))
 			  animation->currentFrame -= 6;
 		}
+
+		if (Component_HasIndex(interactableComponent, eid)) {
+		  if (interactableComponent->types[eid] == 0) {
+		    int ht = interactableComponent->datafield[eid];
+		    Texture* glow;
+		    switch (ht) {
+		      case 0:
+		      case 1:
+		      case 5:
+		      case 6:
+		      case 8:
+		        glow = TextureCache_GetTexture(Constants::HatGlow_);
+			RenderSystem_Render_xywh(renderer, rect.x + (rect.w - glow->w)/2,
+						 rect.y - (rect.h - glow->h)/2, glow->w, glow->h, &clip, glow);
+		        break;
+		      case 3:
+		      case 4:
+		      case 7:
+		      case 9:
+			glow = TextureCache_GetTexture(Constants::GlamourGlow_);
+			RenderSystem_Render_xywh(renderer, rect.x + (rect.w - glow->w)/2,
+						 rect.y - (rect.h - glow->h)/2, glow->w, glow->h, &clip, glow);
+		        break;
+		    }
+		    
+		  }
+		}
 		
-		  RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
+		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 
 		// Display interaction message
 		if (Component_HasIndex(interactableComponent, eid)) {

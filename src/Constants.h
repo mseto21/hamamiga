@@ -78,4 +78,6 @@ namespace Constants {
 	const String128 SoundBar_			=	"sound_bar";
 	const String128 TimeBar_			= 	"time_bar";
 	const String128 CoinBar_			= 	"coin_bar";
+	const String128 GlamourGlow_		= 	"glamour_glow";
+	const String128 HatGlow_			= 	"hat_glow";
 }
