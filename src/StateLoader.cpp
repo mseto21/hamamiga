@@ -125,7 +125,7 @@ void LoadHighScoreStateAssets(Game* game) {
 		std::string msg = game->highScoreState.scoreType[highScoreIndex];
 		msg.append(std::to_string(game->highScoreState.scores[highScoreIndex]));
 		if (highScoreIndex == 0){
-			std::string totalHats = std::to_string(HatTypes_Empty);
+			std::string totalHats = std::to_string(HatTypes_Empty -1);
 			msg.append("/"+ totalHats);
 		}
 		if (highScoreIndex == 1){

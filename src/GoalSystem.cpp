@@ -51,7 +51,7 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
                         scores[DemonBats_] += 1;
                     } else if (strcmp(textureComponent->textures[eid]->name,"muffin") == 0) {
                         scores[Muffins_] += 1;
-                    } else if (strcmp(textureComponent->textures[eid]->name,"orange") == 0) {
+                    } else if (strcmp(textureComponent->textures[eid]->name,"jdemon") == 0) {
                         scores[Oranges_] += 1;
                     } else if (strcmp(textureComponent->textures[eid]->name,"apple") == 0) {
                         scores[Apples_] += 1;
@@ -76,7 +76,7 @@ GameResult GoalSystem_Update(GoalSystem* goalSystem, uint32 elapsed) {
                         scores[DemonBats_] += 1;
                     } else if (strcmp(textureComponent->textures[eid]->name,"muffin") == 0) {
                         scores[Muffins_] += 1;
-                    } else if (strcmp(textureComponent->textures[eid]->name,"orange") == 0) {
+                    } else if (strcmp(textureComponent->textures[eid]->name,"jdemon") == 0) {
                         scores[Oranges_] += 1;
                     } else if (strcmp(textureComponent->textures[eid]->name,"apple") == 0) {
                         scores[Apples_] += 1;
