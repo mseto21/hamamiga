@@ -7,6 +7,7 @@
 #include "AliveComponent.h"
 #include "PhysicsComponent.h"
 #include "GoalComponent.h"
+#include "DamageComponent.h"
 #include "ComponentBag.h"
 #include "SoundCache.h"
 #include "HatMethods.h"
@@ -95,6 +96,9 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				}
 				continue;
 			case InteractionTypes_Chef:
+				if (physicsComponent->physicsValues[eid].collided) {
+					Component_Disable(interactionSystem->cBag->damageComponent, eid);
+				}
 				if (Collision(r1, rectangleComponent->entityRectangles[eid])) {
 					physicsComponent->physicsValues[eid].collided = false;
 					for (int i = 0; i < MaxBullets_; i++) {
