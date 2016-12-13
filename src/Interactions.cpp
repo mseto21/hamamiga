@@ -40,7 +40,6 @@ const char * val = "1";
 
 void AddHatScore(int type){
 	if (hatsCollected[type] == 0){
-		std::cout << "ADDED HAT TYPE " << type << std::endl;
 		hatsCollected[type] = 1;
 		scores[Hats_] += 1;
 	}

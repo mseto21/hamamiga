@@ -142,13 +142,13 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
 			texture->flip = SDL_FLIP_NONE;
 			int bulletIndex = 0;
 			for (; bulletIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; bulletIndex++) {
-			    RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + (texture->h * bulletIndex), texture->w, texture->h, NULL, texture); 
+			    RenderSystem_Render_xywh(renderer, XRightRender_ + 115, YTopRender_ + (texture->h * bulletIndex) + 60, texture->w, texture->h, NULL, texture); 
 			}
 			for (; bulletIndex < MaxBullets_; bulletIndex++) {
 				uint32 eid = cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].bulletEids[MaxBullets_ - bulletIndex - 1];
 				if (cBag->aliveComponent->timeAlive[eid] > 0) {
 					SDL_Rect clip = { 0, 0, static_cast<int>(texture->w * ((float)cBag->aliveComponent->timeAlive[eid] / MaxBulletLife_)), texture->h };
-					RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + (texture->h * bulletIndex), texture->w, texture->h, &clip, texture); 
+					RenderSystem_Render_xywh(renderer, XRightRender_ + 115, YTopRender_ + (texture->h * bulletIndex) + 60, texture->w, texture->h, &clip, texture); 
 				}
 			}
 			break;
@@ -157,7 +157,7 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
             Texture* texture = TextureCache_GetTexture("knife");
 			texture->flip = SDL_FLIP_NONE;
             for (int knifeIndex = 0; knifeIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; knifeIndex++) {
-            	RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + texture->h * knifeIndex, texture->w, texture->h, NULL, texture);
+            	RenderSystem_Render_xywh(renderer, XRightRender_ + 115, YTopRender_ + texture->h * knifeIndex + 60, texture->w, texture->h, NULL, texture);
 		}
 		break;
 	}
@@ -422,7 +422,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				}
 		      gHatTexture->flip = SDL_FLIP_NONE;
 		      gHatTexture->rotation = 0;
-		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 35, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 75, YTopRender_ + HHealth_ + 2, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    if (hatTexture) {
 		      SDL_Rect clip = {0, 0, hatTexture->w, hatTexture->h};
@@ -430,7 +430,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				clip = {hatTexture->clipX, hatTexture->clipY, hatTexture->clipW, hatTexture->clipH};
 			}
 		      hatTexture->flip = SDL_FLIP_NONE;
-		      RenderSystem_Render_xywh(renderer, XRightRender_ + 25, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ + 30, YTopRender_ + HHealth_ + 2, hatTexture->w, hatTexture->h, &clip, hatTexture);
 		    }
 		    RenderHatHUD(renderer, hat->hatType, delta, renderSystem->cBag);
 		}
@@ -478,10 +478,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		
 		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.c_str(), "score_string");
 		float xPos = (Constants::ScreenWidth_ - 100)/2 - 10;
-		float yPos = YTopRender_;
 		Texture* tBar = TextureCache_GetTexture(Constants::TimeBar_);
-		RenderSystem_Render_xywh(renderer, xPos - 20, yPos - 44, tBar->w, tBar->h, NULL, tBar);;
-		RenderSystem_Render_xywh(renderer, xPos, yPos, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
+		RenderSystem_Render_xywh(renderer, xPos - 20, YTopRender_ - 44, tBar->w, tBar->h, NULL, tBar);
+		RenderSystem_Render_xywh(renderer, xPos, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
+
+		//coins
+		Texture* coinTexture = TextureCache_GetTexture("coin");
+		RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_, coinTexture->w, coinTexture->h, NULL, coinTexture);
 	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 }
