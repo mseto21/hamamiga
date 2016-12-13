@@ -1,4 +1,4 @@
-kills=4;
+kills=17;
 fallen=0;
-total=4;
+total1;
 END=;

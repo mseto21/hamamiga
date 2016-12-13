@@ -326,6 +326,9 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 			  animation->currentFrame -= 6;
 		}
 
+		//Adds a glow around glamour and regular hats
+		//helps distinguish between them
+		/*
 		if (Component_HasIndex(interactableComponent, eid)) {
 		  if (interactableComponent->types[eid] == 0) {
 		    int ht = interactableComponent->datafield[eid];
@@ -337,22 +340,22 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		      case 6:
 		      case 8:
 		        glow = TextureCache_GetTexture(Constants::HatGlow_);
-			RenderSystem_Render_xywh(renderer, rect.x + (rect.w - glow->w)/2,
-						 rect.y - (rect.h - glow->h)/2, glow->w, glow->h, &clip, glow);
+			RenderSystem_Render_xywh(renderer, rect.x - (glow->w - rect.w)/2,
+						 rect.y - (glow->h - rect.h)/2, glow->w, glow->h, NULL, glow);
 		        break;
 		      case 3:
 		      case 4:
 		      case 7:
 		      case 9:
 			glow = TextureCache_GetTexture(Constants::GlamourGlow_);
-			RenderSystem_Render_xywh(renderer, rect.x + (rect.w - glow->w)/2,
-						 rect.y - (rect.h - glow->h)/2, glow->w, glow->h, &clip, glow);
+			RenderSystem_Render_xywh(renderer, rect.x - (rect.w - glow->w)/2,
+						 rect.y - (-rect.h + glow->h)/2, glow->w, glow->h, NULL, glow);
 		        break;
 		    }
 		    
 		  }
 		}
-		
+		*/
 		RenderSystem_RenderCoord(renderer, &rect, &clip, texture);
 
 		// Display interaction message
