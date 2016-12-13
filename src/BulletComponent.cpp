@@ -13,6 +13,7 @@
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
 #include "TextureCache.h"
+#include "SoundCache.h"
 
 #include <iostream>
 #include <SDL.h>
@@ -69,12 +70,14 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 			cBag->movementComponent->movementValues[bulletEid].yVelocity = yVelocity * -1 + cBag->movementComponent->movementValues[eid].yVelocity;
 			t = InteractionTypes_Chef;
 			damage = 35;
+			Sound_Play(SoundCache_GetSound("knife"), 0);
 			break;
 		case HatTypes_Cowboy:
 			texture = TextureCache_GetTexture("bullet");
 			Animation_Initialize(&animation, 1, 150.0, 52, 12);
 			t = InteractionTypes_Cowboy;
 			damage = 35;
+			Sound_Play(SoundCache_GetSound("pew"), 0);
 			break;
 	}
 

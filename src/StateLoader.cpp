@@ -217,6 +217,7 @@ void LoadZoneIntroAssets(Game* game, String128 name) {
 
 //Loading the stats for the end of the level
 void LoadLevelStatAssets(Game* game) {
+	Mix_HaltMusic();
 	// Load font
 	TTF_Font* font = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 18);
 	if (!font) {
@@ -287,8 +288,10 @@ void LoadLevelStatAssets(Game* game) {
 	// Create textures for the current high scores
 	SDL_Color scoreColor = {255, 255, 255, 255};
 	if (game->gameState == GameState_Win){
+		Sound_Play(SoundCache_GetSound("win"), 0);
 		scoreColor = {0, 0, 0, 0};
 	} else if (game->gameState == GameState_Lose){
+		Sound_Play(SoundCache_GetSound("death"), 0);
 	  scoreColor = {255, 255, 255, 255};
 	}
 	TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, header, headername);
@@ -390,6 +393,13 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SoundCache_CreateSound("assets/sounds/ow.ogg", "ow");
 	SoundCache_CreateSound("assets/sounds/thud.ogg", "thud");
 	SoundCache_CreateSound("assets/sounds/coin.ogg", "coin");
+	SoundCache_CreateSound("assets/sounds/chef.ogg", "chef");
+	SoundCache_CreateSound("assets/sounds/knife.ogg", "knife");
+	SoundCache_CreateSound("assets/sounds/pew.ogg", "pew"); 
+	SoundCache_CreateSound("assets/sounds/circus.ogg", "circus");
+	SoundCache_CreateSound("assets/sounds/circusjump.ogg", "circusjump");
+	SoundCache_CreateSound("assets/sounds/win.ogg", "win"); 
+	SoundCache_CreateSound("assets/sounds/death.ogg", "death");  
 	TextureCache_CreateTexture(game->renderer, "assets/hats/bullet.png", "bullet");
 	TextureCache_CreateTexture(game->renderer, "assets/hats/knife.png", "knife");
 	SDL_Color color = { game->playState.cBag.interactableComponent->r, game->playState.cBag.interactableComponent->g, game->playState.cBag.interactableComponent->b, 1 };

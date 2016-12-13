@@ -48,6 +48,9 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 			if (hatComponent->hats[eid].hat.hatType == HatTypes_BunnyHat){
 				Sound_Play(SoundCache_GetSound("hop"), 0);
 			}
+			if (hatComponent->hats[eid].gHat.hatType == HatTypes_Circus){
+				Sound_Play(SoundCache_GetSound("circusjump"), 0);
+			}
 			moveValues->yAccel = -moveValues->accelY;
 		}
 		if (keysPressed[SDLK_LEFT % Constants::NumKeys_]) {

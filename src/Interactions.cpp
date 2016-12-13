@@ -149,7 +149,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			      return false;
 			cBag->hatComponent->hats[eid].hat.hatType = hatType;
 			cBag->hatComponent->hats[eid].hat.eid = hatEid;
-			Sound_Play(SoundCache_GetSound("western"), 0);
+			Sound_Play(SoundCache_GetSound("chef"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "chef", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to throw your knives at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
@@ -160,7 +160,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 		case HatTypes_Circus:
 			cBag->hatComponent->hats[eid].gHat.hatType = hatType;
 			cBag->hatComponent->hats[eid].gHat.eid = hatEid;
-			Sound_Play(SoundCache_GetSound("hatpickup"), 0);
+			Sound_Play(SoundCache_GetSound("circus"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].gHat.name, "circus", sizeof(cBag->hatComponent->hats[eid].gHat.name));
 			memcpy(&cBag->hatComponent->hats[eid].gHat.effect, "Press [SPACE] to spin", sizeof(cBag->hatComponent->hats[eid].gHat.effect));
 			cBag->hatComponent->hats[eid].gHat.id = GlamourHatId_Circus;
