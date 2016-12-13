@@ -1,6 +1,6 @@
 one=3;
-two=0;
+two=1;
 three=6;
 four=4;
-total=13;
+total=14;
 END=;

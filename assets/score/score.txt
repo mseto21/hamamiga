@@ -3,5 +3,5 @@ levels=3;
 deaths=2;
 fallen=2;
 kills=-1;
-coins=13;
+coins=14;
 END=;
