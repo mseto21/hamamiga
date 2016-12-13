@@ -4,6 +4,7 @@
 struct ComponentBag;
 
 const uint8 MaxBullets_ = 3;
+const uint16 MaxBulletLife_ = 1000;
 
 struct BulletValues {
 	uint32 bulletEids[MaxBullets_];

@@ -87,6 +87,7 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 	AnimationComponent_Add(cBag->animationComponent, bulletEid, animation);
 	TextureComponent_Add(cBag->textureComponent, bulletEid, texture);
 	RectangleComponent_Add(cBag->rectangleComponent, bulletEid, 0, 0, texture->w, texture->h);
+	AliveComponent_Add(cBag->aliveComponent, bulletEid);
 	
 	cBag->interactableComponent->interacted[bulletEid] = false;
 	cBag->movementComponent->movementValues[bulletEid].xVelocity = xVelocity;

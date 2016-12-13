@@ -23,23 +23,4 @@ zone=
 		interactable('x' to Put On,0,5, YeeHaw! Press 'z' to shoot enemies. Ammo is displayed in the top left.,)
 		rectangle(100,634,85,60,)
 		alive();
-	entity=
-		movement(3.0,14.0,1.0,5.0,)
-		texture(assets/chapter_3/hats-chap3.png,beer,0,0,85,60,)
-		physics(0,)
-		interactable('x' to Put On,0,7, Oh no! Didn't your mom tell you to never drink and fly!,)
-		rectangle(200,634,85,60,)
-		alive();
-	entity=
-		name(Matty Kæ from Marketing,)
-		animation(4,150.0,88,87,)
-		damage(20,)
-		health(100,)
-		movement(3.0,20.0,1.0,1.0,)
-		physics(100,)
-		rectangle(500,634,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		alive()
-		team(1,)
-		goal();
 END=

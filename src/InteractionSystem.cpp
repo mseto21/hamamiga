@@ -10,8 +10,9 @@
 #include "ComponentBag.h"
 #include "SoundCache.h"
 #include "HatMethods.h"
-#include <iostream>
 #include "StatSystem.h"
+
+#include <iostream>
 
 void InteractionSystem_Initialize(InteractionSystem* interactionSystem, ComponentBag* cBag, Game* game) {
 	interactionSystem->interactableComponent 	= cBag->interactableComponent;
@@ -94,8 +95,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 				}
 				continue;
 			case InteractionTypes_Chef:
-			case InteractionTypes_Cowboy:
-				if (Collision(r1, rectangleComponent->entityRectangles[eid]) || physicsComponent->physicsValues[eid].collided) {
+				if (Collision(r1, rectangleComponent->entityRectangles[eid])) {
 					physicsComponent->physicsValues[eid].collided = false;
 					for (int i = 0; i < MaxBullets_; i++) {
 						if (bulletComponent->bulletValues[Constants::PlayerIndex_].bulletEids[i] == eid)
@@ -107,6 +107,18 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 						bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets = MaxBullets_;
 					}
 					ComponentBag_ForceRemove(interactionSystem->cBag , eid);
+				}
+				continue;
+			case InteractionTypes_Cowboy:
+				// Get rid of a regular bullet upon any colllision.
+				if (Collision(r1, rectangleComponent->entityRectangles[eid]) || physicsComponent->physicsValues[eid].collided || aliveComponent->timeAlive[eid] > MaxBulletLife_) {
+					for (int i = 0; i < MaxBullets_; i++) {
+						if (bulletComponent->bulletValues[Constants::PlayerIndex_].bulletEids[i] == eid)
+							bulletComponent->bulletValues[Constants::PlayerIndex_].available[i] = true;
+					}
+					bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets++;
+					physicsComponent->physicsValues[eid].collided = false;
+					ComponentBag_ForceRemove(interactionSystem->cBag, eid);
 				}
 				continue;
 			default:

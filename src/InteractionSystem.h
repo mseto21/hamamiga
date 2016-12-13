@@ -1,4 +1,5 @@
 #pragma once
+#include "Types.h"
 
 struct InputComponent;
 struct InteractableComponent;

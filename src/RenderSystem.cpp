@@ -21,6 +21,7 @@
 #include "NameComponent.h"
 #include "AIComponent.h"
 #include "BulletComponent.h"
+#include "AliveComponent.h"
 
 #include <cstring>
 #include <math.h>
@@ -139,8 +140,16 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
         case HatTypes_Cowboy: {
 			Texture* texture = TextureCache_GetTexture("bullet");
 			texture->flip = SDL_FLIP_NONE;
-			for (int bulletIndex = 0; bulletIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; bulletIndex++) {
+			int bulletIndex = 0;
+			for (; bulletIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; bulletIndex++) {
 			    RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + (texture->h * bulletIndex), texture->w, texture->h, NULL, texture); 
+			}
+			for (; bulletIndex < MaxBullets_; bulletIndex++) {
+				uint32 eid = cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].bulletEids[MaxBullets_ - bulletIndex - 1];
+				if (cBag->aliveComponent->timeAlive[eid] > 0) {
+					SDL_Rect clip = { 0, 0, static_cast<int>(texture->w * ((float)cBag->aliveComponent->timeAlive[eid] / MaxBulletLife_)), texture->h };
+					RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_ + (texture->h * bulletIndex), texture->w, texture->h, &clip, texture); 
+				}
 			}
 			break;
 		}
