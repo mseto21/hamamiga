@@ -138,26 +138,26 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
 	(void) elapsed;
 	switch (hatId) {
         case HatTypes_Cowboy: {
-			Texture* texture = TextureCache_GetTexture("bullet");
+	                Texture* texture = TextureCache_GetTexture(Constants::BulletHud_);
 			texture->flip = SDL_FLIP_NONE;
 			int bulletIndex = 0;
 			for (; bulletIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; bulletIndex++) {
-			    RenderSystem_Render_xywh(renderer, XRightRender_ + 137, YTopRender_ + (texture->h * bulletIndex) + 60, texture->w, texture->h, NULL, texture); 
+			  RenderSystem_Render_xywh(renderer, XRightRender_ + 147, YTopRender_ + ((texture->h + 8) * bulletIndex) + 48, texture->w, texture->h, NULL, texture); 
 			}
 			for (; bulletIndex < MaxBullets_; bulletIndex++) {
 				uint32 eid = cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].bulletEids[MaxBullets_ - bulletIndex - 1];
 				if (cBag->aliveComponent->timeAlive[eid] > 0) {
 					SDL_Rect clip = { 0, 0, static_cast<int>(texture->w * ((float)cBag->aliveComponent->timeAlive[eid] / MaxBulletLife_)), texture->h };
-					RenderSystem_Render_xywh(renderer, XRightRender_ + 137, YTopRender_ + (texture->h * bulletIndex) + 60, texture->w, texture->h, &clip, texture); 
+					RenderSystem_Render_xywh(renderer, XRightRender_ + 147, YTopRender_ + ((texture->h+8) * bulletIndex) + 48, texture->w, texture->h, &clip, texture); 
 				}
 			}
 			break;
 		}
         case HatTypes_Chef: {
-            Texture* texture = TextureCache_GetTexture("knife");
+	    Texture* texture = TextureCache_GetTexture(Constants::KnifeHud_);
 			texture->flip = SDL_FLIP_NONE;
             for (int knifeIndex = 0; knifeIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; knifeIndex++) {
-            	RenderSystem_Render_xywh(renderer, XRightRender_ + 141, YTopRender_ + texture->h * knifeIndex + 55, texture->w, texture->h, NULL, texture);
+            	RenderSystem_Render_xywh(renderer, XRightRender_ + 147, YTopRender_ + texture->h * knifeIndex + 55, texture->w, texture->h, NULL, texture);
 		}
 		break;
 	}

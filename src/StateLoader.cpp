@@ -352,6 +352,8 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	std::string pShaderPath = "assets/chapter_" + std::to_string(chapter) + "/player-shader.png";
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, pShaderPath.c_str(), Constants::PShader_)->sdltexture, SDL_BLENDMODE_MOD);
 	TextureCache_CreateTexture(game->renderer, "assets/hud/health-bar.png", Constants::HealthBar_);
+	TextureCache_CreateTexture(game->renderer, "assets/hud/bullet-hud.png", Constants::BulletHud_);
+	TextureCache_CreateTexture(game->renderer, "assets/hud/knife-hud.png", Constants::KnifeHud_);
 	TextureCache_CreateTexture(game->renderer, "assets/hud/time-bar.png", Constants::TimeBar_);
 	TextureCache_CreateTexture(game->renderer, "assets/hud/coin-bar.png", Constants::CoinBar_);
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, "assets/hats/glamour-hat-glow.png", Constants::GlamourGlow_)->sdltexture, SDL_BLENDMODE_BLEND);
