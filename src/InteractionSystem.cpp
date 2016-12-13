@@ -110,6 +110,7 @@ void InteractionSystem_Update(InteractionSystem* interactionSystem) {
 						std::cerr << "InteractionSystem: Added too many bullets!" << std::endl;
 						bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets = MaxBullets_;
 					}
+					Component_Enable(interactionSystem->cBag->damageComponent, eid);
 					ComponentBag_ForceRemove(interactionSystem->cBag , eid);
 				}
 				continue;
