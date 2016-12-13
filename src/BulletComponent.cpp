@@ -18,6 +18,10 @@
 #include <SDL.h>
 
 void BulletComponent_Add(BulletComponent* bulletComponent, uint32 eid) {
+	if (Component_HadIndex(bulletComponent, eid)) {
+		Component_Enable(bulletComponent, eid);
+		return;
+	}
 	Component_Add(bulletComponent, eid);
 
 	for (int i = 0; i < MaxBullets_; i++) {
@@ -84,7 +88,6 @@ void BulletComponent_Create(BulletComponent* bulletComponent, uint32 eid, Compon
 	TextureComponent_Add(cBag->textureComponent, bulletEid, texture);
 	RectangleComponent_Add(cBag->rectangleComponent, bulletEid, 0, 0, texture->w, texture->h);
 	
-	Component_EnableEntity(cBag, bulletEid);
 	cBag->interactableComponent->interacted[bulletEid] = false;
 	cBag->movementComponent->movementValues[bulletEid].xVelocity = xVelocity;
 
