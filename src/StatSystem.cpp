@@ -20,6 +20,7 @@ const char* scoreType[NumScoreTypes_]; //Description displayed
 int numPossibleScores[NumScoreTypes_];
 int scores[NumScoreTypes_];
 int hatsCollected[MaxHats_];
+int levelcoins[NumLevels_];
 int numDisplay = 0;
 int scoreTime = 0;
 

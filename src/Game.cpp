@@ -260,7 +260,7 @@ void RenderPlay(Game* game, Uint32 elapsed) {
 	CameraSystem_Update(&game->playState.cameraSystem);
 	SoundSystem_Update(&game->playState.soundSystem, elapsed);
 	SDL_RenderClear(game->renderer);
-	RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
+	RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed, game->playState.levelSelection);
 	SDL_RenderPresent(game->renderer);
 }
 

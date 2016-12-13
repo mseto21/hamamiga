@@ -168,7 +168,7 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
 
 
 // --------------------------------------------------------------------
-void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uint32 delta) {
+void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uint32 delta, int level) {
 	TextureComponent* textureComponent = renderSystem->textureComponent;
  	RectangleComponent* rectangleComponent = renderSystem->rectangleComponent;
  	AnimationComponent* animationComponent = renderSystem->animationComponent;
@@ -181,7 +181,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
  	NameComponent* nameComponent = renderSystem->nameComponent;
 	AIComponent* aiComponent = renderSystem->aiComponent;
  	TileMap* map = renderSystem->map;
-
 
  	// Render background
  	Texture* background = TextureCache_GetTexture(Constants::GameBackground_);
@@ -487,7 +486,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		if (coinTexture) {
 		  RenderSystem_Render_xywh(renderer, XLeftRender_ - 20, YTopRender_ - 44, coinTexture->w, coinTexture->h, NULL, coinTexture);
 		  Texture coinNumT;
-		  std::string coinStr = std::to_string(scores[Coins_]) + "/8";
+		  std::string coinStr = std::to_string(scores[Coins_]) + "/" + std::to_string(levelcoins[level]);
 		  Texture_CreateTextureFromFont(&coinNumT, renderer, renderSystem->defaultFont, scoreColor, coinStr.c_str(), "coin_string");
 		  RenderSystem_Render_xywh(renderer, XLeftRender_ + 57, YTopRender_ - 14, coinNumT.w, coinNumT.h, NULL, &coinNumT);
 		}

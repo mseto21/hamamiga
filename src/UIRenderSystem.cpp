@@ -82,7 +82,7 @@ void RenderZoneIntro(Game* game, uint32 elapsed, bool* keysdown, bool* keysup) {
 		Texture* fader = TextureCache_GetTexture(Constants::TitleFader_);
 		SDL_RenderClear(game->renderer);
 		if (fader) { 
-			RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed);
+			RenderSystem_Update(&game->playState.renderSystem, game->renderer, elapsed, game->playState.levelSelection);
 			Texture* name = TextureCache_GetTexture(Constants::ZoneName_);
 			if (!name) {
 				std::cerr << "Error: Unable to load the zone's name texture" << std::endl;
@@ -252,7 +252,7 @@ void RenderLevelStats(Game* game, uint32 elapsed) {
 void RenderPauseState(Game* game, uint32  elapsed) {
 	(void) elapsed;
 	SDL_RenderClear(game->renderer);
-	RenderSystem_Update(&game->playState.renderSystem, game->renderer, 0);
+	RenderSystem_Update(&game->playState.renderSystem, game->renderer, 0, game->playState.levelSelection);
 	Texture* texture = game->pauseState.pauseTextures[game->pauseState.pauseIndex];
 	Texture* speech = TextureCache_GetTexture("speech-bubble");
 	if (speech == NULL) {

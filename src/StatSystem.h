@@ -14,10 +14,20 @@ enum ScoreType{
   NumScoreTypes_,
 };
 
+enum Levels{
+  Tutorial_,
+  One_,
+  Two_,
+  Three_,
+  Four_,
+  NumLevels_,
+};
+
 extern const char* scoreType[NumScoreTypes_]; //Description displayed
 extern int numPossibleScores[NumScoreTypes_];
 extern int hatsCollected[16]; //Max hats for now
 extern int scores[NumScoreTypes_];
+extern int levelcoins[NumLevels_];
 extern int numDisplay;
 
 //Goal Data Storage

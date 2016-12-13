@@ -74,6 +74,13 @@ void LoadTitleStateAssets(Game* game) {
 		TextureCache_CreateTextureFromFont(game->renderer, font, selectedColor, game->titleState.selectionStrings[selectionIndex], select.c_str());
 	}
 	TTF_CloseFont(font);
+
+	//Load Stat info
+	levelcoins[One_] = totalFromFile("assets/score/one.txt", "coins");
+	levelcoins[Two_] = totalFromFile("assets/score/two.txt", "coins");
+	levelcoins[Three_] = totalFromFile("assets/score/three.txt", "coins");
+	levelcoins[Four_] = totalFromFile("assets/score/four.txt", "coins");
+
 	// Load title music
 	game->titleState.titleMusic = Mix_LoadMUS("assets/music/themesong.ogg");
 	if (game->titleState.titleMusic == NULL) {
@@ -98,6 +105,12 @@ void LoadHighScoreStateAssets(Game* game) {
 		std::cerr << "Error: Unable to load scores from path " << std::endl;
 		return;
 	}
+	//Loading coin total
+	int cointotal = 0;
+		for (int i = 0; i < NumLevels_; i++){
+		 cointotal += levelcoins[i];
+	}
+	levelcoins[NumLevels_] = cointotal;
 	
  	game->highScoreState.scoreType[0]= "Hats Collected: ";
  	game->highScoreState.scoreType[1]= "Levels Won: ";
@@ -120,7 +133,7 @@ void LoadHighScoreStateAssets(Game* game) {
 			msg.append("/"+ totalLevels);
 		}
 		if (highScoreIndex == 5){
-			std::string totalCoins = std::to_string(Constants::TotalCoins_);
+			std::string totalCoins = std::to_string(levelcoins[NumLevels_]);
 			msg.append("/"+ totalCoins);
 		}
 		std::string name = "high_score_";
@@ -282,7 +295,6 @@ void LoadLevelStatAssets(Game* game) {
 	for (int highScoreIndex = 0; highScoreIndex < NumScoreTypes_; highScoreIndex++) {
 		std::string msg = scoreType[highScoreIndex];
 		if (highScoreIndex == GameTime_){
-			std::cout << "ACTUAL SCORETIME IS: " << scores[highScoreIndex] << std::endl;
 			int seconds = ((int)(scores[highScoreIndex] / Constants::Second_)) % 60;
 			int minutes = ((int)(scores[highScoreIndex] / Constants::Second_)) / 60;
 			std::string secStr = std::to_string(seconds);

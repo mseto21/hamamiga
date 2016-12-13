@@ -44,7 +44,7 @@ struct RenderSystem {
 void RenderSystem_Initialize(RenderSystem* renderSystem, ComponentBag* cBag, TileMap* tileMap, _TTF_Font* defaultFont);
 void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture);
 void RenderSystem_RenderCoord(SDL_Renderer* renderer, Rectangle* rect, SDL_Rect* clip, Texture* texture);
-void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uint32 delta);
+void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uint32 delta, int level);
 void RenderSystem_CompleteRender(SDL_Renderer* renderer);
 void RenderSystem_Free(RenderSystem* renderSystem);
 bool ShouldDraw(uint32 eid, HealthComponent** hComponent);
