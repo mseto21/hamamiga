@@ -21,7 +21,7 @@ namespace Constants {
 	
 	// Option State
 	const uint8	 	OptionScreenSelections_	=	1;
-	const uint8		VolumeUnit_				=	4;
+	const uint8		VolumeUnit_				=	1;
 	const uint8		MaxVolume_				= 	128;
 	const float		BrightnessUnit_			= 	0.1f;
 	const float 	MaxBrightness_			= 	1.0f;
@@ -77,4 +77,5 @@ namespace Constants {
 	const String128 LevelsO_			= 	"levels_overlay";
 	const String128 OptionsO_			= 	"options_overlay";
 	const String128 SoundBar_			=	"sound_bar";
+	const String128 TimeBar_			= 	"time_bar";
 }

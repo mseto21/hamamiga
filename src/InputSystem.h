@@ -5,12 +5,14 @@
 struct MovementComponent;
 struct InputComponent;
 struct HealthComponent;
+struct HatComponent;
 struct ComponentBag;
 
 struct InputSystem {
 	InputComponent* inputComponent;
 	MovementComponent* movementComponent; 
 	HealthComponent* healthComponent;
+	HatComponent*	hatComponent;
 	ComponentBag* cBag;
 };
 

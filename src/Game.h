@@ -86,9 +86,11 @@ struct PauseState {
 
 struct PlayState {
 	/* Fonts */
+	_TTF_Font* hudFont;
 	_TTF_Font* scoreFont;
 	_TTF_Font* healthFont;
 
+	bool restarted;	/* Keeps scores in case of level restart*/
 	bool loaded; 			/* Ensure file loaded properly. */
 	uint8 unlockedLevels; 	/* Keeps track of player progress. TO-DO: Read from file! */
 	uint8 levelSelection; 	/* Current Level selection. */

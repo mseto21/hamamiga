@@ -2,7 +2,7 @@ zone=
 	name=Chapter 2: Into the Vents!;
 	tileset=assets/chapter_2/chapter_2_tileset.png;
 	tilemap=assets/chapter_2/chapter_2_level.csv;
-	music=assets/sounds/chapter_1.ogg;
+	music=assets/sounds/veggie4.ogg;
 	dimensions=5040,1470;
 	cutstart=assets/chapter_2/cutscene-1.png,assets/chapter_2/cutscene-2.png,;
 	entity=
@@ -161,6 +161,32 @@ zone=
 		rectangle(3780,1353,88,87,)
 		texture(assets/enemies/demon.png,demon,)
 		ai(0,230,1,)
+		alive()
+		team(1,)
+		goal();
+	entity=
+		name(Beatriz the Bat,)
+		animation(4,150.0,125,71,)
+		health(100,)
+		damage(10,)
+		movement(4.0,4.0,1.0,1.0,1,)
+		physics(100,)
+		rectangle(4630,290,125,71,)
+		texture(assets/enemies/flying-demon.png,fdemon,)
+		ai(3,20,1,)
+		alive()
+		team(1,)
+		goal();
+	entity=
+		name(Peter from the Pit,)
+		animation(4,150.0,88,87,)
+		health(100,)
+		damage(20,)
+		movement(3.0,20.0,1.0,1.0,)
+		physics(100,)
+		rectangle(4405,1017,88,87,)
+		texture(assets/enemies/demon.png,demon,)
+		ai(0,330,1,)
 		alive()
 		team(1,)
 		goal();

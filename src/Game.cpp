@@ -73,7 +73,11 @@ bool Game_Initialize(Game* game) {
 	LoadTitleStateAssets(game);
 	memset(&game->highScoreState.scores, 0, sizeof(game->highScoreState.scores));
 	game->playState.loaded = false;
-	game->playState.unlockedLevels = 1;
+
+	//Initialize levels
+	const char* levelpath = "assets/score/levels.txt";
+	int totallevels = totalFromFile(levelpath, "total");
+	game->playState.unlockedLevels = (totallevels+1);
 	game->playState.levelSelection = 1;
 
 	// Enter title state
@@ -312,19 +316,22 @@ void Game_RunLoop(Game* game) {
 
 							    || game->gameState == GameState_Pause) {
 						                 FreePlay(game);
+						               	 game->playState.restarted = true;
 						                 game->gameState = GameState_LoadPlay;
 						  }
 						case SDLK_n:
+						if (game->gameState == GameState_Win){
 							if (game->gameState == GameState_Win || game->gameState == GameState_Lose 
 								|| game->gameState == GameState_Play || game->gameState == GameState_ZoneIntro) {
 								if (game->playState.levelSelection == game->playState.unlockedLevels)
 									game->playState.unlockedLevels++;
 								if (game->playState.levelSelection == game->playState.unlockedLevels)
 									game->playState.unlockedLevels++;
-								game->playState.levelSelection = game->playState.unlockedLevels;
+								game->playState.levelSelection++;//= game->playState.unlockedLevels;
 								FreePlay(game);
 								game->gameState = GameState_LoadPlay;
 							} 
+						}
 							break;
 						case SDLK_p:
 							if (game->gameState == GameState_ZoneIntro)
@@ -334,6 +341,22 @@ void Game_RunLoop(Game* game) {
 							if (game->gameState == GameState_Play) {
 								game->gameState = GameState_Win;
 								LoadLevelStatAssets(game);
+								switch (game->playState.levelSelection){
+									case 1:
+										Scores_Update("assets/score/levels.txt", "one", lval);
+										break;
+									case 2:
+										Scores_Update("assets/score/levels.txt", "two", lval);
+										break;
+									case 3:
+										Scores_Update("assets/score/levels.txt", "three", lval);
+										break;
+									case 4:
+									        Scores_Update("assets/score/levels.txt", "four", lval);
+										break;
+									default:
+										break;
+								}
 								if (game->playState.levelSelection == game->playState.unlockedLevels)
 									game->playState.unlockedLevels++;
 							}

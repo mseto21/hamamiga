@@ -88,6 +88,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to shoot bulelts at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			Scores_Update(hatpath, (char*)"cowboy", val);
+			AddHatScore(HatTypes_Cowboy);
 			BulletComponent_Add(cBag->bulletComponent, eid);
 			break;
 		case HatTypes_Crown:
@@ -154,6 +155,8 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Press [SPACE] to throw your knives at enemies!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->hatComponent->hats[eid].hat.id = GlamourHatId_None;
 			BulletComponent_Add(cBag->bulletComponent, eid);
+			Scores_Update(hatpath, (char*)"chef", val);
+			AddHatScore(HatTypes_Chef);
 			break;
 		case HatTypes_Circus:
 			cBag->hatComponent->hats[eid].gHat.hatType = hatType;

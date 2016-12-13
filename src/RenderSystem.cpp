@@ -1,11 +1,11 @@
 #include "RenderSystem.h"
+#include "StatSystem.h"
 #include "TextureCache.h"
 #include "SoundCache.h"
 #include "Types.h"
 #include "ComponentBag.h"
 #include "Game.h"
 #include "Interactions.h"
-
 #include "RectangleComponent.h"
 #include "TextureComponent.h"
 #include "AnimationComponent.h"
@@ -26,6 +26,8 @@
 #include <math.h>
 #include <SDL.h>
 #include <iostream>
+
+#define PI 3.14159265
 
 // Render constants
 const int XRightRender_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4 - 80;
@@ -75,29 +77,6 @@ void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h
 	}
 
 	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, texture->rotation, NULL, (SDL_RendererFlip)texture->flip);
-}
-
-// --------------------------------------------------------------------
-void RenderSystem_Render_xywh(SDL_Renderer* renderer, int x, int y, int w, int h, SDL_Rect* clip, Texture* texture, SDL_Point* point) {
-	if (!renderer) {
-		return;
-	}
-	if (!texture) {
-		return;
-	}
-	
-	SDL_Rect rquad;
-	rquad.x = x;
-	rquad.y = y;
-	rquad.w = w;
-	rquad.h = h;
-
-	if (clip) {
-		rquad.w = clip->w;
-		rquad.h = clip->h;
-	}
-
-	SDL_RenderCopyEx(renderer, texture->sdltexture, clip, &rquad, texture->rotation, point, (SDL_RendererFlip)texture->flip);
 }
 
 // --------------------------------------------------------------------
@@ -411,11 +390,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 				gHatTexture->flip = textureComponent->textures[Constants::PlayerIndex_]->flip;
 				gHatTexture->rotation = textureComponent->textures[Constants::PlayerIndex_]->rotation;
-				//int xCor = (int)(cameraComponent->camera.x + rect.x + textureComponent->textures[Constants::PlayerIndex_]->w/2);
-				//int yCor =  (int)(cameraComponent->camera.y + rect.y + textureComponent->textures[Constants::PlayerIndex_]->h/2);
-				//std::cout << "xCor: " << xCor << " yCor: " << yCor << std::endl;
-				//SDL_Point point = {xCor, yCor};
-				RenderSystem_Render_xywh(renderer, rect.x + (rect.w - gHatTexture->w)/2, rect.y - gHatTexture->h / 2.5, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+				
+				float gX = rect.x + (rect.w - gHatTexture->w)/2;
+				float gY = rect.y - gHatTexture->h / 2.5;
+				float rads = (gHatTexture->rotation+90)*PI/180;
+				float gXp = -rect.h*cos(rads)/2 + gX;
+				float gYp = -rect.h*sin(rads)/2 + gY + rect.h/2;
+				RenderSystem_Render_xywh(renderer, gXp, gYp, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    
 		    Texture* pShader = TextureCache_GetTexture(Constants::PShader_);
@@ -432,7 +413,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				}
 		      gHatTexture->flip = SDL_FLIP_NONE;
 		      gHatTexture->rotation = 0;
-		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 10, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 35, YTopRender_ + HHealth_ + 10, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    if (hatTexture) {
 		      SDL_Rect clip = {0, 0, hatTexture->w, hatTexture->h};
@@ -440,7 +421,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				clip = {hatTexture->clipX, hatTexture->clipY, hatTexture->clipW, hatTexture->clipH};
 			}
 		      hatTexture->flip = SDL_FLIP_NONE;
-		      RenderSystem_Render_xywh(renderer, XRightRender_, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ + 25, YTopRender_ + HHealth_ + 10, hatTexture->w, hatTexture->h, &clip, hatTexture);
 		    }
 		    RenderHatHUD(renderer, hat->hatType, delta, renderSystem->cBag);
 		}
@@ -451,7 +432,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		int current = HealthComponent_Lerp(healthComponent, Constants::PlayerIndex_, delta);
 		int max = healthComponent->maxHealth[Constants::PlayerIndex_];
 		//const SDL_Rect maxRect = {XRightRender_, YTopRender_, WHealth_, HHealth_};
-		const SDL_Rect currentRect = {XRightRender_, YTopRender_, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
+		const SDL_Rect currentRect = {XRightRender_ + 50, YTopRender_ - 9, static_cast<int>(WHealth_ * ((float) current / max)), HHealth_};
 		float ratio = (float) current / max;
 		int r = 167;
 		int g = 255;
@@ -463,13 +444,15 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		g = g2 + (g - g2)*ratio;
 		b = b2 + (b - b2)*ratio;
 		Texture* hBar = TextureCache_GetTexture(Constants::HealthBar_);
-		RenderSystem_Render_xywh(renderer, XRightRender_ - 8, YTopRender_ - 44, hBar->w, hBar->h, NULL, hBar);
+		RenderSystem_Render_xywh(renderer, XRightRender_ - 8 + 50, YTopRender_ - 44 - 9, hBar->w, hBar->h, NULL, hBar);
 		SDL_SetRenderDrawColor(renderer, r, g, b, 1);
 		SDL_RenderFillRect(renderer, &currentRect);
 	}
 	
 	if (Component_HasIndex(goalComponent, Constants::PlayerIndex_)) {
 		Texture scoreTexture;
+		//Scoretime
+		scores[GameTime_] = goalComponent->points[Constants::PlayerIndex_];
 		int score = goalComponent->points[Constants::PlayerIndex_];
 		int seconds = ((int)(score / Constants::Second_)) % 60;
 		int minutes = ((int)(score / Constants::Second_)) / 60;
@@ -483,8 +466,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		}
 		std::string scoreStr = minStr + ":" + secStr;
 		SDL_Color scoreColor = {255, 255, 255, 1};
+		
 		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.c_str(), "score_string");
-		RenderSystem_Render_xywh(renderer, (Constants::ScreenWidth_ - scoreTexture.w)/2, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
+		float xPos = (Constants::ScreenWidth_ - 100)/2 - 10;
+		float yPos = YTopRender_;
+		Texture* tBar = TextureCache_GetTexture(Constants::TimeBar_);
+		RenderSystem_Render_xywh(renderer, xPos - 20, yPos - 44, tBar->w, tBar->h, NULL, tBar);;
+		RenderSystem_Render_xywh(renderer, xPos, yPos, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
 	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 }

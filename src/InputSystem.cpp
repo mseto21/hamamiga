@@ -4,7 +4,9 @@
 #include "MovementComponent.h"
 #include "InputComponent.h"
 #include "HealthComponent.h"
+#include "HatComponent.h"
 #include "ComponentBag.h"
+#include "SoundCache.h"
 #include "Interactions.h"
 
 #include <SDL.h>
@@ -14,6 +16,7 @@ void InputSystem_Initialize(InputSystem* inputSystem, ComponentBag* cBag) {
 	inputSystem->inputComponent 	= cBag->inputComponent;
 	inputSystem->movementComponent 	= cBag->movementComponent;
 	inputSystem->healthComponent    = cBag->healthComponent;
+	inputSystem->hatComponent = cBag->hatComponent;
 	inputSystem->cBag 				= cBag;
 }
 
@@ -21,6 +24,7 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 	InputComponent* inputComponent = inputSystem->inputComponent;
 	MovementComponent* movementComponent = inputSystem->movementComponent;
 	HealthComponent* healthComponent = inputSystem->healthComponent;
+	HatComponent* hatComponent = inputSystem->hatComponent;
 
 	for (uint32 entityIndex = 0; entityIndex < inputComponent->count; entityIndex++) {
 		uint32 eid = inputComponent->entityArray[entityIndex];
@@ -41,6 +45,9 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		moveValues->yAccel = 0;
 		if ((keysPressed[SDLK_UP % Constants::NumKeys_]  || keysPressed[SDLK_SPACE])
 		    && (moveValues->grounded || moveValues->flying)) {
+			if (hatComponent->hats[eid].hat.hatType == HatTypes_BunnyHat){
+				Sound_Play(SoundCache_GetSound("hop"), 0);
+			}
 			moveValues->yAccel = -moveValues->accelY;
 		}
 		if (keysPressed[SDLK_LEFT % Constants::NumKeys_]) {

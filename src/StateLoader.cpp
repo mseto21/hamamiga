@@ -74,7 +74,6 @@ void LoadTitleStateAssets(Game* game) {
 		TextureCache_CreateTextureFromFont(game->renderer, font, selectedColor, game->titleState.selectionStrings[selectionIndex], select.c_str());
 	}
 	TTF_CloseFont(font);
-
 	// Load title music
 	game->titleState.titleMusic = Mix_LoadMUS("assets/music/themesong.ogg");
 	if (game->titleState.titleMusic == NULL) {
@@ -261,6 +260,7 @@ void LoadLevelStatAssets(Game* game) {
 	}
 	const char * headername = "levelheader";
 	const char * header = "--------Level Stats-------- ";
+	scoreType[GameTime_] = "Game Time: ";
  	scoreType[Hats_]= "Hats Collected: ";
  	scoreType[Coins_]= "Coins Collected: ";
  	scoreType[Deaths_]= "Times Murdered: ";
@@ -281,13 +281,29 @@ void LoadLevelStatAssets(Game* game) {
 	TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, header, headername);
 	for (int highScoreIndex = 0; highScoreIndex < NumScoreTypes_; highScoreIndex++) {
 		std::string msg = scoreType[highScoreIndex];
-		msg.append(std::to_string(scores[highScoreIndex]));	
-		if (highScoreIndex != Deaths_ && highScoreIndex != Fallen_){
+		if (highScoreIndex == GameTime_){
+			std::cout << "ACTUAL SCORETIME IS: " << scores[highScoreIndex] << std::endl;
+			int seconds = ((int)(scores[highScoreIndex] / Constants::Second_)) % 60;
+			int minutes = ((int)(scores[highScoreIndex] / Constants::Second_)) / 60;
+			std::string secStr = std::to_string(seconds);
+			std::string minStr = std::to_string(minutes);
+			if (seconds < 10) {
+			  secStr = "0" + secStr;
+			}
+			if (minutes < 10) {
+			  minStr = "0" + minStr;
+			}
+			std::string scoreStr = minStr + ":" + secStr;
+			msg.append(scoreStr);
+		} else {
+			msg.append(std::to_string(scores[highScoreIndex]));	
+		}
+		if (highScoreIndex != Deaths_ && highScoreIndex != Fallen_ && highScoreIndex != GameTime_){
 			std::string totalNum = std::to_string(numPossibleScores[highScoreIndex]);
 			msg.append("/"+ totalNum);
 		}
 		if (numPossibleScores[highScoreIndex] != 0 || (highScoreIndex == Deaths_ 
-			|| highScoreIndex == Fallen_)){
+			|| highScoreIndex == Fallen_ || highScoreIndex == GameTime_)){
 			numDisplay++;
 		}
 		std::string name = "level_score_";
@@ -299,7 +315,7 @@ void LoadLevelStatAssets(Game* game) {
 
 bool LoadPlayStateAssets(Game* game, int chapter) {
 	//Resetting level scores
-	LevelScore_Reset();
+	LevelScore_Reset(&game->playState.restarted);
 	// Initialize caches
 	TextureCache* tcache = TextureCache_GetCache();
 	tcache->levelIndex = tcache->index;
@@ -321,6 +337,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	std::string pShaderPath = "assets/chapter_" + std::to_string(chapter) + "/player-shader.png";
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, pShaderPath.c_str(), Constants::PShader_)->sdltexture, SDL_BLENDMODE_MOD);
 	TextureCache_CreateTexture(game->renderer, "assets/hud/health-bar.png", Constants::HealthBar_);
+	TextureCache_CreateTexture(game->renderer, "assets/hud/time-bar.png", Constants::TimeBar_);
 	
 	// Load file
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer, &game->zoneIntroState)) {
@@ -339,6 +356,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	}
 
 	// Initialize fonts
+	game->playState.hudFont = TTF_OpenFont("assets/fonts/Gotham-Bold.otf", 30);
 	game->playState.scoreFont = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
 	game->playState.healthFont = TTF_OpenFont("assets/fonts/minnie\'shat.ttf", 30);
 	game->zoneIntroState.sliding = false;
@@ -373,7 +391,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	InputSystem_Initialize(&game->playState.inputSystem, &game->playState.cBag);
 	MovementSystem_Initialize(&game->playState.movementSystem, &game->playState.cBag);
 	PhysicsSystem_Initialize(&game->playState.physicsSystem, &game->playState.cBag,  &game->playState.chapter.tileMap, &game->playState.chapter);
-	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.scoreFont);
+	RenderSystem_Initialize(&game->playState.renderSystem, &game->playState.cBag, &game->playState.chapter.tileMap, game->playState.hudFont);
 	GoalSystem_Initialize(&game->playState.goalSystem, &game->playState.cBag, &game->playState.chapter);
 	SoundSystem_Initialize(&game->playState.soundSystem, &game->playState.cBag, game->playState.chapter.music);
 	KillSystem_Initialize(&game->playState.killSystem, &game->playState.cBag);
@@ -405,6 +423,7 @@ void FreePlay(Game* game) {
 	game->zoneIntroState.endScene.current = 0;
 
 	// Free fonts
+	TTF_CloseFont(game->playState.hudFont);
 	TTF_CloseFont(game->playState.scoreFont);
 	TTF_CloseFont(game->playState.healthFont);
 

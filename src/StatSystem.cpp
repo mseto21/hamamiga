@@ -21,6 +21,7 @@ int numPossibleScores[NumScoreTypes_];
 int scores[NumScoreTypes_];
 int hatsCollected[MaxHats_];
 int numDisplay = 0;
+int scoreTime = 0;
 
 int pp = 0; //reset whenever reading from file
 
@@ -238,14 +239,21 @@ void Scores_Update(const char* path, const char* type, const char* value) {
 	return;
 }
 
-void LevelScore_Reset(){
-		//Reset any previous scores from other level
+void LevelScore_Reset(bool * restarted){
+	//Reset any previous scores from other level
 	for (int i = 0; i < NumScoreTypes_; i++){
 		numDisplay = 0;
-		scores[i] = 0;
+		if (*restarted == true){
+			if (i != Deaths_ && i != Fallen_){
+				scores[i] = 0;
+			}
+		}else {
+			scores[i] = 0;
+		}
 		numPossibleScores[i] = 0;
 	}
 	for (int i = 0; i < MaxHats_; i++){
 		hatsCollected[i] = 0;
 	}
+	*restarted = false;
 }

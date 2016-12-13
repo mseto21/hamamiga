@@ -234,7 +234,7 @@ void RenderLevelStats(Game* game, uint32 elapsed) {
 	int displayed = 1;
 	for (int highScoreIndex = 0; highScoreIndex < NumScoreTypes_; highScoreIndex++) {
 		if (numPossibleScores[highScoreIndex] != 0 || (highScoreIndex == Deaths_ 
-			|| highScoreIndex == Fallen_)){
+			|| highScoreIndex == Fallen_ || highScoreIndex == GameTime_)){
 		std::string name = "level_score_";
 		name.append(std::to_string(highScoreIndex));
 		Texture* score = TextureCache_GetTexture(name.c_str());
