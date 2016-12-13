@@ -110,7 +110,7 @@ void LoadHighScoreStateAssets(Game* game) {
 		for (int i = 0; i < NumLevels_; i++){
 		 cointotal += levelcoins[i];
 	}
-	levelcoins[NumLevels_] = cointotal;
+	levelcoins[Total_] = cointotal;
 	
  	game->highScoreState.scoreType[0]= "Hats Collected: ";
  	game->highScoreState.scoreType[1]= "Levels Won: ";
@@ -133,7 +133,7 @@ void LoadHighScoreStateAssets(Game* game) {
 			msg.append("/"+ totalLevels);
 		}
 		if (highScoreIndex == 5){
-			std::string totalCoins = std::to_string(levelcoins[NumLevels_]);
+			std::string totalCoins = std::to_string(levelcoins[Total_]);
 			msg.append("/"+ totalCoins);
 		}
 		std::string name = "high_score_";

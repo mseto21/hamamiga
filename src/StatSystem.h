@@ -15,7 +15,7 @@ enum ScoreType{
 };
 
 enum Levels{
-  Tutorial_,
+  Total_,
   One_,
   Two_,
   Three_,
