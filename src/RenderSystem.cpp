@@ -468,10 +468,10 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		SDL_Color scoreColor = {255, 255, 255, 1};
 		
 		Texture_CreateTextureFromFont(&scoreTexture, renderer, renderSystem->defaultFont, scoreColor, scoreStr.c_str(), "score_string");
-		float xPos = (Constants::ScreenWidth_ - scoreTexture.w)/2 - 10;
+		float xPos = (Constants::ScreenWidth_ - 100)/2 - 10;
 		float yPos = YTopRender_;
 		Texture* tBar = TextureCache_GetTexture(Constants::TimeBar_);
-		RenderSystem_Render_xywh(renderer, xPos - 18, yPos - 44, tBar->w, tBar->h, NULL, tBar);;
+		RenderSystem_Render_xywh(renderer, xPos - 20, yPos - 44, tBar->w, tBar->h, NULL, tBar);;
 		RenderSystem_Render_xywh(renderer, xPos, yPos, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
 	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);

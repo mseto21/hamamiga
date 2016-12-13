@@ -1,7 +1,7 @@
-hats=7;
-levels=2;
-deaths=0;
+hats=9;
+levels=4;
+deaths=2;
 fallen=4;
 kills=-1;
-coins=22;
+coins=24;
 END=;
