@@ -69,7 +69,7 @@ zone=
 	entity=
 		name(Darryl Philbin,)
 		animation(4,150.0,125,71,)
-		health(100,)
+		health(70,)
 		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)
@@ -82,7 +82,7 @@ zone=
 	entity=
 		name(Glenn,)
 		animation(4,150.0,125,71,)
-		health(100,)
+		health(70,)
 		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)
@@ -95,7 +95,7 @@ zone=
 	entity=
 		name(Hidetoshi Hasagawa,)
 		animation(4,150.0,125,71,)
-		health(100,)
+		health(70,)
 		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)
@@ -108,7 +108,7 @@ zone=
 	entity=
 		name(Madge Madsen,)
 		animation(4,150.0,125,71,)
-		health(100,)
+		health(70,)
 		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)
@@ -121,7 +121,7 @@ zone=
 	entity=
 		name(Roy Anderson,)
 		animation(4,150.0,125,71,)
-		health(100,)
+		health(70,)
 		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)
@@ -134,7 +134,7 @@ zone=
 	entity=
 		name(Val,)
 		animation(4,150.0,125,71,)
-		health(100,)
+		health(70,)
 		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)

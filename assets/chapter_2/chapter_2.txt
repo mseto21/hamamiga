@@ -167,7 +167,7 @@ zone=
 	entity=
 		name(Beatriz the Bat,)
 		animation(4,150.0,125,71,)
-		health(100,)
+		health(70,)
 		damage(10,)
 		movement(4.0,4.0,1.0,1.0,1,)
 		physics(100,)

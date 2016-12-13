@@ -78,4 +78,5 @@ namespace Constants {
 	const String128 OptionsO_			= 	"options_overlay";
 	const String128 SoundBar_			=	"sound_bar";
 	const String128 TimeBar_			= 	"time_bar";
+	const String128 CoinBar_			= 	"coin_bar";
 }

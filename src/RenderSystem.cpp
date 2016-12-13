@@ -483,8 +483,14 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		RenderSystem_Render_xywh(renderer, xPos, YTopRender_, scoreTexture.w, scoreTexture.h, NULL, &scoreTexture);
 
 		//coins
-		Texture* coinTexture = TextureCache_GetTexture("coin");
-		RenderSystem_Render_xywh(renderer, XLeftRender_, YTopRender_, coinTexture->w, coinTexture->h, NULL, coinTexture);
+		Texture* coinTexture = TextureCache_GetTexture(Constants::CoinBar_);
+		if (coinTexture) {
+		  RenderSystem_Render_xywh(renderer, XLeftRender_ - 20, YTopRender_ - 44, coinTexture->w, coinTexture->h, NULL, coinTexture);
+		  Texture coinNumT;
+		  std::string coinStr = std::to_string(scores[Coins_]) + "/8";
+		  Texture_CreateTextureFromFont(&coinNumT, renderer, renderSystem->defaultFont, scoreColor, coinStr.c_str(), "coin_string");
+		  RenderSystem_Render_xywh(renderer, XLeftRender_ + 57, YTopRender_ - 14, coinNumT.w, coinNumT.h, NULL, &coinNumT);
+		}
 	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 }

@@ -338,6 +338,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 	SDL_SetTextureBlendMode(TextureCache_CreateTexture(game->renderer, pShaderPath.c_str(), Constants::PShader_)->sdltexture, SDL_BLENDMODE_MOD);
 	TextureCache_CreateTexture(game->renderer, "assets/hud/health-bar.png", Constants::HealthBar_);
 	TextureCache_CreateTexture(game->renderer, "assets/hud/time-bar.png", Constants::TimeBar_);
+	TextureCache_CreateTexture(game->renderer, "assets/hud/coin-bar.png", Constants::CoinBar_);
 	
 	// Load file
 	if (!FileLoader_Load(&game->playState.chapter, chapterPath.c_str(), &game->playState.cBag, game->renderer, &game->zoneIntroState)) {
