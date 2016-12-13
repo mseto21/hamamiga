@@ -18,6 +18,10 @@
 #include <SDL.h>
 
 void BulletComponent_Add(BulletComponent* bulletComponent, uint32 eid) {
+	if (Component_HadIndex(bulletComponent, eid)) {
+		Component_Enable(bulletComponent, eid);
+		return;
+	}
 	Component_Add(bulletComponent, eid);
 
 	for (int i = 0; i < MaxBullets_; i++) {

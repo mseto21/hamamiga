@@ -201,7 +201,7 @@ void Interaction_RemoveHatInteraction(uint32 eid, ComponentBag* cBag) {
 			break;
 		case HatTypes_Chef:
 		case HatTypes_Cowboy:
-			Component_ForceRemove(cBag->bulletComponent, eid);
+			Component_Disable(cBag->bulletComponent, eid);
 			break;
 		default:
 			return;
