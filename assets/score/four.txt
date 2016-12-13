@@ -1,5 +1,5 @@
 hats=4;
-coins=7;
+coins=6;
 demons=6;
 muffins=8;
 oranges=3;

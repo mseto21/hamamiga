@@ -1,6 +1,6 @@
 hats=9;
 levels=4;
-deaths=2;
+deaths=5;
 fallen=1;
 kills=-1;
 coins=24;
