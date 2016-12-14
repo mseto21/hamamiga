@@ -137,7 +137,7 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					    if (Component_HasIndex(damageComponent, otherEid)) {
 					    	if (teamComponent->team[eid] != teamComponent->team[otherEid]) {
 					  			healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage / healthComponent->damageReduction[eid];
-					  			
+					  			Sound_Play(SoundCache_GetSound("ow"), 0);
 					  			if (eid == Constants::PlayerIndex_) {
 					    			healthComponent->invincible[eid] = Constants::InvincibleTime_;
 					  			}
