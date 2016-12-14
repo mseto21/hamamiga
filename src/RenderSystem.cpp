@@ -517,13 +517,23 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 		      // Render Coins
 		      Texture* coinTexture = TextureCache_GetTexture(Constants::CoinBar_);
-		      SDL_Color scoreColor = {255, 255, 255, 1};
 		      if (coinTexture) {
 				RenderSystem_Render_xywh(renderer, XLeftRender_ - 20, YTopRender_ - 44, coinTexture->w, coinTexture->h, NULL, coinTexture);
-				Texture coinNumT;
-				std::string coinStr = std::to_string(scores[Coins_]) + "/" + std::to_string(levelcoins[level]);
-				Texture_CreateTextureFromFont(&coinNumT, renderer, renderSystem->defaultFont, scoreColor, coinStr.c_str(), "coin_string");
-				RenderSystem_Render_xywh(renderer, XLeftRender_ + 57, YTopRender_ - 14, coinNumT.w, coinNumT.h, NULL, &coinNumT);
+				Texture* firstNum = TextureCache_GetTexture(std::to_string(scores[Coins_]).c_str());
+				Texture* lastNum = TextureCache_GetTexture(std::to_string(levelcoins[level]).c_str());
+				Texture* backSlash = TextureCache_GetTexture("/");
+				int startX = 57;
+				if (firstNum) {
+					RenderSystem_Render_xywh(renderer, XLeftRender_ + startX, YTopRender_ - 14, firstNum->w, firstNum->h, NULL, firstNum);
+					startX += firstNum->w;
+				}
+				if (backSlash) {
+					RenderSystem_Render_xywh(renderer, XLeftRender_ + startX, YTopRender_ - 14, backSlash->w, backSlash->h, NULL, backSlash);
+					startX += backSlash->w;
+				}
+				if (lastNum) {
+					RenderSystem_Render_xywh(renderer, XLeftRender_ + startX, YTopRender_ - 14, lastNum->w, lastNum->h, NULL, lastNum);
+				}
 		      }
 		    }
 		    if (gHatTexture) {
