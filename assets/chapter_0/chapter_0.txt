@@ -30,16 +30,4 @@ zone=
 		interactable('x' to Put On,0,9, Welcome to the Big Top. Try Jumping!,)
 		rectangle(200,634,85,71,)
 		alive();
-	entity=
-		name(Matty Kæ from Marketing,)
-		animation(4,150.0,88,87,)
-		damage(20,)
-		health(100,)
-		movement(3.0,20.0,1.0,1.0,)
-		physics(100,)
-		rectangle(500,634,88,87,)
-		texture(assets/enemies/demon.png,demon,)
-		alive()
-		team(1,)
-		goal();
 END=

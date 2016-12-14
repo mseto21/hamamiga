@@ -121,7 +121,7 @@ bool Interaction_ApplyHatInteraction(int hatType, uint32 eid, uint32 hatEid, Com
 				return false;
 			cBag->hatComponent->hats[eid].hat.hatType = hatType;
 			cBag->hatComponent->hats[eid].hat.eid = hatEid;
-	    	Sound_Play(SoundCache_GetSound("heli"), 0);
+	    Sound_Play(SoundCache_GetSound("heli"), 0);
 			memcpy(&cBag->hatComponent->hats[eid].hat.name, "propeller", sizeof(cBag->hatComponent->hats[eid].hat.name));
 			memcpy(&cBag->hatComponent->hats[eid].hat.effect, "Fly with W and S!", sizeof(cBag->hatComponent->hats[eid].hat.effect));
 			cBag->movementComponent->movementValues[eid].flying = true;

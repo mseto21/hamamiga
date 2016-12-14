@@ -109,7 +109,6 @@ void LoadHighScoreStateAssets(Game* game) {
 	int cointotal = 0;
 		for (int i = 0; i < (NumLevels_ -1); i++){
 		 cointotal += levelcoins[i];
-		 std::cout << "ADDING" << levelcoins[i] << std::endl;
 	}
 	levelcoins[Total_] = cointotal;
 	
@@ -202,6 +201,7 @@ void LoadOptionStateAssets(Game* game) {
 
 
 void LoadZoneIntroAssets(Game* game, String128 name) {
+	Mix_HaltChannel(-1);
 	game->zoneIntroState.alpha = 0.f;
 	game->zoneIntroState.elapsed = 0;
 	game->zoneIntroState.startScene.current = 0;
@@ -330,6 +330,7 @@ void LoadLevelStatAssets(Game* game) {
 }
 
 bool LoadPlayStateAssets(Game* game, int chapter) {
+	Mix_HaltChannel(-1);
 	//Resetting level scores
 	LevelScore_Reset(&game->playState.restarted);
 	// Initialize caches
@@ -447,7 +448,7 @@ void FreePlay(Game* game) {
 	EntityCache_Free();
 	ComponentBag_Free(&game->playState.cBag);
 	TextureCache_FreeLevel();
-	SoundCache_FreeLevel();
+	//SoundCache_FreeLevel();
 	Mix_HaltChannel(Constants::DiscoChannel_);
 
 	// Free cutscenes

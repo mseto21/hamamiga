@@ -60,9 +60,6 @@ void InputSystem_Update(InputSystem* inputSystem, bool keysPressed[], bool keysU
 		    healthComponent->invincible[eid] = 1000000;
 		}
 
-		if (keysPressed[SDLK_k]){
-			healthComponent->health[eid] = 0;
-		}
 		if (keysPressed[SDLK_RIGHT % Constants::NumKeys_]) {
 
 			moveValues->xAccel = moveValues->accelX;

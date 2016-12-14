@@ -306,6 +306,7 @@ void Game_RunLoop(Game* game) {
 								|| game->gameState == GameState_Play || game->gameState == GameState_ZoneIntro
 								|| game->gameState == GameState_Pause) {
 								Mix_HaltMusic();
+								Mix_HaltChannel(-1);
 								game->gameState = GameState_Returning;
 							} else {
 								game->gameState = GameState_Title;
@@ -339,7 +340,7 @@ void Game_RunLoop(Game* game) {
 								game->gameState = GameState_Play;
 							break;
 						case SDLK_u:
-							if (game->playState.levelSelection != 0){
+							if (game->playState.levelSelection != 0 && game->playState.levelSelection != 5){
 							if (game->gameState == GameState_Play) {
 								game->gameState = GameState_Win;
 								LoadLevelStatAssets(game);
@@ -354,7 +355,7 @@ void Game_RunLoop(Game* game) {
 										Scores_Update("assets/score/levels.txt", "three", lval);
 										break;
 									case 4:
-									        Scores_Update("assets/score/levels.txt", "four", lval);
+									  Scores_Update("assets/score/levels.txt", "four", lval);
 										break;
 									default:
 										break;

@@ -3,7 +3,7 @@ zone=
 	tileset=assets/chapter_1/chapter_1_tileset.png;
 	tilemap=assets/chapter_5/chapter_5_level.csv;
 	dimensions=1080,760;
-	music=assets/chapter_1/chapter_1.ogg;
+	music=assets/sounds/nilla.mp3;
 	cutstart=assets/final-cutscenes/cutscene-1.png,assets/final-cutscenes/cutscene-2.png,;
 	entity=
 		animation(4,150.0,48,87,)
@@ -39,6 +39,7 @@ zone=
 		rectangle(270,634,85,60,)
 		alive();
 	entity=
+		name(PeFro,)
 		movement(3.0,14.0,1.0,5.0,)
 		health(2500,)
 		texture(assets/enemies/peter.png,peter,)
