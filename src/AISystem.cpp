@@ -23,9 +23,9 @@ void AISystem_Initialize(AISystem* aiSystem, ComponentBag* cBag) {
   aiSystem->physicsComponent    = cBag->physicsComponent;
 }
 
-bool close(const Rectangle* r1, const Rectangle* r2) {
-  if (abs(((int)(r1->x+(r1->w)/2)) - ((int)(r2->x+(r2->w)/2))) < Constants::XRange_
-      && abs(((int)(r1->y + (r1->h)/2)) - ((int)(r2->y+(r2->h)/2))) < r2->h * Constants::YRange_) {
+bool close(const Rectangle* r1, const Rectangle* r2, int xMult, int yMult) {
+  if (abs(((int)(r1->x+(r1->w)/2)) - ((int)(r2->x+(r2->w)/2))) < Constants::XRange_*xMult
+      && abs(((int)(r1->y + (r1->h)/2)) - ((int)(r2->y+(r2->h)/2))) < Constants::YRange_*yMult) {
     return true;
   }
   return false;
@@ -50,7 +50,7 @@ void MarcherUpdate(AISystem* aiSystem, uint32 eid) {
   moveValues->xAccel = 0;
   MarchValues* marchValues = &aiComponent->marchValues[eid];
   Rectangle* eRect = &rectangleComponent->entityRectangles[eid];
-  if (close(&pRect, eRect)) {
+  if (close(&pRect, eRect, 1, 1)) {
     if (!marchValues->aggrod) {
       animationComponent->animations[eid].frameTime /= SpeedMultiplier_;
       moveValues->maxXVelocity *= SpeedMultiplier_;
@@ -93,7 +93,7 @@ void FlyerUpdate(AISystem* aiSystem, uint32 eid) {
   Rectangle* eRect = &rectangleComponent->entityRectangles[eid];
   moveValues->xAccel = 0;
   moveValues->yAccel = 0;
-  if (close(&pRect, eRect)) {
+  if (close(&pRect, eRect, 2, 4)) {
     if (pRect.x + (pRect.w)/2 < eRect->x + (eRect->w)/2) {
       moveValues->xAccel = -moveValues->accelX;
     } else {
@@ -150,7 +150,7 @@ void JumperUpdate(AISystem* aiSystem, uint32 eid) {
   Rectangle pRect = rectangleComponent->entityRectangles[Constants::PlayerIndex_];
   Rectangle eRect = rectangleComponent->entityRectangles[eid];
   MovementValues* moveValues = &movementComponent->movementValues[eid];
-  if (close(&pRect, &eRect))
+  if (close(&pRect, &eRect, 1, 1))
     aiComponent->marchValues[eid].facing = (pRect.x > eRect.x) - (pRect.x < eRect.x);
 
   if (moveValues->grounded)

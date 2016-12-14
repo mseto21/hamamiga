@@ -40,7 +40,7 @@ namespace Constants {
 	const uint16 	Damage_         	= 20; //damage
 	const uint8		PlayerIndex_		= 0;
 	const uint16  	XRange_           	= 300;
-	const uint16  	YRange_           	= 1;
+	const uint16  	YRange_           	= 80;
 	const uint8 	MaximumLevels_ 		= 4;
 	const uint16	MaxMapWidth_		= 256; // In number of tiles
 	const uint16	MaxMapHeight_		= 256;
