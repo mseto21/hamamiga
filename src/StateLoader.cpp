@@ -26,7 +26,7 @@ std::string LevelNames[] = {
 	"Into the Vents!",
 	"Scurry Out of Shipping",
 	"Breakroom Brawl",
-	"COMING SOON TO A CAROLINE NEAR YOU!"
+	"Credits",
 };
 
 
