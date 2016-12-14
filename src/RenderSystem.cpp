@@ -157,7 +157,7 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
 	    Texture* texture = TextureCache_GetTexture(Constants::KnifeHud_);
 			texture->flip = SDL_FLIP_NONE;
             for (int knifeIndex = 0; knifeIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; knifeIndex++) {
-            	RenderSystem_Render_xywh(renderer, XRightRender_ + 147, YTopRender_ + texture->h * knifeIndex + 55, texture->w, texture->h, NULL, texture);
+	      RenderSystem_Render_xywh(renderer, XRightRender_ + 147, YTopRender_ + (texture->h + 8) * knifeIndex + 52, texture->w, texture->h, NULL, texture);
 		}
 		break;
 	}
