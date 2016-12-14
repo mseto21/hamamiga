@@ -107,8 +107,9 @@ void LoadHighScoreStateAssets(Game* game) {
 	}
 	//Loading coin total
 	int cointotal = 0;
-		for (int i = 0; i < NumLevels_; i++){
+		for (int i = 0; i < (NumLevels_ -1); i++){
 		 cointotal += levelcoins[i];
+		 std::cout << "ADDING" << levelcoins[i] << std::endl;
 	}
 	levelcoins[Total_] = cointotal;
 	
