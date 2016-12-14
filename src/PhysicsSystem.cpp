@@ -139,7 +139,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					  			healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage / healthComponent->damageReduction[eid];
 					  			
 					  			if (eid == Constants::PlayerIndex_) {
-					  				healthComponent->flicker[eid] = 0;
 					    			healthComponent->invincible[eid] = Constants::InvincibleTime_;
 					  			}
 					    	}

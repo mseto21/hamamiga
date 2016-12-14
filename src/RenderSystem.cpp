@@ -242,7 +242,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 		if (Component_HasIndex(healthComponent, eid) && healthComponent->invincible[eid] > 0) {
 			healthComponent->invincible[eid] -= delta;
-			healthComponent->flicker[eid] += delta;
 			if (healthComponent->invincible[eid] <= 0)
 				healthComponent->invincible[eid] = 0;
 		}
