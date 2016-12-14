@@ -339,6 +339,7 @@ void Game_RunLoop(Game* game) {
 								game->gameState = GameState_Play;
 							break;
 						case SDLK_u:
+							if (game->playState.levelSelection != 0){
 							if (game->gameState == GameState_Play) {
 								game->gameState = GameState_Win;
 								LoadLevelStatAssets(game);
@@ -362,6 +363,7 @@ void Game_RunLoop(Game* game) {
 									game->playState.unlockedLevels++;
 							}
 							break;
+						}
 						case SDLK_1:
 						        game->playState.unlockedLevels = Constants::MaximumLevels_ + 1;
 							if (game->gameState == GameState_LevelSelect)
