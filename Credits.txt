@@ -1,5 +1,7 @@
 Credits
 ----------
+Artwork: Gavi Rawson
+
 Music:
 -----
 "I Got a Hat" - The Learning Station
@@ -9,6 +11,8 @@ Music:
 
 Sound Effects:
 -----
+Harry Cohen ("ow")
+Sam Ng (circus jump)
 SoundBible.com
 FreeSoundEffects.com
 AllSounds (YT)
