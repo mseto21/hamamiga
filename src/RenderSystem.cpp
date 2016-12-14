@@ -239,6 +239,13 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		if (!Component_HasIndex(textureComponent, eid)) {
 			continue;
 		}
+
+		if (Component_HasIndex(healthComponent, eid) && healthComponent->invincible[eid] > 0) {
+			healthComponent->invincible[eid] -= delta;
+			healthComponent->flicker[eid] += delta;
+			if (healthComponent->invincible[eid] <= 0)
+				healthComponent->invincible[eid] = 0;
+		}
 		Texture* texture = textureComponent->textures[eid];
 
 		// If no rectangle, render at (0,0)
@@ -291,7 +298,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 					}
 					clip = {0, 0, animation->spriteW, animation->spriteH};
 					if (!ShouldDraw(eid, &healthComponent)) {
-					  clip = {animation->spriteW*6, 0, animation->spriteW, animation->spriteH};
+					  clip = {animation->spriteW * 6, 0, animation->spriteW, animation->spriteH};
 					}
 				} else if (movementComponent->movementValues[eid].xVelocity > 0) {
 					texture->flip = SDL_FLIP_NONE;
@@ -312,7 +319,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 							clip = {animation->spriteW * (4+invc), 0, animation->spriteW, animation->spriteH};
 
 						if (hatComponent->hats[eid].gHat.hatType == HatTypes_Circus) {
-							texture->rotation += 3*Constants::OptimalTime_ / 5;
+							texture->rotation += delta;
 							if (texture->rotation > 360)
 							  texture->rotation = 360;
 						}
@@ -321,7 +328,6 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 					}
 				}
 			}
-			
 			if (!ShouldDraw(eid, &healthComponent))
 			  animation->currentFrame -= 6;
 		}
@@ -514,11 +520,11 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		      Texture* coinTexture = TextureCache_GetTexture(Constants::CoinBar_);
 		      SDL_Color scoreColor = {255, 255, 255, 1};
 		      if (coinTexture) {
-			RenderSystem_Render_xywh(renderer, XLeftRender_ - 20, YTopRender_ - 44, coinTexture->w, coinTexture->h, NULL, coinTexture);
-			Texture coinNumT;
-			std::string coinStr = std::to_string(scores[Coins_]) + "/" + std::to_string(levelcoins[level]);
-			Texture_CreateTextureFromFont(&coinNumT, renderer, renderSystem->defaultFont, scoreColor, coinStr.c_str(), "coin_string");
-			RenderSystem_Render_xywh(renderer, XLeftRender_ + 57, YTopRender_ - 14, coinNumT.w, coinNumT.h, NULL, &coinNumT);
+				RenderSystem_Render_xywh(renderer, XLeftRender_ - 20, YTopRender_ - 44, coinTexture->w, coinTexture->h, NULL, coinTexture);
+				Texture coinNumT;
+				std::string coinStr = std::to_string(scores[Coins_]) + "/" + std::to_string(levelcoins[level]);
+				Texture_CreateTextureFromFont(&coinNumT, renderer, renderSystem->defaultFont, scoreColor, coinStr.c_str(), "coin_string");
+				RenderSystem_Render_xywh(renderer, XLeftRender_ + 57, YTopRender_ - 14, coinNumT.w, coinNumT.h, NULL, &coinNumT);
 		      }
 		    }
 		    if (gHatTexture) {
@@ -561,34 +567,32 @@ void RenderSystem_Free(RenderSystem* renderSystem) {
 }
 
 bool ShouldDraw(uint32 eid, HealthComponent** hComponent) {
-  HealthComponent* healthComponent = *hComponent;
-  if (eid != Constants::PlayerIndex_ || !Component_HasIndex(healthComponent, eid))
-    return true;
-  if (healthComponent->invincible[eid] <= 0)
-    return true;
-  if (healthComponent->invincible[eid] <= 20)
-    return false;
-  if (healthComponent->invincible[eid] <= 40)
-    return true;
-  if (healthComponent->invincible[eid] <= 60)
-    return false;
-  if (healthComponent->invincible[eid] <= 80)
-    return true;
-  if (healthComponent->invincible[eid] <= 160)
-    return false;
-  if (healthComponent->invincible[eid] <= 240)
-    return true;
-  if (healthComponent->invincible[eid] <= 320)
-    return false;
-  if (healthComponent->invincible[eid] <= 400)
-    return true;
-  if (healthComponent->invincible[eid] <= 480)
-    return false;
-  if (healthComponent->invincible[eid] <= 560)
-    return true;
-  if (healthComponent->invincible[eid] <= 640)
-    return false;
-  return true;
+	HealthComponent* healthComponent = *hComponent;
+	if (eid != Constants::PlayerIndex_ || !Component_HasIndex(healthComponent, eid))
+		return true;
+
+	int invincible = healthComponent->invincible[eid];
+	if (invincible > 0) {
+		float ratio = ((float)invincible / Constants::InvincibleTime_);
+		if (ratio > 0.9)
+			return false;
+		if (ratio <= 0.8 && ratio > 0.7)
+			return false;
+		if (ratio <= 0.6 && ratio > 0.5)
+			return false;
+		if (ratio <= 0.45 && ratio > 0.4)
+			return false;
+		if (ratio <= 0.35 && ratio > 0.3)
+			return false;
+		if (ratio <= 0.25 && ratio > 0.2)
+			return false;
+		if (ratio <= 0.15 && ratio > 0.1)
+			return false;
+		if (ratio <= 0.05 && ratio > 0)
+			return false;
+	}
+
+ 	return true;
 }
 
 

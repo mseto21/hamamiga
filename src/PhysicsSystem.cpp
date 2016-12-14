@@ -76,6 +76,9 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 		if (Component_HasIndex(interactableComponent, eid)) {
 			goto world_physics;
 		}
+		if (Component_HasIndex(healthComponent, eid) && healthComponent->invincible[eid] > 0) {
+	        goto world_physics;
+		}
 
 		// Check collisions with entities
 		for (uint32 j = 0; j < physicsComponent->count; j++) {
@@ -88,10 +91,6 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 			}
 			if (Component_HasIndex(interactableComponent, otherEid) && !Component_HasIndex(damageComponent, otherEid)) {
 				continue;
-			}
-			if (Component_HasIndex(healthComponent, eid) && healthComponent->invincible[eid] > 0) {
-		        healthComponent->invincible[eid]--;
-		        continue;
 			}
 			if (Component_HasIndex(healthComponent, otherEid) && healthComponent->invincible[otherEid] > 0) {
 			    continue;
@@ -139,8 +138,10 @@ void PhysicsSystem_Update(PhysicsSystem* physicsSystem) {
 					    	if (teamComponent->team[eid] != teamComponent->team[otherEid]) {
 					  			healthComponent->health[eid] -= damageComponent->damageValues[otherEid].damage / healthComponent->damageReduction[eid];
 					  			
-					  			if (eid == Constants::PlayerIndex_)
-					    			healthComponent->invincible[eid] = 640;
+					  			if (eid == Constants::PlayerIndex_) {
+					  				healthComponent->flicker[eid] = 0;
+					    			healthComponent->invincible[eid] = Constants::InvincibleTime_;
+					  			}
 					    	}
 					    }
 					}
