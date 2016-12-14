@@ -329,10 +329,36 @@ void LoadLevelStatAssets(Game* game) {
 	TTF_CloseFont(font);
 }
 
+//Loading the stats for the end of the level
+void LoadCredits(Game* game) {
+	// Load font
+	TTF_Font* font = TTF_OpenFont("assets/fonts/Gotham-Bold.otf", 18);
+	if (!font) {
+		std::cerr << "Unable to initialize the font! SDL_Error: " << TTF_GetError() << std::endl;
+		return;
+	}
+
+	const char * creditsname = "credits";
+	const char * credits = "Created By: HaMaMiGa";
+	const char * creditsname1 = "harry";
+	const char * credits1 = "Harry Cohen, Matt Kosarek, ";
+	const char * creditsname2 = "matt";
+	const char * credits2 = "Mindy Seto, Gavi Rawson";
+	SDL_Color scoreColor = {255, 255, 255, 255};
+	TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, credits, creditsname);
+	TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, credits1, creditsname1);
+	TextureCache_CreateTextureFromFont(game->renderer, font, scoreColor, credits2, creditsname2);
+	TTF_CloseFont(font);
+}
+
 bool LoadPlayStateAssets(Game* game, int chapter) {
 	Mix_HaltChannel(-1);
 	//Resetting level scores
 	LevelScore_Reset(&game->playState.restarted);
+	//If last level load credits
+	if (chapter == Credits_){
+		LoadCredits(game);
+	}
 	// Initialize caches
 	TextureCache* tcache = TextureCache_GetCache();
 	tcache->levelIndex = tcache->index;

@@ -255,7 +255,6 @@ void RenderLevelStats(Game* game, uint32 elapsed) {
 	SDL_RenderPresent(game->renderer);
 }
 
-
 /* Render the paused state with given texure and speech bubbles. */
 void RenderPauseState(Game* game, uint32  elapsed) {
 	(void) elapsed;

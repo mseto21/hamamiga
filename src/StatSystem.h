@@ -20,7 +20,7 @@ enum Levels{
   Two_,
   Three_,
   Four_,
-  Five_,
+  Credits_,
   Total_,
   NumLevels_,
 };

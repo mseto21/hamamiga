@@ -517,7 +517,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 
 		      // Render Coins
 		      Texture* coinTexture = TextureCache_GetTexture(Constants::CoinBar_);
-		      if (coinTexture) {
+		     if (coinTexture) {
 				RenderSystem_Render_xywh(renderer, XLeftRender_ - 40, YTopRender_ - 30, coinTexture->w, coinTexture->h, NULL, coinTexture);
 				Texture* firstNum = TextureCache_GetTexture(std::to_string(scores[Coins_]).c_str());
 				Texture* lastNum = TextureCache_GetTexture(std::to_string(levelcoins[level]).c_str());
@@ -555,6 +555,20 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		    }
 		    RenderHatHUD(renderer, hat->hatType, delta, renderSystem->cBag);
 		}
+	}
+
+	//If credits level render
+
+	/* Render credits. */
+	if (level == Credits_){
+	Texture* credits = TextureCache_GetTexture("credits");
+	Texture* credits1 = TextureCache_GetTexture("harry");
+	Texture* credits2 = TextureCache_GetTexture("matt");
+
+	int renderX = (Constants::ScreenWidth_ / 8 )- credits->w / 2;
+	RenderSystem_Render_xywh(renderer, renderX, ((0 * (Constants::ScreenHeight_ / 20)) + 450), credits->w, credits->h, NULL, credits);
+	RenderSystem_Render_xywh(renderer, renderX, ((1 * (Constants::ScreenHeight_ / 20)) + 450), credits1->w, credits1->h, NULL, credits1);
+	RenderSystem_Render_xywh(renderer, renderX, ((2 * (Constants::ScreenHeight_ / 20)) + 450), credits2->w, credits2->h, NULL, credits2);
 	}
 	
 	
