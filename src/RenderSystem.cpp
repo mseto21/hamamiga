@@ -481,7 +481,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		      int minutes = ((int)(score / Constants::Second_)) / 60;
 
 
-		      float xPos = (Constants::ScreenWidth_ - 50)/2 - 10;
+		      float xPos = (Constants::ScreenWidth_ - 120)/2 - 12;
 		      Texture* tBar = TextureCache_GetTexture(Constants::TimeBar_);
 		      RenderSystem_Render_xywh(renderer, xPos - 20, YTopRender_ - 44, tBar->w, tBar->h, NULL, tBar);
 
@@ -518,21 +518,21 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		      // Render Coins
 		      Texture* coinTexture = TextureCache_GetTexture(Constants::CoinBar_);
 		      if (coinTexture) {
-				RenderSystem_Render_xywh(renderer, XLeftRender_ - 20, YTopRender_ - 44, coinTexture->w, coinTexture->h, NULL, coinTexture);
+				RenderSystem_Render_xywh(renderer, XLeftRender_ - 40, YTopRender_ - 30, coinTexture->w, coinTexture->h, NULL, coinTexture);
 				Texture* firstNum = TextureCache_GetTexture(std::to_string(scores[Coins_]).c_str());
 				Texture* lastNum = TextureCache_GetTexture(std::to_string(levelcoins[level]).c_str());
 				Texture* backSlash = TextureCache_GetTexture("/");
-				int startX = 57;
+				int startX = 47;
 				if (firstNum) {
-					RenderSystem_Render_xywh(renderer, XLeftRender_ + startX, YTopRender_ - 14, firstNum->w, firstNum->h, NULL, firstNum);
+					RenderSystem_Render_xywh(renderer, XLeftRender_ + startX, YTopRender_ - 5, firstNum->w, firstNum->h, NULL, firstNum);
 					startX += firstNum->w;
 				}
 				if (backSlash) {
-					RenderSystem_Render_xywh(renderer, XLeftRender_ + startX, YTopRender_ - 14, backSlash->w, backSlash->h, NULL, backSlash);
+					RenderSystem_Render_xywh(renderer, XLeftRender_ + startX, YTopRender_ - 5, backSlash->w, backSlash->h, NULL, backSlash);
 					startX += backSlash->w;
 				}
 				if (lastNum) {
-					RenderSystem_Render_xywh(renderer, XLeftRender_ + startX, YTopRender_ - 14, lastNum->w, lastNum->h, NULL, lastNum);
+					RenderSystem_Render_xywh(renderer, XLeftRender_ + startX, YTopRender_ - 5, lastNum->w, lastNum->h, NULL, lastNum);
 				}
 		      }
 		    }
