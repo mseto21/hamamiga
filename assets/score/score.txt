@@ -2,6 +2,6 @@ hats=0;
 levels=1;
 deaths=2;
 fallen=0;
-kills=16;
+kills=21;
 coins=3;
 END=;
