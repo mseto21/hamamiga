@@ -433,7 +433,7 @@ bool LoadPlayStateAssets(Game* game, int chapter) {
 		TextureCache_CreateTextureFromFont(game->renderer, game->playState.renderSystem.defaultFont, scoreColor, std::to_string(i).c_str(), std::to_string(i).c_str());
 	}
 	TextureCache_CreateTextureFromFont(game->renderer, game->playState.renderSystem.defaultFont, scoreColor, ":", ":");
-
+	TextureCache_CreateTextureFromFont(game->renderer, game->playState.renderSystem.defaultFont, scoreColor, "/", "/");
 	// Set loaded variable
 	game->playState.loaded = true;
 
