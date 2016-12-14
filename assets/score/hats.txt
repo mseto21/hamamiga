@@ -8,5 +8,4 @@ prop=1;
 beer=1;
 chef=1;
 circus=1;
-total=8;
 END=;
