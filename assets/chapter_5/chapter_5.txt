@@ -1,7 +1,7 @@
 zone=
 	name=Credits;
 	tileset=assets/chapter_1/chapter_1_tileset.png;
-	tilemap=assets/chapter_0/chapter_0_level.csv;
+	tilemap=assets/chapter_5/chapter_5_level.csv;
 	dimensions=1080,760;
 	music=assets/chapter_1/chapter_1.ogg;
 	cutstart=assets/final-cutscenes/cutscene-1.png,assets/final-cutscenes/cutscene-2.png,;
