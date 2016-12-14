@@ -7,7 +7,7 @@ namespace Constants {
 
 	const float   	StepSize_ 			= 	8.f;
 	const uint32  	NumKeys_			=	323;
-	const uint32	MaxEntities_  		=   128;
+	const uint32	MaxEntities_  		=   256;
 	const float 	Second_ 			= 	1000.f;
 	const float 	TargetFps_ 			= 	60.f;
 	const float 	OptimalTime_ 		= 	Second_ / TargetFps_; // Update ~16 times per second

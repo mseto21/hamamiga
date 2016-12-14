@@ -2,7 +2,7 @@
 #include "Texture.h"
 #include "Types.h"
 
-const int MaxTextures_ = 100;
+const int MaxTextures_ = 300;
 
 /* Texture Cache holding all available textures that are currently neeeded. */
 struct TextureCache {
