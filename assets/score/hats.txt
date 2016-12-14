@@ -1,6 +1,6 @@
 bunny=0;
 hard=0;
-cowboy=0;
+cowboy=1;
 crown=0;
 disco=0;
 miner=0;
@@ -8,5 +8,5 @@ prop=0;
 beer=0;
 chef=0;
 circus=0;
-total=0;
+total=1;
 END=;
