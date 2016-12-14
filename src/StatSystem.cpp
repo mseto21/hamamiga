@@ -45,7 +45,7 @@ int ReadTotal(FILE* scoreFile) {
 }
 
 int totalFromFile(const char * path, const char * type){
-	int total = -1;
+	int total = 0;
 FILE* scoreFile = fopen(path, "r");
 	if (scoreFile == NULL) {
 		std::cerr << "Error: The score file " << path << " was NULL" << std::endl;
