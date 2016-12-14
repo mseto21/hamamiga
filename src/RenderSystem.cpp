@@ -34,7 +34,7 @@
 const int XRightRender_ = Constants::ScreenWidth_ - Constants::ScreenWidth_ / 4 - 80;
 const int XLeftRender_ = Constants::ScreenWidth_ / 24;
 const int YTopRender_ = Constants::ScreenHeight_ / 16 + 3;
-const int WHealth_ = Constants::ScreenWidth_/ 5;
+const int WHealth_ = 274;
 const int HHealth_ = Constants::ScreenHeight_ / 16;
 const int HealthBarHeight_ = 8;
 
@@ -142,13 +142,13 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
 			texture->flip = SDL_FLIP_NONE;
 			int bulletIndex = 0;
 			for (; bulletIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; bulletIndex++) {
-			  RenderSystem_Render_xywh(renderer, XRightRender_ + 147, YTopRender_ + ((texture->h + 8) * bulletIndex) + 48, texture->w, texture->h, NULL, texture); 
+			  RenderSystem_Render_xywh(renderer, XRightRender_ + 289, YTopRender_ + ((texture->h + 4) * bulletIndex) + 63, texture->w, texture->h, NULL, texture); 
 			}
 			for (; bulletIndex < MaxBullets_; bulletIndex++) {
 				uint32 eid = cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].bulletEids[MaxBullets_ - bulletIndex - 1];
 				if (cBag->aliveComponent->timeAlive[eid] > 0) {
 					SDL_Rect clip = { 0, 0, static_cast<int>(texture->w * ((float)cBag->aliveComponent->timeAlive[eid] / MaxBulletLife_)), texture->h };
-					RenderSystem_Render_xywh(renderer, XRightRender_ + 147, YTopRender_ + ((texture->h+8) * bulletIndex) + 48, texture->w, texture->h, &clip, texture); 
+					RenderSystem_Render_xywh(renderer, XRightRender_ + 289, YTopRender_ + ((texture->h+4) * bulletIndex) + 63, texture->w, texture->h, &clip, texture); 
 				}
 			}
 			break;
@@ -157,7 +157,7 @@ void RenderHatHUD(SDL_Renderer* renderer, uint hatId, uint32 elapsed, ComponentB
 	    Texture* texture = TextureCache_GetTexture(Constants::KnifeHud_);
 			texture->flip = SDL_FLIP_NONE;
             for (int knifeIndex = 0; knifeIndex < cBag->bulletComponent->bulletValues[Constants::PlayerIndex_].availableBullets; knifeIndex++) {
-	      RenderSystem_Render_xywh(renderer, XRightRender_ + 147, YTopRender_ + (texture->h + 8) * knifeIndex + 52, texture->w, texture->h, NULL, texture);
+	      RenderSystem_Render_xywh(renderer, XRightRender_ + 289, YTopRender_ + (texture->h + 6) * knifeIndex + 63, texture->w, texture->h, NULL, texture);
 		}
 		break;
 	}
@@ -468,7 +468,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 		      g = g2 + (g - g2)*ratio;
 		      b = b2 + (b - b2)*ratio;
 		      Texture* hBar = TextureCache_GetTexture(Constants::HealthBar_);
-		      RenderSystem_Render_xywh(renderer, XRightRender_ - 8 + 50, YTopRender_ - 44 - 9, hBar->w, hBar->h, NULL, hBar);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ - 23, YTopRender_ - 27, hBar->w, hBar->h, NULL, hBar);
 		      SDL_SetRenderDrawColor(renderer, r, g, b, 1);
 		      SDL_RenderFillRect(renderer, &currentRect);
 		    }
