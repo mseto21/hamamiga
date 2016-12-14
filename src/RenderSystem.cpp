@@ -543,7 +543,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				}
 		      gHatTexture->flip = SDL_FLIP_NONE;
 		      gHatTexture->rotation = 0;
-		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 89, YTopRender_ + HHealth_ - 3, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ + gHatTexture->w + 78, YTopRender_ + HHealth_ + 1, gHatTexture->w, gHatTexture->h, &clip, gHatTexture);
 		    }
 		    if (hatTexture) {
 		      SDL_Rect clip = {0, 0, hatTexture->w, hatTexture->h};
@@ -551,7 +551,7 @@ void RenderSystem_Update(RenderSystem* renderSystem, SDL_Renderer* renderer, uin
 				clip = {hatTexture->clipX, hatTexture->clipY, hatTexture->clipW, hatTexture->clipH};
 			}
 		      hatTexture->flip = SDL_FLIP_NONE;
-		      RenderSystem_Render_xywh(renderer, XRightRender_ + 47, YTopRender_ + HHealth_ + 2, hatTexture->w, hatTexture->h, &clip, hatTexture);
+		      RenderSystem_Render_xywh(renderer, XRightRender_ + 50, YTopRender_ + HHealth_ + 2, hatTexture->w, hatTexture->h, &clip, hatTexture);
 		    }
 		    RenderHatHUD(renderer, hat->hatType, delta, renderSystem->cBag);
 		}
