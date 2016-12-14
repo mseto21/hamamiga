@@ -51,6 +51,7 @@ namespace Constants {
 	const uint16	MaxBullets_			= 3; // Max number of alive bullets at a time
 	const uint16    MaxKnives_			= 3; // Max number of alive knives at a time
 	const uint8		CoinValue_			= 5; // Points allocated for one coin.
+	const uint16	InvincibleTime_		= 3000;
 
 	// Pause State
 	const uint16	MaxInteractableMessages_	= 12;
