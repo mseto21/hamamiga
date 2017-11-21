@@ -8,8 +8,11 @@ Gavi Rawson (grawson)
 
 The Fat Hactory Game! Yay!
 
-To run just make clean && make, then ./fathactory and you may enjoy the
-splendor that is our game.
+To run:
+1. brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf
+2. make clean && make
+3. ./fathactory
+4. enjoy the splendor that is our game.
 
 General Controls:
 'ESC' at any time will exit the game.
